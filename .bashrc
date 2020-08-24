@@ -1,1 +1,1 @@
-alias [bibbox-listapps]=' [python3 listApps.py]' 
+alias ok=' python3 listapps.py' 
