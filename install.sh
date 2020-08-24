@@ -1,0 +1,1 @@
+mkdir opt/bibbox/bin
