@@ -6,6 +6,11 @@ with open('applications.json') as f:
 apps=[]
 for name in data:
     apps.append(name['name'])
-print(apps)
+
+for i, name in enumerate(apps):
+  num = str(i)
+  print(num + ': ' + name)
+
+#print(apps)
 
 
