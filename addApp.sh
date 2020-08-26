@@ -8,7 +8,6 @@ cd apps
 
 git clone https://github.com/bibbox/$appName.git
 
-chmod +x setproxy.py
 python3 setproxy.py
 
 cd $appName
