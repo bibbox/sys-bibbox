@@ -4,28 +4,29 @@ import re
 import sys
 import shutil
 
-userid = input("App ID: ")
-containerName = input("Container Name: ")
+appName = input("App ID: ")
+containerName = input("Container Instance: ")
 #path = 'sites/' + userid + '.conf'
-name = userid + '.conf'
+name = appName + '.conf'
 #os.system('sudo touch ' + path)
 
+composetemp = 'docker-compose-template.yml'
+path = ('apps/app-seeddmsTNG/')
 
 def updateCompose(composefile):
-    with open('template.conf') as f:
+    with open(path + composetemp) as f:
        file_content = f.read()
        #cp = configparser.RawConfigParser()#allow_no_value=True)
        #cp.read_string(file_content) #, encoding='utf-8-sig')
-       template = template.replace("§§INSTANCEID", userid)
-       template = template.replace("§§CONTAINERNAME", containerName)
-    return template
+       composefile = composefile.replace("§§INSTANCE", containerName)
+    return composefile
 
 def updateTemplate(template):
     with open('template.conf') as f:
        file_content = f.read()
        #cp = configparser.RawConfigParser()#allow_no_value=True)
        #cp.read_string(file_content) #, encoding='utf-8-sig')
-       template = template.replace("§§INSTANCEID", userid)
+       template = template.replace("§§INSTANCEID", appName)
        template = template.replace("§§CONTAINERNAME", containerName)
     return template
 
@@ -39,18 +40,19 @@ def testConfigMising(template):
 
 
 template = open('template.conf', 'r').read()
-
 template = updateTemplate(template)
-
 testConfigMising(template)
 
+composefile = open(path + composetemp, 'r').read()
+composefile = updateCompose(composefile)
 
-#target = open("/conf/sites/" + name, 'w+')
+cf = open( path + 'docker-compose.yml', 'w+')
+cf.write(composefile)
+cf.close()
+
+
 target = open( 'conf/sites/' + name, 'w+')
-
 target.write(template)
-#shutil.copy2(name, "conf/sites/" + name)
 target.close()
-
 
 print('done')
