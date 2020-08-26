@@ -17,7 +17,7 @@
   {"name":"Azizi Amp",                		"github_name":"app-azizi-amp"},
   {"name":"Azizi ODK Server",             "github_name":"app-azizi-onadata"},
   {"name":"STATegraEMS",              		"github_name":"app-stategraems"},
-  {"name":"SeedDMS",                  		"github_name":"app-seeddms"},
+  {"name":"SeedDMS",                  		"github_name":"app-seeddmsTNG"},
   {"name":"RedCap",                   		"github_name":"app-redcap"},
   {"name":"Elastic Stack",            		"github_name":"app-elasticstack"},
   {"name":"MyCollab CE",              		"github_name":"app-mycollab"},
