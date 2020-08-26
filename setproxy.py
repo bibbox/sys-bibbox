@@ -32,6 +32,22 @@ appName = input("App ID: ")
 containerInstance = input("Container Instance: ")
 name = appName + '.conf'
 
+with open('userinput.json') as json_file:
+    data = json.load(json_file)
+
+#data['subdirectory'] = []
+#data['instance'] = []
+data['subdirectory'].append({
+    gitNames[index]: appName
+})
+data['instance'].append({
+    gitNames[index]: containerInstance
+})
+
+with open('userinput.json', 'w+') as outfile:
+    json.dump(data, outfile)
+
+
 composetemp = 'docker-compose-template.yml'
 path = ('apps/' + gitNames[index] + '/')
 
@@ -81,11 +97,10 @@ cf = open( path + 'docker-compose-template.yml', 'w+')
 cf.write(composefile)
 cf.close()
 
+os.system('sudo chmod -R 777 conf/')
 target = open( 'conf/sites/' + name, 'w+')
 target.write(template)
 target.close()
-
-
 
 
 os.system('docker-compose -f apps/' + gitNames[index] + '/docker-compose-template.yml up -d')
