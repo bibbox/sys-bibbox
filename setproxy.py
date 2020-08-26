@@ -4,10 +4,10 @@ import os
 import configparser
 import re
 import sys
-import shutil
+import yaml
 
 appName = input("App ID: ")
-containerName = input("Container Instance: ")
+containerInstance = input("Container Instance: ")
 #path = 'sites/' + userid + '.conf'
 name = appName + '.conf'
 #os.system('sudo touch ' + path)
@@ -20,8 +20,18 @@ def updateCompose(composefile):
        file_content = f.read()
        #cp = configparser.RawConfigParser()#allow_no_value=True)
        #cp.read_string(file_content) #, encoding='utf-8-sig')
-       composefile = composefile.replace("§§INSTANCE", containerName)
+       composefile = composefile.replace("§§INSTANCE", containerInstance)
     return composefile
+
+def readContainername(composefile):
+    data = yaml.load(composefile)
+    for k, v in data["services"].items():
+        if 'container_name' in v:
+        #if data["services"][k].has_key("container_name"):
+            #print(data["services"][k]["container_name"]) 
+            #ContainerName = data["services"][k]["container_name"]
+            ContainerName = v.get('container_name')
+    return ContainerName
 
 def updateTemplate(template):
     with open('template.conf') as f:
@@ -29,7 +39,7 @@ def updateTemplate(template):
        #cp = configparser.RawConfigParser()#allow_no_value=True)
        #cp.read_string(file_content) #, encoding='utf-8-sig')
        template = template.replace("§§INSTANCEID", appName)
-       template = template.replace("§§CONTAINERNAME", containerName)
+       template = template.replace("§§CONTAINERNAME", ContainerName)
     return template
 
 def testConfigMising(template):
@@ -41,12 +51,16 @@ def testConfigMising(template):
         sys.exit(os.EX_DATAERR)
 
 
-template = open('template.conf', 'r').read()
-template = updateTemplate(template)
-testConfigMising(template)
 
 composefile = open(path + composetemp, 'r').read()
 composefile = updateCompose(composefile)
+
+
+ContainerName = readContainername(composefile)
+
+template = open('template.conf', 'r').read()
+template = updateTemplate(template)
+testConfigMising(template)
 
 cf = open( path + 'docker-compose.yml', 'w+')
 cf.write(composefile)
