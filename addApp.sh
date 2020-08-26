@@ -1,20 +1,10 @@
 #!/bin/bash
 
-echo Wich App you want to install?
+sudo python3 setproxy.py
 
-read appName
+#sudo chmod 777 apps/$appName
 
-cd apps
-
-git clone https://github.com/bibbox/$appName.git
-
-cd ..
-
-python3 setproxy.py
-
-sudo chmod 777 apps/$appName
-
-cd apps/$appName
+#cd apps/$appName
 
 
-docker-compose up -d
+#docker-compose up -d

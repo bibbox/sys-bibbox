@@ -25,23 +25,19 @@ for i, name in enumerate(apps):
 index = input('Which app do you want to install?')
 index = int(index)
 
-os.system('sudo git clone https://github.com/bibbox/' + gitNames[index] + '.git apps')
+os.system('sudo git clone https://github.com/bibbox/' + gitNames[index] + '.git apps/' + gitNames[index] + '/')
 
 
 appName = input("App ID: ")
 containerInstance = input("Container Instance: ")
-#path = 'sites/' + userid + '.conf'
 name = appName + '.conf'
-#os.system('sudo touch ' + path)
 
 composetemp = 'docker-compose-template.yml'
-path = ('apps/app-seeddmsTNG/')
+path = ('apps/' + gitNames[index] + '/')
 
 def updateCompose(composefile):
     with open(path + composetemp) as f:
        file_content = f.read()
-       #cp = configparser.RawConfigParser()#allow_no_value=True)
-       #cp.read_string(file_content) #, encoding='utf-8-sig')
        composefile = composefile.replace("§§INSTANCE", containerInstance)
     return composefile
 
@@ -49,17 +45,12 @@ def readContainername(composefile):
     data = yaml.load(composefile)
     for k, v in data["services"].items():
         if 'container_name' in v:
-        #if data["services"][k].has_key("container_name"):
-            #print(data["services"][k]["container_name"]) 
-            #ContainerName = data["services"][k]["container_name"]
             ContainerName = v.get('container_name')
     return ContainerName
 
 def updateTemplate(template):
     with open('template.conf') as f:
        file_content = f.read()
-       #cp = configparser.RawConfigParser()#allow_no_value=True)
-       #cp.read_string(file_content) #, encoding='utf-8-sig')
        template = template.replace("§§INSTANCEID", appName)
        template = template.replace("§§CONTAINERNAME", ContainerName)
     return template
@@ -84,10 +75,11 @@ template = open('template.conf', 'r').read()
 template = updateTemplate(template)
 testConfigMising(template)
 
-cf = open( path + 'docker-compose.yml', 'w+')
+os.system('sudo chmod -R 777 apps/')
+
+cf = open( path + 'docker-compose-template.yml', 'w+')
 cf.write(composefile)
 cf.close()
-
 
 target = open( 'conf/sites/' + name, 'w+')
 target.write(template)
@@ -95,8 +87,7 @@ target.close()
 
 
 
-os.system('sudo chmod 777 apps/gitNames[index]')
-os.system('cd apps/gitNames[index]')
-os.system('docker-compose up -d')
+
+os.system('docker-compose -f apps/' + gitNames[index] + '/docker-compose-template.yml up -d')
 
 print('done')
