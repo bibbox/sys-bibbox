@@ -4,13 +4,21 @@ import re
 import sys
 import shutil
 
-userid = input("App ID:")
+userid = input("App ID: ")
+containerName = input("Container Name: ")
 #path = 'sites/' + userid + '.conf'
 name = userid + '.conf'
 #os.system('sudo touch ' + path)
 
 
-
+def updateCompose(composefile):
+    with open('template.conf') as f:
+       file_content = f.read()
+       #cp = configparser.RawConfigParser()#allow_no_value=True)
+       #cp.read_string(file_content) #, encoding='utf-8-sig')
+       template = template.replace("§§INSTANCEID", userid)
+       template = template.replace("§§CONTAINERNAME", containerName)
+    return template
 
 def updateTemplate(template):
     with open('template.conf') as f:
@@ -18,7 +26,7 @@ def updateTemplate(template):
        #cp = configparser.RawConfigParser()#allow_no_value=True)
        #cp.read_string(file_content) #, encoding='utf-8-sig')
        template = template.replace("§§INSTANCEID", userid)
-       template = template.replace("§§CONTAINERNAME", userid)
+       template = template.replace("§§CONTAINERNAME", containerName)
     return template
 
 def testConfigMising(template):
