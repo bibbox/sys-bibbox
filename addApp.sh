@@ -12,4 +12,4 @@ python3 setproxy.py
 
 cd $appName
 
-docker-compose up-d
+docker-compose up -d
