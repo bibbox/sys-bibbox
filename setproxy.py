@@ -5,6 +5,28 @@ import configparser
 import re
 import sys
 import yaml
+import json
+
+with open('applications.json') as f:
+  data = json.load(f)
+
+apps=[]
+gitNames=[]
+for i in data:
+    apps.append(i['name'])
+    gitNames.append(i['github_name'])
+
+
+print('The available apps are: ')
+for i, name in enumerate(apps):
+  num = str(i)
+  print(num + ': ' + name)
+
+index = input('Which app do you want to install?')
+index = int(index)
+
+os.system('sudo git clone https://github.com/bibbox/' + gitNames[index] + '.git apps')
+
 
 appName = input("App ID: ")
 containerInstance = input("Container Instance: ")
@@ -70,5 +92,11 @@ cf.close()
 target = open( 'conf/sites/' + name, 'w+')
 target.write(template)
 target.close()
+
+
+
+os.system('sudo chmod 777 apps/gitNames[index]')
+os.system('cd apps/gitNames[index]')
+os.system('docker-compose up -d')
 
 print('done')
