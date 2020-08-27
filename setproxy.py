@@ -25,12 +25,12 @@ for i, name in enumerate(apps):
 index = input('Which app do you want to install? ')
 index = int(index)
 
-os.system('sudo git clone https://github.com/bibbox/' + gitNames[index] + '.git apps/' + gitNames[index] + '/')
-
-
 appName = input("App ID: ")
 containerInstance = input("Container Instance: ")
 name = appName + '.conf'
+
+os.system('sudo git clone https://github.com/bibbox/' + gitNames[index] + '.git apps/' + appName + '/' + gitNames[index] + '/')
+
 
 with open('conf/usersettings/userinput.json') as json_file:
     data = json.load(json_file)
@@ -63,7 +63,7 @@ with open('conf/usersettings/userinput.json', 'w+') as outfile:
 
 
 composetemp = 'docker-compose-template.yml'
-path = ('apps/' + gitNames[index] + '/')
+path = ('apps/' + appName + '/' + gitNames[index] + '/')
 
 
 def updateCompose(composefile):
@@ -118,6 +118,6 @@ target.write(template)
 target.close()
 
 
-os.system('docker-compose -f apps/' + gitNames[index] + '/docker-compose-template.yml up -d')
+os.system('docker-compose -f apps/' + appName + '/' + gitNames[index] + '/docker-compose-template.yml up -d')
 
 print('done')
