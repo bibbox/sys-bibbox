@@ -31,8 +31,9 @@ name = appName + '.conf'
 
 os.system('sudo git clone https://github.com/bibbox/' + gitNames[index] + '.git apps/' + appName + '/' + gitNames[index] + '/')
 
+os.system('sudo cp conf/usersettings/userinput.json conf/usersettings/userinputlocal.json')
 
-with open('conf/usersettings/userinput.json') as json_file:
+with open('conf/usersettings/userinputlocal.json') as json_file:
     data = json.load(json_file)
 
 
@@ -58,7 +59,9 @@ data['instance'].append({
     gitNames[index]: containerInstance
 })
 
-with open('conf/usersettings/userinput.json', 'w+') as outfile:
+
+
+with open('conf/usersettings/userinputlocal.json', 'w+') as outfile:
     json.dump(data, outfile)
 
 
