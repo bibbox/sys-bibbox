@@ -32,7 +32,7 @@ appName = input("App ID: ")
 containerInstance = input("Container Instance: ")
 name = appName + '.conf'
 
-with open('userinput.json') as json_file:
+with open('conf/usersettings/userinput.json') as json_file:
     data = json.load(json_file)
 
 
@@ -58,7 +58,7 @@ data['instance'].append({
     gitNames[index]: containerInstance
 })
 
-with open('userinput.json', 'w+') as outfile:
+with open('conf/usersettings/userinput.json', 'w+') as outfile:
     json.dump(data, outfile)
 
 
