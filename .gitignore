@@ -2,3 +2,7 @@
 .idea/
 apps
 conf
+conf/usersettings/userinput.json
+conf/usersettings/
+
+
