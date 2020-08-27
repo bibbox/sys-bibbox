@@ -26,37 +26,10 @@ index = input('Which app do you want to install? ')
 index = int(index)
 
 appName = input("App ID: ")
-containerInstance = input("Container Instance: ")
 name = appName + '.conf'
 
 os.system('sudo git clone https://github.com/bibbox/' + gitNames[index] + '.git apps/' + appName + '/' + gitNames[index] + '/')
 
-
-with open('conf/usersettings/userinputlocal.json') as json_file:
-    data = json.load(json_file)
-
-
-if containerInstance in [subdirectory[gitNames[index]] for subdirectory in data['subdirectory']]:
-    raise Exception('Your choosen container instance is already in use for this application!')
-
-items = data.items()
-
-
-for key, value in items:
-    for i in range(len(value)):
-        subdict = value[i]
-        for subkey in subdict:
-            subvalue = subdict[subkey]
-            if appName == subvalue:
-               raise Exception('Your choosen app name is already in use!')
-
-
-data['subdirectory'].append({
-    gitNames[index]: appName
-})
-data['instance'].append({
-    gitNames[index]: containerInstance
-})
 
 
 
@@ -71,7 +44,7 @@ path = ('apps/' + appName + '/' + gitNames[index] + '/')
 def updateCompose(composefile):
     with open(path + composetemp) as f:
        file_content = f.read()
-       composefile = composefile.replace("§§INSTANCE", containerInstance)
+       composefile = composefile.replace("§§INSTANCE", appName)
     return composefile
 
 def readContainername(composefile):
