@@ -14,3 +14,4 @@ with open('conf/usersettings/userinput.json') as json_file:
             print('App name: ' + subvalue)
             print('Docker Container: ' + subkey)
             print('------------------------------')
+            
