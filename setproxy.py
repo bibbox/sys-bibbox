@@ -22,7 +22,7 @@ for i, name in enumerate(apps):
   num = str(i)
   print(num + ': ' + name)
 
-index = input('Which app do you want to install?')
+index = input('Which app do you want to install? ')
 index = int(index)
 
 os.system('sudo git clone https://github.com/bibbox/' + gitNames[index] + '.git apps/' + gitNames[index] + '/')
@@ -35,8 +35,22 @@ name = appName + '.conf'
 with open('userinput.json') as json_file:
     data = json.load(json_file)
 
-#data['subdirectory'] = []
-#data['instance'] = []
+
+if containerInstance in [subdirectory[gitNames[index]] for subdirectory in data['subdirectory']]:
+    raise Exception('Your choosen container instance is already in use for this application!')
+
+items = data.items()
+
+
+for key, value in items:
+    for i in range(len(value)):
+        subdict = value[i]
+        for subkey in subdict:
+            subvalue = subdict[subkey]
+            if appName == subvalue:
+               raise Exception('Your choosen app name is already in use!')
+
+
 data['subdirectory'].append({
     gitNames[index]: appName
 })
@@ -50,6 +64,7 @@ with open('userinput.json', 'w+') as outfile:
 
 composetemp = 'docker-compose-template.yml'
 path = ('apps/' + gitNames[index] + '/')
+
 
 def updateCompose(composefile):
     with open(path + composetemp) as f:
