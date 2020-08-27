@@ -33,10 +33,6 @@ os.system('sudo git clone https://github.com/bibbox/' + gitNames[index] + '.git 
 
 
 
-with open('conf/usersettings/userinputlocal.json', 'w+') as outfile:
-    json.dump(data, outfile)
-
-
 composetemp = 'docker-compose-template.yml'
 path = ('apps/' + appName + '/' + gitNames[index] + '/')
 
