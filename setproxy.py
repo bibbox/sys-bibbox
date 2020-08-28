@@ -91,4 +91,6 @@ target.close()
 
 os.system('docker-compose -f apps/' + appName + '/' + gitNames[index] + '/docker-compose-template.yml up -d')
 
+os.system('docker exec -it local_nginx service nginx reload')
+
 print('done')
