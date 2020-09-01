@@ -9,6 +9,7 @@ import json
 
 with open('applications.json') as f:
   data = json.load(f)
+  
 
 apps=[]
 gitNames=[]
@@ -27,6 +28,12 @@ index = int(index)
 
 appName = input("App ID: ")
 name = appName + '.conf'
+
+instApps = os.listdir('apps/')
+
+for instappName in instApps:
+    if instappName == appName:
+        raise Exception('An app with the same app name is already installed. Please choose another name!')
 
 os.system('sudo git clone https://github.com/bibbox/' + gitNames[index] + '.git apps/' + appName + '/' + gitNames[index] + '/')
 
@@ -79,6 +86,7 @@ testConfigMising(template)
 
 os.system('sudo chmod -R 777 apps/')
 
+
 cf = open( path + 'docker-compose-template.yml', 'w+')
 cf.write(composefile)
 cf.close()
@@ -88,9 +96,11 @@ target = open( 'conf/sites/' + name, 'w+')
 target.write(template)
 target.close()
 
+os.system('cp apps/' + appName + '/' + gitNames[index] + '/env_params.env env_params.env' )
+
 
 os.system('docker-compose -f apps/' + appName + '/' + gitNames[index] + '/docker-compose-template.yml up -d')
 
 os.system('docker exec -it local_nginx service nginx reload')
-
+os.system('rm env_params.env')
 print('done')

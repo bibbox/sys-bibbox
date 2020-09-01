@@ -4,6 +4,11 @@ import json
 print('Wich app do you want to remove? ')
 appName = input('Please enter app name: ')
 
+instApps = os.listdir('apps/')
+
+if appName in instApps:
+    pass
+
 os.system('sudo chmod -R 777 apps')
 
 instApps = os.listdir('apps/'+ appName)
