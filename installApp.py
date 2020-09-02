@@ -153,7 +153,7 @@ target.close()
 
 
 # execute docker compose
-os.system('docker-compose -f apps/' + appName + '/' + gitNames[index] + '/docker-compose.yml up -d')
+os.system('docker-compose -f apps/' + appName + '/' + gitNames[index] + '/docker-compose.yml up -d ')
 
 os.system('docker exec -it local_nginx service nginx reload')
 os.system('rm .env')
