@@ -9,7 +9,7 @@ import json
 
 with open('applications.json') as f:
   data = json.load(f)
-  
+
 
 apps=[]
 gitNames=[]
@@ -29,17 +29,43 @@ index = int(index)
 appName = input("App ID: ")
 name = appName + '.conf'
 
-instApps = os.listdir('apps/')
+try:
+    instApps = os.listdir('apps/')
+except:
+    instApps = ''
+
+os.system('sudo git clone https://github.com/bibbox/' + gitNames[index] + '.git apps/' + appName + '/' + gitNames[index] + '/')
+
 
 for instappName in instApps:
     if instappName == appName:
         raise Exception('An app with the same app name is already installed. Please choose another name!')
 
-os.system('sudo git clone https://github.com/bibbox/' + gitNames[index] + '.git apps/' + appName + '/' + gitNames[index] + '/')
+os.system('cp apps/' + appName + '/' + gitNames[index] + '/env_params.env env_params.env' )
 
+with open('env_params.env') as f:
+       file_content = f.read()
 
+words = file_content.split("\n")
 
+string = ''
 
+print('Please set user parameters!')
+for param in words[:-1]:
+    setvar = input(param + ': ')
+    string = string + param + '=' + setvar + '\n'
+
+os.system('sudo chmod -R 777 apps/')
+
+cf = open( 'env_params.env', 'w+')
+cf.write(string)
+cf.close()
+
+ef = open( 'apps/' + appName + '/' + gitNames[index] + '/env_params.env', 'w+')
+ef.write(string)
+ef.close()
+
+#os.system('sudo chmod  777 env_params.env')
 composetemp = 'docker-compose-template.yml'
 path = ('apps/' + appName + '/' + gitNames[index] + '/')
 
@@ -84,8 +110,6 @@ template = open('template.conf', 'r').read()
 template = updateTemplate(template)
 testConfigMising(template)
 
-os.system('sudo chmod -R 777 apps/')
-
 
 cf = open( path + 'docker-compose-template.yml', 'w+')
 cf.write(composefile)
@@ -95,9 +119,6 @@ os.system('sudo chmod -R 777 conf/')
 target = open( 'conf/sites/' + name, 'w+')
 target.write(template)
 target.close()
-
-os.system('cp apps/' + appName + '/' + gitNames[index] + '/env_params.env env_params.env' )
-
 
 os.system('docker-compose -f apps/' + appName + '/' + gitNames[index] + '/docker-compose-template.yml up -d')
 
