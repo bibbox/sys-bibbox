@@ -8,6 +8,8 @@ instApps = os.listdir('apps/')
 
 if appName in instApps:
     pass
+else:
+    raise Exception('Your coosen app with the name ' + appName + ' does not exist!')
 
 os.system('sudo chmod -R 777 apps')
 
