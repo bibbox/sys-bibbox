@@ -4,89 +4,113 @@ import os
 import json
 import yaml
 import subprocess
+from os.path import dirname, abspath
+import traceback
 
 
 
-class Bibbox:
+class AppController:
 
-    def __init__(self):
-        self.helper = Helpers()
+    def __init__(self, instanceName, *args, **kwargs):
+        
+        self.instanceName = instanceName
+        self.rootdir = dirname(dirname(abspath(__file__)))
+        self.appPath = self.rootdir + '/application-instance'
+        self.exists = False
+        
+        for key, value in kwargs.items():
+            if key == 'version':
+                self.version = value
+            if key == 'appName':
+                self.appName = value
+
+        #subprocess.Popen(['touch' , self.appPath + '/' + self.instanceName + '/LOCK'])
+
+        if instanceName in os.listdir(self.appPath):
+            self.exists = True
+            if 'LOCK' in os.listdir(self.appPath + '/' + self.instanceName):
+                self.locked = True
+                #raise Exception('The app you want to stop does not exist!')
+        
+            subprocess.Popen(['touch' , self.appPath + '/' + self.instanceName + '/LOCK'])
 
 
-    def stopApp(self,appName, instanceName):
-        check = self.helper.appExists(appName)
-        if check == False:
+    def __del__(self):
+        subprocess.Popen(['rm' , self.appPath + '/' + self.instanceName + '/LOCK'])
+
+
+    def stopApp(self):
+        raise Exception('The app you want to stop does not exist!')
+        if self.exists == False:
             raise Exception('The app you want to stop does not exist!')
-        appList = self.helper.listApps()
-        subprocess.Popen(['cp' , 'application-instance/' + appName + '/.env' , '.env'])
-        os.system('docker-compose -f application-instance/' + appName + '/docker-compose.yml stop')
+        if self.locked == True:
+            raise Exception('App locked! Some other process is currently running. Please try again later.')
+        
+        subprocess.Popen(['cp' , 'application-instance/' + self.instanceName + '/.env' , '.env'])
+        os.system('docker-compose -f application-instance/' + self.instanceName + '/docker-compose.yml stop')
         subprocess.Popen(['rm' , '.env'])
 
-    def startApp(self, appName):
-        check = self.helper.appExists(appName)
-        if check == False:
-            raise Exception('The app you want to start does not exist!')
-        appList = self.helper.listApps()
-        subprocess.Popen(['cp' , 'application-instance/' + appName + '/.env' , '.env'])
+    def startApp(self):
+        if self.exists == False:
+            raise Exception('The app you want to stop does not exist!')
+        if self.locked == True:
+            raise Exception('App locked! Some other process is currently running. Please try again later.')
+        
+        subprocess.Popen(['cp' , 'application-instance/' + self.instanceName + '/.env' , '.env'])
         #pwd 'application-instance/' + appName +
         #os.chdir()
-        os.system('docker-compose -f application-instance/' + appName + '/docker-compose.yml start')
+        os.system('docker-compose -f application-instance/' + self.instanceName + '/docker-compose.yml start')
         subprocess.Popen(['rm' , '.env'])
 
-    def installApp(appName, version):
-        check = self.helper.appExists(appName)
-        if check == True:
+    def downloadApp(self):
+        if self.exists == True:
             raise Exception('The app you want to install does already exist!')
-        
-        parts = appName.split('-')
-        name = parts[1] +'-' + parts[2]
 
-        os.system('sudo git clone https://github.com/bibbox/' + name + '.git application-instance/' + appNameame + '/')
-        os.system('cp apps/' + appName + '/' + gitNames[index] + '/.env .env' )
+        os.system('git clone -b ' + self.version +  ' https://github.com/bibbox/' + self.appName + '.git application-instance/' + self.instanceName + '/')
 
         
 
-    def removeApp(self, appName):
-        check = self.helper.appExists(appName)
-        if check == False:
-            raise Exception('The app you want to start does not exist!')
+        
+
+    def removeApp(self, instanceName):
+        if self.exists == False:
+            raise Exception('The app you want to stop does not exist!')
+        if self.locked == True:
+            raise Exception('App locked! Some other process is currently running. Please try again later.')
         appList = self.helper.listApps()
-        subprocess.Popen(['cp' , 'application-instance/' + appName + '/.env' , '.env'])
-        os.system('docker-compose -f application-instance/' + appName + '/docker-compose.yml down')
+        subprocess.Popen(['cp' , 'application-instance/' + instanceName + '/.env' , '.env'])
+        os.system('docker-compose -f application-instance/' + instanceName + '/docker-compose.yml down')
         subprocess.Popen(['rm' , '.env'])
 
-        os.system('sudo rm -R application-instance/' + appName)
+        os.system('sudo rm -R application-instance/' + instanceName)
         os.system('sudo chmod -R 777 conf/')
-        name = appName + '.conf'
+        name = instanceName + '.conf'
         os.system('sudo rm -R sys-proxy/data/proxyconfig/' + name)
 
-
-
-class Helpers:
     def listApps(self):
+        if self.locked == True:
+            raise Exception('App locked! Some other process is currently running. Please try again later.')
         folders= os.listdir('application-instance/')
         apps = []
         for i, name in enumerate(folders):
-            #parts = name.split('-')
-            #appName = parts[-1]
             apps.append(name)
         return apps
 
-    def appExists(self, appName):
-        folders= os.listdir('application-instance/')
-        if appName in folders:
-            return True
-        else: 
-            return False
-
     def updateTemplate(self, template):
         with open('template.conf') as f:
-        file_content = f.read()
-        template = template.replace("§§INSTANCEID", appName)
-        template = template.replace("§§CONTAINERNAME", ContainerName)
-        return template
+            file_content = f.read()
+            template = template.replace("§§INSTANCEID", appName)
+            template = template.replace("§§CONTAINERNAME", ContainerName)
+            return template
 
 
-bbox = Bibbox()
+bboxseed = AppController('seeddms1', appName = 'app-seeddms', version = '5-1-18')
 
-bbox.startApp('app-seeddms-seeddms')
+try:
+    bboxseed.stopApp()
+except:
+    print(traceback.format_exc())
+bboxseed.__del__()
+
+
+print('---')
