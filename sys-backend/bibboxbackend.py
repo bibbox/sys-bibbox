@@ -102,7 +102,7 @@ class AppController:
         appPath = rootdir + '/application-instance'
         subprocess.Popen(['touch' , appPath + '/' + instanceName + '/INFO'])
         text_file = open(appPath + '/' + instanceName + '/INFO', "w")
-        text_file.write(jobID + '/n' + appName + '/n' + instanceName + '/n' + version)
+        text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
         text_file.close()
 
 
