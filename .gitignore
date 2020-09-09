@@ -1,8 +1,8 @@
 .gitignore
 
-apps
 conf
-conf/usersettings/userinput.json
-conf/usersettings/
+application-instance
+log
+sys-proxy
 
 

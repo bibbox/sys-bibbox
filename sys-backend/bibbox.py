@@ -110,7 +110,8 @@ try:
     bboxseed.stopApp()
 except:
     print(traceback.format_exc())
-bboxseed.__del__()
+finally:
+    bboxseed.__del__()
 
 
 print('---')

@@ -1,10 +1,5 @@
-from os.path import dirname, abspath
-import os
-#d = dirname(dirname(abspath(__file__)))
-#appPath = d + '/application-instance'
-#print('---')
+import logging
 
-
-os.system('sudo git clone -b ' + '6-0-11' + ' https://github.com/bibbox/' + 'app-seeddms' + '.git application-instance/' + 'test' + '/')
-os.system('sudo git clone -b ' + self.version +  ' https://github.com/bibbox/' + self.appName + '.git application-instance/' + self.instanceName + '/ .')
-#git clone --single-branch --branch <branchname>
+ID = 'iaogefh'
+logging.basicConfig(filename='/home/v/Documents/sys-bibbox/application-instance/testapp/app.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.warning('This will get logged to a file -' )
