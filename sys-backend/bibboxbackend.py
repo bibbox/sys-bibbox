@@ -32,6 +32,16 @@ class AppController:
         return jobID + datestring
 
     @staticmethod
+    def checkExists(jobID, instanceName):
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance'
+        if instanceName in os.listdir(appPath):
+            exists = True
+        else:
+            exists = False
+        return exists
+
+    @staticmethod
     def createFolder(JobID, instanceName):
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
@@ -44,21 +54,10 @@ class AppController:
         appPath = rootdir + '/application-instance'
         path = appPath + '/' + instanceName + '/'
         try:
-            logging.basicConfig(filename= path + 'app.log', filemode='w+', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+            logging.basicConfig(filename= path + 'app.log', filemode='w+', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
             
         except Exception:
             print(Exception)
-
-
-    @staticmethod
-    def checkExists(jobID, instanceName):
-        rootdir = dirname(dirname(abspath(__file__)))
-        appPath = rootdir + '/application-instance'
-        if instanceName in os.listdir(appPath):
-            exists = True
-        else:
-            exists = False
-        return exists
 
     @staticmethod
     def checkLocked(jobID, instanceName):
@@ -76,7 +75,10 @@ class AppController:
         logging.info(jobID + ' - ' + 'Set status to ' + status )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
-        subprocess.Popen(['touch' , appPath + '/' + instanceName + '/STATUS'])
+        process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/STATUS'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output) )
         text_file = open(appPath + '/' + instanceName + '/STATUS', "w")
         text_file.write(status)
         text_file.close()
@@ -86,7 +88,20 @@ class AppController:
         logging.debug(jobID + ' - ' + 'Locking app: ' + instanceName )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
-        subprocess.Popen(['touch' , appPath + '/' + instanceName + '/LOCK'])
+        process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/LOCK'])
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output) )
+    
+    @staticmethod
+    def unlock(jobID, instanceName):
+        logging.debug(jobID + ' - ' + 'Unlocking app: ' + instanceName )
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance'
+        process = subprocess.Popen(['rm' , appPath + '/' + instanceName + '/LOCK'])
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output) )
 
     @staticmethod
     def downloadApp(exists,locked, jobID, instanceName,appName,version):
@@ -98,18 +113,22 @@ class AppController:
         except Exception:
             logging.exception( jobID + ' - An error occurred during downloading!')
     
+    @staticmethod
     def setInfo(jobID, instanceName,appName,version):
         logging.info(jobID + ' - ' + 'Set install info')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
-        subprocess.Popen(['touch' , appPath + '/' + instanceName + '/INFO'])
+        process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/INFO'])
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output) )
         text_file = open(appPath + '/' + instanceName + '/INFO', "w")
         text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
         text_file.close()
 
-
+    @staticmethod
     def setProxyFiles(jobID, instanceName, containerName):
-        logging.info(jobID + ' - ' + 'Set proxi files')
+        logging.info(jobID + ' - ' + 'Set proxy files')
         rootdir = dirname(dirname(abspath(__file__)))
         proxyPath = rootdir + '/sys-proxy/'
         name = instanceName + '.conf'
@@ -117,11 +136,11 @@ class AppController:
             file_content = template.read()
             file_content = file_content.replace("§§INSTANCEID", instanceName)
             file_content = file_content.replace("§§CONTAINERNAME", containerName)
-            template = open( proxyPath + 'proxyconfig/' + name, 'w+')
+            template = open( proxyPath + 'proxyconfig/sites/' + name, 'w+')
             template.write(file_content)
             template.close()
 
-
+    @staticmethod
     def readContainername(jobID, instanceName):
         logging.info(jobID + ' - ' + 'Read Containername')
         rootdir = dirname(dirname(abspath(__file__)))
@@ -138,62 +157,6 @@ class AppController:
                     pass
 
         return ContainerName
-
-
-
-    """
-    Section: Main functions
-    """
-
-    @staticmethod
-    def getParamsold(instanceName):
-        paramList = {}
-        rootdir = dirname(dirname(abspath(__file__)))
-        appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
-        with open(appPath + '.env') as f:
-            file_content = f.read()
-            words = file_content.split("\n")
-            for line in words[:-2]:
-                params = line.split('=')
-                param = params[0]
-                paramList[param] = []
-        with open(rootdir + '/application-instance/' + instanceName +'/params.json', 'w+') as outfile:        
-            json.dump(paramList, outfile)
-
-    @staticmethod
-    def readParams(instanceName):
-        rootdir = dirname(dirname(abspath(__file__)))
-        appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
-        with open(rootdir + '/application-instance/' + instanceName +'/params.json', 'w+') as json_file: 
-            data = json.load(json_file)
-            
-
-    @staticmethod
-    def getParams(instanceName, appName, version):
-        url = 'https://raw.githubusercontent.com/bibbox/' + appName + '/master/.env'
-        download = requests.get(url).content
-        data=download.decode('utf-8')
-        params = data.split('\n')
-        paramList = {}
-        for line in params:
-            params = line.split('=')
-            param = params[0]
-            if param == 'PORT' or param == '' or param == 'INSTANCE':
-                pass
-            else:
-                paramList[param] = []
-            
-        #paramList = json.dumps(paramList)
-        
-        return paramList, instanceName, appName, version
-
-    @staticmethod
-    def setParams(paramList):
-        #data = json.load(paramList)
-        for key in paramList:
-            paramList[key] = 'ww'
-
-        return paramList
 
     @staticmethod
     def writeCompose(jobID, paramList, instanceName):
@@ -216,7 +179,39 @@ class AppController:
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         #subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose.yml', 'up', '-d '])
         os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml up -d ')
+        os.system('docker exec -it local_nginx service nginx reload')
 
+
+    """
+    Section: Main functions
+    """
+
+    @staticmethod
+    def getParams(instanceName, appName, version):
+        url = 'https://raw.githubusercontent.com/bibbox/' + appName + '/master/.env'
+        download = requests.get(url).content
+        data=download.decode('utf-8')
+        params = data.split('\n')
+        paramList = {}
+        for line in params:
+            params = line.split('=')
+            param = params[0]
+            if param == 'PORT' or param == '' or param == 'INSTANCE':
+                pass
+            else:
+                paramList[param] = []
+            
+        return paramList, instanceName, appName, version
+
+    @staticmethod
+    def setParams(paramList):
+        #data = json.load(paramList)
+        for key in paramList:
+            paramList[key] = 'ww'
+
+        return paramList
+
+    
     @staticmethod
     def installApp(paramList, instanceName, appName, version):
         jobID = AppController.createJobID()
@@ -233,6 +228,9 @@ class AppController:
         AppController.setProxyFiles(jobID, instanceName, containerName)
         AppController.writeCompose(jobID, paramList, instanceName)
         AppController.composeUp(jobID, instanceName)
+        AppController.unlock(jobID, instanceName)
+    
+
 
     
 
