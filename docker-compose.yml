@@ -10,7 +10,7 @@ services:
     image: nginx:latest
     container_name: local_nginx
     volumes:
-      - ./sys-proxy/proxyconfig/conf:/etc/nginx/conf.d
+      - ./sys-proxy/proxyconfig:/etc/nginx/conf.d
     ports:
       - "8010:80"
     networks:
