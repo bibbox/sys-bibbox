@@ -32,14 +32,19 @@ class AppController:
         return jobID + datestring
 
     @staticmethod
-    def checkExists(jobID, instanceName):
+    def checkExists(jobID, instanceName, install):
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if instanceName in os.listdir(appPath):
             exists = True
         else:
             exists = False
-        return exists
+        if install == True:
+            if exists == True:
+                raise Exception('The app you want to install does already exist!')
+        if install == False:
+            if exists == False:
+                raise Exception('The app you want to use does not exist!')
 
     @staticmethod
     def createFolder(JobID, instanceName):
@@ -54,7 +59,7 @@ class AppController:
         appPath = rootdir + '/application-instance'
         path = appPath + '/' + instanceName + '/'
         try:
-            logging.basicConfig(filename= path + 'app.log', filemode='w+', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
+            logging.basicConfig(filename= path + 'app.log', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
             
         except Exception:
             print(Exception)
@@ -65,10 +70,8 @@ class AppController:
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if 'LOCK' in os.listdir(appPath + '/' + instanceName):
-            locked = True
-        else:
-            locked = False
-        return locked
+            logging.exception( jobID + ' - The app you want to use is currently locked! Please try again later!')
+            raise Exception('The app you want to use is currently locked! Please try again later!')
 
     @staticmethod
     def setStatus(jobID, status, instanceName):
@@ -104,11 +107,9 @@ class AppController:
             logging.debug(jobID + str(output) )
 
     @staticmethod
-    def downloadApp(exists,locked, jobID, instanceName,appName,version):
+    def downloadApp(jobID, instanceName,appName,version):
         logging.info(jobID + ' - ' + 'Downloading app: ' + appName + '/' + instanceName + ' V:' + version)
         try:
-            if exists == True:
-                raise Exception('The app you want to install does already exist!')
             os.system('git clone -b ' + version +  ' https://github.com/bibbox/' + appName + '.git application-instance/' + instanceName + '/repo/')
         except Exception:
             logging.exception( jobID + ' - An error occurred during downloading!')
@@ -181,6 +182,36 @@ class AppController:
         os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml up -d ')
         os.system('docker exec -it local_nginx service nginx reload')
 
+    @staticmethod
+    def stop(jobID, instanceName):
+        logging.info(jobID + ' - ' + 'Stopping App:' + instanceName)
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        #subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose.yml', 'up', '-d '])
+        os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml stop ')
+
+    def start(jobID, instanceName):
+        logging.info(jobID + ' - ' + 'Starting App:' + instanceName)
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        #subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose.yml', 'up', '-d '])
+        os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml start ')
+
+    def remove(jobID, instanceName):
+        logging.info(jobID + ' - ' + 'Romoving App:' + instanceName)
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        #subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose.yml', 'up', '-d '])
+        os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml down ')
+        process = subprocess.Popen(['rm' , appPath + '/' + instanceName)
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output) )
+        process = subprocess.Popen(['rm' , rootdir + '/sys-proxy/proxyconfig/sites/' + instanceName + '.conf')
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output) )
+
 
     """
     Section: Main functions
@@ -215,24 +246,45 @@ class AppController:
     @staticmethod
     def installApp(paramList, instanceName, appName, version):
         jobID = AppController.createJobID()
-        exists = AppController.checkExists(jobID, instanceName)
+        AppController.checkExists(jobID, instanceName, install = True)
         AppController.createFolder(jobID, instanceName)
         AppController.setUpLog(jobID, instanceName)
-        AppController.setStatus(jobID, 'Installing', instanceName)
+        AppController.setStatus(jobID, 'Prepare Install', instanceName)
         #exists = AppController.checkExists(jobID, instanceName)
-        locked = AppController.checkLocked(jobID, instanceName)
+        AppController.checkLocked(jobID, instanceName)
         AppController.lock(jobID, instanceName)
-        AppController.downloadApp(exists,locked, jobID, instanceName,appName,version)
+        AppController.setStatus(jobID, 'Downloading', instanceName)
+        AppController.downloadApp(jobID, instanceName,appName,version)
+        AppController.setStatus(jobID, 'Installing', instanceName)
         AppController.setInfo(jobID, instanceName,appName,version)
         containerName = AppController.readContainername(jobID, instanceName)
         AppController.setProxyFiles(jobID, instanceName, containerName)
         AppController.writeCompose(jobID, paramList, instanceName)
         AppController.composeUp(jobID, instanceName)
         AppController.unlock(jobID, instanceName)
+        AppController.setStatus(jobID, 'Running', instanceName)
     
+    @staticmethod
+    def stopApp(instanceName):
+        jobID = AppController.createJobID()
+        AppController.checkExists(jobID, instanceName, install=False)
+        AppController.lock(jobID, instanceName)
+        AppController.setStatus(jobID, 'Stopping', instanceName)
+        AppController.setUpLog(jobID, instanceName)
+        AppController.stop(jobID, instanceName)
+        AppController.unlock(jobID, instanceName)
+        AppController.setStatus(jobID, 'Stopped', instanceName)
 
-
-    
+    @staticmethod
+    def startApp(instanceName):
+        jobID = AppController.createJobID()
+        AppController.checkExists(jobID, instanceName, install=False)
+        AppController.lock(jobID, instanceName)
+        AppController.setStatus(jobID, 'Starting', instanceName)
+        AppController.setUpLog(jobID, instanceName)
+        AppController.start(jobID, instanceName)
+        AppController.unlock(jobID, instanceName)
+        AppController.setStatus(jobID, 'Running', instanceName)
 
 
 
@@ -241,5 +293,6 @@ paramList, instanceName, appName, version = x.getParams('testapp','app-seeddmsTN
 paramList = x.setParams(paramList)
 
 x.installApp(paramList, instanceName, appName, version)
-
+x.stopApp(instanceName)
+x.startApp(instanceName)
 
