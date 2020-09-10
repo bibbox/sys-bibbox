@@ -9,6 +9,8 @@ import traceback
 import logging
 import uuid
 from datetime import datetime
+import io
+import requests
 
 class AppController:
 
@@ -142,8 +144,81 @@ class AppController:
     """
     Section: Main functions
     """
+
     @staticmethod
-    def installApp(instanceName,appName,version):
+    def getParamsold(instanceName):
+        paramList = {}
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        with open(appPath + '.env') as f:
+            file_content = f.read()
+            words = file_content.split("\n")
+            for line in words[:-2]:
+                params = line.split('=')
+                param = params[0]
+                paramList[param] = []
+        with open(rootdir + '/application-instance/' + instanceName +'/params.json', 'w+') as outfile:        
+            json.dump(paramList, outfile)
+
+    @staticmethod
+    def readParams(instanceName):
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        with open(rootdir + '/application-instance/' + instanceName +'/params.json', 'w+') as json_file: 
+            data = json.load(json_file)
+            
+
+    @staticmethod
+    def getParams(instanceName, appName, version):
+        url = 'https://raw.githubusercontent.com/bibbox/' + appName + '/master/.env'
+        download = requests.get(url).content
+        data=download.decode('utf-8')
+        params = data.split('\n')
+        paramList = {}
+        for line in params:
+            params = line.split('=')
+            param = params[0]
+            if param == 'PORT' or param == '' or param == 'INSTANCE':
+                pass
+            else:
+                paramList[param] = []
+            
+        #paramList = json.dumps(paramList)
+        
+        return paramList, instanceName, appName, version
+
+    @staticmethod
+    def setParams(paramList):
+        #data = json.load(paramList)
+        for key in paramList:
+            paramList[key] = 'ww'
+
+        return paramList
+
+    @staticmethod
+    def writeCompose(jobID, paramList, instanceName):
+        logging.info(jobID + ' - ' + 'Write parameters to compose file')
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        compose = open(appPath + '/docker-compose-template.yml', 'r').read()
+        #compose = yaml.load(compose)
+        for key in paramList:
+            compose = compose.replace('§§' + key, paramList[key])
+        compose = compose.replace('§§INSTANCE', instanceName)
+        target = open(appPath + '/docker-compose-template.yml', 'w')
+        target.write(compose)
+        target.close()
+        
+    @staticmethod
+    def composeUp(jobID, instanceName):
+        logging.info(jobID + ' - ' + 'Docker compose up')
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        #subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose.yml', 'up', '-d '])
+        os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml up -d ')
+
+    @staticmethod
+    def installApp(paramList, instanceName, appName, version):
         jobID = AppController.createJobID()
         exists = AppController.checkExists(jobID, instanceName)
         AppController.createFolder(jobID, instanceName)
@@ -156,9 +231,17 @@ class AppController:
         AppController.setInfo(jobID, instanceName,appName,version)
         containerName = AppController.readContainername(jobID, instanceName)
         AppController.setProxyFiles(jobID, instanceName, containerName)
+        AppController.writeCompose(jobID, paramList, instanceName)
+        AppController.composeUp(jobID, instanceName)
 
+    
 
 
 
 x = AppController()
-x.installApp('testapp','app-seeddmsTNG','master')
+paramList, instanceName, appName, version = x.getParams('testapp','app-seeddmsTNG','master')
+paramList = x.setParams(paramList)
+
+x.installApp(paramList, instanceName, appName, version)
+
+
