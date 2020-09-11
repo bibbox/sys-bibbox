@@ -64,14 +64,6 @@ class AppController:
         except Exception:
             print(Exception)
 
-    @staticmethod
-    def checkLocked(jobID, instanceName):
-        logging.info(jobID + ' - ' + 'Ckeck if app is locked' )
-        rootdir = dirname(dirname(abspath(__file__)))
-        appPath = rootdir + '/application-instance'
-        if 'LOCK' in os.listdir(appPath + '/' + instanceName):
-            logging.exception( jobID + ' - The app you want to use is currently locked! Please try again later!')
-            raise Exception('The app you want to use is currently locked! Please try again later!')
 
     @staticmethod
     def setStatus(jobID, status, instanceName):
@@ -88,10 +80,18 @@ class AppController:
 
     @staticmethod
     def lock(jobID, instanceName):
-        logging.debug(jobID + ' - ' + 'Locking app: ' + instanceName )
+        logging.info(jobID + ' - ' + 'Ckeck if app is locked' )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
-        process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/LOCK'])
+        if 'LOCK' in os.listdir(appPath + '/' + instanceName):
+            with open(appPath + '/' + instanceName + '/LOCK') as lockfile:
+                lockID = lockfile.read()
+                if lockID != jobID:
+                    logging.exception( jobID + ' - The app you want to use is currently locked! Please try again later!')
+                    raise Exception('The app you want to use is currently locked! Please try again later!')
+
+        logging.debug(jobID + ' - ' + 'Locking app: ' + instanceName )
+        process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/LOCK'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output) )
@@ -101,7 +101,7 @@ class AppController:
         logging.debug(jobID + ' - ' + 'Unlocking app: ' + instanceName )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
-        process = subprocess.Popen(['rm' , appPath + '/' + instanceName + '/LOCK'])
+        process = subprocess.Popen(['rm' , appPath + '/' + instanceName + '/LOCK'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output) )
@@ -109,20 +109,21 @@ class AppController:
     @staticmethod
     def downloadApp(jobID, instanceName,appName,version):
         logging.info(jobID + ' - ' + 'Downloading app: ' + appName + '/' + instanceName + ' V:' + version)
-        try:
-            os.system('git clone -b ' + version +  ' https://github.com/bibbox/' + appName + '.git application-instance/' + instanceName + '/repo/')
-        except Exception:
-            logging.exception( jobID + ' - An error occurred during downloading!')
+        
+        process = subprocess.Popen(['git', 'clone','-b', version, 'https://github.com/bibbox/' + appName + '.git', 'application-instance/' + instanceName + '/repo/'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        if output:
+            logging.exception(jobID + str(output) )
     
     @staticmethod
     def setInfo(jobID, instanceName,appName,version):
         logging.info(jobID + ' - ' + 'Set install info')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
-        process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/INFO'])
+        process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/INFO'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output) )
+            logging.debug(jobID + str(output))
         text_file = open(appPath + '/' + instanceName + '/INFO', "w")
         text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
         text_file.close()
@@ -178,45 +179,59 @@ class AppController:
         logging.info(jobID + ' - ' + 'Docker compose up')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
-        #subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose.yml', 'up', '-d '])
-        os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml up -d ')
-        os.system('docker exec -it local_nginx service nginx reload')
+        process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'up', '-d'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output))
+        process = subprocess.Popen(['docker', 'exec', '-it', 'local_nginx', 'service', 'nginx', 'reload'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output))
 
     @staticmethod
     def stop(jobID, instanceName):
         logging.info(jobID + ' - ' + 'Stopping App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
-        #subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose.yml', 'up', '-d '])
-        os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml stop ')
+        process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'stop'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output))
+        #os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml stop ')
 
     @staticmethod
     def start(jobID, instanceName):
         logging.info(jobID + ' - ' + 'Starting App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
-        #subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose.yml', 'up', '-d '])
-        os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml start ')
+        process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'start'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output))
+        #os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml start ')
 
     @staticmethod
     def remove(jobID, instanceName):
         logging.info(jobID + ' - ' + 'Romoving App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
-        #subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose.yml', 'up', '-d '])
-        os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml down ')
-        process = subprocess.Popen(['chmod' , '777', rootdir + '/application-instance/' + instanceName])
+        #os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml down ')
+        process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'down'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output) )
-        process = subprocess.Popen(['sudo', 'rm' , '-R', rootdir + '/application-instance/' + instanceName])
+            logging.debug(jobID + str(output))
+        process = subprocess.Popen(['sudo', 'chmod' ,'-f', '-R', '777', rootdir + '/application-instance/' + instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output) )
-        process = subprocess.Popen(['rm' , rootdir + '/sys-proxy/proxyconfig/sites/' + instanceName + '.conf'])
+            logging.debug(jobID + str(output))
+        process = subprocess.Popen(['rm' , '-f', '-R', rootdir + '/application-instance/' + instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output) )
+            logging.debug(jobID + str(output))
+        process = subprocess.Popen(['rm' , '-f', rootdir + '/sys-proxy/proxyconfig/sites/' + instanceName + '.conf'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output))
 
     @staticmethod
     def status(jobID, instanceName):
@@ -227,14 +242,55 @@ class AppController:
             file_content = statusfile.read()
         return file_content
 
+    @staticmethod
+    def checkStatus(jobID, instanceName, statusList):
+        logging.info(jobID + ' - ' + 'Checking if operation is possible for current state of app: ' + instanceName)
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' + instanceName + '/'
+        with open(appPath + 'STATUS') as statusfile:
+            file_content = statusfile.read()
+        if file_content not in statusList:
+            logging.exception(jobID + ' - ' + 'Current app status does not allow operation on app: ' + instanceName)
+            raise Exception('Current app status does not allow your operation!')
 
+    @staticmethod
+    def copy(jobID, instanceName, newName):
+        logging.info(jobID + ' - ' + 'Copy App:' + instanceName)
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        process = subprocess.Popen(['sudo', 'cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output))
+
+    @staticmethod
+    def changeCompose(jobID, paramList, instanceName, newName):
+        logging.info(jobID + ' - ' + 'Write parameters to compose file')
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        compose = open(appPath + '/docker-compose-template.yml', 'r')#.read()
+        compose = yaml.load(compose)
+        services = compose['services']
+        for service in services:
+            name = services[service]['container_name']
+            newContainerName = name.replace(instanceName, newName)
+            services[service]['container_name'] = newContainerName
+        yaml.dump()
+
+        pass
+
+
+        
     """
     Section: Main functions
     """
 
     @staticmethod
     def getParams(instanceName, appName, version):
-        url = 'https://raw.githubusercontent.com/bibbox/' + appName + '/master/.env'
+        try:
+            url = 'https://raw.githubusercontent.com/bibbox/' + appName + '/master/.env'
+        except Exception:
+            raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
         download = requests.get(url).content
         data=download.decode('utf-8')
         params = data.split('\n')
@@ -266,7 +322,6 @@ class AppController:
         AppController.setUpLog(jobID, instanceName)
         AppController.setStatus(jobID, 'Prepare Install', instanceName)
         #exists = AppController.checkExists(jobID, instanceName)
-        AppController.checkLocked(jobID, instanceName)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Downloading', instanceName)
         AppController.downloadApp(jobID, instanceName,appName,version)
@@ -281,8 +336,10 @@ class AppController:
     
     @staticmethod
     def stopApp(instanceName):
+        statusList = ['Running']
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
+        AppController.checkStatus(jobID, instanceName, statusList)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Stopping', instanceName)
         AppController.setUpLog(jobID, instanceName)
@@ -292,8 +349,10 @@ class AppController:
 
     @staticmethod
     def startApp(instanceName):
+        statusList = ['Stopped']
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
+        AppController.checkStatus(jobID, instanceName, statusList)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Starting', instanceName)
         AppController.setUpLog(jobID, instanceName)
@@ -317,15 +376,24 @@ class AppController:
         AppController.setUpLog(jobID, instanceName)
         AppController.status(jobID, instanceName)
 
-
+    @staticmethod
+    def copyApp(instanceName, newName):
+        jobID = AppController.createJobID()
+        AppController.checkExists(jobID, instanceName, install=False)
+        AppController.lock(jobID, instanceName)
+        AppController.setUpLog(jobID, instanceName)
+        AppController.copy(jobID, instanceName, newName)
+        AppController.setUpLog(jobID, newName)
+        AppController.changeCompose(jobID, paramList, instanceName, newName)
+        AppController.unlock(jobID, instanceName)
 
 x = AppController()
 paramList, instanceName, appName, version = x.getParams('testapp','app-seeddmsTNG','master')
 paramList = x.setParams(paramList)
 
-x.installApp(paramList, instanceName, appName, version)
-status = x.getStatus(instanceName)
+#x.installApp(paramList, instanceName, appName, version)
+#status = x.getStatus(instanceName)
 #x.stopApp(instanceName)
 #x.startApp(instanceName)
 #x.removeApp(instanceName)
-
+x.copyApp('testapp', 'testappnew')
