@@ -190,6 +190,7 @@ class AppController:
         #subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose.yml', 'up', '-d '])
         os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml stop ')
 
+    @staticmethod
     def start(jobID, instanceName):
         logging.info(jobID + ' - ' + 'Starting App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
@@ -197,20 +198,34 @@ class AppController:
         #subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose.yml', 'up', '-d '])
         os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml start ')
 
+    @staticmethod
     def remove(jobID, instanceName):
         logging.info(jobID + ' - ' + 'Romoving App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         #subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose.yml', 'up', '-d '])
         os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml down ')
-        process = subprocess.Popen(['rm' , appPath + '/' + instanceName)
+        process = subprocess.Popen(['chmod' , '777', rootdir + '/application-instance/' + instanceName])
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output) )
-        process = subprocess.Popen(['rm' , rootdir + '/sys-proxy/proxyconfig/sites/' + instanceName + '.conf')
+        process = subprocess.Popen(['sudo', 'rm' , '-R', rootdir + '/application-instance/' + instanceName])
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output) )
+        process = subprocess.Popen(['rm' , rootdir + '/sys-proxy/proxyconfig/sites/' + instanceName + '.conf'])
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output) )
+
+    @staticmethod
+    def status(jobID, instanceName):
+        logging.info(jobID + ' - ' + 'Reading Status of App: ' + instanceName)
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' + instanceName + '/'
+        with open(appPath + 'STATUS') as statusfile:
+            file_content = statusfile.read()
+        return file_content
 
 
     """
@@ -286,6 +301,22 @@ class AppController:
         AppController.unlock(jobID, instanceName)
         AppController.setStatus(jobID, 'Running', instanceName)
 
+    @staticmethod
+    def removeApp(instanceName):
+        jobID = AppController.createJobID()
+        AppController.checkExists(jobID, instanceName, install=False)
+        AppController.lock(jobID, instanceName)
+        AppController.setStatus(jobID, 'Removing App', instanceName)
+        AppController.setUpLog(jobID, instanceName)
+        AppController.remove(jobID, instanceName)
+
+    @staticmethod
+    def getStatus(instanceName):
+        jobID = AppController.createJobID()
+        AppController.checkExists(jobID, instanceName, install=False)
+        AppController.setUpLog(jobID, instanceName)
+        AppController.status(jobID, instanceName)
+
 
 
 x = AppController()
@@ -293,6 +324,8 @@ paramList, instanceName, appName, version = x.getParams('testapp','app-seeddmsTN
 paramList = x.setParams(paramList)
 
 x.installApp(paramList, instanceName, appName, version)
-x.stopApp(instanceName)
-x.startApp(instanceName)
+status = x.getStatus(instanceName)
+#x.stopApp(instanceName)
+#x.startApp(instanceName)
+#x.removeApp(instanceName)
 
