@@ -270,7 +270,7 @@ class AppController:
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         newAppPath = rootdir + '/application-instance/' + newName + '/repo/'
-        compose = open(appPath + '/docker-compose-template.yml', 'r')#.read()
+        compose = open(appPath + '/docker-compose-template.yml', 'r')
         compose = yaml.load(compose)
         services = compose['services']
         for service in services:
@@ -345,7 +345,6 @@ class AppController:
         AppController.createFolder(jobID, instanceName)
         AppController.setUpLog(jobID, instanceName)
         AppController.setStatus(jobID, 'Prepare Install', instanceName)
-        #exists = AppController.checkExists(jobID, instanceName)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Downloading', instanceName)
         AppController.downloadApp(jobID, instanceName,appName,version)
@@ -414,13 +413,14 @@ class AppController:
         AppController.unlock(jobID, instanceName)
         AppController.setStatus(jobID, 'Running', instanceName)
 
+
 x = AppController()
 paramList, instanceName, appName, version = x.getParams('testapp','app-seeddmsTNG','master')
 paramList = x.setParams(paramList)
 
 #x.installApp(paramList, instanceName, appName, version)
 #status = x.getStatus(instanceName)
-#x.stopApp(instanceName)
+#x.stopApp(instanceName) 
 #x.startApp(instanceName)
 #x.removeApp(instanceName)
 x.copyApp('testapp', 'testappnew')
