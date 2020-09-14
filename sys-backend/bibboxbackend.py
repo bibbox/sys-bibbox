@@ -27,13 +27,60 @@ class AppController:
 
     @staticmethod
     def createJobID():
+        '''
+        Description:
+        -----------
+        Creates a unique JobID to be able to identify every single job.
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+        '''
+        
         jobID = str(uuid.uuid1())
         dateObj = datetime.now()
         datestring = str(dateObj.year) + '-' + str(dateObj.month) + '-' + str(dateObj.day) + '-' + str(dateObj.microsecond)
-        return jobID + datestring
+        jobID = jobID + datestring
+        return jobID
 
     @staticmethod
     def checkExists(jobID, instanceName, install):
+        '''
+        Description:
+        -----------
+        Checks if an app with the wanted name does already exist.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        install: bool
+            Is the method performed during Installation?
+            For installation, its necessary that the app does not exist, 
+            but for start, stop, coppy ... of an app it is important that the app already exists.
+
+        Raises:
+        -------
+        if install == True:
+                raise Exception('The app you want to install does already exist!')
+        if install == False:
+                raise Exception('The app you want to use does not exist!')
+
+        Returns:
+        -------
+        
+        '''
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if instanceName in os.listdir(appPath):
@@ -49,6 +96,27 @@ class AppController:
 
     @staticmethod
     def createFolder(JobID, instanceName):
+        '''
+        Description:
+        -----------
+        Creates destination folder for app repository.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+        
+
+        Returns:
+        -------
+        
+        '''
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         subprocess.Popen(['mkdir' , appPath + '/' + instanceName])
@@ -56,6 +124,27 @@ class AppController:
 
     @staticmethod
     def setUpLog(jobID, instanceName):
+        '''
+        Description:
+        -----------
+        Sets up initial log settings, such as format, file name etc.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+        
+
+        Returns:
+        -------
+        
+        '''
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         path = appPath + '/' + instanceName + '/'
@@ -68,6 +157,30 @@ class AppController:
 
     @staticmethod
     def setStatus(jobID, status, instanceName):
+        '''
+        Description:
+        -----------
+        Sets the current ststus of an app and writes it to a file calles STATUS.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        status: str
+            The wanted ststus that gets written to the STATUS file
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+        
+
+        Returns:
+        -------
+        
+        '''
         logging.info(jobID + ' - ' + 'Set status to ' + status )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
@@ -81,6 +194,28 @@ class AppController:
 
     @staticmethod
     def lock(jobID, instanceName):
+        '''
+        Description:
+        -----------
+        Creates a file named LOCK to lock an app, so that no one is able to perform other operations
+        on an app before the current operation is finished.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+        Exception('The app you want to use is currently locked! Please try again later!') if the wanted app is currently locked.
+
+        Returns:
+        -------
+        
+        '''
         logging.info(jobID + ' - ' + 'Ckeck if app is locked' )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
@@ -99,6 +234,27 @@ class AppController:
     
     @staticmethod
     def unlock(jobID, instanceName):
+        '''
+        Description:
+        -----------
+        Deletes a file named LOCK to lock an app, so that one is able to perform other operations
+        on an app after the current operation is finished.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         logging.debug(jobID + ' - ' + 'Unlocking app: ' + instanceName )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
@@ -109,6 +265,32 @@ class AppController:
 
     @staticmethod
     def downloadApp(jobID, instanceName,appName,version):
+        '''
+        Description:
+        -----------
+        Downloads the wanted app from Github before installation.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        appName : str
+            The (github) name of the application that is used 
+
+        version : str
+            The wanted version of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         logging.info(jobID + ' - ' + 'Downloading app: ' + appName + '/' + instanceName + ' V:' + version)
         
         process = subprocess.Popen(['git', 'clone','-b', version, 'https://github.com/bibbox/' + appName + '.git', 'application-instance/' + instanceName + '/repo/'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -118,6 +300,32 @@ class AppController:
     
     @staticmethod
     def setInfo(jobID, instanceName,appName,version):
+        '''
+        Description:
+        -----------
+        Creates a file named INFO where install information is stored.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        appName : str
+            The (github) name of the application that is used 
+
+        version : str
+            The wanted version of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         logging.info(jobID + ' - ' + 'Set install info')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
@@ -131,6 +339,30 @@ class AppController:
 
     @staticmethod
     def setProxyFiles(jobID, instanceName, containerName):
+        '''
+        Description:
+        -----------
+        Creates a proxy config file for the nginx web server to use the app container as sub url.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        containerName : str
+            The name of the container, that is runninng the application 
+
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         logging.info(jobID + ' - ' + 'Set proxy files')
         rootdir = dirname(dirname(abspath(__file__)))
         proxyPath = rootdir + '/sys-proxy/'
@@ -145,6 +377,27 @@ class AppController:
 
     @staticmethod
     def readContainername(jobID, instanceName):
+        '''
+        Description:
+        -----------
+        Reads the container name from the docker-compose-template.yml file.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        ContainerName: str
+            The name of the container, that is runninng the application
+        '''
         logging.info(jobID + ' - ' + 'Read Containername')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
@@ -163,6 +416,28 @@ class AppController:
 
     @staticmethod
     def writeCompose(jobID, paramList, instanceName):
+        '''
+        Description:
+        -----------
+        Changes the instance name of the docker-compose-template.yml file.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        paramList: array
+            list of environment variables that are defined in the .env file in the repository of the application
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        '''
         logging.info(jobID + ' - ' + 'Write parameters to compose file')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -177,6 +452,25 @@ class AppController:
         
     @staticmethod
     def composeUp(jobID, instanceName):
+        '''
+        Description:
+        -----------
+        Executes the doker-compose up command and starts the application
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        '''
         logging.info(jobID + ' - ' + 'Docker compose up')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -191,6 +485,25 @@ class AppController:
 
     @staticmethod
     def stop(jobID, instanceName):
+        '''
+        Description:
+        -----------
+        Executes the doker-compose stop command to stop the application
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        '''
         logging.info(jobID + ' - ' + 'Stopping App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -202,6 +515,25 @@ class AppController:
 
     @staticmethod
     def start(jobID, instanceName):
+        '''
+        Description:
+        -----------
+        Executes the doker-compose start command to start the application
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        '''
         logging.info(jobID + ' - ' + 'Starting App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -213,6 +545,25 @@ class AppController:
 
     @staticmethod
     def remove(jobID, instanceName):
+        '''
+        Description:
+        -----------
+        Executes the doker-compose down command to stop and remove the application
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        '''
         logging.info(jobID + ' - ' + 'Romoving App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -236,6 +587,27 @@ class AppController:
 
     @staticmethod
     def status(jobID, instanceName):
+        '''
+        Description:
+        -----------
+        Reads the file STATUS to get the currend state of an application
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        status: str
+            The current status of an application
+        '''
         logging.info(jobID + ' - ' + 'Reading Status of App: ' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/'
@@ -245,6 +617,30 @@ class AppController:
 
     @staticmethod
     def checkStatus(jobID, instanceName, statusList):
+        '''
+        Description:
+        -----------
+        Reads the file STATUS to get the currend state of an application and checks, if the status is allowed for the wanted operation.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        statusList: array
+            List of states, that allow a specific operation on an application
+        
+        Raises:
+        -------
+        raise Exception('Current app status does not allow your operation!') if the currend status is not in the statuslist
+
+        Returns:
+        -------
+        
+        '''
         logging.info(jobID + ' - ' + 'Checking if operation is possible for current state of app: ' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/'
@@ -256,6 +652,29 @@ class AppController:
 
     @staticmethod
     def copy(jobID, instanceName, newName):
+        '''
+        Description:
+        -----------
+        Copies the current app folder to the new app destination.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName: str
+            The instance name of the application that is used 
+
+        newName: str
+            New name of the copied application
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         logging.info(jobID + ' - ' + 'Copy App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -266,6 +685,32 @@ class AppController:
 
     @staticmethod
     def changeCompose(jobID, paramList, instanceName, newName):
+        '''
+        Description:
+        -----------
+        Reads the file STATUS to get the currend state of an application and checks, if the status is allowed for the wanted operation.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        paramList: array
+            list of environment variables that are defined in the .env file in the repository of the application
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        newName: str
+            new instance name name of copied application
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         logging.info(jobID + ' - ' + 'Write parameters to compose file')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
