@@ -785,6 +785,33 @@ class AppController:
     
     @staticmethod
     def installApp(paramList, instanceName, appName, version):
+        '''
+        Description:
+        -----------
+        Installs a new bibbox app with a specific unique name.
+
+        Parameters:
+        ----------
+
+        paramList: array
+            list of environment variables that are defined in the .env file in the repository of the application
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        appName : str
+            The (github) name of the application that is used 
+
+        version : str
+            The wanted version of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install = True)
         AppController.createFolder(jobID, instanceName)
@@ -804,6 +831,24 @@ class AppController:
     
     @staticmethod
     def stopApp(instanceName):
+        '''
+        Description:
+        -----------
+        Stops the wanted app.
+
+        Parameters:
+        ----------
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         statusList = ['Running']
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
@@ -817,6 +862,24 @@ class AppController:
 
     @staticmethod
     def startApp(instanceName):
+        '''
+        Description:
+        -----------
+        Starts the wanted app.
+
+        Parameters:
+        ----------
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         statusList = ['Stopped']
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
@@ -830,6 +893,24 @@ class AppController:
 
     @staticmethod
     def removeApp(instanceName):
+        '''
+        Description:
+        -----------
+        Removes the wanted app.
+
+        Parameters:
+        ----------
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
         AppController.lock(jobID, instanceName)
@@ -839,6 +920,24 @@ class AppController:
 
     @staticmethod
     def getStatus(instanceName):
+        '''
+        Description:
+        -----------
+        Returns status of a specific application.
+
+        Parameters:
+        ----------
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
         AppController.setUpLog(jobID, instanceName)
@@ -846,6 +945,27 @@ class AppController:
 
     @staticmethod
     def copyApp(instanceName, newName):
+        '''
+        Description:
+        -----------
+        Copies the wanted app with a new name.
+
+        Parameters:
+        ----------
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        newName : str
+            The new name of the application that is used 
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
         AppController.lock(jobID, instanceName)
