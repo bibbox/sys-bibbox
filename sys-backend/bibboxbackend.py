@@ -11,6 +11,7 @@ import uuid
 from datetime import datetime
 import io
 import requests
+import copy
 
 class AppController:
 
@@ -268,6 +269,7 @@ class AppController:
         logging.info(jobID + ' - ' + 'Write parameters to compose file')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        newAppPath = rootdir + '/application-instance/' + newName + '/repo/'
         compose = open(appPath + '/docker-compose-template.yml', 'r')#.read()
         compose = yaml.load(compose)
         services = compose['services']
@@ -275,9 +277,31 @@ class AppController:
             name = services[service]['container_name']
             newContainerName = name.replace(instanceName, newName)
             services[service]['container_name'] = newContainerName
-        yaml.dump()
+            try:
+                name = services[service]['links']
+                newContainerName = name[0].replace(instanceName, newName)
+                services[service]['links'] = [newContainerName]
+            except:
+                pass
+            try:
+                name = services[service]['depends_on']
+                newContainerName = name[0].replace(instanceName, newName)
+                services[service]['depends_on'] = [newContainerName]
+            except:
+                pass
 
-        pass
+        composenew = copy.deepcopy(compose)
+        for service in services:
+            newServiceName = service.replace(instanceName, newName)           
+            composenew['services'][newServiceName] = composenew['services'][service]
+            del composenew['services'][service]
+
+        composefile = yaml.dump(composenew)
+        os.system('sudo chmod -R 777 ' + newAppPath)
+        target = open(newAppPath + 'docker-compose-template.yml', 'w')
+        target.write(composefile)
+        target.close()
+        
 
 
         
@@ -386,6 +410,9 @@ class AppController:
         AppController.setUpLog(jobID, newName)
         AppController.changeCompose(jobID, paramList, instanceName, newName)
         AppController.unlock(jobID, instanceName)
+        AppController.composeUp(jobID, newName)
+        AppController.unlock(jobID, instanceName)
+        AppController.setStatus(jobID, 'Running', instanceName)
 
 x = AppController()
 paramList, instanceName, appName, version = x.getParams('testapp','app-seeddmsTNG','master')
