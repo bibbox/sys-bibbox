@@ -825,21 +825,21 @@ class AppController:
         
         '''
         jobID = AppController.createJobID()
-        #AppController.checkExists(jobID, instanceName, install = True)
+        AppController.checkExists(jobID, instanceName, install = True)
         AppController.createFolder(jobID, instanceName)
-        #AppController.setUpLog(jobID, instanceName)
-        #AppController.setStatus(jobID, 'Prepare Install', instanceName)
-        #AppController.lock(jobID, instanceName)
-        #AppController.setStatus(jobID, 'Downloading', instanceName)
+        AppController.setUpLog(jobID, instanceName)
+        AppController.setStatus(jobID, 'Prepare Install', instanceName)
+        AppController.lock(jobID, instanceName)
+        AppController.setStatus(jobID, 'Downloading', instanceName)
         AppController.downloadApp(jobID, instanceName,appName,version)
-        #AppController.setStatus(jobID, 'Installing', instanceName)
-        #AppController.setInfo(jobID, instanceName,appName,version)
+        AppController.setStatus(jobID, 'Installing', instanceName)
+        AppController.setInfo(jobID, instanceName,appName,version)
         containerName = AppController.readContainername(jobID, instanceName)
         AppController.setProxyFiles(jobID, instanceName, containerName)
         AppController.writeCompose(jobID, paramList, instanceName)
         AppController.composeUp(jobID, instanceName)
-        #AppController.unlock(jobID, instanceName)
-        #AppController.setStatus(jobID, 'Running', instanceName)
+        AppController.unlock(jobID, instanceName)
+        AppController.setStatus(jobID, 'Running', instanceName)
     
     @staticmethod
     def stopApp(instanceName):
