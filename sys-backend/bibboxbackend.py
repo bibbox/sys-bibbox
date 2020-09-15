@@ -73,8 +73,15 @@ class AppController:
         Raises:
         -------
         if install == True:
+
+            if exists == True
+
                 raise Exception('The app you want to install does already exist!')
+
         if install == False:
+
+            if exists == False:
+
                 raise Exception('The app you want to use does not exist!')
 
         Returns:
@@ -646,6 +653,11 @@ class AppController:
         appPath = rootdir + '/application-instance/' + instanceName + '/'
         with open(appPath + 'STATUS') as statusfile:
             file_content = statusfile.read()
+            #try:
+            #    file_content.replace('\n', '')
+            #except:
+            #    pass
+
         if file_content not in statusList:
             logging.exception(jobID + ' - ' + 'Current app status does not allow operation on app: ' + instanceName)
             raise Exception('Current app status does not allow your operation!')
@@ -778,7 +790,7 @@ class AppController:
     def setParams(paramList):
         #data = json.load(paramList)
         for key in paramList:
-            paramList[key] = 'ww'
+            paramList[key] = 'seeddms'
 
         return paramList
 
@@ -813,21 +825,21 @@ class AppController:
         
         '''
         jobID = AppController.createJobID()
-        AppController.checkExists(jobID, instanceName, install = True)
+        #AppController.checkExists(jobID, instanceName, install = True)
         AppController.createFolder(jobID, instanceName)
-        AppController.setUpLog(jobID, instanceName)
-        AppController.setStatus(jobID, 'Prepare Install', instanceName)
-        AppController.lock(jobID, instanceName)
-        AppController.setStatus(jobID, 'Downloading', instanceName)
+        #AppController.setUpLog(jobID, instanceName)
+        #AppController.setStatus(jobID, 'Prepare Install', instanceName)
+        #AppController.lock(jobID, instanceName)
+        #AppController.setStatus(jobID, 'Downloading', instanceName)
         AppController.downloadApp(jobID, instanceName,appName,version)
-        AppController.setStatus(jobID, 'Installing', instanceName)
-        AppController.setInfo(jobID, instanceName,appName,version)
+        #AppController.setStatus(jobID, 'Installing', instanceName)
+        #AppController.setInfo(jobID, instanceName,appName,version)
         containerName = AppController.readContainername(jobID, instanceName)
         AppController.setProxyFiles(jobID, instanceName, containerName)
         AppController.writeCompose(jobID, paramList, instanceName)
         AppController.composeUp(jobID, instanceName)
-        AppController.unlock(jobID, instanceName)
-        AppController.setStatus(jobID, 'Running', instanceName)
+        #AppController.unlock(jobID, instanceName)
+        #AppController.setStatus(jobID, 'Running', instanceName)
     
     @staticmethod
     def stopApp(instanceName):
@@ -975,17 +987,19 @@ class AppController:
         AppController.changeCompose(jobID, paramList, instanceName, newName)
         AppController.unlock(jobID, instanceName)
         AppController.composeUp(jobID, newName)
+        containerName = AppController.readContainername(jobID, newName)
+        AppController.setProxyFiles(jobID, newName, containerName)
         AppController.unlock(jobID, instanceName)
         AppController.setStatus(jobID, 'Running', instanceName)
 
 
 x = AppController()
-paramList, instanceName, appName, version = x.getParams('testapp','app-seeddmsTNG','master')
+paramList, instanceName, appName, version = x.getParams('seeddmsproxytest','app-seeddmsTNG','master')
 paramList = x.setParams(paramList)
 
-#x.installApp(paramList, instanceName, appName, version)
+x.installApp(paramList, instanceName, appName, version)
 #status = x.getStatus(instanceName)
 #x.stopApp(instanceName) 
 #x.startApp(instanceName)
 #x.removeApp(instanceName)
-x.copyApp('testapp', 'testappnew')
+#x.copyApp('testapp', 'testappnew')
