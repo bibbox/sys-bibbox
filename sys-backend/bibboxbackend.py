@@ -12,6 +12,8 @@ from datetime import datetime
 import io
 import requests
 import copy
+from os import path
+from subprocess import check_output
 
 class AppController:
 
@@ -90,6 +92,8 @@ class AppController:
         '''
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
+        if path.exists(appPath) == False:
+            raise Exception('The application instance path does not exist')
         if instanceName in os.listdir(appPath):
             exists = True
         else:
@@ -191,13 +195,18 @@ class AppController:
         logging.info(jobID + ' - ' + 'Set status to ' + status )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
         process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/STATUS'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output) )
-        text_file = open(appPath + '/' + instanceName + '/STATUS', "w")
-        text_file.write(status)
-        text_file.close()
+            logging.debug(jobID + str(output))
+        try:
+            text_file = open(appPath + '/' + instanceName + '/STATUS', "w")
+            text_file.write(status)
+            text_file.close()
+        except Exception:
+            logging.exception('Fatal error in writing to STATUS file: ', exc_info=True)
 
     @staticmethod
     def lock(jobID, instanceName):
@@ -226,6 +235,8 @@ class AppController:
         logging.info(jobID + ' - ' + 'Ckeck if app is locked' )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
         if 'LOCK' in os.listdir(appPath + '/' + instanceName):
             with open(appPath + '/' + instanceName + '/LOCK') as lockfile:
                 lockID = lockfile.read()
@@ -265,6 +276,8 @@ class AppController:
         logging.debug(jobID + ' - ' + 'Unlocking app: ' + instanceName )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
         process = subprocess.Popen(['rm' , appPath + '/' + instanceName + '/LOCK'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
@@ -336,13 +349,18 @@ class AppController:
         logging.info(jobID + ' - ' + 'Set install info')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
         process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/INFO'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output))
-        text_file = open(appPath + '/' + instanceName + '/INFO', "w")
-        text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
-        text_file.close()
+        try:
+            text_file = open(appPath + '/' + instanceName + '/INFO', "w")
+            text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
+            text_file.close()
+        except Exception:
+            logging.exception('Fatal error in writing to INFO file: ', exc_info=True)
 
     @staticmethod
     def setProxyFiles(jobID, instanceName, containerName):
@@ -373,15 +391,20 @@ class AppController:
         logging.info(jobID + ' - ' + 'Set proxy files')
         rootdir = dirname(dirname(abspath(__file__)))
         proxyPath = rootdir + '/sys-proxy/'
+        if path.exists(proxyPath) == False:
+            logging.debug(jobID + ' - The folder "sys-proxy" does not exist!')
         name = instanceName + '.conf'
-        with open(proxyPath + 'template.conf') as template:
-            file_content = template.read()
-            file_content = file_content.replace("§§INSTANCEID", instanceName + '/')
-            file_content = file_content.replace("§§CONTAINERNAME", containerName + '/')
-            template = open( proxyPath + 'proxyconfig/sites/' + name, 'w+')
-            template.write(file_content)
-            template.close()
-
+        try:
+            with open(proxyPath + 'template.conf') as template:
+                file_content = template.read()
+                file_content = file_content.replace("§§INSTANCEID", instanceName + '/')
+                file_content = file_content.replace("§§CONTAINERNAME", containerName + '/')
+                template = open( proxyPath + 'proxyconfig/sites/' + name, 'w+')
+                template.write(file_content)
+                template.close()
+        except Exception:
+            logging.exception('Fatal error in writing to proxy template file: ', exc_info=True)
+        
     @staticmethod
     def readContainername(jobID, instanceName):
         '''
@@ -408,16 +431,24 @@ class AppController:
         logging.info(jobID + ' - ' + 'Read Containername')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
         composefile = open(appPath + '/' + instanceName +'/repo/docker-compose-template.yml', 'r').read()
-        data = yaml.load(composefile)
-        for k, v in data["services"].items():
-            if 'container_name' in v:
-                ContainerName = v.get('container_name')
-                ContainerName = ContainerName.replace('§§INSTANCE', instanceName)
-                try:
-                    ContainerName = ContainerName.replace('-db', '')
-                except:
-                    pass
+        try:
+            data = yaml.load(composefile)
+        except Exception:
+            logging.exception('Fatal error in loading compose file: ', exc_info=True)
+        try:
+            for k, v in data["services"].items():
+                if 'container_name' in v:
+                    ContainerName = v.get('container_name')
+                    ContainerName = ContainerName.replace('§§INSTANCE', instanceName)
+                    try:
+                        ContainerName = ContainerName.replace('-db', '')
+                    except:
+                        pass
+        except Exception:
+            logging.exception('Fatal error in reading compose file: ', exc_info=True)
 
         return ContainerName
 
@@ -448,17 +479,25 @@ class AppController:
         logging.info(jobID + ' - ' + 'Write parameters to compose file')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
-        compose = open(appPath + '/docker-compose-template.yml', 'r').read()
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
+        try:
+            compose = open(appPath + '/docker-compose-template.yml', 'r').read()
+        except Exception:
+            logging.exception('Fatal error in reading compose file: ', exc_info=True)
+
         #compose = yaml.load(compose)
         for key in paramList:
             compose = compose.replace('§§' + key, paramList[key])
-        compose = compose.replace('§§INSTANCE', instanceName)
-        target = open(appPath + '/docker-compose-template.yml', 'w')
-        target.write(compose)
-        target.close()
-        
+        try:
+            compose = compose.replace('§§INSTANCE', instanceName)
+            target = open(appPath + '/docker-compose-template.yml', 'w')
+            target.write(compose)
+            target.close()
+        except Exception:
+            logging.exception('Fatal error in writing to compose file: ', exc_info=True)
     @staticmethod
-    def composeUp(jobID, instanceName):
+    def composeUp(jobID, instanceName, containerName):
         '''
         Description:
         -----------
@@ -481,11 +520,17 @@ class AppController:
         logging.info(jobID + ' - ' + 'Docker compose up')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
-        process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'up', '-d'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder of the app repository does not exist!')
+        process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'up', '-d'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output))
         process = subprocess.Popen(['docker', 'exec', '-it', 'local_nginx', 'service', 'nginx', 'reload'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        if output:
+            logging.debug(jobID + str(output))
+        process = subprocess.Popen(['docker', 'logs', containerName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output))
@@ -514,6 +559,8 @@ class AppController:
         logging.info(jobID + ' - ' + 'Stopping App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder of the app repository does not exist!')
         process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'stop'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
@@ -544,6 +591,8 @@ class AppController:
         logging.info(jobID + ' - ' + 'Starting App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder of the app repository does not exist!')
         process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'start'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
@@ -574,6 +623,8 @@ class AppController:
         logging.info(jobID + ' - ' + 'Romoving App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder of the app repository does not exist!')
         #os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml down ')
         process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'down'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
@@ -618,6 +669,8 @@ class AppController:
         logging.info(jobID + ' - ' + 'Reading Status of App: ' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder of the app repository does not exist!')
         with open(appPath + 'STATUS') as statusfile:
             file_content = statusfile.read()
         return file_content
@@ -651,6 +704,8 @@ class AppController:
         logging.info(jobID + ' - ' + 'Checking if operation is possible for current state of app: ' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder of the app repository does not exist!')
         with open(appPath + 'STATUS') as statusfile:
             file_content = statusfile.read()
             #try:
@@ -690,6 +745,8 @@ class AppController:
         logging.info(jobID + ' - ' + 'Copy App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder of the app repository does not exist!')
         process = subprocess.Popen(['sudo', 'cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
@@ -726,38 +783,53 @@ class AppController:
         logging.info(jobID + ' - ' + 'Write parameters to compose file')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder of the app repository does not exist!')
         newAppPath = rootdir + '/application-instance/' + newName + '/repo/'
         compose = open(appPath + '/docker-compose-template.yml', 'r')
-        compose = yaml.load(compose)
-        services = compose['services']
-        for service in services:
-            name = services[service]['container_name']
-            newContainerName = name.replace(instanceName, newName)
-            services[service]['container_name'] = newContainerName
-            try:
-                name = services[service]['links']
-                newContainerName = name[0].replace(instanceName, newName)
-                services[service]['links'] = [newContainerName]
-            except:
-                pass
-            try:
-                name = services[service]['depends_on']
-                newContainerName = name[0].replace(instanceName, newName)
-                services[service]['depends_on'] = [newContainerName]
-            except:
-                pass
-
-        composenew = copy.deepcopy(compose)
-        for service in services:
-            newServiceName = service.replace(instanceName, newName)           
-            composenew['services'][newServiceName] = composenew['services'][service]
-            del composenew['services'][service]
-
-        composefile = yaml.dump(composenew)
-        os.system('sudo chmod -R 777 ' + newAppPath)
-        target = open(newAppPath + 'docker-compose-template.yml', 'w')
-        target.write(composefile)
-        target.close()
+        try:
+            compose = yaml.load(compose)
+            services = compose['services']
+        except Exception:
+            logging.exception('Fatal error in reading compose file: ', exc_info=True)
+        try:
+            for service in services:
+                name = services[service]['container_name']
+                newContainerName = name.replace(instanceName, newName)
+                services[service]['container_name'] = newContainerName
+                try:
+                    name = services[service]['links']
+                    newContainerName = name[0].replace(instanceName, newName)
+                    services[service]['links'] = [newContainerName]
+                except:
+                    pass
+                try:
+                    name = services[service]['depends_on']
+                    newContainerName = name[0].replace(instanceName, newName)
+                    services[service]['depends_on'] = [newContainerName]
+                except:
+                    pass
+        except Exception:
+            logging.exception('Fatal error in reading compose file: ', exc_info=True)
+        try:    
+            composenew = copy.deepcopy(compose)
+        except Exception:
+            logging.exception('Fatal error while copying compose file: ', exc_info=True)
+        try:
+            for service in services:
+                newServiceName = service.replace(instanceName, newName)           
+                composenew['services'][newServiceName] = composenew['services'][service]
+                del composenew['services'][service]
+        except Exception:
+            logging.exception('Fatal error while writing to compose file: ', exc_info=True)
+        try:
+            composefile = yaml.dump(composenew)
+            os.system('sudo chmod -R 777 ' + newAppPath)
+            target = open(newAppPath + 'docker-compose-template.yml', 'w')
+            target.write(composefile)
+            target.close()
+        except Exception:
+            logging.exception('Fatal error while writing to compose file: ', exc_info=True)
         
 
 
@@ -837,7 +909,7 @@ class AppController:
         containerName = AppController.readContainername(jobID, instanceName)
         AppController.setProxyFiles(jobID, instanceName, containerName)
         AppController.writeCompose(jobID, paramList, instanceName)
-        AppController.composeUp(jobID, instanceName)
+        AppController.composeUp(jobID, instanceName, containerName)
         AppController.unlock(jobID, instanceName)
         AppController.setStatus(jobID, 'Running', instanceName)
     
