@@ -355,16 +355,68 @@ class AppController:
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
             logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
-        process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/INFO'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        output, error = process.communicate()
-        if output:
-            logging.debug(jobID + str(output))
-        try:
-            text_file = open(appPath + '/' + instanceName + '/INFO', "w")
-            text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
-            text_file.close()
-        except Exception:
-            logging.exception('Fatal error in writing to INFO file: ', exc_info=True)
+        #try:
+        #    text_file = open(appPath + '/' + instanceName + '/INFO.json', "w")
+        #    text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
+        #    text_file.close()
+        #except Exception:
+        #    logging.exception('Fatal error in writing to INFO file: ', exc_info=True)
+
+        data = {}
+        data['instanceName'] = instanceName
+        data['appName'] = appName
+        data['version'] = version
+        data['jobID'] = jobID
+
+        with open(appPath + '/' + instanceName + '/info.json', 'w+') as outfile:
+            json.dump(data, outfile)
+
+    @staticmethod
+    def changeInfo(jobID, instanceName, newName):
+        '''
+        Description:
+        -----------
+        Creates a file named INFO where install information is stored.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        appName : str
+            The (github) name of the application that is used 
+
+        version : str
+            The wanted version of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
+        logging.info(jobID + ' - ' + 'Set install info')
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance'
+        if path.exists(appPath) == False:
+            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
+        #try:
+        #    text_file = open(appPath + '/' + instanceName + '/INFO.json', "w")
+        #    text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
+        #    text_file.close()
+        #except Exception:
+        #    logging.exception('Fatal error in writing to INFO file: ', exc_info=True)
+
+        with open(appPath + '/' + instanceName + '/info.json') as outfile:
+            data = json.load(outfile)
+            data['instanceName'] = newName
+            data['jobID'] = jobID
+        with open(appPath + '/' + newName + '/info.json', 'w+') as outfile:
+            json.dump(data, outfile)
 
     @staticmethod
     def setProxyFiles(jobID, instanceName, containerName):
@@ -759,7 +811,9 @@ class AppController:
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
             logging.debug(jobID + ' - The folder of the app repository does not exist!')
-        process = subprocess.Popen(['sudo', 'cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        #process = subprocess.Popen(['sudo', 'cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(['cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output))
@@ -885,7 +939,42 @@ class AppController:
         appsList = json.dumps(apps)
         return appsList
         
-        
+
+
+    @staticmethod
+    def getInstalledApps():
+        '''
+        Description:
+        -----------
+        Lists the available Apps.
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        appslist: json object
+            The list of all installed apps as json object
+        '''
+
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' 
+        installedApps = {}
+        for i, folder in enumerate(os.listdir(appPath)):
+            with open(appPath + '/' + folder + '/info.json') as infofile:
+                data = json.load(infofile)
+                instanceName = data['instanceName']
+                appName = data['appName']
+                
+                installedApps[instanceName] = appName
+        installedAppsList = json.dumps(installedApps)
+        return installedAppsList
+
+
+
     """
     Section: Main functions
     """
@@ -1114,6 +1203,7 @@ class AppController:
         AppController.unlock(jobID, instanceName)
         containerName = AppController.readContainername(jobID, newName)
         AppController.setProxyFiles(jobID, newName, containerName)
+        AppController.changeInfo(jobID, instanceName, newName)
         AppController.composeUp(jobID, newName, containerName)
         AppController.unlock(jobID, instanceName)
         AppController.setStatus(jobID, 'Running', instanceName)
@@ -1141,15 +1231,40 @@ class AppController:
         appsList = AppController.readAppStore()
         return appsList
 
+    @staticmethod
+    def listInstalledApps():
+
+        '''
+        Description:
+        -----------
+        Lists all installed Apps.
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        appslist: json object
+            The list of all available apps as json object
+        '''
+        
+        installedAppsList = AppController.getInstalledApps()
+        return installedAppsList
+
+
+
 x = AppController()
 paramList, instanceName, appName, version = x.getParams('seeddmsproxytest','app-seeddmsTNG','master')
 paramList = x.setParams(paramList)
 
-x.installApp(paramList, instanceName, appName, version)
+#x.installApp(paramList, instanceName, appName, version)
 #status = x.getStatus(instanceName)
 #x.stopApp(instanceName) 
 #x.startApp(instanceName)
 #x.removeApp(instanceName)
-x.copyApp('seeddmsproxytest', 'testappnew')
-appsList = x.listApps()
+#x.copyApp('seeddmsproxytest', 'testappnew')
+appsList = x.listInstalledApps()
 pass
