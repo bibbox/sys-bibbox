@@ -14,6 +14,7 @@ import requests
 import copy
 from os import path
 from subprocess import check_output
+import simplejson
 
 class AppController:
 
@@ -238,11 +239,14 @@ class AppController:
         if path.exists(appPath) == False:
             logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
         if 'LOCK' in os.listdir(appPath + '/' + instanceName):
-            with open(appPath + '/' + instanceName + '/LOCK') as lockfile:
-                lockID = lockfile.read()
-                if lockID != jobID:
-                    logging.exception( jobID + ' - The app you want to use is currently locked! Please try again later!')
-                    raise Exception('The app you want to use is currently locked! Please try again later!')
+            try:
+                with open(appPath + '/' + instanceName + '/LOCK') as lockfile:
+                    lockID = lockfile.read()
+                    if lockID != jobID:
+                        logging.exception( jobID + ' - The app you want to use is currently locked! Please try again later!')
+                        raise Exception('The app you want to use is currently locked! Please try again later!')
+            except Exception:
+                logging.exception('Fatal error in writing to LOCK file: ', exc_info=True)
 
         logging.debug(jobID + ' - ' + 'Locking app: ' + instanceName )
         process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/LOCK'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -487,8 +491,11 @@ class AppController:
             logging.exception('Fatal error in reading compose file: ', exc_info=True)
 
         #compose = yaml.load(compose)
-        for key in paramList:
-            compose = compose.replace('§§' + key, paramList[key])
+        try:
+            for key in paramList:
+                compose = compose.replace('§§' + key, paramList[key])
+        except Exception:
+            logging.exception('Fatal error in writing to compose file: ', exc_info=True)
         try:
             compose = compose.replace('§§INSTANCE', instanceName)
             target = open(appPath + '/docker-compose-template.yml', 'w')
@@ -526,7 +533,7 @@ class AppController:
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output))
-        process = subprocess.Popen(['docker', 'exec', '-it', 'local_nginx', 'service', 'nginx', 'reload'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(['docker', 'exec', '-it', 'local_nginx', 'service', 'nginx', 'reload'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output))
@@ -561,7 +568,7 @@ class AppController:
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
             logging.debug(jobID + ' - The folder of the app repository does not exist!')
-        process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'stop'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'stop'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output))
@@ -593,7 +600,7 @@ class AppController:
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
             logging.debug(jobID + ' - The folder of the app repository does not exist!')
-        process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'start'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'start'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output))
@@ -626,19 +633,19 @@ class AppController:
         if path.exists(appPath) == False:
             logging.debug(jobID + ' - The folder of the app repository does not exist!')
         #os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml down ')
-        process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'down'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'down'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output))
-        process = subprocess.Popen(['sudo', 'chmod' ,'-f', '-R', '777', rootdir + '/application-instance/' + instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(['sudo', 'chmod' ,'-f', '-R', '777', rootdir + '/application-instance/' + instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output))
-        process = subprocess.Popen(['rm' , '-f', '-R', rootdir + '/application-instance/' + instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(['rm' , '-f', '-R', rootdir + '/application-instance/' + instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output))
-        process = subprocess.Popen(['rm' , '-f', rootdir + '/sys-proxy/proxyconfig/sites/' + instanceName + '.conf'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(['rm' , '-f', rootdir + '/sys-proxy/proxyconfig/sites/' + instanceName + '.conf'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
             logging.debug(jobID + str(output))
@@ -671,8 +678,11 @@ class AppController:
         appPath = rootdir + '/application-instance/' + instanceName + '/'
         if path.exists(appPath) == False:
             logging.debug(jobID + ' - The folder of the app repository does not exist!')
-        with open(appPath + 'STATUS') as statusfile:
-            file_content = statusfile.read()
+        try:
+            with open(appPath + 'STATUS') as statusfile:
+                file_content = statusfile.read()
+        except Exception:
+            logging.exception('Could not open STATUS file: ', exc_info=True)
         return file_content
 
     @staticmethod
@@ -706,13 +716,15 @@ class AppController:
         appPath = rootdir + '/application-instance/' + instanceName + '/'
         if path.exists(appPath) == False:
             logging.debug(jobID + ' - The folder of the app repository does not exist!')
-        with open(appPath + 'STATUS') as statusfile:
-            file_content = statusfile.read()
-            #try:
-            #    file_content.replace('\n', '')
-            #except:
-            #    pass
-
+        try:
+            with open(appPath + 'STATUS') as statusfile:
+                file_content = statusfile.read()
+                #try:
+                #    file_content.replace('\n', '')
+                #except:
+                #    pass
+        except Exception:
+            logging.exception('Could not open STATUS file: ', exc_info=True)
         if file_content not in statusList:
             logging.exception(jobID + ' - ' + 'Current app status does not allow operation on app: ' + instanceName)
             raise Exception('Current app status does not allow your operation!')
@@ -786,7 +798,10 @@ class AppController:
         if path.exists(appPath) == False:
             logging.debug(jobID + ' - The folder of the app repository does not exist!')
         newAppPath = rootdir + '/application-instance/' + newName + '/repo/'
-        compose = open(appPath + '/docker-compose-template.yml', 'r')
+        try:
+            compose = open(appPath + '/docker-compose-template.yml', 'r')
+        except Exception:
+            logging.exception('Fatal error in reading compose file: ', exc_info=True)
         try:
             compose = yaml.load(compose)
             services = compose['services']
@@ -830,9 +845,46 @@ class AppController:
             target.close()
         except Exception:
             logging.exception('Fatal error while writing to compose file: ', exc_info=True)
+
+    @staticmethod
+    def readAppStore():
+        '''
+        Description:
+        -----------
+        Lists the available Apps.
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        appslist: json object
+            The list of all available apps as json object
+        '''
+
+        try:
+            url = 'https://raw.githubusercontent.com/bibbox/application-store/master/applications.json'
+        except Exception:
+            raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
+        download = requests.get(url).content
+        try:
+            params = simplejson.loads(download)
+        except Exception:
+            logging.exception('Error while loading applications.json file: ', exc_info=True)
+        apps=[]
+        gitNames=[]
+        for i, values in enumerate(params):
+            try:
+                apps.append(values['name'])
+                gitNames.append(values['github_name'])
+            except Exception:
+                logging.exception('Error while reading applications.json file: ', exc_info=True)
+        appsList = json.dumps(apps)
+        return appsList
         
-
-
         
     """
     Section: Main functions
@@ -899,8 +951,8 @@ class AppController:
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install = True)
         AppController.createFolder(jobID, instanceName)
-        AppController.setUpLog(jobID, instanceName)
         AppController.setStatus(jobID, 'Prepare Install', instanceName)
+        AppController.setUpLog(jobID, instanceName)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Downloading', instanceName)
         AppController.downloadApp(jobID, instanceName,appName,version)
@@ -943,6 +995,8 @@ class AppController:
         AppController.stop(jobID, instanceName)
         AppController.unlock(jobID, instanceName)
         AppController.setStatus(jobID, 'Stopped', instanceName)
+
+
 
     @staticmethod
     def startApp(instanceName):
@@ -1058,12 +1112,34 @@ class AppController:
         AppController.setUpLog(jobID, newName)
         AppController.changeCompose(jobID, paramList, instanceName, newName)
         AppController.unlock(jobID, instanceName)
-        AppController.composeUp(jobID, newName)
         containerName = AppController.readContainername(jobID, newName)
         AppController.setProxyFiles(jobID, newName, containerName)
+        AppController.composeUp(jobID, newName, containerName)
         AppController.unlock(jobID, instanceName)
         AppController.setStatus(jobID, 'Running', instanceName)
 
+        
+    @staticmethod
+    def listApps():
+
+        '''
+        Description:
+        -----------
+        Lists the available Apps.
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        appslist: json object
+            The list of all available apps as json object
+        '''
+        appsList = AppController.readAppStore()
+        return appsList
 
 x = AppController()
 paramList, instanceName, appName, version = x.getParams('seeddmsproxytest','app-seeddmsTNG','master')
@@ -1074,4 +1150,6 @@ x.installApp(paramList, instanceName, appName, version)
 #x.stopApp(instanceName) 
 #x.startApp(instanceName)
 #x.removeApp(instanceName)
-#x.copyApp('testapp', 'testappnew')
+x.copyApp('seeddmsproxytest', 'testappnew')
+appsList = x.listApps()
+pass
