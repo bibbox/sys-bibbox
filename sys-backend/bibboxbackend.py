@@ -40,7 +40,7 @@ class AppController:
 
         Raises:
         -------
-
+        
         Returns:
         -------
         Job ID : str
@@ -135,6 +135,22 @@ class AppController:
         subprocess.Popen(['touch' , appPath + '/' + instanceName + '/app.log'])
 
     @staticmethod
+    def setup_logger(jobID, loggerName, log_file, level=logging.DEBUG):
+        formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s %(name)s')
+        #extra = {'Job_ID':jobID}
+        handler = logging.FileHandler(log_file)        
+        handler.setFormatter(formatter)
+
+        logger = logging.getLogger(loggerName)
+        for handler in logger.handlers[:]:
+            logger.removeHandler(handler)
+        logger.setLevel(level)
+        logger.addHandler(handler)
+        #logger = logging.LoggerAdapter(logger, extra)
+
+        return logger
+    
+    @staticmethod
     def setUpLog(jobID, instanceName):
         '''
         Description:
@@ -160,12 +176,18 @@ class AppController:
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         path = appPath + '/' + instanceName + '/'
-        try:
-            logging.basicConfig(filename= path + 'app.log', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
-            
-        except Exception:
-            print(Exception)
 
+        app_logger = AppController.setup_logger(jobID, instanceName + 'app', path + 'app.log', level=logging.DEBUG)
+        bibbox_logger = AppController.setup_logger(jobID, instanceName + 'bibbox', rootdir + '/system.log', level=logging.DEBUG)
+        docker_logger = AppController.setup_logger(jobID, instanceName + 'docker', path + 'docker.log', level=logging.DEBUG)
+
+        #try:
+        #    logging.basicConfig(filename= path + 'app.log', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
+        #    
+        #except Exception:
+        #    print(Exception)
+
+        return app_logger, bibbox_logger, docker_logger
 
     @staticmethod
     def setStatus(jobID, status, instanceName):
@@ -193,21 +215,23 @@ class AppController:
         -------
         
         '''
-        logging.info(jobID + ' - ' + 'Set status to ' + status )
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
+        app_logger.info('Set status to ' + status )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
+            app_logger.debug(jobID + ' - The folder "/application-instance" does not exist!')
         process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/STATUS'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output))
+            app_logger.debug(jobID + str(output))
         try:
             text_file = open(appPath + '/' + instanceName + '/STATUS', "w")
             text_file.write(status)
             text_file.close()
         except Exception:
-            logging.exception('Fatal error in writing to STATUS file: ', exc_info=True)
+            app_logger.exception('Fatal error in writing to STATUS file: ', exc_info=True)
 
     @staticmethod
     def lock(jobID, instanceName):
@@ -233,6 +257,8 @@ class AppController:
         -------
         
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Ckeck if app is locked' )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
@@ -277,6 +303,7 @@ class AppController:
         -------
         
         '''
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.debug(jobID + ' - ' + 'Unlocking app: ' + instanceName )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
@@ -315,6 +342,8 @@ class AppController:
         -------
         
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Downloading app: ' + appName + '/' + instanceName + ' V:' + version)
         
         process = subprocess.Popen(['git', 'clone','-b', version, 'https://github.com/bibbox/' + appName + '.git', 'application-instance/' + instanceName + '/repo/'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -350,6 +379,8 @@ class AppController:
         -------
         
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Set install info')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
@@ -399,6 +430,8 @@ class AppController:
         -------
         
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Set install info')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
@@ -444,6 +477,8 @@ class AppController:
         -------
         
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Set proxy files')
         rootdir = dirname(dirname(abspath(__file__)))
         proxyPath = rootdir + '/sys-proxy/'
@@ -484,6 +519,8 @@ class AppController:
         ContainerName: str
             The name of the container, that is runninng the application
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Read Containername')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
@@ -491,7 +528,7 @@ class AppController:
             logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
         composefile = open(appPath + '/' + instanceName +'/repo/docker-compose-template.yml', 'r').read()
         try:
-            data = yaml.load(composefile)
+            data = yaml.load(composefile, Loader=yaml.FullLoader)
         except Exception:
             logging.exception('Fatal error in loading compose file: ', exc_info=True)
         try:
@@ -532,6 +569,8 @@ class AppController:
         Returns:
         -------
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Write parameters to compose file')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -576,6 +615,8 @@ class AppController:
         Returns:
         -------
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Docker compose up')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -615,6 +656,8 @@ class AppController:
         Returns:
         -------
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Stopping App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -647,6 +690,8 @@ class AppController:
         Returns:
         -------
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Starting App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -679,6 +724,8 @@ class AppController:
         Returns:
         -------
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Romoving App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -725,6 +772,8 @@ class AppController:
         status: str
             The current status of an application
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Reading Status of App: ' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/'
@@ -763,6 +812,8 @@ class AppController:
         -------
         
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Checking if operation is possible for current state of app: ' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/'
@@ -806,6 +857,8 @@ class AppController:
         -------
         
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Copy App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -846,6 +899,8 @@ class AppController:
         -------
         
         '''
+
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         logging.info(jobID + ' - ' + 'Write parameters to compose file')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
@@ -919,6 +974,7 @@ class AppController:
             The list of all available apps as json object
         '''
 
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         try:
             url = 'https://raw.githubusercontent.com/bibbox/application-store/master/applications.json'
         except Exception:
@@ -960,6 +1016,7 @@ class AppController:
             The list of all installed apps as json object
         '''
 
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' 
         installedApps = {}
@@ -1074,10 +1131,10 @@ class AppController:
         -------
         
         '''
-        statusList = ['Running']
+        #statusList = ['Running']
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
-        AppController.checkStatus(jobID, instanceName, statusList)
+        #AppController.checkStatus(jobID, instanceName, statusList)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Stopping', instanceName)
         AppController.setUpLog(jobID, instanceName)
@@ -1107,10 +1164,10 @@ class AppController:
         -------
         
         '''
-        statusList = ['Stopped']
+        #statusList = ['Stopped']
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
-        AppController.checkStatus(jobID, instanceName, statusList)
+        #AppController.checkStatus(jobID, instanceName, statusList)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Starting', instanceName)
         AppController.setUpLog(jobID, instanceName)
@@ -1257,14 +1314,14 @@ class AppController:
 
 
 x = AppController()
-paramList, instanceName, appName, version = x.getParams('seeddmsproxytest','app-seeddmsTNG','master')
+paramList, instanceName, appName, version = x.getParams('test7','app-seeddmsTNG','master')
 paramList = x.setParams(paramList)
 
-#x.installApp(paramList, instanceName, appName, version)
+x.installApp(paramList, instanceName, appName, version)
 #status = x.getStatus(instanceName)
 #x.stopApp(instanceName) 
 #x.startApp(instanceName)
 #x.removeApp(instanceName)
 #x.copyApp('seeddmsproxytest', 'testappnew')
-appsList = x.listInstalledApps()
-pass
+#appsList = x.listInstalledApps()
+#pass
