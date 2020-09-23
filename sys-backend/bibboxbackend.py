@@ -93,6 +93,8 @@ class AppController:
         '''
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
+        bibbox_logger = AppController.setUpLog(jobID, instanceName, systemonly=True)
+        bibbox_logger.info('Check if app folder exists')
         if path.exists(appPath) == False:
             raise Exception('The application instance path does not exist')
         if instanceName in os.listdir(appPath):
@@ -136,9 +138,9 @@ class AppController:
 
     @staticmethod
     def setup_logger(jobID, loggerName, log_file, level=logging.DEBUG):
-        formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s %(name)s')
+        formatter = logging.Formatter(jobID + '%(asctime)s - %(levelname)s - %(name)s - %(message)s')
         #extra = {'Job_ID':jobID}
-        handler = logging.FileHandler(log_file)        
+        handler = logging.FileHandler(log_file)
         handler.setFormatter(formatter)
 
         logger = logging.getLogger(loggerName)
@@ -151,7 +153,7 @@ class AppController:
         return logger
     
     @staticmethod
-    def setUpLog(jobID, instanceName):
+    def setUpLog(jobID, instanceName, systemonly = False):
         '''
         Description:
         -----------
@@ -174,20 +176,23 @@ class AppController:
         
         '''
         rootdir = dirname(dirname(abspath(__file__)))
-        appPath = rootdir + '/application-instance'
-        path = appPath + '/' + instanceName + '/'
-
-        app_logger = AppController.setup_logger(jobID, instanceName + 'app', path + 'app.log', level=logging.DEBUG)
-        bibbox_logger = AppController.setup_logger(jobID, instanceName + 'bibbox', rootdir + '/system.log', level=logging.DEBUG)
-        docker_logger = AppController.setup_logger(jobID, instanceName + 'docker', path + 'docker.log', level=logging.DEBUG)
-
+        if systemonly == False:
+            appPath = rootdir + '/application-instance'
+            path = appPath + '/' + instanceName + '/'
+            app_logger = AppController.setup_logger(jobID, instanceName + '-app.log', path + 'app.log', level=logging.DEBUG)
+            docker_logger = AppController.setup_logger(jobID, instanceName + '-docker.log', path + 'docker.log', level=logging.DEBUG)
+            bibbox_logger = AppController.setup_logger(jobID, instanceName + '-bibbox.log', rootdir + '/system.log', level=logging.DEBUG)
+            return app_logger, bibbox_logger, docker_logger
+        else:
+            bibbox_logger = AppController.setup_logger(jobID, instanceName + 'bibbox', rootdir + '/system.log', level=logging.DEBUG)
+            return bibbox_logger
         #try:
         #    logging.basicConfig(filename= path + 'app.log', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
         #    
         #except Exception:
         #    print(Exception)
 
-        return app_logger, bibbox_logger, docker_logger
+        #return app_logger, bibbox_logger, docker_logger
 
     @staticmethod
     def setStatus(jobID, status, instanceName):
@@ -221,11 +226,11 @@ class AppController:
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
-            app_logger.debug(jobID + ' - The folder "/application-instance" does not exist!')
+            app_logger.debug( ' - The folder "/application-instance" does not exist!')
         process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/STATUS'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
-            app_logger.debug(jobID + str(output))
+            app_logger.debug( str(output))
         try:
             text_file = open(appPath + '/' + instanceName + '/STATUS', "w")
             text_file.write(status)
@@ -259,26 +264,26 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Ckeck if app is locked' )
+        app_logger.info( 'Ckeck if app is locked' )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
+            app_logger.debug(' - The folder "/application-instance" does not exist!')
         if 'LOCK' in os.listdir(appPath + '/' + instanceName):
             try:
                 with open(appPath + '/' + instanceName + '/LOCK') as lockfile:
                     lockID = lockfile.read()
                     if lockID != jobID:
-                        logging.exception( jobID + ' - The app you want to use is currently locked! Please try again later!')
+                        app_logger.exception( ' - The app you want to use is currently locked! Please try again later!')
                         raise Exception('The app you want to use is currently locked! Please try again later!')
             except Exception:
-                logging.exception('Fatal error in writing to LOCK file: ', exc_info=True)
+                app_logger.exception('Fatal error in writing to LOCK file: ', exc_info=True)
 
-        logging.debug(jobID + ' - ' + 'Locking app: ' + instanceName )
+        app_logger.debug( 'Locking app: ' + instanceName )
         process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/LOCK'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output) )
+            app_logger.debug(str(output) )
     
     @staticmethod
     def unlock(jobID, instanceName):
@@ -304,15 +309,15 @@ class AppController:
         
         '''
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.debug(jobID + ' - ' + 'Unlocking app: ' + instanceName )
+        app_logger.debug('Unlocking app: ' + instanceName )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
+            app_logger.debug(' - The folder "/application-instance" does not exist!')
         process = subprocess.Popen(['rm' , appPath + '/' + instanceName + '/LOCK'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output) )
+            app_logger.debug(str(output) )
 
     @staticmethod
     def downloadApp(jobID, instanceName,appName,version):
@@ -344,12 +349,12 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Downloading app: ' + appName + '/' + instanceName + ' V:' + version)
+        app_logger.info( 'Downloading app: ' + appName + '/' + instanceName + ' V:' + version)
         
         process = subprocess.Popen(['git', 'clone','-b', version, 'https://github.com/bibbox/' + appName + '.git', 'application-instance/' + instanceName + '/repo/'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
-            logging.exception(jobID + str(output) )
+            app_logger.debug(str(output) )
     
     @staticmethod
     def setInfo(jobID, instanceName,appName,version):
@@ -381,17 +386,17 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Set install info')
+        app_logger.info( 'Set install info')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
+            app_logger.debug('The folder "/application-instance" does not exist!')
         #try:
         #    text_file = open(appPath + '/' + instanceName + '/INFO.json', "w")
         #    text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
         #    text_file.close()
         #except Exception:
-        #    logging.exception('Fatal error in writing to INFO file: ', exc_info=True)
+        #    app_logger.exception('Fatal error in writing to INFO file: ', exc_info=True)
 
         data = {}
         data['instanceName'] = instanceName
@@ -432,17 +437,17 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Set install info')
+        app_logger.info( 'Set install info')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
+            app_logger.debug('The folder "/application-instance" does not exist!')
         #try:
         #    text_file = open(appPath + '/' + instanceName + '/INFO.json', "w")
         #    text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
         #    text_file.close()
         #except Exception:
-        #    logging.exception('Fatal error in writing to INFO file: ', exc_info=True)
+        #    app_logger.exception('Fatal error in writing to INFO file: ', exc_info=True)
 
         with open(appPath + '/' + instanceName + '/info.json') as outfile:
             data = json.load(outfile)
@@ -479,11 +484,11 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Set proxy files')
+        app_logger.info( 'Set proxy files')
         rootdir = dirname(dirname(abspath(__file__)))
         proxyPath = rootdir + '/sys-proxy/'
         if path.exists(proxyPath) == False:
-            logging.debug(jobID + ' - The folder "sys-proxy" does not exist!')
+            app_logger.debug('The folder "sys-proxy" does not exist!')
         name = instanceName + '.conf'
         try:
             with open(proxyPath + 'template.conf') as template:
@@ -494,10 +499,10 @@ class AppController:
                 template.write(file_content)
                 template.close()
         except Exception:
-            logging.exception('Fatal error in writing to proxy template file: ', exc_info=True)
+            app_logger.exception('Fatal error in writing to proxy template file: ', exc_info=True)
         
     @staticmethod
-    def readContainername(jobID, instanceName):
+    def readContainernames(jobID, instanceName):
         '''
         Description:
         -----------
@@ -516,34 +521,41 @@ class AppController:
 
         Returns:
         -------
-        ContainerName: str
-            The name of the container, that is runninng the application
+        ContainerNames: list
+            The names of the containers, that are runninng the application
+        mainContainer: str
+            The name of the main container
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Read Containername')
+        app_logger.info( 'Read Containernames')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
+            app_logger.debug(' The folder "/application-instance" does not exist!')
         composefile = open(appPath + '/' + instanceName +'/repo/docker-compose-template.yml', 'r').read()
         try:
             data = yaml.load(composefile, Loader=yaml.FullLoader)
         except Exception:
-            logging.exception('Fatal error in loading compose file: ', exc_info=True)
+            app_logger.exception('Fatal error in loading compose file: ', exc_info=True)
+        ContainerNames = []
         try:
             for k, v in data["services"].items():
                 if 'container_name' in v:
-                    ContainerName = v.get('container_name')
-                    ContainerName = ContainerName.replace('§§INSTANCE', instanceName)
+                    mainContainer = v.get('container_name')
+                    mainContainer = mainContainer.replace('§§INSTANCE', instanceName)
                     try:
-                        ContainerName = ContainerName.replace('-db', '')
+                        mainContainer = mainContainer.replace('-db', '')
                     except:
                         pass
+                if 'container_name' in v:
+                    ContainerName = v.get('container_name')
+                    ContainerName = ContainerName.replace('§§INSTANCE', instanceName)
+                    ContainerNames.append(ContainerName)
         except Exception:
-            logging.exception('Fatal error in reading compose file: ', exc_info=True)
+            app_logger.exception('Fatal error in reading compose file: ', exc_info=True)
 
-        return ContainerName
+        return ContainerNames, mainContainer
 
     @staticmethod
     def writeCompose(jobID, paramList, instanceName):
@@ -571,29 +583,29 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Write parameters to compose file')
+        app_logger.info('Write parameters to compose file')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder "/application-instance" does not exist!')
+            app_logger.debug(' The folder "/application-instance" does not exist!')
         try:
             compose = open(appPath + '/docker-compose-template.yml', 'r').read()
         except Exception:
-            logging.exception('Fatal error in reading compose file: ', exc_info=True)
+            app_logger.exception('Fatal error in reading compose file: ', exc_info=True)
 
         #compose = yaml.load(compose)
         try:
             for key in paramList:
                 compose = compose.replace('§§' + key, paramList[key])
         except Exception:
-            logging.exception('Fatal error in writing to compose file: ', exc_info=True)
+            app_logger.exception('Fatal error in writing to compose file: ', exc_info=True)
         try:
             compose = compose.replace('§§INSTANCE', instanceName)
             target = open(appPath + '/docker-compose-template.yml', 'w')
             target.write(compose)
             target.close()
         except Exception:
-            logging.exception('Fatal error in writing to compose file: ', exc_info=True)
+            app_logger.exception('Fatal error in writing to compose file: ', exc_info=True)
     @staticmethod
     def composeUp(jobID, instanceName, containerName):
         '''
@@ -617,23 +629,23 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Docker compose up')
+        app_logger.info( 'Docker compose up')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder of the app repository does not exist!')
+            app_logger.debug( 'The folder of the app repository does not exist!')
         process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'up', '-d'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output))
+            docker_logger.debug( str(output))
         process = subprocess.Popen(['docker', 'exec', '-it', 'local_nginx', 'service', 'nginx', 'reload'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output))
+            bibbox_logger.debug( str(output))
         process = subprocess.Popen(['docker', 'logs', containerName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output))
+            docker_logger.debug( str(output))
 
     @staticmethod
     def stop(jobID, instanceName):
@@ -658,15 +670,15 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Stopping App:' + instanceName)
+        app_logger.info( 'Stopping App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder of the app repository does not exist!')
+            app_logger.debug('The folder of the app repository does not exist!')
         process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'stop'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output))
+            docker_logger.debug( str(output))
         #os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml stop ')
 
     @staticmethod
@@ -692,15 +704,15 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Starting App:' + instanceName)
+        app_logger.info( 'Starting App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder of the app repository does not exist!')
+            app_logger.debug( ' The folder of the app repository does not exist!')
         process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'start'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output))
+            docker_logger.debug( str(output))
         #os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml start ')
 
     @staticmethod
@@ -726,28 +738,28 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Romoving App:' + instanceName)
+        app_logger.info( 'Romoving App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder of the app repository does not exist!')
+            app_logger.debug( 'The folder of the app repository does not exist!')
         #os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml down ')
         process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'down'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output))
+            docker_logger.debug( str(output))
         process = subprocess.Popen(['sudo', 'chmod' ,'-f', '-R', '777', rootdir + '/application-instance/' + instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output))
+            docker_logger.debug( str(output))
         process = subprocess.Popen(['rm' , '-f', '-R', rootdir + '/application-instance/' + instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output))
+            docker_logger.debug( str(output))
         process = subprocess.Popen(['rm' , '-f', rootdir + '/sys-proxy/proxyconfig/sites/' + instanceName + '.conf'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output))
+            docker_logger.debug( str(output))
 
     @staticmethod
     def status(jobID, instanceName):
@@ -774,16 +786,16 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Reading Status of App: ' + instanceName)
+        app_logger.info( 'Reading Status of App: ' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder of the app repository does not exist!')
+            app_logger.debug( ' The folder of the app repository does not exist!')
         try:
             with open(appPath + 'STATUS') as statusfile:
                 file_content = statusfile.read()
         except Exception:
-            logging.exception('Could not open STATUS file: ', exc_info=True)
+            app_logger.exception('Could not open STATUS file: ', exc_info=True)
         return file_content
 
     @staticmethod
@@ -814,11 +826,11 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Checking if operation is possible for current state of app: ' + instanceName)
+        app_logger.info( 'Checking if operation is possible for current state of app: ' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder of the app repository does not exist!')
+            app_logger.debug('The folder of the app repository does not exist!')
         try:
             with open(appPath + 'STATUS') as statusfile:
                 file_content = statusfile.read()
@@ -829,7 +841,7 @@ class AppController:
         except Exception:
             logging.exception('Could not open STATUS file: ', exc_info=True)
         if file_content not in statusList:
-            logging.exception(jobID + ' - ' + 'Current app status does not allow operation on app: ' + instanceName)
+            app_logger.exception('Current app status does not allow operation on app: ' + instanceName)
             raise Exception('Current app status does not allow your operation!')
 
     @staticmethod
@@ -859,17 +871,17 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Copy App:' + instanceName)
+        app_logger.info('Copy App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder of the app repository does not exist!')
+            app_logger.debug('The folder of the app repository does not exist!')
         #process = subprocess.Popen(['sudo', 'cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         process = subprocess.Popen(['cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
         output, error = process.communicate()
         if output:
-            logging.debug(jobID + str(output))
+            app_logger.debug( str(output))
 
     @staticmethod
     def changeCompose(jobID, paramList, instanceName, newName):
@@ -901,21 +913,21 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
-        logging.info(jobID + ' - ' + 'Write parameters to compose file')
+        app_logger.info( 'Write parameters to compose file')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
-            logging.debug(jobID + ' - The folder of the app repository does not exist!')
+            app_logger.debug(' The folder of the app repository does not exist!')
         newAppPath = rootdir + '/application-instance/' + newName + '/repo/'
         try:
             compose = open(appPath + '/docker-compose-template.yml', 'r')
         except Exception:
-            logging.exception('Fatal error in reading compose file: ', exc_info=True)
+            app_logger.exception('Fatal error in reading compose file: ', exc_info=True)
         try:
             compose = yaml.load(compose)
             services = compose['services']
         except Exception:
-            logging.exception('Fatal error in reading compose file: ', exc_info=True)
+            app_logger.exception('Fatal error in reading compose file: ', exc_info=True)
         try:
             for service in services:
                 name = services[service]['container_name']
@@ -934,18 +946,18 @@ class AppController:
                 except:
                     pass
         except Exception:
-            logging.exception('Fatal error in reading compose file: ', exc_info=True)
+            app_logger.exception('Fatal error in reading compose file: ', exc_info=True)
         try:    
             composenew = copy.deepcopy(compose)
         except Exception:
-            logging.exception('Fatal error while copying compose file: ', exc_info=True)
+            app_logger.exception('Fatal error while copying compose file: ', exc_info=True)
         try:
             for service in services:
                 newServiceName = service.replace(instanceName, newName)           
                 composenew['services'][newServiceName] = composenew['services'][service]
                 del composenew['services'][service]
         except Exception:
-            logging.exception('Fatal error while writing to compose file: ', exc_info=True)
+            app_logger.exception('Fatal error while writing to compose file: ', exc_info=True)
         try:
             composefile = yaml.dump(composenew)
             os.system('sudo chmod -R 777 ' + newAppPath)
@@ -953,7 +965,7 @@ class AppController:
             target.write(composefile)
             target.close()
         except Exception:
-            logging.exception('Fatal error while writing to compose file: ', exc_info=True)
+            app_logger.exception('Fatal error while writing to compose file: ', exc_info=True)
 
     @staticmethod
     def readAppStore():
@@ -983,7 +995,7 @@ class AppController:
         try:
             params = simplejson.loads(download)
         except Exception:
-            logging.exception('Error while loading applications.json file: ', exc_info=True)
+            app_logger.exception('Error while loading applications.json file: ', exc_info=True)
         apps=[]
         gitNames=[]
         for i, values in enumerate(params):
@@ -991,7 +1003,7 @@ class AppController:
                 apps.append(values['name'])
                 gitNames.append(values['github_name'])
             except Exception:
-                logging.exception('Error while reading applications.json file: ', exc_info=True)
+                app_logger.exception('Error while reading applications.json file: ', exc_info=True)
         appsList = json.dumps(apps)
         return appsList
         
@@ -1095,6 +1107,7 @@ class AppController:
         
         '''
         jobID = AppController.createJobID()
+        AppController.setUpLog(jobID, instanceName, systemonly = True)
         AppController.checkExists(jobID, instanceName, install = True)
         AppController.createFolder(jobID, instanceName)
         AppController.setStatus(jobID, 'Prepare Install', instanceName)
