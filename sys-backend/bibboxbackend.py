@@ -1010,7 +1010,7 @@ class AppController:
 
 
     @staticmethod
-    def getInstalledApps():
+    def getInstalledApps(jobID, instanceName):
         '''
         Description:
         -----------
@@ -1024,7 +1024,7 @@ class AppController:
 
         Returns:
         -------
-        appslist: json object
+        installedAppslist: json object
             The list of all installed apps as json object
         '''
 
@@ -1042,6 +1042,52 @@ class AppController:
         installedAppsList = json.dumps(installedApps)
         return installedAppsList
 
+    @staticmethod
+    def checkDockerState(jobID, instanceName, containerNames, allowedStates):
+        '''
+        Description:
+        -----------
+        Ckecks the states of all containers of an app.
+
+        Parameters:
+        ----------
+
+        jobID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        containerNames: array
+            list of used containers
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
+        app_logger.info('Checking states of all containers of app: ' + instanceName)
+        states = {}
+        for name in containerNames:
+            process = subprocess.Popen(['docker', 'container', 'inspect', name], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            output, error = process.communicate()
+            #try:
+            params = simplejson.loads(output)
+            status = params[0]['State']['Status']
+            states[name] = status
+            if status not in allowedStates:
+                app_logger.error('The allowed states of the app containers are ' + ', '.join([str(elem) for elem in allowedStates]) + ', but the container of app ' + instanceName + ' has state ' + status)
+                raise Exception('The allowed states of the app containers are ' + ', '.join([str(elem) for elem in allowedStates]) + ', but the container of app ' + instanceName + ' has state ' + status)
+            #except:
+            output = output.decode('ascii').rstrip('\n')
+            app_logger.debug( str(output))
+
+
+
+        return states
 
 
     """
@@ -1117,11 +1163,12 @@ class AppController:
         AppController.downloadApp(jobID, instanceName,appName,version)
         AppController.setStatus(jobID, 'Installing', instanceName)
         AppController.setInfo(jobID, instanceName,appName,version)
-        containerName = AppController.readContainername(jobID, instanceName)
-        AppController.setProxyFiles(jobID, instanceName, containerName)
+        containerNames, mainContainer = AppController.readContainernames(jobID, instanceName)
+        AppController.setProxyFiles(jobID, instanceName, mainContainer)
         AppController.writeCompose(jobID, paramList, instanceName)
-        AppController.composeUp(jobID, instanceName, containerName)
+        AppController.composeUp(jobID, instanceName, mainContainer)
         AppController.unlock(jobID, instanceName)
+        AppController.checkDockerState(jobID, instanceName, containerNames, ['running'])
         AppController.setStatus(jobID, 'Running', instanceName)
     
     @staticmethod
@@ -1147,12 +1194,15 @@ class AppController:
         #statusList = ['Running']
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
+        containerNames, mainContainer = AppController.readContainernames(jobID, instanceName)
+        AppController.checkDockerState(jobID, instanceName, containerNames, ['running'])
         #AppController.checkStatus(jobID, instanceName, statusList)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Stopping', instanceName)
         AppController.setUpLog(jobID, instanceName)
         AppController.stop(jobID, instanceName)
         AppController.unlock(jobID, instanceName)
+        AppController.checkDockerState(jobID, instanceName, containerNames, ['paused', 'stopped'])
         AppController.setStatus(jobID, 'Stopped', instanceName)
 
 
@@ -1181,11 +1231,14 @@ class AppController:
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
         #AppController.checkStatus(jobID, instanceName, statusList)
+        containerNames, mainContainer = AppController.readContainernames(jobID, instanceName)
+        AppController.checkDockerState(jobID, instanceName, containerNames, ['paused', 'stopped'])
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Starting', instanceName)
         AppController.setUpLog(jobID, instanceName)
         AppController.start(jobID, instanceName)
         AppController.unlock(jobID, instanceName)
+        AppController.checkDockerState(jobID, instanceName, containerNames, ['running'])
         AppController.setStatus(jobID, 'Running', instanceName)
 
     @staticmethod
@@ -1271,10 +1324,10 @@ class AppController:
         AppController.setUpLog(jobID, newName)
         AppController.changeCompose(jobID, paramList, instanceName, newName)
         AppController.unlock(jobID, instanceName)
-        containerName = AppController.readContainername(jobID, newName)
-        AppController.setProxyFiles(jobID, newName, containerName)
+        ContainerNames, mainContainer = AppController.readContainernames(jobID, newName)
+        AppController.setProxyFiles(jobID, newName, mainContainer)
         AppController.changeInfo(jobID, instanceName, newName)
-        AppController.composeUp(jobID, newName, containerName)
+        AppController.composeUp(jobID, newName, mainContainer)
         AppController.unlock(jobID, instanceName)
         AppController.setStatus(jobID, 'Running', instanceName)
 
@@ -1302,7 +1355,7 @@ class AppController:
         return appsList
 
     @staticmethod
-    def listInstalledApps():
+    def listInstalledApps(jobID, instanceName):
 
         '''
         Description:
@@ -1321,7 +1374,7 @@ class AppController:
             The list of all available apps as json object
         '''
         
-        installedAppsList = AppController.getInstalledApps()
+        installedAppsList = AppController.getInstalledApps(jobID, instanceName)
         return installedAppsList
 
 
@@ -1333,8 +1386,8 @@ paramList = x.setParams(paramList)
 x.installApp(paramList, instanceName, appName, version)
 #status = x.getStatus(instanceName)
 #x.stopApp(instanceName) 
-#x.startApp(instanceName)
+x.startApp(instanceName)
 #x.removeApp(instanceName)
-#x.copyApp('seeddmsproxytest', 'testappnew')
-#appsList = x.listInstalledApps()
+#x.copyApp('test7', 'testappnew')
+appsList = x.listInstalledApps('klsbhfjvlbdf', instanceName)
 #pass
