@@ -103,13 +103,15 @@ class AppController:
             exists = False
         if install == True:
             if exists == True:
-                raise Exception('The app you want to install does already exist!')
+                bibbox_logger.info('The app you want to install does already exist! App: ' + instanceName)
+                raise Exception('The app you want to install does already exist! App: ' + instanceName)
         if install == False:
             if exists == False:
-                raise Exception('The app you want to use does not exist!')
+                bibbox_logger.info('The app you want to use does not exist! App: ' + instanceName)
+                raise Exception('The app you want to use does not exist! App: ' + instanceName)
 
     @staticmethod
-    def createFolder(JobID, instanceName):
+    def createFolder(jobID, instanceName):
         '''
         Description:
         -----------
@@ -131,10 +133,18 @@ class AppController:
         -------
         
         '''
+        bibbox_logger = AppController.setUpLog(jobID, instanceName, systemonly=True)
+        bibbox_logger.info('Check if app folder exists')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
-        subprocess.Popen(['mkdir' , appPath + '/' + instanceName])
-        subprocess.Popen(['touch' , appPath + '/' + instanceName + '/app.log'])
+        process = subprocess.Popen(['mkdir' , appPath + '/' + instanceName])
+        output, error = process.communicate()
+        if output:
+            bibbox_logger.debug( str(output))
+        process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/app.log'])
+        output, error = process.communicate()
+        if output:
+            bibbox_logger.debug( str(output))
 
     @staticmethod
     def setup_logger(jobID, loggerName, log_file, level=logging.DEBUG):
@@ -1153,7 +1163,6 @@ class AppController:
         
         '''
         jobID = AppController.createJobID()
-        AppController.setUpLog(jobID, instanceName, systemonly = True)
         AppController.checkExists(jobID, instanceName, install = True)
         AppController.createFolder(jobID, instanceName)
         AppController.setStatus(jobID, 'Prepare Install', instanceName)
@@ -1193,6 +1202,7 @@ class AppController:
         '''
         #statusList = ['Running']
         jobID = AppController.createJobID()
+        AppController.setUpLog(jobID, instanceName, systemonly=True)
         AppController.checkExists(jobID, instanceName, install=False)
         containerNames, mainContainer = AppController.readContainernames(jobID, instanceName)
         AppController.checkDockerState(jobID, instanceName, containerNames, ['running'])
@@ -1386,8 +1396,8 @@ paramList = x.setParams(paramList)
 x.installApp(paramList, instanceName, appName, version)
 #status = x.getStatus(instanceName)
 #x.stopApp(instanceName) 
-x.startApp(instanceName)
+#x.startApp(instanceName)
 #x.removeApp(instanceName)
 #x.copyApp('test7', 'testappnew')
-appsList = x.listInstalledApps('klsbhfjvlbdf', instanceName)
+#appsList = x.listInstalledApps('testID', instanceName)
 #pass
