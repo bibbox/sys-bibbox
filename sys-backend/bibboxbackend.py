@@ -15,6 +15,7 @@ import copy
 from os import path
 from subprocess import check_output
 import simplejson
+import re
 
 class AppController:
 
@@ -1095,10 +1096,53 @@ class AppController:
             output = output.decode('ascii').rstrip('\n')
             app_logger.debug( str(output))
 
-
-
         return states
 
+    @staticmethod
+    def checkInput(jobID, instanceName, input):
+        '''
+        Description:
+        -----------
+        Ckecks if the userinput is valid.
+
+        Parameters:
+        ----------
+
+        jobID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        input: array
+            List of used parameters to check
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
+        app_logger, bibbox_logger, docker_logger = AppController.setUpLog(jobID, instanceName)
+        validAll = True
+        for var in input:
+            valid = bool(re.match('^[a-zA-Z0-9]*$',var))
+            negativeList = ['admin']
+            for param in negativeList:
+                if param in var:
+                    validAll = False
+                    bibbox_logger.debug('The input ' + var + ' is not valid!')
+            if valid == False:
+                validAll = False
+                bibbox_logger.debug('The input ' + var + ' is not valid!')
+
+        if validAll == True:
+            bibbox_logger.debug('The tested input is valid!')
+        if validAll == False:
+            bibbox_logger.debug('The tested input is not valid!')
+
+        return validAll
 
     """
     Section: Main functions
@@ -1393,7 +1437,7 @@ x = AppController()
 paramList, instanceName, appName, version = x.getParams('test7','app-seeddmsTNG','master')
 paramList = x.setParams(paramList)
 
-x.installApp(paramList, instanceName, appName, version)
+#x.installApp(paramList, instanceName, appName, version)
 #status = x.getStatus(instanceName)
 #x.stopApp(instanceName) 
 #x.startApp(instanceName)
@@ -1401,3 +1445,4 @@ x.installApp(paramList, instanceName, appName, version)
 #x.copyApp('test7', 'testappnew')
 #appsList = x.listInstalledApps('testID', instanceName)
 #pass
+x.checkInput('testID', instanceName, ['test', 'abc'])
