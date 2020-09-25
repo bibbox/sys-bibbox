@@ -49,7 +49,6 @@ class AppController:
         Job ID : str
             Unique JobID that consists of an uuid and the datetime
         '''
-        
         jobID = str(uuid.uuid1())
         dateObj = datetime.now()
         datestring = str(dateObj.year) + '-' + str(dateObj.month) + '-' + str(dateObj.day) + '-' + str(dateObj.microsecond)
@@ -95,11 +94,12 @@ class AppController:
         
         '''
         rootdir = dirname(dirname(abspath(__file__)))
-        appPath = rootdir + '/application-instance'
         bibbox_logger = AppController.setUpLog(jobID, instanceName, systemonly=True)
+        appPath = rootdir + '/application-instance'
         bibbox_logger.info('Check if app folder exists')
         if path.exists(appPath) == False:
-            raise Exception('The application instance path does not exist')
+            bibbox_logger.error( ' The folder "/application-instance" does not exist!')
+            raise Exception('The folder "/application-instance" does not exist')
         if instanceName in os.listdir(appPath):
             exists = True
         else:
@@ -140,6 +140,9 @@ class AppController:
         bibbox_logger.info('Check if app folder exists')
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
+        if path.exists(appPath) == False:
+            bibbox_logger.error( ' The folder "/application-instance" does not exist!')
+            raise Exception('The folder "/application-instance" does not exist')
         process = subprocess.Popen(['mkdir' , appPath + '/' + instanceName])
         output, error = process.communicate()
         if output:
@@ -177,24 +180,15 @@ class AppController:
         '''
         
         formatter = logging.Formatter(jobID + '%(asctime)s - %(levelname)s - %(name)s - %(message)s')
-        #extra = {'Job_ID':jobID}
-        #handler = logging.handlers.RotatingFileHandler(log_file, maxBytes=20000000, backupCount = 10)
-        #handler.setFormatter(formatter)
-
         logger = logging.getLogger(loggerName)
-
-        
-        #for handler in logger.handlers[:]:
-        #    logger.removeHandler(handler)
         if logger.handlers[:] == []:
             handler = logging.handlers.RotatingFileHandler(log_file, maxBytes=20000000, backupCount = 10)
             handler.setFormatter(formatter)
-            handler.doRollover()
+            if os.path.getsize(log_file) > 0:
+                handler.doRollover()
             logger.addHandler(handler)
             logger.addHandler(logging.StreamHandler())
         logger.setLevel(level)
-
-        #logger = logging.LoggerAdapter(logger, extra)
 
         return logger
     
@@ -233,14 +227,7 @@ class AppController:
         else:
             bibbox_logger = AppController.setup_logger(jobID, instanceName + 'bibbox', rootdir + '/log/system.log', level=logging.DEBUG)
             return bibbox_logger
-        #try:
-        #    logging.basicConfig(filename= path + 'app.log', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
-        #    
-        #except Exception:
-        #    print(Exception)
-
-        #return app_logger, bibbox_logger, docker_logger
-
+    
     @staticmethod
     def setStatus(jobID, status, instanceName):
         '''
@@ -325,6 +312,7 @@ class AppController:
                         raise Exception('The app you want to use is currently locked! Please try again later!')
             except Exception:
                 app_errorlogger.exception('Fatal error in writing to LOCK file: ', exc_info=True)
+                raise Exception('Could not open LOCK file in application folder!')
 
         app_logger.debug( 'Locking app: ' + instanceName )
         process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/LOCK'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -451,9 +439,12 @@ class AppController:
         data['appName'] = appName
         data['version'] = version
         data['jobID'] = jobID
-
-        with open(appPath + '/' + instanceName + '/info.json', 'w+') as outfile:
-            json.dump(data, outfile)
+        try:
+            with open(appPath + '/' + instanceName + '/info.json', 'w+') as outfile:
+                json.dump(data, outfile)
+        except Exception:
+                app_errorlogger.exception('Could not open file "info.json" in application folder! ', exc_info=True)
+                raise Exception('Could not open file "info.json" in application folder! ')
 
     @staticmethod
     def changeInfo(jobID, instanceName, newName):
@@ -490,19 +481,21 @@ class AppController:
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
             app_errorlogger.error('The folder "/application-instance" does not exist!')
-        #try:
-        #    text_file = open(appPath + '/' + instanceName + '/INFO.json', "w")
-        #    text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
-        #    text_file.close()
-        #except Exception:
-        #    app_logger.exception('Fatal error in writing to INFO file: ', exc_info=True)
+        try:
+            with open(appPath + '/' + instanceName + '/info.json') as outfile:
+                data = json.load(outfile)
+                data['instanceName'] = newName
+                data['jobID'] = jobID
+        except Exception:
+                app_errorlogger.exception('Could not open file "info.json" in application folder! ', exc_info=True)
+                raise Exception('Could not open file "info.json" in application folder! ')
+        try:
+            with open(appPath + '/' + newName + '/info.json', 'w+') as outfile:
+                json.dump(data, outfile)
+        except Exception:
+                app_errorlogger.exception('Could not open file "info.json" in application folder! ', exc_info=True)
+                raise Exception('Could not write to file "info.json" in application folder! ')
 
-        with open(appPath + '/' + instanceName + '/info.json') as outfile:
-            data = json.load(outfile)
-            data['instanceName'] = newName
-            data['jobID'] = jobID
-        with open(appPath + '/' + newName + '/info.json', 'w+') as outfile:
-            json.dump(data, outfile)
 
     @staticmethod
     def setProxyFiles(jobID, instanceName, containerName):
@@ -803,11 +796,11 @@ class AppController:
         process = subprocess.Popen(['rm' , '-f', '-R', rootdir + '/application-instance/' + instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            docker_logger.error( str(output))
+            bibbox_logger.error( str(output))
         process = subprocess.Popen(['rm' , '-f', rootdir + '/sys-proxy/proxyconfig/sites/' + instanceName + '.conf'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            docker_logger.error( str(output))
+            bibbox_logger.error( str(output))
 
     @staticmethod
     def status(jobID, instanceName):
@@ -1037,22 +1030,24 @@ class AppController:
         app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
         try:
             url = 'https://raw.githubusercontent.com/bibbox/application-store/master/eB3Kit.json'
+            download = requests.get(url).content
         except Exception:
             raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
-        download = requests.get(url).content
         try:
             params = simplejson.loads(download)
         except Exception:
             app_errorlogger.exception('Error while loading applications.json file: ', exc_info=True)
         versionList=[]
-        for i, values in enumerate(params):
-            variable = values['group_members']
-            for i, var in enumerate(variable):
-                if var['app_name'] == appName:
-                    versions = var['versions']
-                    for version in versions:
-                        versionList.append(version['docker_version'])
-                    
+        try:
+            for i, values in enumerate(params):
+                variable = values['group_members']
+                for i, var in enumerate(variable):
+                    if var['app_name'] == appName:
+                        versions = var['versions']
+                        for version in versions:
+                            versionList.append(version['docker_version'])
+        except Exception:
+            app_errorlogger.exception('Error while loading applications.json file: ', exc_info=True)                
 
         return versionList
 
@@ -1078,9 +1073,9 @@ class AppController:
         app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
         try:
             url = 'https://raw.githubusercontent.com/bibbox/application-store/master/applications.json'
+            download = requests.get(url).content
         except Exception:
             raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
-        download = requests.get(url).content
         try:
             params = simplejson.loads(download)
         except Exception:
@@ -1120,12 +1115,18 @@ class AppController:
         app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' 
+        if path.exists(appPath) == False:
+            app_errorlogger.error(' The folder of the app repository does not exist!')
         installedApps = {}
-        for i, folder in enumerate(os.listdir(appPath)):
-            with open(appPath + '/' + folder + '/info.json') as infofile:
-                data = json.load(infofile)
-                instanceName = data['instanceName']
-                appName = data['appName']
+        try:
+            for i, folder in enumerate(os.listdir(appPath)):
+                with open(appPath + '/' + folder + '/info.json') as infofile:
+                    data = json.load(infofile)
+                    instanceName = data['instanceName']
+                    appName = data['appName']
+        except Exception:
+                app_errorlogger.exception('Could not open file "info.json" in application folder! ', exc_info=True)
+                raise Exception('Could not open file "info.json" in application folder! ')
                 
                 installedApps[instanceName] = appName
         installedAppsList = json.dumps(installedApps)
@@ -1163,10 +1164,15 @@ class AppController:
         for name in containerNames:
             process = subprocess.Popen(['docker', 'container', 'inspect', name], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             output, error = process.communicate()
-            #try:
-            params = simplejson.loads(output)
-            status = params[0]['State']['Status']
-            states[name] = status
+            #if output:
+            #    app_errorlogger.error( str(output))
+            try:
+                params = simplejson.loads(output)
+                status = params[0]['State']['Status']
+                states[name] = status
+            except Exception:
+                app_errorlogger.exception('Could not load ststus of wanted container ' + name, exc_info=True)
+                raise Exception('Could not load ststus of wanted container ' + name)
             if status not in allowedStates:
                 app_errorlogger.error('The allowed states of the app containers are ' + ', '.join([str(elem) for elem in allowedStates]) + ', but the container of app ' + instanceName + ' has state ' + status)
                 raise Exception('The allowed states of the app containers are ' + ', '.join([str(elem) for elem in allowedStates]) + ', but the container of app ' + instanceName + ' has state ' + status)
@@ -1177,7 +1183,7 @@ class AppController:
         return states
 
     @staticmethod
-    def checkInput(jobID, instanceName, input):
+    def checkInput(jobID, instanceName, inputparams):
         '''
         Description:
         -----------
@@ -1204,7 +1210,9 @@ class AppController:
         '''
         app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
         validAll = True
-        for var in input:
+        if not inputparams:
+            app_logger.info('There are no input parameters to check')
+        for var in inputparams:
             valid = bool(re.match('^[a-zA-Z0-9]*$',var))
             negativeList = ['admin']
             for param in negativeList:
@@ -1230,9 +1238,9 @@ class AppController:
     def getParams(instanceName, appName, version):
         try:
             url = 'https://raw.githubusercontent.com/bibbox/' + appName + '/master/.env'
+            download = requests.get(url).content
         except Exception:
             raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
-        download = requests.get(url).content
         data=download.decode('utf-8')
         params = data.split('\n')
         paramList = {}
@@ -1460,7 +1468,7 @@ class AppController:
         AppController.setProxyFiles(jobID, newName, mainContainer)
         AppController.changeInfo(jobID, instanceName, newName)
         AppController.composeUp(jobID, newName, mainContainer)
-        AppController.unlock(jobID, instanceName)
+        AppController.unlock(jobID, newName)
         AppController.setStatus(jobID, 'Running', instanceName)
 
         
@@ -1517,10 +1525,10 @@ paramList = x.setParams(paramList)
 
 #x.installApp(paramList, instanceName, appName, version)
 #status = x.getStatus(instanceName)
-x.stopApp(instanceName) 
-x.startApp(instanceName)
+#x.stopApp(instanceName) 
+#x.startApp(instanceName)
 #x.removeApp(instanceName)
-#x.copyApp('test7', 'testappnew')
+x.copyApp('test7', 'testappnew')
 #appsList = x.listInstalledApps('testID', instanceName)
 #pass
 #x.checkInput('testID', instanceName, ['test', 'abc'])
