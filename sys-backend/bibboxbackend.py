@@ -54,7 +54,7 @@ class AppController:
         Returns:
         -------
         Job ID : str
-            Unique JobID that consists of an uuid and the datetime
+            Unique JobID that consists of an uuid and the current datetime
         '''
         jobID = str(uuid.uuid1())
         dateObj = datetime.now()
