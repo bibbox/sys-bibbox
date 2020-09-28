@@ -18,6 +18,7 @@ from os import path
 from subprocess import check_output
 import simplejson
 import re
+import atexit
 
 class AppController:
 
@@ -30,6 +31,12 @@ class AppController:
     def __init__(self):
         self.rootdir = dirname(dirname(abspath(__file__)))
         self.appPath = self.rootdir + '/application-instance'
+    def __del__(self):
+        try:
+            jobID = AppController.createJobID()
+            AppController.unlock(jobID, instanceName, end = True)
+        except:
+            pass
 
     @staticmethod
     def createJobID():
@@ -95,9 +102,13 @@ class AppController:
         '''
         rootdir = dirname(dirname(abspath(__file__)))
         bibbox_logger = AppController.setUpLog(jobID, instanceName, systemonly=True)
-        appPath = rootdir + '/application-instance'
+        appPath = rootdir + '/application-instance/'
         bibbox_logger.info('Check if app folder exists')
         if path.exists(appPath) == False:
+            process = subprocess.Popen(['mkdir', appPath])
+            output, error = process.communicate()
+            if output:
+                bibbox_logger.debug( str(output))
             bibbox_logger.error( ' The folder "/application-instance" does not exist!')
             raise Exception('The folder "/application-instance" does not exist')
         if instanceName in os.listdir(appPath):
@@ -141,8 +152,8 @@ class AppController:
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
-            bibbox_logger.error( ' The folder "/application-instance" does not exist!')
-            raise Exception('The folder "/application-instance" does not exist')
+            bibbox_logger.error( 'Error While creating folder for application ' + instanceName + '. The folder "/application-instance" does not exist!')
+            raise Exception('Error While creating folder for application ' + instanceName + '. The folder "/application-instance" does not exist!')
         process = subprocess.Popen(['mkdir' , appPath + '/' + instanceName])
         output, error = process.communicate()
         if output:
@@ -151,6 +162,12 @@ class AppController:
         output, error = process.communicate()
         if output:
             bibbox_logger.debug( str(output))
+        if path.exists(appPath + '/' + instanceName) == False:
+            bibbox_logger.error( 'Error While creating folder for application ' + instanceName + '. The folder "/application-instance/' + instanceName + '/" does not exist!')
+            raise Exception('Error While creating folder for application ' + instanceName + '. The folder "/application-instance" does not exist!')
+        if path.exists(appPath + '/' + instanceName + '/log/') == False:
+            bibbox_logger.error( 'Error While creating folder for application ' + instanceName + '. The folder "/application-instance' + instanceName + '/log/" does not exist!')
+            raise Exception('Error While creating folder for application ' + instanceName + '. The folder "/application-instance" does not exist!')
 
     @staticmethod
     def setup_logger(jobID, loggerName, log_file, level=logging.DEBUG):
@@ -184,8 +201,8 @@ class AppController:
         if logger.handlers[:] == []:
             handler = logging.handlers.RotatingFileHandler(log_file, maxBytes=20000000, backupCount = 10)
             handler.setFormatter(formatter)
-            if os.path.getsize(log_file) > 0:
-                handler.doRollover()
+            #if os.path.getsize(log_file) > 0:
+            #    handler.doRollover()
             logger.addHandler(handler)
             logger.addHandler(logging.StreamHandler())
         logger.setLevel(level)
@@ -218,14 +235,31 @@ class AppController:
         rootdir = dirname(dirname(abspath(__file__)))
         if systemonly == False:
             appPath = rootdir + '/application-instance'
-            path = appPath + '/' + instanceName + '/log/'
-            app_logger = AppController.setup_logger(jobID, instanceName + '-app.log', path + 'debug.log', level=logging.DEBUG)
-            app_errorlogger = AppController.setup_logger(jobID, instanceName + '-apperror.log', path + 'error.log', level=logging.DEBUG)
-            docker_logger = AppController.setup_logger(jobID, instanceName + '-docker.log', path + 'docker.log', level=logging.DEBUG)
+            if path.exists(appPath) == False:
+                raise Exception( ' - The folder "/application-instance/" does not exist!')
+            logpath = appPath + '/' + instanceName + '/log/'
+            if path.exists(logpath) == False:
+                raise Exception( ' - The folder "/application-instance/' + instanceName + '/log/" does not exist!')
+            app_logger = AppController.setup_logger(jobID, instanceName + '-app.log', logpath + 'debug.log', level=logging.DEBUG)
+            app_errorlogger = AppController.setup_logger(jobID, instanceName + '-apperror.log', logpath + 'error.log', level=logging.DEBUG)
+            docker_logger = AppController.setup_logger(jobID, instanceName + '-docker.log', logpath + 'docker.log', level=logging.DEBUG)
             bibbox_logger = AppController.setup_logger(jobID, instanceName + '-bibbox.log', rootdir + '/log/system.log', level=logging.DEBUG)
+            
+            if path.exists(logpath + 'debug.log') == False:
+                raise Exception('Error while creating logfile "debug.log"')
+            if path.exists(logpath + 'error.log') == False:
+                raise Exception('Error while creating logfile "error.log"')
+            if path.exists(logpath + 'docker.log') == False:
+                raise Exception('Error while creating logfile "docker.log"')
+            if path.exists(rootdir + '/log/system.log') == False:
+                raise Exception('Error while creating logfile "system.log"')
+            
             return app_logger, bibbox_logger, docker_logger, app_errorlogger
         else:
             bibbox_logger = AppController.setup_logger(jobID, instanceName + 'bibbox', rootdir + '/log/system.log', level=logging.DEBUG)
+            if path.exists(rootdir + '/log/system.log') == False:
+                raise Exception('Error while creating logfile "system.log"')
+            
             return bibbox_logger
     
     @staticmethod
@@ -271,6 +305,11 @@ class AppController:
             text_file.close()
         except Exception:
             app_errorlogger.exception('Fatal error in writing to STATUS file: ', exc_info=True)
+            raise Exception('Fatal error in writing to STATUS file: ')
+        if path.exists(appPath + '/' + instanceName + '/STATUS') == False:
+            app_errorlogger.exception('Something went wrong during writing to STATUS file: ', exc_info=True)
+            raise Exception('Fatal error in writing to STATUS file: ')
+
 
     @staticmethod
     def lock(jobID, instanceName):
@@ -319,9 +358,12 @@ class AppController:
         output, error = process.communicate()
         if output:
             app_errorlogger.error(str(output) )
-    
+        if path.exists(appPath + '/' + instanceName + '/LOCK') == False:
+            app_errorlogger.exception('Something went wrong during writing LOCK file: ', exc_info=True)
+            raise Exception('Fatal error in writing LOCK file: ')
+
     @staticmethod
-    def unlock(jobID, instanceName):
+    def unlock(jobID, instanceName, end = False):
         '''
         Description:
         -----------
@@ -350,9 +392,14 @@ class AppController:
         if path.exists(appPath) == False:
             app_errorlogger.error(' - The folder "/application-instance" does not exist!')
         process = subprocess.Popen(['rm' , appPath + '/' + instanceName + '/LOCK'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        output, error = process.communicate()
-        if output:
-            app_errorlogger.error(str(output) )
+        if end == False:
+            output, error = process.communicate()
+            if output:
+                app_errorlogger.error(str(output) )
+        if path.exists(appPath + '/' + instanceName + '/LOCK') == True:
+            app_errorlogger.exception('Something went wrong during deleting LOCK file: ', exc_info=True)
+            raise Exception('Fatal error in deleting LOCK file: ')
+
 
     @staticmethod
     def downloadApp(jobID, instanceName,appName,version):
@@ -382,7 +429,10 @@ class AppController:
         -------
         
         '''
-
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance'
+        if path.exists(appPath) == False:
+            app_errorlogger.error(' - The folder "/application-instance" does not exist!')
         app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
         app_logger.info( 'Downloading app: ' + appName + '/' + instanceName + ' V:' + version)
         
@@ -391,6 +441,9 @@ class AppController:
         output, error = process.communicate()
         if output:
             app_logger.debug(str(output).rstrip() )
+        if path.exists(appPath + '/' + instanceName + '/repo') == False:
+            app_errorlogger.exception('Something went wrong during downloading app: ' + instanceName, exc_info=True)
+            raise Exception('Fatal error in during downloading app: ' + instanceName)
     
     @staticmethod
     def setInfo(jobID, instanceName,appName,version):
@@ -445,6 +498,10 @@ class AppController:
         except Exception:
                 app_errorlogger.exception('Could not open file "info.json" in application folder! ', exc_info=True)
                 raise Exception('Could not open file "info.json" in application folder! ')
+        if path.exists(appPath + '/' + instanceName + '/info.json') == False:
+            app_errorlogger.exception('Something went wrong during writing install information to info.json file of app: ' + instanceName, exc_info=True)
+            raise Exception('Fatal error in during writing install information to info.json file of app: ' + instanceName)
+
 
     @staticmethod
     def changeInfo(jobID, instanceName, newName):
@@ -530,7 +587,13 @@ class AppController:
         proxyPath = rootdir + '/sys-proxy/'
         if path.exists(proxyPath) == False:
             app_errorlogger.error('The folder "sys-proxy" does not exist!')
+        if path.exists(proxyPath + 'proxyconfig/sites/') == False:
+            process = subprocess.Popen(['mkdir', proxyPath + 'proxyconfig/sites/'])
+            output, error = process.communicate()
+            if output:
+                bibbox_logger.debug( str(output))
         name = instanceName + '.conf'
+        
         try:
             with open(proxyPath + 'template.conf') as template:
                 file_content = template.read()
@@ -541,6 +604,9 @@ class AppController:
                 template.close()
         except Exception:
             app_errorlogger.exception('Fatal error in writing to proxy template file: ', exc_info=True)
+        if path.exists(proxyPath + 'proxyconfig/sites/' + name) == False:
+            app_errorlogger.exception('Something went wrong during writing the proxy file for app: ' + instanceName, exc_info=True)
+            raise Exception('Fatal error in during writing the proxy file for app: ' + instanceName)
         
     @staticmethod
     def readContainernames(jobID, instanceName):
@@ -679,8 +745,30 @@ class AppController:
         output, error = process.communicate()
         if output:
             docker_logger.error( str(output).rstrip())
-        process = subprocess.Popen(['docker', 'exec', '-it', 'local_nginx', 'service', 'nginx', 'reload'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
+        process = subprocess.Popen(['docker', 'exec', '-it', 'local_nginx', 'service', 'nginx', 'reload'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding=sys.stdout.encoding)
         output, error = process.communicate()
+        #ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~]|\[0-9][.])')
+        #result = ansi_escape.sub('', output)
+        ansi_regex = r'\x1b+\[+\d+\d+;+\d+\d+[m]|' \
+             r'\x1b(' \
+             r'(\[\??\d+[hl])|' \
+             r'([=<>a-kzmNM78])|' \
+             r'([\(\)][a-b0-2])|' \
+             r'(\[\d{0,2}[ma-dgkjqi])|' \
+             r'(\[\d+;\d+[hfy]?)|' \
+             r'(\[;?[hf])|' \
+             r'(#[3-68])|' \
+             r'([01356]n)|' \
+             r'(O[mlnp-z]?)|' \
+             r'(/Z)|' \
+             r'(\d+)|' \
+             r'(\[\?\d;\d0c)|' \
+             r'(\d;\dR)|' \
+             r'(\[*\d*\d*;*\d*\d*[m]))' 
+             
+        ansi_escape = re.compile(ansi_regex, flags=re.IGNORECASE)
+        result = ansi_escape.sub('', output).rstrip()
+        #result = result.replace('m.','').replace('[','')
         if output:
             bibbox_logger.debug( str(output).rstrip())
         process = subprocess.Popen(['docker', 'logs', containerName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
@@ -1522,14 +1610,13 @@ class AppController:
 x = AppController()
 paramList, instanceName, appName, version = x.getParams('test7','app-seeddmsTNG','master')
 paramList = x.setParams(paramList)
-
-#x.installApp(paramList, instanceName, appName, version)
+atexit.register(exit, instanceName) 
+x.installApp(paramList, instanceName, appName, version)
 #status = x.getStatus(instanceName)
 #x.stopApp(instanceName) 
 #x.startApp(instanceName)
 #x.removeApp(instanceName)
-x.copyApp('test7', 'testappnew')
+#x.copyApp('test7', 'testappnew')
 #appsList = x.listInstalledApps('testID', instanceName)
-#pass
 #x.checkInput('testID', instanceName, ['test', 'abc'])
 #x.readAppStoreNew('1234', appName) 
