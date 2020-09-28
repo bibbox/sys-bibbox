@@ -20,6 +20,15 @@ import simplejson
 import re
 import atexit
 
+
+__author__ = "Stefan Herdy"
+__credits__ = ["Heimo Müller", "Robert Reihs ", "Markus Plass",]
+__license__ = "..."
+__version__ = "1.0.1"
+__email__ = "stefan.herdy@medunigraz.at"
+__status__ = "Development"
+
+
 class AppController:
 
 
