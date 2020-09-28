@@ -5,6 +5,7 @@ paramList, instanceName, appName, version = x.getParams('test7','app-seeddmsTNG'
 paramList = x.setParams(paramList)
 
 
+
 x.installApp(paramList, instanceName, appName, version)
 x.stopApp(instanceName) 
 status = x.getStatus(instanceName)
