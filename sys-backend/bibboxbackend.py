@@ -109,8 +109,8 @@ class AppController:
             output, error = process.communicate()
             if output:
                 bibbox_logger.debug( str(output))
-            bibbox_logger.error( ' The folder "/application-instance" does not exist!')
-            raise Exception('The folder "/application-instance" does not exist')
+            #bibbox_logger.error( ' The folder "/application-instance" does not exist!')
+            #raise Exception('The folder "/application-instance" does not exist')
         if instanceName in os.listdir(appPath):
             exists = True
         else:
@@ -261,6 +261,7 @@ class AppController:
                 raise Exception('Error while creating logfile "system.log"')
             
             return bibbox_logger
+
     
     @staticmethod
     def setStatus(jobID, status, instanceName):
@@ -1013,7 +1014,7 @@ class AppController:
             app_errorlogger.error( str(output))
 
     @staticmethod
-    def changeCompose(jobID, paramList, instanceName, newName):
+    def changeCompose(jobID, instanceName, newName):
         '''
         Description:
         -----------
@@ -1097,7 +1098,7 @@ class AppController:
             app_errorlogger.exception('Fatal error while writing to compose file: ', exc_info=True)
 
     @staticmethod
-    def readAppStoreNew(jobID, appName):
+    def readVersion(jobID, appName):
         '''
         Description:
         -----------
@@ -1115,7 +1116,7 @@ class AppController:
             The list of all available apps as json object
         '''
 
-        app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
+        #app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
         try:
             url = 'https://raw.githubusercontent.com/bibbox/application-store/master/eB3Kit.json'
             download = requests.get(url).content
@@ -1124,7 +1125,8 @@ class AppController:
         try:
             params = simplejson.loads(download)
         except Exception:
-            app_errorlogger.exception('Error while loading applications.json file: ', exc_info=True)
+            #app_errorlogger.exception('Error while loading eB3Kit.json file: ', exc_info=True)
+            raise Exception('Error while loading eB3Kit.json file')
         versionList=[]
         try:
             for i, values in enumerate(params):
@@ -1134,8 +1136,12 @@ class AppController:
                         versions = var['versions']
                         for version in versions:
                             versionList.append(version['docker_version'])
-        except Exception:
-            app_errorlogger.exception('Error while loading applications.json file: ', exc_info=True)                
+                    if var['app_display_name'] == appName:
+                        versions = var['versions']
+                        for version in versions:
+                            versionList.append(version['docker_version'])
+        except:
+            raise Exception('The wanted app does not exist. Please check the list of available apps!')                
 
         return versionList
 
@@ -1157,27 +1163,30 @@ class AppController:
         appslist: json object
             The list of all available apps as json object
         '''
-
-        app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
+        bibbox_logger = AppController.setUpLog(jobID, instanceName, systemonly=True)
         try:
-            url = 'https://raw.githubusercontent.com/bibbox/application-store/master/applications.json'
+            url = 'https://raw.githubusercontent.com/bibbox/application-store/master/eB3Kit.json'
             download = requests.get(url).content
         except Exception:
             raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
         try:
             params = simplejson.loads(download)
         except Exception:
-            app_errorlogger.exception('Error while loading applications.json file: ', exc_info=True)
-        apps=[]
-        gitNames=[]
-        for i, values in enumerate(params):
-            try:
-                apps.append(values['name'])
-                gitNames.append(values['github_name'])
-            except Exception:
-                app_errorlogger.exception('Error while reading applications.json file: ', exc_info=True)
-        appsList = json.dumps(apps)
-        return appsList
+            bibbox_logger.exception('Error while loading eB3Kit.json file: ', exc_info=True)
+            raise Exception('Error while loading eB3Kit.json file')
+        appslist=[]
+        try:
+            for i, values in enumerate(params):
+                variable = values['group_members']
+                for i, var in enumerate(variable):
+                    appName = var['app_name']
+                    if appName not in appslist:
+                        appslist.append(appName)
+        except Exception:
+            raise Exception('Error while loading eB3Kit.json file!')
+            bibbox_logger.exception('Error while loading eB3Kit.json file: ', exc_info=True)                
+
+        return appslist
         
 
 
@@ -1200,11 +1209,11 @@ class AppController:
             The list of all installed apps as json object
         '''
 
-        app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
+        bibbox_logger = AppController.setUpLog(jobID, instanceName, systemonly=True)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' 
         if path.exists(appPath) == False:
-            app_errorlogger.error(' The folder of the app repository does not exist!')
+            app_erbibbox_loggerrorlogger.error(' The folder of the app repository does not exist!')
         installedApps = {}
         try:
             for i, folder in enumerate(os.listdir(appPath)):
@@ -1213,7 +1222,7 @@ class AppController:
                     instanceName = data['instanceName']
                     appName = data['appName']
         except Exception:
-                app_errorlogger.exception('Could not open file "info.json" in application folder! ', exc_info=True)
+                bibbox_logger.exception('Could not open file "info.json" in application folder! ', exc_info=True)
                 raise Exception('Could not open file "info.json" in application folder! ')
                 
                 installedApps[instanceName] = appName
@@ -1259,11 +1268,14 @@ class AppController:
                 status = params[0]['State']['Status']
                 states[name] = status
             except Exception:
-                app_errorlogger.exception('Could not load ststus of wanted container ' + name, exc_info=True)
+                app_errorlogger.exception('Could not load status of wanted container ' + name, exc_info=True)
                 raise Exception('Could not load ststus of wanted container ' + name)
-            if status not in allowedStates:
-                app_errorlogger.error('The allowed states of the app containers are ' + ', '.join([str(elem) for elem in allowedStates]) + ', but the container of app ' + instanceName + ' has state ' + status)
-                raise Exception('The allowed states of the app containers are ' + ', '.join([str(elem) for elem in allowedStates]) + ', but the container of app ' + instanceName + ' has state ' + status)
+            if 'all' in allowedStates:
+                pass
+            else:
+                if status not in allowedStates:
+                    app_errorlogger.error('The allowed states of the app containers are ' + ', '.join([str(elem) for elem in allowedStates]) + ', but the container of app ' + instanceName + ' has state ' + status)
+                    raise Exception('The allowed states of the app containers are ' + ', '.join([str(elem) for elem in allowedStates]) + ', but the container of app ' + instanceName + ' has state ' + status)
             #except:
             #    output = output.decode('ascii').rstrip('\n')
             #    app_logger.debug( str(output))
@@ -1301,7 +1313,7 @@ class AppController:
         if not inputparams:
             app_logger.info('There are no input parameters to check')
         for var in inputparams:
-            valid = bool(re.match('^[a-zA-Z0-9]*$',var))
+            valid = bool(re.match('^[a-zA-Z0-9\-]*$',var))
             negativeList = ['admin']
             for param in negativeList:
                 if param in var:
@@ -1383,8 +1395,10 @@ class AppController:
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install = True)
         AppController.createFolder(jobID, instanceName)
+        inputparams = [instanceName, appName, version]
+        AppController.checkInput(jobID, instanceName, inputparams)
         AppController.setStatus(jobID, 'Prepare Install', instanceName)
-        AppController.setUpLog(jobID, instanceName)
+        #AppController.setUpLog(jobID, instanceName)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Downloading', instanceName)
         AppController.downloadApp(jobID, instanceName,appName,version)
@@ -1420,14 +1434,16 @@ class AppController:
         '''
         #statusList = ['Running']
         jobID = AppController.createJobID()
-        AppController.setUpLog(jobID, instanceName, systemonly=True)
+        #AppController.setUpLog(jobID, instanceName, systemonly=True)
         AppController.checkExists(jobID, instanceName, install=False)
+        inputparams = [instanceName]
+        AppController.checkInput(jobID, instanceName, inputparams)
         containerNames, mainContainer = AppController.readContainernames(jobID, instanceName)
         AppController.checkDockerState(jobID, instanceName, containerNames, ['running'])
         #AppController.checkStatus(jobID, instanceName, statusList)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Stopping', instanceName)
-        AppController.setUpLog(jobID, instanceName)
+        #AppController.setUpLog(jobID, instanceName)
         AppController.stop(jobID, instanceName)
         AppController.unlock(jobID, instanceName)
         AppController.checkDockerState(jobID, instanceName, containerNames, ['paused', 'stopped', 'exited'])
@@ -1458,6 +1474,8 @@ class AppController:
         #statusList = ['Stopped']
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
+        inputparams = [instanceName]
+        AppController.checkInput(jobID, instanceName, inputparams)
         #AppController.checkStatus(jobID, instanceName, statusList)
         containerNames, mainContainer = AppController.readContainernames(jobID, instanceName)
         AppController.checkDockerState(jobID, instanceName, containerNames, ['paused', 'stopped', 'exited'])
@@ -1491,6 +1509,8 @@ class AppController:
         '''
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
+        inputparams = [instanceName]
+        AppController.checkInput(jobID, instanceName, inputparams)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Removing App', instanceName)
         AppController.setUpLog(jobID, instanceName)
@@ -1517,9 +1537,15 @@ class AppController:
         
         '''
         jobID = AppController.createJobID()
+        containerNames, mainContainer = AppController.readContainernames(jobID, instanceName)
         AppController.checkExists(jobID, instanceName, install=False)
+        inputparams = [instanceName]
+        AppController.checkInput(jobID, instanceName, inputparams)
         AppController.setUpLog(jobID, instanceName)
-        AppController.status(jobID, instanceName)
+        #AppController.status(jobID, instanceName)
+        allowedStates = ['all']
+        states = AppController.checkDockerState(jobID, instanceName, containerNames, allowedStates)
+        return states
 
     @staticmethod
     def copyApp(instanceName, newName):
@@ -1546,11 +1572,13 @@ class AppController:
         '''
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
+        inputparams = [instanceName, newName]
+        AppController.checkInput(jobID, instanceName, inputparams)
         AppController.lock(jobID, instanceName)
         AppController.setUpLog(jobID, instanceName)
         AppController.copy(jobID, instanceName, newName)
         AppController.setUpLog(jobID, newName)
-        AppController.changeCompose(jobID, paramList, instanceName, newName)
+        AppController.changeCompose(jobID, instanceName, newName)
         AppController.unlock(jobID, instanceName)
         ContainerNames, mainContainer = AppController.readContainernames(jobID, newName)
         AppController.setProxyFiles(jobID, newName, mainContainer)
@@ -1561,7 +1589,7 @@ class AppController:
 
         
     @staticmethod
-    def listApps(jobID, instanceName):
+    def listApps():
 
         '''
         Description:
@@ -1579,11 +1607,13 @@ class AppController:
         appslist: json object
             The list of all available apps as json object
         '''
+        jobID = AppController.createJobID()
+        instanceName = 'system'
         appsList = AppController.readAppStore(jobID, instanceName)
         return appsList
 
     @staticmethod
-    def listInstalledApps(jobID, instanceName):
+    def listInstalledApps():
 
         '''
         Description:
@@ -1601,22 +1631,10 @@ class AppController:
         appslist: json object
             The list of all available apps as json object
         '''
-        
+        jobID = AppController.createJobID()
+        instanceName = 'system'
         installedAppsList = AppController.getInstalledApps(jobID, instanceName)
         return installedAppsList
 
 
 
-x = AppController()
-paramList, instanceName, appName, version = x.getParams('test7','app-seeddmsTNG','master')
-paramList = x.setParams(paramList)
-atexit.register(exit, instanceName) 
-x.installApp(paramList, instanceName, appName, version)
-#status = x.getStatus(instanceName)
-#x.stopApp(instanceName) 
-#x.startApp(instanceName)
-#x.removeApp(instanceName)
-#x.copyApp('test7', 'testappnew')
-#appsList = x.listInstalledApps('testID', instanceName)
-#x.checkInput('testID', instanceName, ['test', 'abc'])
-#x.readAppStoreNew('1234', appName) 
