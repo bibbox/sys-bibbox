@@ -1,0 +1,15 @@
+import bibboxbackend
+
+x = AppController()
+paramList, instanceName, appName, version = x.getParams('test7','app-seeddmsTNG','master')
+paramList = x.setParams(paramList)
+atexit.register(exit, instanceName) 
+x.installApp(paramList, instanceName, appName, version)
+#status = x.getStatus(instanceName)
+#x.stopApp(instanceName) 
+#x.startApp(instanceName)
+#x.removeApp(instanceName)
+#x.copyApp('test7', 'testappnew')
+#appsList = x.listInstalledApps('testID', instanceName)
+#x.checkInput('testID', instanceName, ['test', 'abc'])
+#x.readAppStoreNew('1234', appName) 
