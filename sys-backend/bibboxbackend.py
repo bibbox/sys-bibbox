@@ -255,13 +255,13 @@ class AppController:
             bibbox_logger = AppController.setup_logger(jobID, instanceName + '-bibbox.log', rootdir + '/log/system.log', level=logging.DEBUG)
             
             if path.exists(logpath + 'debug.log') == False:
-                raise Exception('Error while creating logfile "debug.log"')
+                raise Exception('Error while creating logfile "debug.log" in folder ' + logpath + '.')
             if path.exists(logpath + 'error.log') == False:
-                raise Exception('Error while creating logfile "error.log"')
+                raise Exception('Error while creating logfile "error.log" in folder ' + logpath + '.')
             if path.exists(logpath + 'docker.log') == False:
-                raise Exception('Error while creating logfile "docker.log"')
+                raise Exception('Error while creating logfile "docker.log" in folder ' + logpath + '.')
             if path.exists(rootdir + '/log/system.log') == False:
-                raise Exception('Error while creating logfile "system.log"')
+                raise Exception('Error while creating logfile "system.log" in folder ' + logpath + '.')
             
             return app_logger, bibbox_logger, docker_logger, app_errorlogger
         else:
@@ -877,7 +877,7 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
-        app_logger.info( 'Romoving App:' + instanceName)
+        app_logger.info( 'Removing App:' + instanceName)
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
@@ -890,7 +890,7 @@ class AppController:
         process = subprocess.Popen(['sudo', 'chmod' ,'-f', '-R', '777', rootdir + '/application-instance/' + instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            docker_logger.error( str(output))
+            bibbox_logger.error( str(output))
         process = subprocess.Popen(['rm' , '-f', '-R', rootdir + '/application-instance/' + instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
@@ -1016,11 +1016,21 @@ class AppController:
         if path.exists(appPath) == False:
             app_errorlogger.error('The folder of the app repository does not exist!')
         #process = subprocess.Popen(['sudo', 'cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        process = subprocess.Popen(['cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-
+        
+        #process = subprocess.Popen(['echo', 'vendetta','|', 'sudo', '-S', '-v'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        #process = subprocess.Popen(['echo', 'vendetta','|', 'sudo', '-S', 'cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(['sudo', 'chmod', '-R', '777', rootdir + '/application-instance/' +  instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
             app_errorlogger.error( str(output))
+        process = subprocess.Popen(['cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        if output:
+            app_errorlogger.error( str(output))
+        #process = subprocess.Popen(['sudo', 'chmod', '-R', '777', rootdir + '/application-instance/' +  newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        #output, error = process.communicate()
+        #if output:
+        #    app_errorlogger.error( str(output))
 
     @staticmethod
     def changeCompose(jobID, instanceName, newName):
@@ -1230,11 +1240,12 @@ class AppController:
                     data = json.load(infofile)
                     instanceName = data['instanceName']
                     appName = data['appName']
+                    installedApps[instanceName] = appName
         except Exception:
                 bibbox_logger.exception('Could not open file "info.json" in application folder! ', exc_info=True)
                 raise Exception('Could not open file "info.json" in application folder! ')
                 
-                installedApps[instanceName] = appName
+                
         installedAppsList = json.dumps(installedApps)
         return installedAppsList
 
@@ -1277,14 +1288,14 @@ class AppController:
                 status = params[0]['State']['Status']
                 states[name] = status
             except Exception:
-                app_errorlogger.exception('Could not load status of wanted container ' + name, exc_info=True)
-                raise Exception('Could not load ststus of wanted container ' + name)
+                app_errorlogger.exception('Could not load status of wanted container. ' + name + ' Maybe this container got removed manually. Please look at the log files!', exc_info=True)
+                raise Exception('Could not load status of wanted container ' + name + ' Maybe this container got removed manually. Please look at the log files!')
             if 'all' in allowedStates:
                 pass
             else:
                 if status not in allowedStates:
-                    app_errorlogger.error('The allowed states of the app containers are ' + ', '.join([str(elem) for elem in allowedStates]) + ', but the container of app ' + instanceName + ' has state ' + status)
-                    raise Exception('The allowed states of the app containers are ' + ', '.join([str(elem) for elem in allowedStates]) + ', but the container of app ' + instanceName + ' has state ' + status)
+                    app_errorlogger.error('Could not perform the wanted task. The allowed states of the app containers are: "' + ', '.join([str(elem) for elem in allowedStates]) + '". But the container of app ' + instanceName + ' has state ' + status + '.')
+                    raise Exception('Could not perform the wanted task. The allowed states of the app containers are: ' + ', "'.join([str(elem) for elem in allowedStates]) + '". But the container of app ' + instanceName + ' has state ' + status + '.')
             #except:
             #    output = output.decode('ascii').rstrip('\n')
             #    app_logger.debug( str(output))
@@ -1317,7 +1328,7 @@ class AppController:
         -------
         
         '''
-        app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
+        bibbox_logger = AppController.setUpLog(jobID, instanceName, systemonly = True)
         validAll = True
         if not inputparams:
             app_logger.info('There are no input parameters to check')
@@ -1338,6 +1349,19 @@ class AppController:
             bibbox_logger.debug('The tested input is not valid!')
 
         return validAll
+
+    @staticmethod
+    def checkInstall(instanceName, states):
+        for container in states:
+            state = states[container]
+            if state != 'running':
+                try: 
+                    AppController.startApp(instanceName)
+                except:
+                    pass
+            if state != 'running':
+                AppController.removeApp(instancename)
+                raise Exception('The installation could not be completed. Please read the logs and try again')
 
 
     """
@@ -1404,11 +1428,11 @@ class AppController:
         '''
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install = True)
-        AppController.createFolder(jobID, instanceName)
         inputparams = [instanceName, appName, version]
         AppController.checkInput(jobID, instanceName, inputparams)
+        AppController.createFolder(jobID, instanceName)
         AppController.setStatus(jobID, 'Prepare Install', instanceName)
-        #AppController.setUpLog(jobID, instanceName)
+        AppController.setUpLog(jobID, instanceName)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Downloading', instanceName)
         AppController.downloadApp(jobID, instanceName,appName,version)
@@ -1419,7 +1443,8 @@ class AppController:
         AppController.writeCompose(jobID, paramList, instanceName)
         AppController.composeUp(jobID, instanceName, mainContainer)
         AppController.unlock(jobID, instanceName)
-        AppController.checkDockerState(jobID, instanceName, containerNames, ['running'])
+        states = AppController.checkDockerState(jobID, instanceName, containerNames, ['running'])
+        #AppController = checkInstall(instanceName, states)
         AppController.setStatus(jobID, 'Running', instanceName)
     
     @staticmethod
@@ -1523,7 +1548,7 @@ class AppController:
         AppController.checkInput(jobID, instanceName, inputparams)
         AppController.lock(jobID, instanceName)
         AppController.setStatus(jobID, 'Removing App', instanceName)
-        AppController.setUpLog(jobID, instanceName)
+        #AppController.setUpLog(jobID, instanceName, systemonly=True)
         AppController.remove(jobID, instanceName)
 
     @staticmethod
@@ -1582,6 +1607,7 @@ class AppController:
         '''
         jobID = AppController.createJobID()
         AppController.checkExists(jobID, instanceName, install=False)
+        AppController.checkExists(jobID, newName, install=True)
         inputparams = [instanceName, newName]
         AppController.checkInput(jobID, instanceName, inputparams)
         AppController.lock(jobID, instanceName)
