@@ -13,6 +13,7 @@ To install the and use the bibbox software please follow these instructions:
 Run the following commands:
 
 `sudo apt-get update`
+
 `sudo apt install docker.io`
 
 ##### Install Docker Compose
