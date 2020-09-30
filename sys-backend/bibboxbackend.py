@@ -1444,8 +1444,9 @@ class AppController:
         AppController.composeUp(jobID, instanceName, mainContainer)
         AppController.unlock(jobID, instanceName)
         states = AppController.checkDockerState(jobID, instanceName, containerNames, ['running'])
-        #AppController = checkInstall(instanceName, states)
+        AppController.checkInstall(instanceName, states)
         AppController.setStatus(jobID, 'Running', instanceName)
+
     
     @staticmethod
     def stopApp(instanceName):
