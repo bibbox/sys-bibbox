@@ -30,11 +30,17 @@ Clone the BiBBoX repository to your prefered destination using the command
 
 `git clone https://github.com/bibbox/sys-bibbox.git`.
 
+Change the direction to the sys-bibbox folder using
+
+`cd sys-bibbox`
+
+##### Start the nginx Webserver Container
+
+Run `sudo docker-compose up -d`
+
 ##### Create the BiBBoX default network
 
 Run `docker network create bibbox-default-network`.
 
-
-
-## Install within BIBBOX
+## Test the BIBBOX
 
