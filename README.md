@@ -32,7 +32,7 @@ Clone the BiBBoX repository to your prefered destination using the command
 
 Change the direction to the sys-bibbox folder using
 
-`cd sys-bibbox`
+`cd sys-bibbox`.
 
 ##### Start the nginx Webserver Container
 
