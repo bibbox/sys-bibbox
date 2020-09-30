@@ -8,7 +8,7 @@ This container contains the BiBBoX [BIBBOX APP](http://bibbox.readthedocs.io/en/
 
 To install the and use the bibbox software please follow these instructions:
 
-# Install Docker
+### Install Docker
 
 
 ## Install within BIBBOX
