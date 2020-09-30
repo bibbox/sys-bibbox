@@ -44,3 +44,8 @@ Run `docker network create bibbox-default-network`.
 
 ## Test the BIBBOX
 
+Choose the folder "sys-bibbox" as working directory and run the predefined test script "test.py" with the command
+
+`sudo python3 sys-backend/test.py`
+
+The testfile contains predefined commands. For further testing it is recommented to open and modify the testfile or to run the specific commands in an IDE in debug mode.
