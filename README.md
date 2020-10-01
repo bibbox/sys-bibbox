@@ -34,13 +34,13 @@ Change the direction to the sys-bibbox folder using
 
 `cd sys-bibbox`.
 
-##### Start the nginx Webserver Container
-
-Run `sudo docker-compose up -d`
-
 ##### Create the BiBBoX default network
 
 Run `docker network create bibbox-default-network`.
+
+##### Start the nginx Webserver Container
+
+Run `sudo docker-compose up -d`
 
 ## Test the BIBBOX
 
