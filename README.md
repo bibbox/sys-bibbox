@@ -48,6 +48,8 @@ Run
 
 ## Test the BIBBOX
 
+The bibbox backend is tested with Ubuntu 20.04, so it is recommendet to use this OS to run the BiBBoX.
+
 Choose the folder "sys-bibbox" as working directory and run the predefined test script "test.py" with the command
 
 `sudo python3 sys-backend/test.py`
