@@ -608,7 +608,7 @@ class AppController:
             with open(proxyPath + 'template.conf') as template:
                 file_content = template.read()
                 file_content = file_content.replace("§§INSTANCEID", instanceName + '/')
-                file_content = file_content.replace("§§CONTAINERNAME", containerName)
+                file_content = file_content.replace("§§CONTAINERNAME", containerName + '/')
                 template = open( proxyPath + 'proxyconfig/sites/' + name, 'w+')
                 template.write(file_content)
                 template.close()
