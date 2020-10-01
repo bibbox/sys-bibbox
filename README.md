@@ -14,7 +14,7 @@ Run the following commands:
 
 `sudo apt-get update`
 
-`sudo apt install docker.io`
+`sudo apt -y install docker.io`
 
 ##### Install Docker Compose
 
@@ -22,7 +22,7 @@ To install the newest docker-compose package follow the insall dokumentation on 
 
 https://docs.docker.com/compose/install/
 
-If you do not have installed the package curl, you can install it using `sudo apt-get install curl`.
+If you do not have installed the package curl, you can install it using `sudo apt-get -y install curl`.
 
 ##### Clone GitHub Repository
 
