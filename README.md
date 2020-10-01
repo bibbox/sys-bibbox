@@ -55,3 +55,5 @@ Choose the folder "sys-bibbox" as working directory and run the predefined test 
 `sudo python3 sys-backend/test.py`
 
 The testfile contains predefined commands. For further testing it is recommented to open and modify the testfile or to run the specific commands in an IDE in debug mode.
+
+A started app with a user defined instance name (instanceName) can be used under "localhost:8010/instanceName" in the browser.
