@@ -28,15 +28,15 @@ If you do not have installed the package curl, you can install it using `sudo ap
 
 Clone the BiBBoX repository to your prefered destination using the command
 
-`git clone https://github.com/bibbox/sys-bibbox.git`.
+`git clone https://github.com/bibbox/sys-bibbox.git`
 
 Change the direction to the sys-bibbox folder using
 
-`cd sys-bibbox`.
+`cd sys-bibbox`
 
 ##### Create the BiBBoX default network
 
-Run `sudo docker network create bibbox-default-network`.
+Run `sudo docker network create bibbox-default-network`
 
 ##### Start the nginx Webserver Container
 
