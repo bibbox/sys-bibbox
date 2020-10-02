@@ -19,6 +19,7 @@ from subprocess import check_output
 import simplejson
 import re
 import atexit
+import fire
 
 
 __author__ = "Stefan Herdy"
@@ -1367,6 +1368,17 @@ class AppController:
     """
     Section: Main functions
     """
+class MainFunctions():
+
+    def __init__(self):
+        self.rootdir = dirname(dirname(abspath(__file__)))
+        self.appPath = self.rootdir + '/application-instance'
+    def __del__(self):
+        try:
+            jobID = AppController.createJobID()
+            AppController.unlock(jobID, instanceName, end = True)
+        except:
+            pass
 
     @staticmethod
     def getParams(instanceName, appName, version):
@@ -1674,4 +1686,5 @@ class AppController:
         return installedAppsList
 
 
-
+if __name__ == '__main__':
+  fire.Fire(MainFunctions)
