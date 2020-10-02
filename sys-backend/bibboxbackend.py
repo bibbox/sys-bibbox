@@ -19,7 +19,6 @@ from subprocess import check_output
 import simplejson
 import re
 import atexit
-import fire
 
 
 __author__ = "Stefan Herdy"
@@ -1368,7 +1367,7 @@ class AppController:
     """
     Section: Main functions
     """
-class MainFunctions():
+
 
     def __init__(self):
         self.rootdir = dirname(dirname(abspath(__file__)))
@@ -1686,5 +1685,3 @@ class MainFunctions():
         return installedAppsList
 
 
-if __name__ == '__main__':
-  fire.Fire(MainFunctions)
