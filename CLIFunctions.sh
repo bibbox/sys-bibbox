@@ -38,7 +38,7 @@ function installApp()
 #	    echo check1
  #           echo ${item[0]}
 #	    echo check2
-#	    echo ${strarr[0]}:
+	    echo ${strarr[0]}:
             read param
 	    v2=$param
 	    v1=${strarr[0]}
