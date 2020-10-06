@@ -82,7 +82,7 @@ function listInstalledApps()
         python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.listInstalledApps()'
 }
 
-installApp seeddms22 app-seeddmsTNG master
+#installApp seeddms22 app-seeddmsTNG master
 #stopApp seeddms10
 #startApp seeddms10
 #getStatus seeddms10
