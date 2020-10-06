@@ -9,18 +9,36 @@ function installApp()
         params=$(curl https://raw.githubusercontent.com/bibbox/$var1/master/.env)
 	sed s/' '/'='/g <<< $params
         echo https://raw.githubusercontent.com/bibbox/$var1/master/.env
-        echo Please enter x user specifications!
+        echo Please enter working user specifications!
 	#ext = begin
 	keylist="'"
         paramlist="'"
+#	echo $params params
+#	IFS=' '
+#        read -a line <<< $params
+#	echo ${line} line
 	for item in $params
         do
+#	  echo $params
           IFS='='
           read -a strarr <<< $item
-
+#	  echo ch1
+#	  echo $item
+#	  echo ch2
+#	  echo $strarr
+#	  echo ch3
+#	  echo ${strarr[0]}
+	  IFS=$'\n'
+          read -a out <<< $item
+#	  echo ${out[0]} out
           if [ ${strarr[0]} != 'PORT' ] && [ ${strarr[0]} != 'INSTANCE' ] 
           then
-            echo ${strarr[0]}:
+#	    echo check
+#	    echo $params
+#	    echo check1
+ #           echo ${item[0]}
+#	    echo check2
+#	    echo ${strarr[0]}:
             read param
 	    v2=$param
 	    v1=${strarr[0]}
