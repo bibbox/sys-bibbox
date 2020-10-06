@@ -19,7 +19,7 @@ from subprocess import check_output
 import simplejson
 import re
 import atexit
-import fire
+
 
 
 __author__ = "Stefan Herdy"
