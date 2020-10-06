@@ -773,8 +773,8 @@ class AppController:
         
         for i, key in enumerate(keyList):
             if key != '':
-                print(key)
-                print(str(paramList[i]))
+                #print(key)
+                #print(str(paramList[i]))
                 compose = compose.replace('§§' + key, paramList[i])
         
         
