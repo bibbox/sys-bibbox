@@ -7,6 +7,7 @@ function installApp()
         declare keylist
 	declare paramlist
         params=$(curl https://raw.githubusercontent.com/bibbox/$var1/master/.env)
+	sed s/' '/'='/g <<< $params
         echo https://raw.githubusercontent.com/bibbox/$var1/master/.env
         echo Please enter user specifications!
 	#ext = begin
