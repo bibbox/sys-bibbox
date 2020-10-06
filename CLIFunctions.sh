@@ -53,8 +53,8 @@ function installApp()
         var2="'$2'"
         var3="'$3'"
 
-	echo $keylist
-	echo $paramlist
+#	echo $keylist
+#	echo $paramlist
 
         sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.installApp('"$paramlist"','"$keylist"','"$var1"','"$var2"','"$var3"',CLI=True)'
 }
