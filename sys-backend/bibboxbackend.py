@@ -777,7 +777,7 @@ class AppController:
                 print(str(paramList[i]))
                 compose = compose.replace('§§' + key, paramList[i])
         
-        print('step1')
+        
         compose = compose.replace('§§INSTANCE', instanceName)
         target = open(appPath + '/docker-compose-template.yml', 'w')
         target.write(compose)
