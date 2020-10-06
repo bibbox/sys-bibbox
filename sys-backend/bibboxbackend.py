@@ -765,8 +765,8 @@ class AppController:
             compose = open(appPath + '/docker-compose-template.yml', 'r').read()
         except Exception:
             app_errorlogger.exception('Fatal error in reading compose file: ', exc_info=True)
-        print(keyList)
-        print(paramList)
+        #print(keyList)
+        #print(paramList)
         #compose = yaml.load(compose)
         paramList = paramList.split(';')
         keyList = keyList.split(';')
