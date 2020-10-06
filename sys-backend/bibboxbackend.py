@@ -19,6 +19,7 @@ from subprocess import check_output
 import simplejson
 import re
 import atexit
+import fire
 
 
 __author__ = "Stefan Herdy"
@@ -27,6 +28,7 @@ __license__ = "..."
 __version__ = "1.0.1"
 __email__ = "stefan.herdy@medunigraz.at"
 __status__ = "Development"
+
 
 
 class AppController:
@@ -712,7 +714,7 @@ class AppController:
 
         #compose = yaml.load(compose)
         try:
-            for key in paramList:
+            for i, key in enumerate(paramList):
                 compose = compose.replace('§§' + key, paramList[key])
         except Exception:
             app_errorlogger.exception('Fatal error in writing to compose file: ', exc_info=True)
@@ -723,6 +725,64 @@ class AppController:
             target.close()
         except Exception:
             app_errorlogger.exception('Fatal error in writing to compose file: ', exc_info=True)
+
+
+
+    @staticmethod
+    def writeCLICompose(jobID, paramList, keyList, instanceName):
+        '''
+        Description:
+        -----------
+        Changes the instance name of the docker-compose-template.yml file.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        paramList: array
+            list of environment variables that are defined in the .env file in the repository of the application
+
+        instanceName : str
+            The instance name of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        '''
+
+        app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
+        app_logger.info('Write parameters to compose file')
+        rootdir = dirname(dirname(abspath(__file__)))
+        appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
+        if path.exists(appPath) == False:
+            app_errorlogger.error(' The folder "/application-instance" does not exist!')
+        try:
+            compose = open(appPath + '/docker-compose-template.yml', 'r').read()
+        except Exception:
+            app_errorlogger.exception('Fatal error in reading compose file: ', exc_info=True)
+        print(keyList)
+        print(paramList)
+        #compose = yaml.load(compose)
+        paramList = paramList.split(';')
+        keyList = keyList.split(';')
+        
+        for i, key in enumerate(keyList):
+            if key != '':
+                print(key)
+                print(str(paramList[i]))
+                compose = compose.replace('§§' + key, paramList[i])
+        
+        print('step1')
+        compose = compose.replace('§§INSTANCE', instanceName)
+        target = open(appPath + '/docker-compose-template.yml', 'w')
+        target.write(compose)
+        target.close()
+        
+
+
     @staticmethod
     def composeUp(jobID, instanceName, containerName):
         '''
@@ -1369,15 +1429,8 @@ class AppController:
     """
 
 
-    def __init__(self):
-        self.rootdir = dirname(dirname(abspath(__file__)))
-        self.appPath = self.rootdir + '/application-instance'
-    def __del__(self):
-        try:
-            jobID = AppController.createJobID()
-            AppController.unlock(jobID, instanceName, end = True)
-        except:
-            pass
+
+
 
     @staticmethod
     def getParams(instanceName, appName, version):
@@ -1396,6 +1449,9 @@ class AppController:
                 pass
             else:
                 paramList[param] = []
+        
+        #with open(appPath + '/' + instanceName + '/params.json', 'w+') as outfile:
+                #json.dump(paramList, outfile)
             
         return paramList, instanceName, appName, version
 
@@ -1409,7 +1465,7 @@ class AppController:
 
     
     @staticmethod
-    def installApp(paramList, instanceName, appName, version):
+    def installApp(paramList, keyList, instanceName, appName, version, CLI=False):
         '''
         Description:
         -----------
@@ -1451,7 +1507,10 @@ class AppController:
         AppController.setInfo(jobID, instanceName,appName,version)
         containerNames, mainContainer = AppController.readContainernames(jobID, instanceName)
         AppController.setProxyFiles(jobID, instanceName, mainContainer)
-        AppController.writeCompose(jobID, paramList, instanceName)
+        if CLI == True:
+            AppController.writeCLICompose(jobID, paramList, keyList, instanceName)
+        else:
+            AppController.writeCompose(jobID, paramList, instanceName)
         AppController.composeUp(jobID, instanceName, mainContainer)
         AppController.unlock(jobID, instanceName)
         states = AppController.checkDockerState(jobID, instanceName, containerNames, ['running'])
@@ -1685,3 +1744,5 @@ class AppController:
         return installedAppsList
 
 
+if __name__ == '__main__':
+  fire.Fire(MainFunctions)
