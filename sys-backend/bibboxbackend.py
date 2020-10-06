@@ -445,7 +445,7 @@ class AppController:
         rootdir = 'opt/bibbox/sys-bibbox'
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
-            app_errorlogger.error(' - The folder "/application-instance" does not exist!')
+            raise Exception('The folder "/application-instance" does not exist!')
         app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
         app_logger.info( 'Downloading app: ' + appName + '/' + instanceName + ' V:' + version)
         
@@ -492,7 +492,7 @@ class AppController:
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
-            app_errorlogger.error('The folder "/application-instance" does not exist!')
+            raise Exception('The folder "/application-instance" does not exist!')
         #try:
         #    text_file = open(appPath + '/' + instanceName + '/INFO.json', "w")
         #    text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
@@ -550,7 +550,7 @@ class AppController:
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
-            app_errorlogger.error('The folder "/application-instance" does not exist!')
+            raise Exception('The folder "/application-instance" does not exist!')
         try:
             with open(appPath + '/' + instanceName + '/info.json') as outfile:
                 data = json.load(outfile)
@@ -652,7 +652,7 @@ class AppController:
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
-            app_errorlogger.error(' The folder "/application-instance" does not exist!')
+            raise Exception('The folder "/application-instance" does not exist!')
         composefile = open(appPath + '/' + instanceName +'/repo/docker-compose-template.yml', 'r').read()
         try:
             data = yaml.load(composefile, Loader=yaml.FullLoader)
@@ -707,7 +707,7 @@ class AppController:
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
-            app_errorlogger.error(' The folder "/application-instance" does not exist!')
+            raise Exception('The folder "/application-instance" does not exist!')
         try:
             compose = open(appPath + '/docker-compose-template.yml', 'r').read()
         except Exception:
@@ -759,7 +759,7 @@ class AppController:
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
-            app_errorlogger.error(' The folder "/application-instance" does not exist!')
+            raise Exception('The folder "/application-instance" does not exist!')
         try:
             compose = open(appPath + '/docker-compose-template.yml', 'r').read()
         except Exception:
@@ -811,7 +811,7 @@ class AppController:
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
-            app_logger.error( 'The folder of the app repository does not exist!')
+            raise Exception('The folder "/application-instance" does not exist!')
         process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'up', '-d'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
