@@ -441,7 +441,8 @@ class AppController:
         -------
         
         '''
-        rootdir = dirname(dirname(abspath(__file__)))
+        #rootdir = dirname(dirname(abspath(__file__)))
+        rootdir = 'opt/bibbox/sys-bibbox'
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
             app_errorlogger.error(' - The folder "/application-instance" does not exist!')
