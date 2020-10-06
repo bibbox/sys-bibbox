@@ -38,48 +38,48 @@ function installApp()
 	echo $keylist
 	echo $paramlist
 
-        python3 -c 'import sys; sys.path.insert(1, "/home/v/Documents/Code/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.installApp('"$paramlist"','"$keylist"','"$var1"','"$var2"','"$var3"',CLI=True)'
+        python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.installApp('"$paramlist"','"$keylist"','"$var1"','"$var2"','"$var3"',CLI=True)'
 }
 
 function startApp() 
 {
 	var="'$1'"
-	python3 -c 'import sys; sys.path.insert(1, "/home/v/Documents/Code/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.startApp('"$var"')'
+	python3 -c 'import sys; sys.path.insert(1, "//opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.startApp('"$var"')'
 }
 
 function stopApp() 
 {
         var="'$1'"
-        python3 -c 'import sys; sys.path.insert(1, "/home/v/Documents/Code/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.stopApp('"$var"')'
+        python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.stopApp('"$var"')'
 }
 
 function removeApp() 
 {
         var="'$1'"
-        python3 -c 'import sys; sys.path.insert(1, "/home/v/Documents/Code/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.removeApp('"$var"')'
+        python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.removeApp('"$var"')'
 }
 
 function getStatus() 
 {
         var="'$1'"
-        python3 -c 'import sys; sys.path.insert(1, "/home/v/Documents/Code/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.getStatus('"$var"')'
+        python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.getStatus('"$var"')'
 }
 
 function copyApp() 
 {
         var1="'$1'"
 	var2="'$2'"
-        python3 -c 'import sys; sys.path.insert(1, "/home/v/Documents/Code/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.copyApp('"$var1"','"$var2"')'
+        python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.copyApp('"$var1"','"$var2"')'
 }
 
 function listApps() 
 {
-        python3 -c 'import sys; sys.path.insert(1, "/home/v/Documents/Code/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.listApps()'
+        python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.listApps()'
 }
 
 function listInstalledApps() 
 {
-        python3 -c 'import sys; sys.path.insert(1, "/home/v/Documents/Code/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.listInstalledApps()'
+        python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.listInstalledApps()'
 }
 
 installApp seeddms22 app-seeddmsTNG master
