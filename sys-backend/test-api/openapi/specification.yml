@@ -1,0 +1,32 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Bibbox"
+basePath: "/api/v1"
+tags:
+  - name: "apps"
+schemes:
+  - "https"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+paths:
+  /apps:
+    get:
+      tags:
+        - "apps"
+      summary: "Get all available apps"
+      operationId: "listApps"
+      responses:
+        200:
+          description: "Successfully retrived list"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+definitions:
+  list:
+    type: string
+
