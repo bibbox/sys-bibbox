@@ -10,6 +10,8 @@ touch system.log
 cd ..
 cd sys-proxy/proxyconfig
 mkdir -p sites/
+cd ..
+cd ..
 source CLIFunctions.sh
 mkdir -p application-instance
 docker-compose up -d
