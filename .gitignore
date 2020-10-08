@@ -5,4 +5,4 @@ application-instance
 log
 sys-proxy
 
-
+**/__pycache__
