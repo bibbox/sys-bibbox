@@ -8,6 +8,8 @@ mkdir -p log
 cd log
 touch system.log
 cd ..
+cd sys-proxy/proxyconfig
+mkdir -p sites/
 source CLIFunctions.sh
 mkdir -p application-instance
 docker-compose up -d
