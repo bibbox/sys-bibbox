@@ -1,7 +1,7 @@
 
 ##!/bin/bash
 
-function installApp() 
+function bibbox-installApp() 
 {
 	var1=$2
         declare keylist
@@ -56,48 +56,58 @@ function installApp()
 #	echo $keylist
 #	echo $paramlist
 
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.installApp('"$paramlist"','"$keylist"','"$var1"','"$var2"','"$var3"',CLI=True)'
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.installApp('"$paramlist"','"$keylist"','"$var1"','"$var2"','"$var3"',CLI=True)'
 }
 
-function startApp() 
+function bibbox-startApp() 
 {
 	var="'$1'"
-	sudo python3 -c 'import sys; sys.path.insert(1, "//opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.startApp('"$var"')'
+	sudo python3 -c 'import sys; sys.path.insert(1, "//opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.startApp('"$var"')'
 }
 
-function stopApp() 
+function bibbox-stopApp() 
 {
         var="'$1'"
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.stopApp('"$var"')'
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.stopApp('"$var"')'
 }
 
-function removeApp() 
+function bibbox-removeApp() 
 {
         var="'$1'"
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.removeApp('"$var"')'
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.removeApp('"$var"')'
 }
 
-function getStatus() 
+function bibbox-getStatus() 
 {
         var="'$1'"
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.getStatus('"$var"')'
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.getStatus('"$var"')'
 }
 
-function copyApp() 
+function bibbox-copyApp() 
 {
         var1="'$1'"
 	var2="'$2'"
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.copyApp('"$var1"','"$var2"')'
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.copyApp('"$var1"','"$var2"')'
 }
 
-function listApps() 
+function bibbox-listApps() 
 {
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.listApps()'
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.listApps()'
 }
 
-function listInstalledApps() 
+function bibbox-listInstalledApps() 
 {
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; bibboxbackend.AppController.listInstalledApps()'
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.listInstalledApps()'
+}
+
+function bibbox-startBibbox() 
+{
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.startBibbox()'
+}
+
+function bibbox-stopBibbox() 
+{
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.stopBibbox()'
 }
 
 #installApp seeddms22 app-seeddmsTNG master

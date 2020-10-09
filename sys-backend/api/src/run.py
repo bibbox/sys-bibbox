@@ -3,7 +3,7 @@ import os
 import connexion
 import sys
 
-sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend/test-api/src/test_api/web")
+sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend/api/src/web")
 
 
 #from web 
@@ -11,7 +11,7 @@ import encoder
 
 
 def create_app():
-    abs_file_path = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    abs_file_path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
     openapi_path = os.path.join(abs_file_path, "openapi")
     app = connexion.FlaskApp(
         __name__, specification_dir=openapi_path, options={"swagger_ui": True, "serve_spec": True}
@@ -23,3 +23,4 @@ def create_app():
 
     return flask_app
 
+create_app()

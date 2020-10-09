@@ -3,7 +3,7 @@ import six
 import sys
 
 
-sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend/test-api/src/test_api/web/models")
+sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend/api/src/web/models")
 from base_model_ import Model
 
 

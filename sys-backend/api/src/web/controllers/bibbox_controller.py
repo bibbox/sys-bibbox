@@ -14,7 +14,8 @@ def listApps():  # noqa: E501
      
     """
     try:
-        response = AppController.listApps(), 200
+        controller = AppController()
+        response = controller.listApps(), 200
     except KeyError:
         response = {}, 404
     #response = "hello"
@@ -30,9 +31,12 @@ def listInstalledApps():  # noqa: E501
      
     """
     try:
-        response = AppController.listInstalledApps(), 200
+        controller = AppController()
+        response = controller.listInstalledApps(), 200
     except KeyError:
         response = {}, 404
     #response = "hello"
 
     return response
+
+listApps()
