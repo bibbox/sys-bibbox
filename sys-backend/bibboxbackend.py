@@ -1767,7 +1767,7 @@ class AppController:
         appslist: json object
             The list of all available apps as json object
         '''
-        jobID = AppController.createJobID(self, )
+        jobID = AppController.createJobID(self)
         instanceName = 'system'
         installedAppsList = AppController.getInstalledApps(self, jobID, instanceName)
         return installedAppsList
@@ -1812,7 +1812,7 @@ class AppController:
         -------
         
         '''
-        jobID = AppController.createJobID(self, )
+        jobID = AppController.createJobID(self)
         AppController.stopNginx(self, jobID)
         
 
