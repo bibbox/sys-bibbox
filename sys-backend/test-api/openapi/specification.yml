@@ -26,7 +26,23 @@ paths:
         404:
           description: "Could not load list"
       x-swagger-router-controller: "web.controllers.bibbox_controller"
+  /installedapps:
+    get:
+      tags:
+        - "installed apps"
+      summary: "Get all installed apps"
+      operationId: "listInstalledApps"
+      responses:
+        200:
+          description: "Successfully retrived list"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
 definitions:
   list:
     type: string
+
 

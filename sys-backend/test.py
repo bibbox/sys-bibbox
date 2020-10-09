@@ -6,7 +6,7 @@ paramList = x.setParams(paramList)
 newName = 'seeddms2'
 
 
-x.installApp(paramList,[], instanceName, appName, version)
+#x.installApp(paramList,[], instanceName, appName, version)
 #x.stopApp(instanceName) 
 #status = x.getStatus(instanceName)
 #x.startApp(instanceName)
@@ -16,4 +16,5 @@ x.installApp(paramList,[], instanceName, appName, version)
 #appsList = x.listApps()
 #installedAppsList = x.listInstalledApps()
 #print(appsList, installedAppsList)
-
+x.startBibbox()
+#x.stopBibbox()

@@ -1425,6 +1425,30 @@ class AppController:
                 AppController.removeApp(instancename)
                 raise Exception('The installation could not be completed. Please read the logs and try again')
 
+    @staticmethod
+    def startNginx(JobID):
+        bibbox_logger = AppController.setUpLog(JobID, 'system', systemonly=True)
+        bibbox_logger.info('Starting nginx container')
+        
+        process = subprocess.Popen(['docker-compose','-f', '/opt/bibbox/sys-bibbox/docker-compose.yml', 'up', '-d'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        if output:
+            output = output.decode('utf8')
+            output = output.strip()
+            bibbox_logger.error(output)
+
+    @staticmethod
+    def stopNginx(JobID):
+        bibbox_logger = AppController.setUpLog(JobID, 'system', systemonly=True)
+        bibbox_logger.info('Stopping nginx container')
+        
+        process = subprocess.Popen(['docker-compose','-f', '/opt/bibbox/sys-bibbox/docker-compose.yml', 'down'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        if output:
+            output = output.decode('utf8')
+            output = output.strip()
+            bibbox_logger.error(output)
+
 
     """
     Section: Main functions
@@ -1746,5 +1770,48 @@ class AppController:
         return installedAppsList
 
 
-if __name__ == '__main__':
-  fire.Fire(MainFunctions)
+    @staticmethod
+    def startBibbox():
+
+        '''
+        Description:
+        -----------
+        Starts the BiBBoX System.
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
+        jobID = AppController.createJobID()
+        AppController.startNginx(jobID)
+
+    @staticmethod
+    def stopBibbox():
+
+        '''
+        Description:
+        -----------
+        Starts the BiBBoX System.
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
+        jobID = AppController.createJobID()
+        AppController.stopNginx(jobID)
+        
+
+
+

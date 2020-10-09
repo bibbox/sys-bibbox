@@ -22,3 +22,17 @@ def listApps():  # noqa: E501
     return response
 
 
+
+
+def listInstalledApps():  # noqa: E501
+    """Get a list of all apps in the store
+
+     
+    """
+    try:
+        response = AppController.listInstalledApps(), 200
+    except KeyError:
+        response = {}, 404
+    #response = "hello"
+
+    return response
