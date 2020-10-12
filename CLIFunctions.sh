@@ -21,12 +21,14 @@ function bibbox-installApp()
         esac
         shift
         #done
-
+        declare name
+        name=$(sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.getAppName('"$var2"')' 2>&1)
         declare keylist
 	declare paramlist
-        params=$(curl https://raw.githubusercontent.com/bibbox/$var2ch/master/.env)
+        params=$(curl https://raw.githubusercontent.com/bibbox/"${name}"/master/.env)
+        #echo $appname
 	sed -n s/' '/'='/g <<< $params
-        #echo https://raw.githubusercontent.com/bibbox/$var2ch/master/.env
+        #echo https://raw.githubusercontent.com/bibbox/${name}/master/.env
         echo Please enter user specifications!
 	#ext = begin
 	keylist="'"

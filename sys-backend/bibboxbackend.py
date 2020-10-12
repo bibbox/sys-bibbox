@@ -457,7 +457,7 @@ class AppController:
             for i, values in enumerate(params):
                 variable = values['group_members']
                 for i, var in enumerate(variable):
-                    if appName == var['app_display_name']:
+                    if appName == var['app_dispay_name']:
                         appName = var['app_name']
 
         except Exception:
@@ -481,6 +481,57 @@ class AppController:
             app_errorlogger.exception('Something went wrong during downloading app: ' + instanceName, exc_info=True)
             raise Exception('Fatal error in during downloading app: ' + instanceName)
     
+
+    def getAppName(self, appName):
+        '''
+        Description:
+        -----------
+        Returns the repository name for the corresponding application.
+
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        appName : str
+            The (github) name of the application that is used 
+
+        version : str
+            The wanted version of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
+    
+        try:
+            url = 'https://raw.githubusercontent.com/bibbox/application-store/master/eB3Kitnew.json'
+            download = requests.get(url).content
+        except Exception:
+            raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
+        try:
+            params = simplejson.loads(download)
+        except Exception:
+            bibbox_logger.exception('Error while loading eB3Kit.json file: ', exc_info=True)
+            raise Exception('Error while loading eB3Kit.json file')
+        appslist=[]
+        
+        for i, values in enumerate(params):
+            variable = values['group_members']
+            for i, var in enumerate(variable):
+                if appName == var['app_dispay_name']:
+                    appName = var['app_name']
+
+        sys.stdout.write(appName+ '\n')
+        return appName
+
+
 #    @staticmethod
     def setInfo(self, jobID, instanceName,appName,version):
         '''

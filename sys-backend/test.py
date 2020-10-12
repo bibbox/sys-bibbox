@@ -1,7 +1,7 @@
 import bibboxbackend
 
-x = bibboxbackend.AppController()
-paramList, instanceName, appName, version = x.getParams('seeddms7777','app-seeddmsTNG','master')
+x = bibboxbackend.MainFunctions()
+paramList, instanceName, appName, version = x.getParams('seeddms7777777','SeedDMS','master')
 paramList = x.setParams(paramList)
 newName = 'seeddms2'
 
@@ -13,8 +13,10 @@ newName = 'seeddms2'
 #status1 = x.getStatus(instanceName)
 #x.copyApp(instanceName, newName)
 #x.removeApp(instanceName)
-appsList = x.listApps()
+#appsList = x.listApps()
 #installedAppsList = x.listInstalledApps()
 #print(appsList, installedAppsList)
 #x.startBibbox()
 #x.stopBibbox()
+name = x.getAppName('SeedDMS')
+pass
