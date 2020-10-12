@@ -34,9 +34,7 @@ __status__ = "Development"
 class AppController:
 
 
-    """
-    Section: Helperfunctions
-    """
+    
 
 
     def __init__(self):
@@ -1452,9 +1450,7 @@ class AppController:
             bibbox_logger.error(output)
 
 
-    """
-    Section: Main functions
-    """
+    
 
 
 
@@ -1491,6 +1487,16 @@ class AppController:
 
         return paramList
 
+class MainFunctions(AppController):
+    def __init__(self):
+        super().__init__()
+    def __del__(self):
+        try:
+            jobID = AppController.createJobID(self)
+            instanceName = self.instanceName
+            AppController.unlock(self, jobID, instanceName, end = True)
+        except:
+            pass
     
 #    @staticmethod
     def installApp(self, paramList, keyList, instanceName, appName, version, CLI=False):
@@ -1547,7 +1553,8 @@ class AppController:
         AppController.setStatus(self, jobID, 'Running', instanceName)
 
     
-#    @staticmethod
+
+
     def stopApp(self, instanceName):
         '''
         Description:
@@ -1669,6 +1676,8 @@ class AppController:
 
         Returns:
         -------
+        status : str
+            The current status of the application that is used 
         
         '''
         jobID = AppController.createJobID(self)

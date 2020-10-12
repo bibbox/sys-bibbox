@@ -62,9 +62,7 @@ __status__ = &#34;Development&#34;
 class AppController:
 
 
-    &#34;&#34;&#34;
-    Section: Helperfunctions
-    &#34;&#34;&#34;
+    
 
 
     def __init__(self):
@@ -1480,9 +1478,7 @@ class AppController:
             bibbox_logger.error(output)
 
 
-    &#34;&#34;&#34;
-    Section: Main functions
-    &#34;&#34;&#34;
+    
 
 
 
@@ -1518,6 +1514,10 @@ class AppController:
             paramList[key] = &#39;seeddms&#39;
 
         return paramList
+
+class MainFunctions(AppController):
+    def __init__(self):
+        super().__init__()
 
     
 #    @staticmethod
@@ -1575,7 +1575,8 @@ class AppController:
         AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
 
     
-#    @staticmethod
+
+
     def stopApp(self, instanceName):
         &#39;&#39;&#39;
         Description:
@@ -1858,7 +1859,7 @@ class AppController:
 <span>class <span class="ident">AppController</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Section: Helperfunctions</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1866,9 +1867,7 @@ class AppController:
 <pre><code class="python">class AppController:
 
 
-    &#34;&#34;&#34;
-    Section: Helperfunctions
-    &#34;&#34;&#34;
+    
 
 
     def __init__(self):
@@ -3284,9 +3283,7 @@ class AppController:
             bibbox_logger.error(output)
 
 
-    &#34;&#34;&#34;
-    Section: Main functions
-    &#34;&#34;&#34;
+    
 
 
 
@@ -3321,332 +3318,12 @@ class AppController:
         for key in paramList:
             paramList[key] = &#39;seeddms&#39;
 
-        return paramList
-
-    
-#    @staticmethod
-    def installApp(self, paramList, keyList, instanceName, appName, version, CLI=False):
-        &#39;&#39;&#39;
-        Description:
-        -----------
-        Installs a new bibbox app with a specific unique name.
-
-        Parameters:
-        ----------
-
-        paramList: array
-            list of environment variables that are defined in the .env file in the repository of the application
-
-        instanceName : str
-            The instance name of the application that is used 
-
-        appName : str
-            The (github) name of the application that is used 
-
-        version : str
-            The wanted version of the application that is used 
-        
-        Raises:
-        -------
-
-        Returns:
-        -------
-        
-        &#39;&#39;&#39;
-        self.instanceName = instanceName
-        jobID = AppController.createJobID(self)
-        AppController.checkExists(self, jobID, instanceName, install = True)
-        inputparams = [instanceName, appName, version]
-        AppController.checkInput(self, jobID, instanceName, inputparams)
-        AppController.createFolder(self, jobID, instanceName)
-        AppController.setStatus(self, jobID, &#39;Prepare Install&#39;, instanceName)
-        AppController.setUpLog(self, jobID, instanceName)
-        AppController.lock(self, jobID, instanceName)
-        AppController.setStatus(self, jobID, &#39;Downloading&#39;, instanceName)
-        AppController.downloadApp(self, jobID, instanceName,appName,version)
-        AppController.setStatus(self, jobID, &#39;Installing&#39;, instanceName)
-        AppController.setInfo(self, jobID, instanceName,appName,version)
-        containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
-        AppController.setProxyFiles(self, jobID, instanceName, mainContainer)
-        if CLI == True:
-            AppController.writeCLICompose(self, jobID, paramList, keyList, instanceName)
-        else:
-            AppController.writeCompose(self, jobID, paramList, instanceName)
-        AppController.composeUp(self, jobID, instanceName, mainContainer)
-        AppController.unlock(self, jobID, instanceName)
-        states = AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
-        AppController.checkInstall(self, instanceName, states)
-        AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
-
-    
-#    @staticmethod
-    def stopApp(self, instanceName):
-        &#39;&#39;&#39;
-        Description:
-        -----------
-        Stops the wanted app.
-
-        Parameters:
-        ----------
-
-        instanceName : str
-            The instance name of the application that is used 
-
-        Raises:
-        -------
-
-        Returns:
-        -------
-        
-        &#39;&#39;&#39;
-        #statusList = [&#39;Running&#39;]
-        jobID = AppController.createJobID(self, )
-        #AppController.setUpLog(jobID, instanceName, systemonly=True)
-        AppController.checkExists(self, jobID, instanceName, install=False)
-        inputparams = [instanceName]
-        AppController.checkInput(self, jobID, instanceName, inputparams)
-        containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
-        AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
-        #AppController.checkStatus(jobID, instanceName, statusList)
-        AppController.lock(self, jobID, instanceName)
-        AppController.setStatus(self, jobID, &#39;Stopping&#39;, instanceName)
-        #AppController.setUpLog(jobID, instanceName)
-        AppController.stop(self, jobID, instanceName)
-        AppController.unlock(self, jobID, instanceName)
-        AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
-        AppController.setStatus(self, jobID, &#39;Stopped&#39;, instanceName)
-
-
-
- #   @staticmethod
-    def startApp(self, instanceName):
-        &#39;&#39;&#39;
-        Description:
-        -----------
-        Starts the wanted app.
-
-        Parameters:
-        ----------
-
-        instanceName : str
-            The instance name of the application that is used 
-
-        Raises:
-        -------
-
-        Returns:
-        -------
-        
-        &#39;&#39;&#39;
-        #statusList = [&#39;Stopped&#39;]
-        jobID = AppController.createJobID(self, )
-        AppController.checkExists(self, jobID, instanceName, install=False)
-        inputparams = [instanceName]
-        AppController.checkInput(self, jobID, instanceName, inputparams)
-        #AppController.checkStatus(jobID, instanceName, statusList)
-        containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
-        AppController.checkDockerState(jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
-        AppController.lock(self, jobID, instanceName)
-        AppController.setStatus(self, jobID, &#39;Starting&#39;, instanceName)
-        AppController.setUpLog(self, jobID, instanceName)
-        AppController.start(self, jobID, instanceName)
-        AppController.unlock(self, jobID, instanceName)
-        AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
-        AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
-
- #   @staticmethod
-    def removeApp(self, instanceName):
-        &#39;&#39;&#39;
-        Description:
-        -----------
-        Removes the wanted app.
-
-        Parameters:
-        ----------
-
-        instanceName : str
-            The instance name of the application that is used 
-
-        Raises:
-        -------
-
-        Returns:
-        -------
-        
-        &#39;&#39;&#39;
-        jobID = AppController.createJobID(self)
-        AppController.checkExists(self, jobID, instanceName, install=False)
-        inputparams = [instanceName]
-        AppController.checkInput(self, jobID, instanceName, inputparams)
-        AppController.lock(self, jobID, instanceName)
-        AppController.setStatus(self, jobID, &#39;Removing App&#39;, instanceName)
-        #AppController.setUpLog(jobID, instanceName, systemonly=True)
-        AppController.remove(self, jobID, instanceName)
-
- #   @staticmethod
-    def getStatus(self, instanceName):
-        &#39;&#39;&#39;
-        Description:
-        -----------
-        Returns status of a specific application.
-
-        Parameters:
-        ----------
-
-        instanceName : str
-            The instance name of the application that is used 
-
-        Raises:
-        -------
-
-        Returns:
-        -------
-        
-        &#39;&#39;&#39;
-        jobID = AppController.createJobID(self)
-        containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
-        AppController.checkExists(self, jobID, instanceName, install=False)
-        inputparams = [instanceName]
-        AppController.checkInput(self, jobID, instanceName, inputparams)
-        AppController.setUpLog(self, jobID, instanceName)
-        #AppController.status(jobID, instanceName)
-        allowedStates = [&#39;all&#39;]
-        states = AppController.checkDockerState(self, jobID, instanceName, containerNames, allowedStates)
-        return states
-
- #   @staticmethod
-    def copyApp(self, instanceName, newName):
-        &#39;&#39;&#39;
-        Description:
-        -----------
-        Copies the wanted app with a new name.
-
-        Parameters:
-        ----------
-
-        instanceName : str
-            The instance name of the application that is used 
-
-        newName : str
-            The new name of the application that is used 
-
-        Raises:
-        -------
-
-        Returns:
-        -------
-        
-        &#39;&#39;&#39;
-        jobID = AppController.createJobID(self, )
-        AppController.checkExists(self, jobID, instanceName, install=False)
-        AppController.checkExists(self, jobID, newName, install=True)
-        inputparams = [instanceName, newName]
-        AppController.checkInput(self, jobID, instanceName, inputparams)
-        AppController.lock(self, jobID, instanceName)
-        AppController.setUpLog(self, jobID, instanceName)
-        AppController.copy(self, jobID, instanceName, newName)
-        AppController.setUpLog(self, jobID, newName)
-        AppController.changeCompose(self, jobID, instanceName, newName)
-        AppController.unlock(self, jobID, instanceName)
-        ContainerNames, mainContainer = AppController.readContainernames(self, jobID, newName)
-        AppController.setProxyFiles(self, jobID, newName, mainContainer)
-        AppController.changeInfo(self, jobID, instanceName, newName)
-        AppController.composeUp(self, jobID, newName, mainContainer)
-        AppController.unlock(self, jobID, newName)
-        AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
-
-        
- #   @staticmethod
-    def listApps(self):
-
-        &#39;&#39;&#39;
-        Description:
-        -----------
-        Lists the available Apps.
-
-        Parameters:
-        ----------
-
-        Raises:
-        -------
-
-        Returns:
-        -------
-        appslist: json object
-            The list of all available apps as json object
-        &#39;&#39;&#39;
-        jobID = AppController.createJobID(self)
-        instanceName = &#39;system&#39;
-        appsList = AppController.readAppStore(self, jobID, instanceName)
-        return appsList
-
- #   @staticmethod
-    def listInstalledApps(self):
-
-        &#39;&#39;&#39;
-        Description:
-        -----------
-        Lists all installed Apps.
-
-        Parameters:
-        ----------
-
-        Raises:
-        -------
-
-        Returns:
-        -------
-        appslist: json object
-            The list of all available apps as json object
-        &#39;&#39;&#39;
-        jobID = AppController.createJobID(self)
-        instanceName = &#39;system&#39;
-        installedAppsList = AppController.getInstalledApps(self, jobID, instanceName)
-        return installedAppsList
-
-
- #   @staticmethod
-    def startBibbox(self):
-
-        &#39;&#39;&#39;
-        Description:
-        -----------
-        Starts the BiBBoX System.
-
-        Parameters:
-        ----------
-
-        Raises:
-        -------
-
-        Returns:
-        -------
-        
-        &#39;&#39;&#39;
-        jobID = AppController.createJobID(self)
-        AppController.startNginx(self, jobID)
-
- #   @staticmethod
-    def stopBibbox(self):
-
-        &#39;&#39;&#39;
-        Description:
-        -----------
-        Starts the BiBBoX System.
-
-        Parameters:
-        ----------
-
-        Raises:
-        -------
-
-        Returns:
-        -------
-        
-        &#39;&#39;&#39;
-        jobID = AppController.createJobID(self)
-        AppController.stopNginx(self, jobID)</code></pre>
+        return paramList</code></pre>
 </details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="bibboxbackend.MainFunctions" href="#bibboxbackend.MainFunctions">MainFunctions</a></li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="bibboxbackend.AppController.changeCompose"><code class="name flex">
@@ -4289,64 +3966,6 @@ New name of the copied application</p>
         app_errorlogger.error( str(output))</code></pre>
 </details>
 </dd>
-<dt id="bibboxbackend.AppController.copyApp"><code class="name flex">
-<span>def <span class="ident">copyApp</span></span>(<span>self, instanceName, newName)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="description">Description:</h2>
-<p>Copies the wanted app with a new name.</p>
-<h2 id="parameters">Parameters:</h2>
-<p>instanceName : str
-The instance name of the application that is used </p>
-<p>newName : str
-The new name of the application that is used </p>
-<h2 id="raises">Raises:</h2>
-<h2 id="returns">Returns:</h2></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def copyApp(self, instanceName, newName):
-    &#39;&#39;&#39;
-    Description:
-    -----------
-    Copies the wanted app with a new name.
-
-    Parameters:
-    ----------
-
-    instanceName : str
-        The instance name of the application that is used 
-
-    newName : str
-        The new name of the application that is used 
-
-    Raises:
-    -------
-
-    Returns:
-    -------
-    
-    &#39;&#39;&#39;
-    jobID = AppController.createJobID(self, )
-    AppController.checkExists(self, jobID, instanceName, install=False)
-    AppController.checkExists(self, jobID, newName, install=True)
-    inputparams = [instanceName, newName]
-    AppController.checkInput(self, jobID, instanceName, inputparams)
-    AppController.lock(self, jobID, instanceName)
-    AppController.setUpLog(self, jobID, instanceName)
-    AppController.copy(self, jobID, instanceName, newName)
-    AppController.setUpLog(self, jobID, newName)
-    AppController.changeCompose(self, jobID, instanceName, newName)
-    AppController.unlock(self, jobID, instanceName)
-    ContainerNames, mainContainer = AppController.readContainernames(self, jobID, newName)
-    AppController.setProxyFiles(self, jobID, newName, mainContainer)
-    AppController.changeInfo(self, jobID, instanceName, newName)
-    AppController.composeUp(self, jobID, newName, mainContainer)
-    AppController.unlock(self, jobID, newName)
-    AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)</code></pre>
-</details>
-</dd>
 <dt id="bibboxbackend.AppController.createFolder"><code class="name flex">
 <span>def <span class="ident">createFolder</span></span>(<span>self, jobID, instanceName)</span>
 </code></dt>
@@ -4600,205 +4219,6 @@ The list of all installed apps as json object</p></div>
             #json.dump(paramList, outfile)
         
     return paramList, instanceName, appName, version</code></pre>
-</details>
-</dd>
-<dt id="bibboxbackend.AppController.getStatus"><code class="name flex">
-<span>def <span class="ident">getStatus</span></span>(<span>self, instanceName)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="description">Description:</h2>
-<p>Returns status of a specific application.</p>
-<h2 id="parameters">Parameters:</h2>
-<p>instanceName : str
-The instance name of the application that is used </p>
-<h2 id="raises">Raises:</h2>
-<h2 id="returns">Returns:</h2></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getStatus(self, instanceName):
-    &#39;&#39;&#39;
-    Description:
-    -----------
-    Returns status of a specific application.
-
-    Parameters:
-    ----------
-
-    instanceName : str
-        The instance name of the application that is used 
-
-    Raises:
-    -------
-
-    Returns:
-    -------
-    
-    &#39;&#39;&#39;
-    jobID = AppController.createJobID(self)
-    containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
-    AppController.checkExists(self, jobID, instanceName, install=False)
-    inputparams = [instanceName]
-    AppController.checkInput(self, jobID, instanceName, inputparams)
-    AppController.setUpLog(self, jobID, instanceName)
-    #AppController.status(jobID, instanceName)
-    allowedStates = [&#39;all&#39;]
-    states = AppController.checkDockerState(self, jobID, instanceName, containerNames, allowedStates)
-    return states</code></pre>
-</details>
-</dd>
-<dt id="bibboxbackend.AppController.installApp"><code class="name flex">
-<span>def <span class="ident">installApp</span></span>(<span>self, paramList, keyList, instanceName, appName, version, CLI=False)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="description">Description:</h2>
-<p>Installs a new bibbox app with a specific unique name.</p>
-<h2 id="parameters">Parameters:</h2>
-<p>paramList: array
-list of environment variables that are defined in the .env file in the repository of the application</p>
-<p>instanceName : str
-The instance name of the application that is used </p>
-<p>appName : str
-The (github) name of the application that is used </p>
-<p>version : str
-The wanted version of the application that is used </p>
-<h2 id="raises">Raises:</h2>
-<h2 id="returns">Returns:</h2></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def installApp(self, paramList, keyList, instanceName, appName, version, CLI=False):
-    &#39;&#39;&#39;
-    Description:
-    -----------
-    Installs a new bibbox app with a specific unique name.
-
-    Parameters:
-    ----------
-
-    paramList: array
-        list of environment variables that are defined in the .env file in the repository of the application
-
-    instanceName : str
-        The instance name of the application that is used 
-
-    appName : str
-        The (github) name of the application that is used 
-
-    version : str
-        The wanted version of the application that is used 
-    
-    Raises:
-    -------
-
-    Returns:
-    -------
-    
-    &#39;&#39;&#39;
-    self.instanceName = instanceName
-    jobID = AppController.createJobID(self)
-    AppController.checkExists(self, jobID, instanceName, install = True)
-    inputparams = [instanceName, appName, version]
-    AppController.checkInput(self, jobID, instanceName, inputparams)
-    AppController.createFolder(self, jobID, instanceName)
-    AppController.setStatus(self, jobID, &#39;Prepare Install&#39;, instanceName)
-    AppController.setUpLog(self, jobID, instanceName)
-    AppController.lock(self, jobID, instanceName)
-    AppController.setStatus(self, jobID, &#39;Downloading&#39;, instanceName)
-    AppController.downloadApp(self, jobID, instanceName,appName,version)
-    AppController.setStatus(self, jobID, &#39;Installing&#39;, instanceName)
-    AppController.setInfo(self, jobID, instanceName,appName,version)
-    containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
-    AppController.setProxyFiles(self, jobID, instanceName, mainContainer)
-    if CLI == True:
-        AppController.writeCLICompose(self, jobID, paramList, keyList, instanceName)
-    else:
-        AppController.writeCompose(self, jobID, paramList, instanceName)
-    AppController.composeUp(self, jobID, instanceName, mainContainer)
-    AppController.unlock(self, jobID, instanceName)
-    states = AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
-    AppController.checkInstall(self, instanceName, states)
-    AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)</code></pre>
-</details>
-</dd>
-<dt id="bibboxbackend.AppController.listApps"><code class="name flex">
-<span>def <span class="ident">listApps</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="description">Description:</h2>
-<p>Lists the available Apps.</p>
-<h2 id="parameters">Parameters:</h2>
-<h2 id="raises">Raises:</h2>
-<h2 id="returns">Returns:</h2>
-<p>appslist: json object
-The list of all available apps as json object</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def listApps(self):
-
-    &#39;&#39;&#39;
-    Description:
-    -----------
-    Lists the available Apps.
-
-    Parameters:
-    ----------
-
-    Raises:
-    -------
-
-    Returns:
-    -------
-    appslist: json object
-        The list of all available apps as json object
-    &#39;&#39;&#39;
-    jobID = AppController.createJobID(self)
-    instanceName = &#39;system&#39;
-    appsList = AppController.readAppStore(self, jobID, instanceName)
-    return appsList</code></pre>
-</details>
-</dd>
-<dt id="bibboxbackend.AppController.listInstalledApps"><code class="name flex">
-<span>def <span class="ident">listInstalledApps</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="description">Description:</h2>
-<p>Lists all installed Apps.</p>
-<h2 id="parameters">Parameters:</h2>
-<h2 id="raises">Raises:</h2>
-<h2 id="returns">Returns:</h2>
-<p>appslist: json object
-The list of all available apps as json object</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def listInstalledApps(self):
-
-    &#39;&#39;&#39;
-    Description:
-    -----------
-    Lists all installed Apps.
-
-    Parameters:
-    ----------
-
-    Raises:
-    -------
-
-    Returns:
-    -------
-    appslist: json object
-        The list of all available apps as json object
-    &#39;&#39;&#39;
-    jobID = AppController.createJobID(self)
-    instanceName = &#39;system&#39;
-    installedAppsList = AppController.getInstalledApps(self, jobID, instanceName)
-    return installedAppsList</code></pre>
 </details>
 </dd>
 <dt id="bibboxbackend.AppController.lock"><code class="name flex">
@@ -5130,50 +4550,6 @@ The instance name of the application that is used </p>
     output, error = process.communicate()
     if output:
         bibbox_logger.error( str(output))</code></pre>
-</details>
-</dd>
-<dt id="bibboxbackend.AppController.removeApp"><code class="name flex">
-<span>def <span class="ident">removeApp</span></span>(<span>self, instanceName)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="description">Description:</h2>
-<p>Removes the wanted app.</p>
-<h2 id="parameters">Parameters:</h2>
-<p>instanceName : str
-The instance name of the application that is used </p>
-<h2 id="raises">Raises:</h2>
-<h2 id="returns">Returns:</h2></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def removeApp(self, instanceName):
-    &#39;&#39;&#39;
-    Description:
-    -----------
-    Removes the wanted app.
-
-    Parameters:
-    ----------
-
-    instanceName : str
-        The instance name of the application that is used 
-
-    Raises:
-    -------
-
-    Returns:
-    -------
-    
-    &#39;&#39;&#39;
-    jobID = AppController.createJobID(self)
-    AppController.checkExists(self, jobID, instanceName, install=False)
-    inputparams = [instanceName]
-    AppController.checkInput(self, jobID, instanceName, inputparams)
-    AppController.lock(self, jobID, instanceName)
-    AppController.setStatus(self, jobID, &#39;Removing App&#39;, instanceName)
-    #AppController.setUpLog(jobID, instanceName, systemonly=True)
-    AppController.remove(self, jobID, instanceName)</code></pre>
 </details>
 </dd>
 <dt id="bibboxbackend.AppController.setInfo"><code class="name flex">
@@ -5590,91 +4966,6 @@ The instance name of the application that is used </p>
         docker_logger.error( str(output).rstrip())</code></pre>
 </details>
 </dd>
-<dt id="bibboxbackend.AppController.startApp"><code class="name flex">
-<span>def <span class="ident">startApp</span></span>(<span>self, instanceName)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="description">Description:</h2>
-<p>Starts the wanted app.</p>
-<h2 id="parameters">Parameters:</h2>
-<p>instanceName : str
-The instance name of the application that is used </p>
-<h2 id="raises">Raises:</h2>
-<h2 id="returns">Returns:</h2></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def startApp(self, instanceName):
-    &#39;&#39;&#39;
-    Description:
-    -----------
-    Starts the wanted app.
-
-    Parameters:
-    ----------
-
-    instanceName : str
-        The instance name of the application that is used 
-
-    Raises:
-    -------
-
-    Returns:
-    -------
-    
-    &#39;&#39;&#39;
-    #statusList = [&#39;Stopped&#39;]
-    jobID = AppController.createJobID(self, )
-    AppController.checkExists(self, jobID, instanceName, install=False)
-    inputparams = [instanceName]
-    AppController.checkInput(self, jobID, instanceName, inputparams)
-    #AppController.checkStatus(jobID, instanceName, statusList)
-    containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
-    AppController.checkDockerState(jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
-    AppController.lock(self, jobID, instanceName)
-    AppController.setStatus(self, jobID, &#39;Starting&#39;, instanceName)
-    AppController.setUpLog(self, jobID, instanceName)
-    AppController.start(self, jobID, instanceName)
-    AppController.unlock(self, jobID, instanceName)
-    AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
-    AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)</code></pre>
-</details>
-</dd>
-<dt id="bibboxbackend.AppController.startBibbox"><code class="name flex">
-<span>def <span class="ident">startBibbox</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="description">Description:</h2>
-<p>Starts the BiBBoX System.</p>
-<h2 id="parameters">Parameters:</h2>
-<h2 id="raises">Raises:</h2>
-<h2 id="returns">Returns:</h2></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def startBibbox(self):
-
-    &#39;&#39;&#39;
-    Description:
-    -----------
-    Starts the BiBBoX System.
-
-    Parameters:
-    ----------
-
-    Raises:
-    -------
-
-    Returns:
-    -------
-    
-    &#39;&#39;&#39;
-    jobID = AppController.createJobID(self)
-    AppController.startNginx(self, jobID)</code></pre>
-</details>
-</dd>
 <dt id="bibboxbackend.AppController.startNginx"><code class="name flex">
 <span>def <span class="ident">startNginx</span></span>(<span>self, JobID)</span>
 </code></dt>
@@ -5800,92 +5091,6 @@ The instance name of the application that is used </p>
     output, error = process.communicate()
     if output:
         docker_logger.error( str(output).rstrip())</code></pre>
-</details>
-</dd>
-<dt id="bibboxbackend.AppController.stopApp"><code class="name flex">
-<span>def <span class="ident">stopApp</span></span>(<span>self, instanceName)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="description">Description:</h2>
-<p>Stops the wanted app.</p>
-<h2 id="parameters">Parameters:</h2>
-<p>instanceName : str
-The instance name of the application that is used </p>
-<h2 id="raises">Raises:</h2>
-<h2 id="returns">Returns:</h2></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def stopApp(self, instanceName):
-    &#39;&#39;&#39;
-    Description:
-    -----------
-    Stops the wanted app.
-
-    Parameters:
-    ----------
-
-    instanceName : str
-        The instance name of the application that is used 
-
-    Raises:
-    -------
-
-    Returns:
-    -------
-    
-    &#39;&#39;&#39;
-    #statusList = [&#39;Running&#39;]
-    jobID = AppController.createJobID(self, )
-    #AppController.setUpLog(jobID, instanceName, systemonly=True)
-    AppController.checkExists(self, jobID, instanceName, install=False)
-    inputparams = [instanceName]
-    AppController.checkInput(self, jobID, instanceName, inputparams)
-    containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
-    AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
-    #AppController.checkStatus(jobID, instanceName, statusList)
-    AppController.lock(self, jobID, instanceName)
-    AppController.setStatus(self, jobID, &#39;Stopping&#39;, instanceName)
-    #AppController.setUpLog(jobID, instanceName)
-    AppController.stop(self, jobID, instanceName)
-    AppController.unlock(self, jobID, instanceName)
-    AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
-    AppController.setStatus(self, jobID, &#39;Stopped&#39;, instanceName)</code></pre>
-</details>
-</dd>
-<dt id="bibboxbackend.AppController.stopBibbox"><code class="name flex">
-<span>def <span class="ident">stopBibbox</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="description">Description:</h2>
-<p>Starts the BiBBoX System.</p>
-<h2 id="parameters">Parameters:</h2>
-<h2 id="raises">Raises:</h2>
-<h2 id="returns">Returns:</h2></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def stopBibbox(self):
-
-    &#39;&#39;&#39;
-    Description:
-    -----------
-    Starts the BiBBoX System.
-
-    Parameters:
-    ----------
-
-    Raises:
-    -------
-
-    Returns:
-    -------
-    
-    &#39;&#39;&#39;
-    jobID = AppController.createJobID(self)
-    AppController.stopNginx(self, jobID)</code></pre>
 </details>
 </dd>
 <dt id="bibboxbackend.AppController.stopNginx"><code class="name flex">
@@ -6108,6 +5313,859 @@ The instance name of the application that is used </p>
 </dd>
 </dl>
 </dd>
+<dt id="bibboxbackend.MainFunctions"><code class="flex name class">
+<span>class <span class="ident">MainFunctions</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MainFunctions(AppController):
+    def __init__(self):
+        super().__init__()
+
+    
+#    @staticmethod
+    def installApp(self, paramList, keyList, instanceName, appName, version, CLI=False):
+        &#39;&#39;&#39;
+        Description:
+        -----------
+        Installs a new bibbox app with a specific unique name.
+
+        Parameters:
+        ----------
+
+        paramList: array
+            list of environment variables that are defined in the .env file in the repository of the application
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        appName : str
+            The (github) name of the application that is used 
+
+        version : str
+            The wanted version of the application that is used 
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        &#39;&#39;&#39;
+        self.instanceName = instanceName
+        jobID = AppController.createJobID(self)
+        AppController.checkExists(self, jobID, instanceName, install = True)
+        inputparams = [instanceName, appName, version]
+        AppController.checkInput(self, jobID, instanceName, inputparams)
+        AppController.createFolder(self, jobID, instanceName)
+        AppController.setStatus(self, jobID, &#39;Prepare Install&#39;, instanceName)
+        AppController.setUpLog(self, jobID, instanceName)
+        AppController.lock(self, jobID, instanceName)
+        AppController.setStatus(self, jobID, &#39;Downloading&#39;, instanceName)
+        AppController.downloadApp(self, jobID, instanceName,appName,version)
+        AppController.setStatus(self, jobID, &#39;Installing&#39;, instanceName)
+        AppController.setInfo(self, jobID, instanceName,appName,version)
+        containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
+        AppController.setProxyFiles(self, jobID, instanceName, mainContainer)
+        if CLI == True:
+            AppController.writeCLICompose(self, jobID, paramList, keyList, instanceName)
+        else:
+            AppController.writeCompose(self, jobID, paramList, instanceName)
+        AppController.composeUp(self, jobID, instanceName, mainContainer)
+        AppController.unlock(self, jobID, instanceName)
+        states = AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
+        AppController.checkInstall(self, instanceName, states)
+        AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
+
+    
+
+
+    def stopApp(self, instanceName):
+        &#39;&#39;&#39;
+        Description:
+        -----------
+        Stops the wanted app.
+
+        Parameters:
+        ----------
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        &#39;&#39;&#39;
+        #statusList = [&#39;Running&#39;]
+        jobID = AppController.createJobID(self, )
+        #AppController.setUpLog(jobID, instanceName, systemonly=True)
+        AppController.checkExists(self, jobID, instanceName, install=False)
+        inputparams = [instanceName]
+        AppController.checkInput(self, jobID, instanceName, inputparams)
+        containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
+        AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
+        #AppController.checkStatus(jobID, instanceName, statusList)
+        AppController.lock(self, jobID, instanceName)
+        AppController.setStatus(self, jobID, &#39;Stopping&#39;, instanceName)
+        #AppController.setUpLog(jobID, instanceName)
+        AppController.stop(self, jobID, instanceName)
+        AppController.unlock(self, jobID, instanceName)
+        AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
+        AppController.setStatus(self, jobID, &#39;Stopped&#39;, instanceName)
+
+
+
+ #   @staticmethod
+    def startApp(self, instanceName):
+        &#39;&#39;&#39;
+        Description:
+        -----------
+        Starts the wanted app.
+
+        Parameters:
+        ----------
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        &#39;&#39;&#39;
+        #statusList = [&#39;Stopped&#39;]
+        jobID = AppController.createJobID(self, )
+        AppController.checkExists(self, jobID, instanceName, install=False)
+        inputparams = [instanceName]
+        AppController.checkInput(self, jobID, instanceName, inputparams)
+        #AppController.checkStatus(jobID, instanceName, statusList)
+        containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
+        AppController.checkDockerState(jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
+        AppController.lock(self, jobID, instanceName)
+        AppController.setStatus(self, jobID, &#39;Starting&#39;, instanceName)
+        AppController.setUpLog(self, jobID, instanceName)
+        AppController.start(self, jobID, instanceName)
+        AppController.unlock(self, jobID, instanceName)
+        AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
+        AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
+
+ #   @staticmethod
+    def removeApp(self, instanceName):
+        &#39;&#39;&#39;
+        Description:
+        -----------
+        Removes the wanted app.
+
+        Parameters:
+        ----------
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        &#39;&#39;&#39;
+        jobID = AppController.createJobID(self)
+        AppController.checkExists(self, jobID, instanceName, install=False)
+        inputparams = [instanceName]
+        AppController.checkInput(self, jobID, instanceName, inputparams)
+        AppController.lock(self, jobID, instanceName)
+        AppController.setStatus(self, jobID, &#39;Removing App&#39;, instanceName)
+        #AppController.setUpLog(jobID, instanceName, systemonly=True)
+        AppController.remove(self, jobID, instanceName)
+
+ #   @staticmethod
+    def getStatus(self, instanceName):
+        &#39;&#39;&#39;
+        Description:
+        -----------
+        Returns status of a specific application.
+
+        Parameters:
+        ----------
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        &#39;&#39;&#39;
+        jobID = AppController.createJobID(self)
+        containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
+        AppController.checkExists(self, jobID, instanceName, install=False)
+        inputparams = [instanceName]
+        AppController.checkInput(self, jobID, instanceName, inputparams)
+        AppController.setUpLog(self, jobID, instanceName)
+        #AppController.status(jobID, instanceName)
+        allowedStates = [&#39;all&#39;]
+        states = AppController.checkDockerState(self, jobID, instanceName, containerNames, allowedStates)
+        return states
+
+ #   @staticmethod
+    def copyApp(self, instanceName, newName):
+        &#39;&#39;&#39;
+        Description:
+        -----------
+        Copies the wanted app with a new name.
+
+        Parameters:
+        ----------
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        newName : str
+            The new name of the application that is used 
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        &#39;&#39;&#39;
+        jobID = AppController.createJobID(self, )
+        AppController.checkExists(self, jobID, instanceName, install=False)
+        AppController.checkExists(self, jobID, newName, install=True)
+        inputparams = [instanceName, newName]
+        AppController.checkInput(self, jobID, instanceName, inputparams)
+        AppController.lock(self, jobID, instanceName)
+        AppController.setUpLog(self, jobID, instanceName)
+        AppController.copy(self, jobID, instanceName, newName)
+        AppController.setUpLog(self, jobID, newName)
+        AppController.changeCompose(self, jobID, instanceName, newName)
+        AppController.unlock(self, jobID, instanceName)
+        ContainerNames, mainContainer = AppController.readContainernames(self, jobID, newName)
+        AppController.setProxyFiles(self, jobID, newName, mainContainer)
+        AppController.changeInfo(self, jobID, instanceName, newName)
+        AppController.composeUp(self, jobID, newName, mainContainer)
+        AppController.unlock(self, jobID, newName)
+        AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
+
+        
+ #   @staticmethod
+    def listApps(self):
+
+        &#39;&#39;&#39;
+        Description:
+        -----------
+        Lists the available Apps.
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        appslist: json object
+            The list of all available apps as json object
+        &#39;&#39;&#39;
+        jobID = AppController.createJobID(self)
+        instanceName = &#39;system&#39;
+        appsList = AppController.readAppStore(self, jobID, instanceName)
+        return appsList
+
+ #   @staticmethod
+    def listInstalledApps(self):
+
+        &#39;&#39;&#39;
+        Description:
+        -----------
+        Lists all installed Apps.
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        appslist: json object
+            The list of all available apps as json object
+        &#39;&#39;&#39;
+        jobID = AppController.createJobID(self)
+        instanceName = &#39;system&#39;
+        installedAppsList = AppController.getInstalledApps(self, jobID, instanceName)
+        return installedAppsList
+
+
+ #   @staticmethod
+    def startBibbox(self):
+
+        &#39;&#39;&#39;
+        Description:
+        -----------
+        Starts the BiBBoX System.
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        &#39;&#39;&#39;
+        jobID = AppController.createJobID(self)
+        AppController.startNginx(self, jobID)
+
+ #   @staticmethod
+    def stopBibbox(self):
+
+        &#39;&#39;&#39;
+        Description:
+        -----------
+        Starts the BiBBoX System.
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        &#39;&#39;&#39;
+        jobID = AppController.createJobID(self)
+        AppController.stopNginx(self, jobID)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="bibboxbackend.AppController" href="#bibboxbackend.AppController">AppController</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="bibboxbackend.MainFunctions.copyApp"><code class="name flex">
+<span>def <span class="ident">copyApp</span></span>(<span>self, instanceName, newName)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description:</h2>
+<p>Copies the wanted app with a new name.</p>
+<h2 id="parameters">Parameters:</h2>
+<p>instanceName : str
+The instance name of the application that is used </p>
+<p>newName : str
+The new name of the application that is used </p>
+<h2 id="raises">Raises:</h2>
+<h2 id="returns">Returns:</h2></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copyApp(self, instanceName, newName):
+    &#39;&#39;&#39;
+    Description:
+    -----------
+    Copies the wanted app with a new name.
+
+    Parameters:
+    ----------
+
+    instanceName : str
+        The instance name of the application that is used 
+
+    newName : str
+        The new name of the application that is used 
+
+    Raises:
+    -------
+
+    Returns:
+    -------
+    
+    &#39;&#39;&#39;
+    jobID = AppController.createJobID(self, )
+    AppController.checkExists(self, jobID, instanceName, install=False)
+    AppController.checkExists(self, jobID, newName, install=True)
+    inputparams = [instanceName, newName]
+    AppController.checkInput(self, jobID, instanceName, inputparams)
+    AppController.lock(self, jobID, instanceName)
+    AppController.setUpLog(self, jobID, instanceName)
+    AppController.copy(self, jobID, instanceName, newName)
+    AppController.setUpLog(self, jobID, newName)
+    AppController.changeCompose(self, jobID, instanceName, newName)
+    AppController.unlock(self, jobID, instanceName)
+    ContainerNames, mainContainer = AppController.readContainernames(self, jobID, newName)
+    AppController.setProxyFiles(self, jobID, newName, mainContainer)
+    AppController.changeInfo(self, jobID, instanceName, newName)
+    AppController.composeUp(self, jobID, newName, mainContainer)
+    AppController.unlock(self, jobID, newName)
+    AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)</code></pre>
+</details>
+</dd>
+<dt id="bibboxbackend.MainFunctions.getStatus"><code class="name flex">
+<span>def <span class="ident">getStatus</span></span>(<span>self, instanceName)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description:</h2>
+<p>Returns status of a specific application.</p>
+<h2 id="parameters">Parameters:</h2>
+<p>instanceName : str
+The instance name of the application that is used </p>
+<h2 id="raises">Raises:</h2>
+<h2 id="returns">Returns:</h2></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getStatus(self, instanceName):
+    &#39;&#39;&#39;
+    Description:
+    -----------
+    Returns status of a specific application.
+
+    Parameters:
+    ----------
+
+    instanceName : str
+        The instance name of the application that is used 
+
+    Raises:
+    -------
+
+    Returns:
+    -------
+    
+    &#39;&#39;&#39;
+    jobID = AppController.createJobID(self)
+    containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
+    AppController.checkExists(self, jobID, instanceName, install=False)
+    inputparams = [instanceName]
+    AppController.checkInput(self, jobID, instanceName, inputparams)
+    AppController.setUpLog(self, jobID, instanceName)
+    #AppController.status(jobID, instanceName)
+    allowedStates = [&#39;all&#39;]
+    states = AppController.checkDockerState(self, jobID, instanceName, containerNames, allowedStates)
+    return states</code></pre>
+</details>
+</dd>
+<dt id="bibboxbackend.MainFunctions.installApp"><code class="name flex">
+<span>def <span class="ident">installApp</span></span>(<span>self, paramList, keyList, instanceName, appName, version, CLI=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description:</h2>
+<p>Installs a new bibbox app with a specific unique name.</p>
+<h2 id="parameters">Parameters:</h2>
+<p>paramList: array
+list of environment variables that are defined in the .env file in the repository of the application</p>
+<p>instanceName : str
+The instance name of the application that is used </p>
+<p>appName : str
+The (github) name of the application that is used </p>
+<p>version : str
+The wanted version of the application that is used </p>
+<h2 id="raises">Raises:</h2>
+<h2 id="returns">Returns:</h2></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def installApp(self, paramList, keyList, instanceName, appName, version, CLI=False):
+    &#39;&#39;&#39;
+    Description:
+    -----------
+    Installs a new bibbox app with a specific unique name.
+
+    Parameters:
+    ----------
+
+    paramList: array
+        list of environment variables that are defined in the .env file in the repository of the application
+
+    instanceName : str
+        The instance name of the application that is used 
+
+    appName : str
+        The (github) name of the application that is used 
+
+    version : str
+        The wanted version of the application that is used 
+    
+    Raises:
+    -------
+
+    Returns:
+    -------
+    
+    &#39;&#39;&#39;
+    self.instanceName = instanceName
+    jobID = AppController.createJobID(self)
+    AppController.checkExists(self, jobID, instanceName, install = True)
+    inputparams = [instanceName, appName, version]
+    AppController.checkInput(self, jobID, instanceName, inputparams)
+    AppController.createFolder(self, jobID, instanceName)
+    AppController.setStatus(self, jobID, &#39;Prepare Install&#39;, instanceName)
+    AppController.setUpLog(self, jobID, instanceName)
+    AppController.lock(self, jobID, instanceName)
+    AppController.setStatus(self, jobID, &#39;Downloading&#39;, instanceName)
+    AppController.downloadApp(self, jobID, instanceName,appName,version)
+    AppController.setStatus(self, jobID, &#39;Installing&#39;, instanceName)
+    AppController.setInfo(self, jobID, instanceName,appName,version)
+    containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
+    AppController.setProxyFiles(self, jobID, instanceName, mainContainer)
+    if CLI == True:
+        AppController.writeCLICompose(self, jobID, paramList, keyList, instanceName)
+    else:
+        AppController.writeCompose(self, jobID, paramList, instanceName)
+    AppController.composeUp(self, jobID, instanceName, mainContainer)
+    AppController.unlock(self, jobID, instanceName)
+    states = AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
+    AppController.checkInstall(self, instanceName, states)
+    AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)</code></pre>
+</details>
+</dd>
+<dt id="bibboxbackend.MainFunctions.listApps"><code class="name flex">
+<span>def <span class="ident">listApps</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description:</h2>
+<p>Lists the available Apps.</p>
+<h2 id="parameters">Parameters:</h2>
+<h2 id="raises">Raises:</h2>
+<h2 id="returns">Returns:</h2>
+<p>appslist: json object
+The list of all available apps as json object</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def listApps(self):
+
+    &#39;&#39;&#39;
+    Description:
+    -----------
+    Lists the available Apps.
+
+    Parameters:
+    ----------
+
+    Raises:
+    -------
+
+    Returns:
+    -------
+    appslist: json object
+        The list of all available apps as json object
+    &#39;&#39;&#39;
+    jobID = AppController.createJobID(self)
+    instanceName = &#39;system&#39;
+    appsList = AppController.readAppStore(self, jobID, instanceName)
+    return appsList</code></pre>
+</details>
+</dd>
+<dt id="bibboxbackend.MainFunctions.listInstalledApps"><code class="name flex">
+<span>def <span class="ident">listInstalledApps</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description:</h2>
+<p>Lists all installed Apps.</p>
+<h2 id="parameters">Parameters:</h2>
+<h2 id="raises">Raises:</h2>
+<h2 id="returns">Returns:</h2>
+<p>appslist: json object
+The list of all available apps as json object</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def listInstalledApps(self):
+
+    &#39;&#39;&#39;
+    Description:
+    -----------
+    Lists all installed Apps.
+
+    Parameters:
+    ----------
+
+    Raises:
+    -------
+
+    Returns:
+    -------
+    appslist: json object
+        The list of all available apps as json object
+    &#39;&#39;&#39;
+    jobID = AppController.createJobID(self)
+    instanceName = &#39;system&#39;
+    installedAppsList = AppController.getInstalledApps(self, jobID, instanceName)
+    return installedAppsList</code></pre>
+</details>
+</dd>
+<dt id="bibboxbackend.MainFunctions.removeApp"><code class="name flex">
+<span>def <span class="ident">removeApp</span></span>(<span>self, instanceName)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description:</h2>
+<p>Removes the wanted app.</p>
+<h2 id="parameters">Parameters:</h2>
+<p>instanceName : str
+The instance name of the application that is used </p>
+<h2 id="raises">Raises:</h2>
+<h2 id="returns">Returns:</h2></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def removeApp(self, instanceName):
+    &#39;&#39;&#39;
+    Description:
+    -----------
+    Removes the wanted app.
+
+    Parameters:
+    ----------
+
+    instanceName : str
+        The instance name of the application that is used 
+
+    Raises:
+    -------
+
+    Returns:
+    -------
+    
+    &#39;&#39;&#39;
+    jobID = AppController.createJobID(self)
+    AppController.checkExists(self, jobID, instanceName, install=False)
+    inputparams = [instanceName]
+    AppController.checkInput(self, jobID, instanceName, inputparams)
+    AppController.lock(self, jobID, instanceName)
+    AppController.setStatus(self, jobID, &#39;Removing App&#39;, instanceName)
+    #AppController.setUpLog(jobID, instanceName, systemonly=True)
+    AppController.remove(self, jobID, instanceName)</code></pre>
+</details>
+</dd>
+<dt id="bibboxbackend.MainFunctions.startApp"><code class="name flex">
+<span>def <span class="ident">startApp</span></span>(<span>self, instanceName)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description:</h2>
+<p>Starts the wanted app.</p>
+<h2 id="parameters">Parameters:</h2>
+<p>instanceName : str
+The instance name of the application that is used </p>
+<h2 id="raises">Raises:</h2>
+<h2 id="returns">Returns:</h2></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def startApp(self, instanceName):
+    &#39;&#39;&#39;
+    Description:
+    -----------
+    Starts the wanted app.
+
+    Parameters:
+    ----------
+
+    instanceName : str
+        The instance name of the application that is used 
+
+    Raises:
+    -------
+
+    Returns:
+    -------
+    
+    &#39;&#39;&#39;
+    #statusList = [&#39;Stopped&#39;]
+    jobID = AppController.createJobID(self, )
+    AppController.checkExists(self, jobID, instanceName, install=False)
+    inputparams = [instanceName]
+    AppController.checkInput(self, jobID, instanceName, inputparams)
+    #AppController.checkStatus(jobID, instanceName, statusList)
+    containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
+    AppController.checkDockerState(jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
+    AppController.lock(self, jobID, instanceName)
+    AppController.setStatus(self, jobID, &#39;Starting&#39;, instanceName)
+    AppController.setUpLog(self, jobID, instanceName)
+    AppController.start(self, jobID, instanceName)
+    AppController.unlock(self, jobID, instanceName)
+    AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
+    AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)</code></pre>
+</details>
+</dd>
+<dt id="bibboxbackend.MainFunctions.startBibbox"><code class="name flex">
+<span>def <span class="ident">startBibbox</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description:</h2>
+<p>Starts the BiBBoX System.</p>
+<h2 id="parameters">Parameters:</h2>
+<h2 id="raises">Raises:</h2>
+<h2 id="returns">Returns:</h2></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def startBibbox(self):
+
+    &#39;&#39;&#39;
+    Description:
+    -----------
+    Starts the BiBBoX System.
+
+    Parameters:
+    ----------
+
+    Raises:
+    -------
+
+    Returns:
+    -------
+    
+    &#39;&#39;&#39;
+    jobID = AppController.createJobID(self)
+    AppController.startNginx(self, jobID)</code></pre>
+</details>
+</dd>
+<dt id="bibboxbackend.MainFunctions.stopApp"><code class="name flex">
+<span>def <span class="ident">stopApp</span></span>(<span>self, instanceName)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description:</h2>
+<p>Stops the wanted app.</p>
+<h2 id="parameters">Parameters:</h2>
+<p>instanceName : str
+The instance name of the application that is used </p>
+<h2 id="raises">Raises:</h2>
+<h2 id="returns">Returns:</h2></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def stopApp(self, instanceName):
+    &#39;&#39;&#39;
+    Description:
+    -----------
+    Stops the wanted app.
+
+    Parameters:
+    ----------
+
+    instanceName : str
+        The instance name of the application that is used 
+
+    Raises:
+    -------
+
+    Returns:
+    -------
+    
+    &#39;&#39;&#39;
+    #statusList = [&#39;Running&#39;]
+    jobID = AppController.createJobID(self, )
+    #AppController.setUpLog(jobID, instanceName, systemonly=True)
+    AppController.checkExists(self, jobID, instanceName, install=False)
+    inputparams = [instanceName]
+    AppController.checkInput(self, jobID, instanceName, inputparams)
+    containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
+    AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
+    #AppController.checkStatus(jobID, instanceName, statusList)
+    AppController.lock(self, jobID, instanceName)
+    AppController.setStatus(self, jobID, &#39;Stopping&#39;, instanceName)
+    #AppController.setUpLog(jobID, instanceName)
+    AppController.stop(self, jobID, instanceName)
+    AppController.unlock(self, jobID, instanceName)
+    AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
+    AppController.setStatus(self, jobID, &#39;Stopped&#39;, instanceName)</code></pre>
+</details>
+</dd>
+<dt id="bibboxbackend.MainFunctions.stopBibbox"><code class="name flex">
+<span>def <span class="ident">stopBibbox</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description:</h2>
+<p>Starts the BiBBoX System.</p>
+<h2 id="parameters">Parameters:</h2>
+<h2 id="raises">Raises:</h2>
+<h2 id="returns">Returns:</h2></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def stopBibbox(self):
+
+    &#39;&#39;&#39;
+    Description:
+    -----------
+    Starts the BiBBoX System.
+
+    Parameters:
+    ----------
+
+    Raises:
+    -------
+
+    Returns:
+    -------
+    
+    &#39;&#39;&#39;
+    jobID = AppController.createJobID(self)
+    AppController.stopNginx(self, jobID)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="bibboxbackend.AppController" href="#bibboxbackend.AppController">AppController</a></b></code>:
+<ul class="hlist">
+<li><code><a title="bibboxbackend.AppController.changeCompose" href="#bibboxbackend.AppController.changeCompose">changeCompose</a></code></li>
+<li><code><a title="bibboxbackend.AppController.changeInfo" href="#bibboxbackend.AppController.changeInfo">changeInfo</a></code></li>
+<li><code><a title="bibboxbackend.AppController.checkDockerState" href="#bibboxbackend.AppController.checkDockerState">checkDockerState</a></code></li>
+<li><code><a title="bibboxbackend.AppController.checkExists" href="#bibboxbackend.AppController.checkExists">checkExists</a></code></li>
+<li><code><a title="bibboxbackend.AppController.checkInput" href="#bibboxbackend.AppController.checkInput">checkInput</a></code></li>
+<li><code><a title="bibboxbackend.AppController.checkStatus" href="#bibboxbackend.AppController.checkStatus">checkStatus</a></code></li>
+<li><code><a title="bibboxbackend.AppController.composeUp" href="#bibboxbackend.AppController.composeUp">composeUp</a></code></li>
+<li><code><a title="bibboxbackend.AppController.copy" href="#bibboxbackend.AppController.copy">copy</a></code></li>
+<li><code><a title="bibboxbackend.AppController.createFolder" href="#bibboxbackend.AppController.createFolder">createFolder</a></code></li>
+<li><code><a title="bibboxbackend.AppController.createJobID" href="#bibboxbackend.AppController.createJobID">createJobID</a></code></li>
+<li><code><a title="bibboxbackend.AppController.downloadApp" href="#bibboxbackend.AppController.downloadApp">downloadApp</a></code></li>
+<li><code><a title="bibboxbackend.AppController.getInstalledApps" href="#bibboxbackend.AppController.getInstalledApps">getInstalledApps</a></code></li>
+<li><code><a title="bibboxbackend.AppController.lock" href="#bibboxbackend.AppController.lock">lock</a></code></li>
+<li><code><a title="bibboxbackend.AppController.readAppStore" href="#bibboxbackend.AppController.readAppStore">readAppStore</a></code></li>
+<li><code><a title="bibboxbackend.AppController.readContainernames" href="#bibboxbackend.AppController.readContainernames">readContainernames</a></code></li>
+<li><code><a title="bibboxbackend.AppController.readVersion" href="#bibboxbackend.AppController.readVersion">readVersion</a></code></li>
+<li><code><a title="bibboxbackend.AppController.remove" href="#bibboxbackend.AppController.remove">remove</a></code></li>
+<li><code><a title="bibboxbackend.AppController.setInfo" href="#bibboxbackend.AppController.setInfo">setInfo</a></code></li>
+<li><code><a title="bibboxbackend.AppController.setProxyFiles" href="#bibboxbackend.AppController.setProxyFiles">setProxyFiles</a></code></li>
+<li><code><a title="bibboxbackend.AppController.setStatus" href="#bibboxbackend.AppController.setStatus">setStatus</a></code></li>
+<li><code><a title="bibboxbackend.AppController.setUpLog" href="#bibboxbackend.AppController.setUpLog">setUpLog</a></code></li>
+<li><code><a title="bibboxbackend.AppController.setup_logger" href="#bibboxbackend.AppController.setup_logger">setup_logger</a></code></li>
+<li><code><a title="bibboxbackend.AppController.start" href="#bibboxbackend.AppController.start">start</a></code></li>
+<li><code><a title="bibboxbackend.AppController.status" href="#bibboxbackend.AppController.status">status</a></code></li>
+<li><code><a title="bibboxbackend.AppController.stop" href="#bibboxbackend.AppController.stop">stop</a></code></li>
+<li><code><a title="bibboxbackend.AppController.unlock" href="#bibboxbackend.AppController.unlock">unlock</a></code></li>
+<li><code><a title="bibboxbackend.AppController.writeCLICompose" href="#bibboxbackend.AppController.writeCLICompose">writeCLICompose</a></code></li>
+<li><code><a title="bibboxbackend.AppController.writeCompose" href="#bibboxbackend.AppController.writeCompose">writeCompose</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 </dl>
 </section>
 </article>
@@ -6131,22 +6189,16 @@ The instance name of the application that is used </p>
 <li><code><a title="bibboxbackend.AppController.checkStatus" href="#bibboxbackend.AppController.checkStatus">checkStatus</a></code></li>
 <li><code><a title="bibboxbackend.AppController.composeUp" href="#bibboxbackend.AppController.composeUp">composeUp</a></code></li>
 <li><code><a title="bibboxbackend.AppController.copy" href="#bibboxbackend.AppController.copy">copy</a></code></li>
-<li><code><a title="bibboxbackend.AppController.copyApp" href="#bibboxbackend.AppController.copyApp">copyApp</a></code></li>
 <li><code><a title="bibboxbackend.AppController.createFolder" href="#bibboxbackend.AppController.createFolder">createFolder</a></code></li>
 <li><code><a title="bibboxbackend.AppController.createJobID" href="#bibboxbackend.AppController.createJobID">createJobID</a></code></li>
 <li><code><a title="bibboxbackend.AppController.downloadApp" href="#bibboxbackend.AppController.downloadApp">downloadApp</a></code></li>
 <li><code><a title="bibboxbackend.AppController.getInstalledApps" href="#bibboxbackend.AppController.getInstalledApps">getInstalledApps</a></code></li>
 <li><code><a title="bibboxbackend.AppController.getParams" href="#bibboxbackend.AppController.getParams">getParams</a></code></li>
-<li><code><a title="bibboxbackend.AppController.getStatus" href="#bibboxbackend.AppController.getStatus">getStatus</a></code></li>
-<li><code><a title="bibboxbackend.AppController.installApp" href="#bibboxbackend.AppController.installApp">installApp</a></code></li>
-<li><code><a title="bibboxbackend.AppController.listApps" href="#bibboxbackend.AppController.listApps">listApps</a></code></li>
-<li><code><a title="bibboxbackend.AppController.listInstalledApps" href="#bibboxbackend.AppController.listInstalledApps">listInstalledApps</a></code></li>
 <li><code><a title="bibboxbackend.AppController.lock" href="#bibboxbackend.AppController.lock">lock</a></code></li>
 <li><code><a title="bibboxbackend.AppController.readAppStore" href="#bibboxbackend.AppController.readAppStore">readAppStore</a></code></li>
 <li><code><a title="bibboxbackend.AppController.readContainernames" href="#bibboxbackend.AppController.readContainernames">readContainernames</a></code></li>
 <li><code><a title="bibboxbackend.AppController.readVersion" href="#bibboxbackend.AppController.readVersion">readVersion</a></code></li>
 <li><code><a title="bibboxbackend.AppController.remove" href="#bibboxbackend.AppController.remove">remove</a></code></li>
-<li><code><a title="bibboxbackend.AppController.removeApp" href="#bibboxbackend.AppController.removeApp">removeApp</a></code></li>
 <li><code><a title="bibboxbackend.AppController.setInfo" href="#bibboxbackend.AppController.setInfo">setInfo</a></code></li>
 <li><code><a title="bibboxbackend.AppController.setParams" href="#bibboxbackend.AppController.setParams">setParams</a></code></li>
 <li><code><a title="bibboxbackend.AppController.setProxyFiles" href="#bibboxbackend.AppController.setProxyFiles">setProxyFiles</a></code></li>
@@ -6154,17 +6206,28 @@ The instance name of the application that is used </p>
 <li><code><a title="bibboxbackend.AppController.setUpLog" href="#bibboxbackend.AppController.setUpLog">setUpLog</a></code></li>
 <li><code><a title="bibboxbackend.AppController.setup_logger" href="#bibboxbackend.AppController.setup_logger">setup_logger</a></code></li>
 <li><code><a title="bibboxbackend.AppController.start" href="#bibboxbackend.AppController.start">start</a></code></li>
-<li><code><a title="bibboxbackend.AppController.startApp" href="#bibboxbackend.AppController.startApp">startApp</a></code></li>
-<li><code><a title="bibboxbackend.AppController.startBibbox" href="#bibboxbackend.AppController.startBibbox">startBibbox</a></code></li>
 <li><code><a title="bibboxbackend.AppController.startNginx" href="#bibboxbackend.AppController.startNginx">startNginx</a></code></li>
 <li><code><a title="bibboxbackend.AppController.status" href="#bibboxbackend.AppController.status">status</a></code></li>
 <li><code><a title="bibboxbackend.AppController.stop" href="#bibboxbackend.AppController.stop">stop</a></code></li>
-<li><code><a title="bibboxbackend.AppController.stopApp" href="#bibboxbackend.AppController.stopApp">stopApp</a></code></li>
-<li><code><a title="bibboxbackend.AppController.stopBibbox" href="#bibboxbackend.AppController.stopBibbox">stopBibbox</a></code></li>
 <li><code><a title="bibboxbackend.AppController.stopNginx" href="#bibboxbackend.AppController.stopNginx">stopNginx</a></code></li>
 <li><code><a title="bibboxbackend.AppController.unlock" href="#bibboxbackend.AppController.unlock">unlock</a></code></li>
 <li><code><a title="bibboxbackend.AppController.writeCLICompose" href="#bibboxbackend.AppController.writeCLICompose">writeCLICompose</a></code></li>
 <li><code><a title="bibboxbackend.AppController.writeCompose" href="#bibboxbackend.AppController.writeCompose">writeCompose</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="bibboxbackend.MainFunctions" href="#bibboxbackend.MainFunctions">MainFunctions</a></code></h4>
+<ul class="two-column">
+<li><code><a title="bibboxbackend.MainFunctions.copyApp" href="#bibboxbackend.MainFunctions.copyApp">copyApp</a></code></li>
+<li><code><a title="bibboxbackend.MainFunctions.getStatus" href="#bibboxbackend.MainFunctions.getStatus">getStatus</a></code></li>
+<li><code><a title="bibboxbackend.MainFunctions.installApp" href="#bibboxbackend.MainFunctions.installApp">installApp</a></code></li>
+<li><code><a title="bibboxbackend.MainFunctions.listApps" href="#bibboxbackend.MainFunctions.listApps">listApps</a></code></li>
+<li><code><a title="bibboxbackend.MainFunctions.listInstalledApps" href="#bibboxbackend.MainFunctions.listInstalledApps">listInstalledApps</a></code></li>
+<li><code><a title="bibboxbackend.MainFunctions.removeApp" href="#bibboxbackend.MainFunctions.removeApp">removeApp</a></code></li>
+<li><code><a title="bibboxbackend.MainFunctions.startApp" href="#bibboxbackend.MainFunctions.startApp">startApp</a></code></li>
+<li><code><a title="bibboxbackend.MainFunctions.startBibbox" href="#bibboxbackend.MainFunctions.startBibbox">startBibbox</a></code></li>
+<li><code><a title="bibboxbackend.MainFunctions.stopApp" href="#bibboxbackend.MainFunctions.stopApp">stopApp</a></code></li>
+<li><code><a title="bibboxbackend.MainFunctions.stopBibbox" href="#bibboxbackend.MainFunctions.stopBibbox">stopBibbox</a></code></li>
 </ul>
 </li>
 </ul>

@@ -6,6 +6,7 @@ import sys
 
 sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend")
 from bibboxbackend import AppController
+from bibboxbackend import MainFunctions
 
 
 def listApps():  # noqa: E501
@@ -14,7 +15,7 @@ def listApps():  # noqa: E501
      
     """
     try:
-        controller = AppController()
+        controller = MainFunctions()
         response = controller.listApps(), 200
     except KeyError:
         response = {}, 404
@@ -31,7 +32,7 @@ def listInstalledApps():  # noqa: E501
      
     """
     try:
-        controller = AppController()
+        controller = MainFunctions()
         response = controller.listInstalledApps(), 200
     except KeyError:
         response = {}, 404

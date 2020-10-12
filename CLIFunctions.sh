@@ -1,15 +1,33 @@
 
-##!/bin/bash
+#!/bin/bash
 
 function bibbox-installApp() 
 {
-	var1=$2
+        var1="'$1'"
+        var1ch=$1
+        var2="'$2'"
+        var2ch=$2
+        var3="'$3'"
+
+
+        #while [ "$var1ch" != "" ]; do
+        case $var1ch in
+                -h | --help )           installusage
+                                        return
+                                        ;;
+                -v | --version | version )  version
+                                        return
+                                        
+        esac
+        shift
+        #done
+
         declare keylist
 	declare paramlist
-        params=$(curl https://raw.githubusercontent.com/bibbox/$var1/master/.env)
-	sed s/' '/'='/g <<< $params
-        echo https://raw.githubusercontent.com/bibbox/$var1/master/.env
-        echo Please enter working user specifications!
+        params=$(curl https://raw.githubusercontent.com/bibbox/$var2ch/master/.env)
+	sed -n s/' '/'='/g <<< $params
+        #echo https://raw.githubusercontent.com/bibbox/$var2ch/master/.env
+        echo Please enter user specifications!
 	#ext = begin
 	keylist="'"
         paramlist="'"
@@ -49,66 +67,556 @@ function bibbox-installApp()
         keylist="$keylist'"
         paramlist="$paramlist'"
 
-        var1="'$1'"
-        var2="'$2'"
-        var3="'$3'"
+        
 
 #	echo $keylist
 #	echo $paramlist
 
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.installApp('"$paramlist"','"$keylist"','"$var1"','"$var2"','"$var3"',CLI=True)'
+
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.installApp('"$paramlist"','"$keylist"','"$var1"','"$var2"','"$var3"',CLI=True)'
+
+
+
 }
 
 function bibbox-startApp() 
 {
 	var="'$1'"
-	sudo python3 -c 'import sys; sys.path.insert(1, "//opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.startApp('"$var"')'
+        var1ch=$1
+
+        case $var1ch in
+                -h | --help )           startusage
+                                        return
+                                        ;;
+                -v | --version | version )  version
+                                        return
+                                        
+        esac
+        shift
+
+	sudo python3 -c 'import sys; sys.path.insert(1, "//opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.startApp('"$var"')'
 }
 
 function bibbox-stopApp() 
 {
         var="'$1'"
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.stopApp('"$var"')'
+        var1ch=$1
+
+        case $var1ch in
+                -h | --help )           stopusage
+                                        return
+                                        ;;
+                -v | --version | version )  version
+                                        return
+                                        
+        esac
+        shift
+
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.stopApp('"$var"')'
 }
 
 function bibbox-removeApp() 
 {
         var="'$1'"
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.removeApp('"$var"')'
+        var1ch=$1
+
+        case $var1ch in
+                -h | --help )           removeusage
+                                        return
+                                        ;;
+                -v | --version | version )  version
+                                        return
+                                        
+        esac
+        shift
+
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.removeApp('"$var"')'
 }
 
 function bibbox-getStatus() 
 {
         var="'$1'"
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.getStatus('"$var"')'
+        var1ch=$1
+
+        case $var1ch in
+                -h | --help )           statususage
+                                        return
+                                        ;;
+                -v | --version | version )  version
+                                        return
+                                        
+        esac
+        shift
+
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.getStatus('"$var"')'
 }
 
 function bibbox-copyApp() 
 {
         var1="'$1'"
 	var2="'$2'"
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.copyApp('"$var1"','"$var2"')'
+        var1ch=$1
+
+        case $var1ch in
+                -h | --help )           copyusage
+                                        return
+                                        ;;
+                -v | --version | version )  version
+                                        return
+                                        
+        esac
+        shift
+
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.copyApp('"$var1"','"$var2"')'
 }
 
 function bibbox-listApps() 
 {
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.listApps()'
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.listApps()'
+
+        while [ "$1" != "" ]; do
+        case $1 in
+                -h | --help )           listusage
+                                        ;;
+                -v | --version | version )  version
+                                        ;;
+                * )                     usage
+                                        error_exit "Parameters not matching"
+        esac
+        shift
+        done
+
 }
 
 function bibbox-listInstalledApps() 
 {
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.listInstalledApps()'
+
+        case $1 in
+                -h | --help )           installusage
+                                        return
+                                        ;;
+                -v | --version | version )  version
+                                        return
+                                        
+        esac
+        shift
+
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.listInstalledApps()'
 }
 
 function bibbox-startBibbox() 
 {
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.startBibbox()'
+
+        case $1 in
+                -h | --help )           startbibboxusage
+                                        return
+                                        ;;
+                -v | --version | version )  version
+                                        return
+                                        
+        esac
+        shift
+
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.startBibbox()'
 }
 
 function bibbox-stopBibbox() 
 {
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.AppController(); x.stopBibbox()'
+
+        case $1 in
+                -h | --help )           stopbibboxusage
+                                        return
+                                        ;;
+                -v | --version | version )  version
+                                        return
+                                        
+        esac
+        shift
+
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.stopBibbox()'
 }
+
+function bibbox() 
+{       
+        var1=$1
+
+        case $var1 in
+                -h | --help )           usage
+                                        return
+                                        ;;
+                -v | --version | version )  version
+                                        return
+                                        
+        esac
+        shift
+}
+
+function clean_up() {
+
+	# Perform program exit housekeeping
+	# Optionally accepts an exit status
+	
+	exit $1
+}
+
+function error_exit()
+{
+	echo "${PROGNAME}: ${1:-"Unknown Error"}" 1>&2
+	clean_up 1
+}
+
+function installusage()
+{
+
+    echo "DESCRIPTION"
+    echo "Installs a new bibbox app with a specific unique name"
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox-installApp <instancename> <appname> <version>"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox-installApp  SeedDMS master"
+    echo ""
+    echo "USAGE:"
+    echo "Parameters:      
+----------
+
+paramList: array
+        list of environment variables that are defined in the .env file in the repository of the application
+
+instanceName : str
+        The instance name of the application that is used 
+
+appName : str
+        The (github) name of the application that is used 
+
+version : str
+        The wanted version of the application that is used 
+
+Raises:
+-------
+
+Returns:
+-------"
+
+}
+
+function startusage()
+{
+
+    echo "DESCRIPTION"
+    echo "Starts the wanted BiBBox app container"
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox-startApp <instancename>"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox-startApp seeddmstest"
+    echo ""
+    echo "USAGE:"
+    echo "Parameters:
+----------
+
+instanceName : str
+        The instance name of the application that is used 
+
+Raises:
+-------
+
+Returns:
+-------"
+}
+
+function stopusage()
+{
+
+    echo "DESCRIPTION"
+    echo "Stops the wanted BiBBox app container"
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox-startApp <instancename>"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox-stopApp seeddmstest"
+    echo ""
+    echo "USAGE:"
+    echo "Parameters:
+----------
+
+instanceName : str
+        The instance name of the application that is used 
+
+Raises:
+-------
+
+Returns:
+-------"
+}
+
+function removeusage()
+{
+
+    echo "DESCRIPTION"
+    echo "Removes the wanted BiBBox app container"
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox-removeApp <instancename>"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox-removeApp seeddmstest"
+    echo ""
+    echo "USAGE:"
+    echo "Parameters:
+----------
+
+instanceName : str
+        The instance name of the application that is used 
+
+Raises:
+-------
+
+Returns:
+-------"
+}
+
+function statususage()
+{
+
+    echo "DESCRIPTION"
+    echo "Returns the current status of the wanted application"
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox-getStatus <instancename>"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox-getStatus seeddmstest"
+    echo ""
+    echo "USAGE:"
+    echo "Description:
+-----------
+Returns status of a specific application.
+
+Parameters:
+----------
+
+instanceName : str
+        The instance name of the application that is used 
+
+Raises:
+-------
+
+Returns:
+-------
+
+status : str
+        The current status of the application that is used "
+}
+
+function copyusage()
+{
+
+    echo "DESCRIPTION"
+    echo "Copies the wanted application"
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox-copyApp <instancename>"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox-copyApp oldappname newappname"
+    echo ""
+    echo "USAGE:"
+    echo "Description:
+-----------
+Copies the wanted app with a new name.
+
+Parameters:
+----------
+
+instanceName : str
+        The instance name of the application that is used 
+
+newName : str
+        The new name of the application that is used 
+
+Raises:
+-------
+
+Returns:
+------- "
+}
+
+function listusage()
+{
+
+    echo "DESCRIPTION"
+    echo "Lisis all available applications"
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox-listApps"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox-listApps"
+    echo ""
+    echo "USAGE:"
+    echo "Description:
+-----------
+Lists the available Apps.
+
+Parameters:
+----------
+
+Raises:
+-------
+
+Returns:
+-------
+appslist: json object
+        The list of all available apps as json string"
+}
+
+function listinstalledusage()
+{
+
+    echo "DESCRIPTION"
+    echo "Lisis all installed applications"
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox-listInstalledApps"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox-listInstalledApps"
+    echo ""
+    echo "USAGE:"
+    echo "Description:
+-----------
+Lists the installed Apps.
+
+Parameters:
+----------
+
+Raises:
+-------
+
+Returns:
+-------
+appslist: json object
+        The list of all installed apps with the corresponding instance name as json string"
+}
+
+function startbibboxusage()
+{
+
+    echo "DESCRIPTION"
+    echo "Starts the main bibbox system"
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox-startBibbox"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox-startBibbox"
+    
+}
+
+function stopbibboxusage()
+{
+
+    echo "DESCRIPTION"
+    echo "Stops the main bibbox system"
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox-stopBibbox"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox-stopBibbox"
+    
+    
+}
+
+
+function usage()
+{
+
+    echo "DESCRIPTION"
+    echo "This module is made to controll the BiBBoX software through a CLI."
+    echo "The following functiuons are available:"
+    echo "bibbox-installApp"
+    echo "bibbox-startApp"
+    echo "bibbox-stopApp"
+    echo "bibbox-copyApp"
+    echo "bibbox-listApps"
+    echo "bibbox-listInstalledApps"
+    echo "bibbox-removeApp"
+    echo "bibbox-getStatus"
+    echo "bibbox-startBibbox"
+    echo "bibbox-stopBibbox"
+    echo ""
+    echo "For a detailed function documentation please enter:"
+    echo "<functionname> -h or <functionname> --help"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox -h "
+    echo ""
+    echo "IMPLEMENTATION"
+    echo "version                       version 1.0"
+ #   echo "author                        Stefan Herdy"
+    echo "copyright                     Copyright  Medical University of Graz"
+    echo "license                       GNU General Public License"
+}
+
+function version()
+{
+  echo "Version: 1.0"
+  echo "BIBBOX Version: 1.0"
+}
+
+
+
+
+
 
 #installApp seeddms22 app-seeddmsTNG master
 #stopApp seeddms10
