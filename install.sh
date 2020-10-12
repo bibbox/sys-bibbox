@@ -7,14 +7,16 @@ cd sys-bibbox
 mkdir -p log
 cd log
 touch system.log
-cd ..
+cd /opt/bibbox/sys-bibbox
 cd sys-proxy/proxyconfig
 mkdir -p sites/
-cd ..
-cd ..
+cd /opt/bibbox/sys-bibbox
 source CLIFunctions.sh
 mkdir -p application-instance
 docker-compose up -d
-cd ..
-cd ..
+cd /opt
 sudo chmod -R 777 bibbox 
+grep -qxF "source /opt/bibbox/sys-bibbox/CLIFunctions.sh" ~/.bashrc || echo "source /opt/bibbox/sys-bibbox/CLIFunctions.sh" >> ~/.bashrc
+#echo "source /opt/bibbox/sys-bibbox/CLIFunctions.sh" >> ~/.bashrc
+
+
