@@ -443,7 +443,7 @@ class AppController:
         '''
         bibbox_logger = AppController.setUpLog(self, jobID, 'system', systemonly=True)
         try:
-            url = 'https://raw.githubusercontent.com/bibbox/application-store/master/eB3Kit.json'
+            url = 'https://raw.githubusercontent.com/bibbox/application-store/master/eB3Kitnew.json'
             download = requests.get(url).content
         except Exception:
             raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
