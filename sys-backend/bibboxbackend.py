@@ -441,6 +441,28 @@ class AppController:
         -------
         
         '''
+        bibbox_logger = AppController.setUpLog(self, jobID, 'system', systemonly=True)
+        try:
+            url = 'https://raw.githubusercontent.com/bibbox/application-store/master/eB3Kit.json'
+            download = requests.get(url).content
+        except Exception:
+            raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
+        try:
+            params = simplejson.loads(download)
+        except Exception:
+            bibbox_logger.exception('Error while loading eB3Kit.json file: ', exc_info=True)
+            raise Exception('Error while loading eB3Kit.json file')
+        appslist=[]
+        try:
+            for i, values in enumerate(params):
+                variable = values['group_members']
+                for i, var in enumerate(variable):
+                    if appName == var['app_display_name']:
+                        appName = var['app_name']
+
+        except Exception:
+            raise Exception('Error while loading eB3Kit.json file!')
+            bibbox_logger.exception('Error while loading eB3Kit.json file: ', exc_info=True)      
         rootdir = dirname(dirname(abspath(__file__)))
         print(rootdir)
         #rootdir = 'opt/bibbox/sys-bibbox'
