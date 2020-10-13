@@ -24,36 +24,32 @@ If you do not have installed the package curl, you can install it using
 
 `sudo apt-get -y install curl`
 
-##### Clone GitHub Repository
+##### Install the BiBBoX
 
-Clone the BiBBoX repository to your prefered destination using the command
+`wget -O - https://raw.githubusercontent.com/bibbox/sys-bibbox/master/install.sh | bash`
 
-`git clone https://github.com/bibbox/sys-bibbox.git`
-
-Change the direction to the sys-bibbox folder using
-
-`cd sys-bibbox`
-
-##### Create the BiBBoX default network
+## Use the BiBBoX via CLI
 
 Run 
 
-`sudo docker network create bibbox-default-network`
+`bibbox -h`
 
-##### Start the nginx Webserver Container
+for further help.
 
-Run 
+The available commands are:
 
-`sudo docker-compose up -d`
+`bibbox-installApp`
+`bibbox-startApp`
+`bibbox-stopApp`
+`bibbox-copyApp`
+`bibbox-listApps`
+`bibbox-listInstalledApps`
+`bibbox-removeApp`
+`bibbox-getStatus`
+`bibbox-startBibbox`
+`bibbox-stopBibbox`
 
-## Test the BIBBOX
+Use the flag -h or --help for a detailed app description.
 
-The bibbox backend is tested with Ubuntu 20.04, so it is recommendet to use this OS to run the BiBBoX.
-
-Choose the folder "sys-bibbox" as working directory and run the predefined test script "test.py" with the command
-
-`sudo python3 sys-backend/test.py`
-
-The testfile contains predefined commands. For further testing it is recommented to open and modify the testfile or to run the specific commands in an IDE in debug mode.
 
 A started app with a user defined instance name (instanceName) can be used under "localhost:8010/instanceName" in the browser.
