@@ -13,6 +13,7 @@ mkdir -p sites/
 cd /opt/bibbox/sys-bibbox
 source CLIFunctions.sh
 mkdir -p application-instance
+sudo docker network create bibbox-default-network
 sudo docker-compose up -d
 cd /opt
 sudo chmod -R 777 bibbox 
