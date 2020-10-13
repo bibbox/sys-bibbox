@@ -13,7 +13,7 @@ mkdir -p sites/
 cd /opt/bibbox/sys-bibbox
 source CLIFunctions.sh
 mkdir -p application-instance
-docker-compose up -d
+sudo docker-compose up -d
 cd /opt
 sudo chmod -R 777 bibbox 
 grep -qxF "source /opt/bibbox/sys-bibbox/CLIFunctions.sh" ~/.bashrc || echo "source /opt/bibbox/sys-bibbox/CLIFunctions.sh" >> ~/.bashrc
