@@ -284,8 +284,7 @@ function installusage()
     echo "EXAMPLES"
     echo "bibbox-installApp  SeedDMS master"
     echo ""
-    echo "USAGE:"
-    echo "Parameters:      
+    echo "PARAMETERS    
 ----------
 
 paramList: array
@@ -299,12 +298,9 @@ appName : str
 
 version : str
         The wanted version of the application that is used 
-
-Raises:
--------
-
-Returns:
--------"
+        The version name is considered optional. If no version name is given,
+        the latest version of the application is installed.
+"
 
 }
 
@@ -324,8 +320,7 @@ function startusage()
     echo "EXAMPLES"
     echo "bibbox-startApp seeddmstest"
     echo ""
-    echo "USAGE:"
-    echo "Parameters:
+    echo "PARAMETERS
 ----------
 
 instanceName : str
@@ -354,8 +349,7 @@ function stopusage()
     echo "EXAMPLES"
     echo "bibbox-stopApp seeddmstest"
     echo ""
-    echo "USAGE:"
-    echo "Parameters:
+    echo "PARAMETERS
 ----------
 
 instanceName : str
@@ -384,8 +378,7 @@ function removeusage()
     echo "EXAMPLES"
     echo "bibbox-removeApp seeddmstest"
     echo ""
-    echo "USAGE:"
-    echo "Parameters:
+    echo "PARAMETERS
 ----------
 
 instanceName : str
@@ -414,12 +407,7 @@ function statususage()
     echo "EXAMPLES"
     echo "bibbox-getStatus seeddmstest"
     echo ""
-    echo "USAGE:"
-    echo "Description:
------------
-Returns status of a specific application.
-
-Parameters:
+    echo "PARAMETERS
 ----------
 
 instanceName : str
@@ -451,12 +439,7 @@ function copyusage()
     echo "EXAMPLES"
     echo "bibbox-copyApp oldappname newappname"
     echo ""
-    echo "USAGE:"
-    echo "Description:
------------
-Copies the wanted app with a new name.
-
-Parameters:
+    echo "PARAMETERS
 ----------
 
 instanceName : str
@@ -488,12 +471,7 @@ function listusage()
     echo "EXAMPLES"
     echo "bibbox-listApps"
     echo ""
-    echo "USAGE:"
-    echo "Description:
------------
-Lists the available Apps.
-
-Parameters:
+    echo "PARAMETERS
 ----------
 
 Raises:
@@ -521,12 +499,7 @@ function listinstalledusage()
     echo "EXAMPLES"
     echo "bibbox-listInstalledApps"
     echo ""
-    echo "USAGE:"
-    echo "Description:
------------
-Lists the installed Apps.
-
-Parameters:
+    echo "PARAMETERS
 ----------
 
 Raises:
