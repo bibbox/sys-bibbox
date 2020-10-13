@@ -414,7 +414,7 @@ class AppController:
 
 
 #    @staticmethod
-    def downloadApp(self, jobID, instanceName,appName,version):
+    def downloadApp(self, jobID, instanceName,appName,version = 'master'):
         '''
         Description:
         -----------
@@ -441,6 +441,8 @@ class AppController:
         -------
         
         '''
+        if version == '' or version == None:
+            version = 'master'
         bibbox_logger = AppController.setUpLog(self, jobID, 'system', systemonly=True)
         try:
             url = 'https://raw.githubusercontent.com/bibbox/application-store/master/eB3Kitnew.json'
@@ -457,7 +459,7 @@ class AppController:
             for i, values in enumerate(params):
                 variable = values['group_members']
                 for i, var in enumerate(variable):
-                    if appName == var['app_dispay_name']:
+                    if appName.lower() == var['app_dispay_name'].lower():
                         appName = var['app_name']
 
         except Exception:
@@ -525,7 +527,7 @@ class AppController:
         for i, values in enumerate(params):
             variable = values['group_members']
             for i, var in enumerate(variable):
-                if appName == var['app_dispay_name']:
+                if appName.lower() == var['app_dispay_name'].lower():
                     appName = var['app_name']
 
         sys.stdout.write(appName+ '\n')
@@ -1464,9 +1466,11 @@ class AppController:
         
         '''
         bibbox_logger = AppController.setUpLog(self, jobID, instanceName, systemonly = True)
+        if type(instanceName) != str:
+            bibbox_logger.debug('The input ' + instanceName + ' is not valid! Must be a string, but has type ' + type(instanceName) + '!')
         validAll = True
         if not inputparams:
-            app_logger.info('There are no input parameters to check')
+            bibbox_logger.info('There are no input parameters to check')
         for var in inputparams:
             valid = bool(re.match('^[a-zA-Z0-9\-]*$',var))
             negativeList = ['admin']
