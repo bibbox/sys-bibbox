@@ -207,15 +207,16 @@ class AppController:
         
         '''
         
-        formatter = logging.Formatter(jobID + '%(asctime)s - %(levelname)s - %(name)s - %(message)s')
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
+        logformatter = logging.Formatter(jobID + '%(asctime)s - %(levelname)s - %(name)s - %(message)s')
         logger = logging.getLogger(loggerName)
         if logger.handlers[:] == []:
             handler = logging.handlers.RotatingFileHandler(log_file, maxBytes=20000000, backupCount = 10)
-            handler.setFormatter(formatter)
-            #if os.path.getsize(log_file) > 0:
-            #    handler.doRollover()
+            handler.setFormatter(logformatter)
+            stream = logging.StreamHandler()
+            stream.setFormatter(formatter)
+            logger.addHandler(stream)
             logger.addHandler(handler)
-            logger.addHandler(logging.StreamHandler())
         logger.setLevel(level)
 
         return logger

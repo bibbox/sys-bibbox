@@ -30,6 +30,7 @@ function bibbox-installApp()
 	sed -n s/' '/'='/g <<< $params
         #echo https://raw.githubusercontent.com/bibbox/${name}/master/.env
         echo Please enter user specifications!
+        echo This user specifications are used for the login later.
 	#ext = begin
 	keylist="'"
         paramlist="'"
