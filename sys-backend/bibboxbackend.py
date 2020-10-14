@@ -398,8 +398,6 @@ class AppController:
         -------
         
         '''
-        app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(self, jobID, instanceName)
-        app_logger.debug('Unlocking app: ' + instanceName )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
@@ -412,6 +410,8 @@ class AppController:
         if path.exists(appPath + '/' + instanceName + '/LOCK') == True:
             app_errorlogger.exception('Something went wrong during deleting LOCK file: ', exc_info=True)
             raise Exception('Fatal error in deleting LOCK file: ')
+        app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(self, jobID, instanceName)
+        app_logger.debug('App ' + instanceName ' unlocked')
 
 
 #    @staticmethod
