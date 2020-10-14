@@ -1629,6 +1629,8 @@ class MainFunctions(AppController):
         states = AppController.checkDockerState(self, jobID, instanceName, containerNames, ['running'])
         AppController.checkInstall(self, instanceName, states)
         AppController.setStatus(self, jobID, 'Running', instanceName)
+        AppController.stopNginx(self, jobID)
+        AppController.startNginx(self, jobID)
 
     
 
