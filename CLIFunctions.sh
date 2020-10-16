@@ -207,7 +207,7 @@ function bibbox-listInstalledApps()
         sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.listInstalledApps()'
 }
 
-function bibbox-startBibbox() 
+function bibbox-startSystem() 
 {
 
         case $1 in
@@ -223,7 +223,23 @@ function bibbox-startBibbox()
         sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.startBibbox()'
 }
 
-function bibbox-stopBibbox() 
+function bibbox-restartSystem() 
+{
+
+        case $1 in
+                -h | --help )           restartbibboxusage
+                                        return
+                                        ;;
+                -v | --version | version )  version
+                                        return
+                                        
+        esac
+        shift
+
+        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.restartBibbox()'
+}
+
+function bibbox-stopSystem() 
 {
 
         case $1 in
@@ -238,6 +254,7 @@ function bibbox-stopBibbox()
 
         sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.stopBibbox()'
 }
+
 
 function bibbox() 
 {       
@@ -525,7 +542,7 @@ function startbibboxusage()
     echo "-v, --version                 Print script information"
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-startBibbox"
+    echo "bibbox-startSystem"
     
 }
 
@@ -543,11 +560,29 @@ function stopbibboxusage()
     echo "-v, --version                 Print script information"
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-stopBibbox"
+    echo "bibbox-stopSystem"
     
     
 }
 
+function restartbibboxusage()
+{
+
+    echo "DESCRIPTION"
+    echo "Restarts the main bibbox system"
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox-stopBibbox"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox-restartSystem"
+    
+    
+}
 
 function usage()
 {

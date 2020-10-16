@@ -1903,7 +1903,27 @@ class MainFunctions(AppController):
         '''
         jobID = AppController.createJobID(self)
         AppController.stopNginx(self, jobID)
+
+    def restartBibbox(self):
+        '''
+        Description:
+        -----------
+        Restarts the BiBBoX System.
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
         
+        '''
+        jobID = AppController.createJobID(self)
+        AppController.stopNginx(self, jobID)
+        AppController.startNginx(self, jobID)
+
 
 
 
