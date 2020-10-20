@@ -39,16 +39,27 @@ for further help.
 The available commands are:
 
 `bibbox install`
+
 `bibbox start`
+
 `bibbox stop`
+
 `bibbox restart`
+
 `bibbox copy`
+
 `bibbox listApps`
+
 `bibbox listInstances`
+
 `bibbox remove`
+
 `bibbox status`
+
 `bibbox startSystem`
+
 `bibbox stopSystem`
+
 `bibbox restartSystem`
 
 
