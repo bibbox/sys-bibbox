@@ -457,7 +457,7 @@ class AppController:
                 variable = values['group_members']
                 for i, var in enumerate(variable):
                     if appName.lower() == var['app_dispay_name'].lower():
-                        appName = var['app_name']
+                        appNameNew = var['app_name']
 
         except Exception:
             raise Exception('Error while loading eB3Kit.json file!')
@@ -469,9 +469,9 @@ class AppController:
         if path.exists(appPath) == False:
             raise Exception('The folder "/application-instance" does not exist!')
         app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(self, jobID, instanceName)
-        app_logger.info( 'Downloading app: ' + appName + '/' + instanceName + ' V:' + version)
+        app_logger.info( 'Downloading app: ' + appNameNew + '/' + instanceName + ' V:' + version)
         
-        process = subprocess.Popen(['git', 'clone','-b', version, 'https://github.com/bibbox/' + appName + '.git', rootdir + '/application-instance/' + instanceName + '/repo/'],text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(['git', 'clone','-b', version, 'https://github.com/bibbox/' + appNameNew + '.git', rootdir + '/application-instance/' + instanceName + '/repo/'],text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         #output = process.stdout.readline()
         output, error = process.communicate()
         if output:
@@ -1605,14 +1605,32 @@ class AppController:
                     template = open( settingsPath + 'settings.xml', 'w+')
                     template.write(file_content)
                     template.close()
+
+
             except Exception:
                 app_errorlogger.exception('Fatal error in writing settings file of app: ' + instanceName, exc_info=True)
-#            process = subprocess.Popen(['sudo', 'chown', 'v', settingsPath + '/settings.xml'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
-#            output, error = process.communicate()
-#            if output:
-#                docker_logger.error( str(output).rstrip())
-#            process = subprocess.Popen(['sudo', 'chgrp', 'v', settingsPath + '/settings.xml'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
-#            output, error = process.communicate()
-#            if output:
-#                docker_logger.error( str(output).rstrip())
+
+            
+            # process = subprocess.Popen(['chmod','444', settingsPath + 'settings.xml'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            # output, error = process.communicate()
+            # if output:
+            #     output = output.decode('utf8')
+            #     output = output.strip()
+
+            # process = subprocess.Popen(['docker', 'exec', 'chmod', '777', '/var/www/seeddms60x/conf/settings.xml', '/bin/bash'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            # output, error = process.communicate()
+            # if output:
+            #     output = output.decode('utf8')
+            #     output = output.strip()
+
+            #     bibbox_logger.error(output)
+            
+            # process = subprocess.Popen(['sudo', 'chown', 'www-data', settingsPath + '/settings.xml'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
+            # output, error = process.communicate()
+            # if output:
+            #     docker_logger.error( str(output).rstrip())
+            # process = subprocess.Popen(['sudo', 'chgrp', 'www-data', settingsPath + '/settings.xml'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
+            # output, error = process.communicate()
+            # if output:
+            #     docker_logger.error( str(output).rstrip())
             

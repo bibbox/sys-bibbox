@@ -1,275 +1,304 @@
 
 #!/bin/bash
 
-function bibbox-installApp() 
-{
-        var1="'$1'"
-        var1ch=$1
-        var2="'$2'"
-        var2ch=$2
-        var3="'$3'"
-
-
-        #while [ "$var1ch" != "" ]; do
-        case $var1ch in
-                -h | --help )           installusage
-                                        return
-                                        ;;
-                -v | --version | version )  version
-                                        return
-                                        
-        esac
-        shift
-        #done
-        declare name
-        name=$(sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.getAppName('"$var2"')' 2>&1)
-        declare keylist
-	declare paramlist
-        params=$(curl https://raw.githubusercontent.com/bibbox/"${name}"/master/.env)
-        #echo $appname
-	sed -n s/' '/'='/g <<< $params
-        #echo https://raw.githubusercontent.com/bibbox/${name}/master/.env
-        echo Please enter user specifications!
-        echo This user specifications are used for the login later.
-	#ext = begin
-	keylist="'"
-        paramlist="'"
-#	echo $params params
-#	IFS=' '
-#        read -a line <<< $params
-#	echo ${line} line
-	for item in $params
-        do
-#	  echo $params
-          IFS='='
-          read -a strarr <<< $item
-#	  echo ch1
-#	  echo $item
-#	  echo ch2
-#	  echo $strarr
-#	  echo ch3
-#	  echo ${strarr[0]}
-	  IFS=$'\n'
-          read -a out <<< $item
-#	  echo ${out[0]} out
-          if [ ${strarr[0]} != 'PORT' ] && [ ${strarr[0]} != 'INSTANCE' ] 
-          then
-#	    echo check
-#	    echo $params
-#	    echo check1
- #           echo ${item[0]}
-#	    echo check2
-	    echo ${strarr[0]}:
-            read param
-	    v2=$param
-	    v1=${strarr[0]}
-	    keylist="$keylist;$v1"
-	    paramlist="$paramlist;$v2"
-	    fi
-	done
-        keylist="$keylist'"
-        paramlist="$paramlist'"
-
-        
-
-#	echo $keylist
-#	echo $paramlist
-
-
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.installApp('"$paramlist"','"$keylist"','"$var1"','"$var2"','"$var3"',CLI=True)'
-
-
-
-}
-
-function bibbox-startApp() 
-{
-	var="'$1'"
-        var1ch=$1
-
-        case $var1ch in
-                -h | --help )           startusage
-                                        return
-                                        ;;
-                -v | --version | version )  version
-                                        return
-                                        
-        esac
-        shift
-
-	sudo python3 -c 'import sys; sys.path.insert(1, "//opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.startApp('"$var"')'
-}
-
-function bibbox-stopApp() 
-{
-        var="'$1'"
-        var1ch=$1
-
-        case $var1ch in
-                -h | --help )           stopusage
-                                        return
-                                        ;;
-                -v | --version | version )  version
-                                        return
-                                        
-        esac
-        shift
-
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.stopApp('"$var"')'
-}
-
-function bibbox-removeApp() 
-{
-        var="'$1'"
-        var1ch=$1
-
-        case $var1ch in
-                -h | --help )           removeusage
-                                        return
-                                        ;;
-                -v | --version | version )  version
-                                        return
-                                        
-        esac
-        shift
-
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.removeApp('"$var"')'
-}
-
-function bibbox-getStatus() 
-{
-        var="'$1'"
-        var1ch=$1
-
-        case $var1ch in
-                -h | --help )           statususage
-                                        return
-                                        ;;
-                -v | --version | version )  version
-                                        return
-                                        
-        esac
-        shift
-
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.getStatus('"$var"')'
-}
-
-function bibbox-copyApp() 
-{
-        var1="'$1'"
-	var2="'$2'"
-        var1ch=$1
-
-        case $var1ch in
-                -h | --help )           copyusage
-                                        return
-                                        ;;
-                -v | --version | version )  version
-                                        return
-                                        
-        esac
-        shift
-
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.copyApp('"$var1"','"$var2"')'
-}
-
-function bibbox-listApps() 
-{
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.listApps()'
-
-        while [ "$1" != "" ]; do
-        case $1 in
-                -h | --help )           listusage
-                                        ;;
-                -v | --version | version )  version
-                                        ;;
-                * )                     usage
-                                        error_exit "Parameters not matching"
-        esac
-        shift
-        done
-
-}
-
-function bibbox-listInstalledApps() 
-{
-
-        case $1 in
-                -h | --help )           installusage
-                                        return
-                                        ;;
-                -v | --version | version )  version
-                                        return
-                                        
-        esac
-        shift
-
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.listInstalledApps()'
-}
-
-function bibbox-startSystem() 
-{
-
-        case $1 in
-                -h | --help )           startbibboxusage
-                                        return
-                                        ;;
-                -v | --version | version )  version
-                                        return
-                                        
-        esac
-        shift
-
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.startBibbox()'
-}
-
-function bibbox-restartSystem() 
-{
-
-        case $1 in
-                -h | --help )           restartbibboxusage
-                                        return
-                                        ;;
-                -v | --version | version )  version
-                                        return
-                                        
-        esac
-        shift
-
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.restartBibbox()'
-}
-
-function bibbox-stopSystem() 
-{
-
-        case $1 in
-                -h | --help )           stopbibboxusage
-                                        return
-                                        ;;
-                -v | --version | version )  version
-                                        return
-                                        
-        esac
-        shift
-
-        sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import bibboxbackend; x=bibboxbackend.MainFunctions(); x.stopBibbox()'
-}
-
-
 function bibbox() 
 {       
-        var1=$1
+        if [[ $1 = install ]]
+        then
+                appname="'$2'"
+                appnamech=$2
+                instance="'$3'"
+                instancech=$3
+                version="'$4'"
+                versionch=$4
+                default=false
+                
+                for var in "$@"
+                do
+                        case $var in
 
-        case $var1 in
-                -h | --help )           usage
-                                        return
-                                        ;;
-                -v | --version | version )  version
-                                        return
-                                        
-        esac
-        shift
+                                -d | --default )        default=true
+
+                        esac 
+                        case $3 in
+                                -h | --help )           installusage
+                                                        return
+                                                        ;;
+                                -bv | --bibboxversion )  version
+                                                        return
+                                                        ;;
+                                -n | --name )           instance="'$4'"
+                                                        #echo step1
+                                                        
+                                                        ;;                      
+                                -v | --version )        version="'$4'"
+                                                        versionch=$4
+                                                        #echo step2
+                                                        
+                                
+                        esac
+                        shift
+                        
+
+                done
+                
+                
+                #done
+                declare name
+                name=$(sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.getAppName('"$appname"')' 2>&1)
+                declare keylist
+                declare paramlist
+
+                params=$(curl https://raw.githubusercontent.com/bibbox/"${name}"/"$versionch"/.env)
+                sed -n s/' '/'='/g <<< $params
+                echo https://raw.githubusercontent.com/bibbox/${name}/$versionch/.env
+                
+                echo The user specifications are used for the login later.
+                #ext = begin
+                keylist="'"
+                paramlist="'"
+                if [ $default = 'false' ]
+                then
+                        echo Please enter user specifications!
+                fi
+
+                if [ $default = 'true' ]
+                then
+                        echo The selected default values are:
+                fi
+                
+                for item in $params
+                do
+        
+                IFS='='
+                read -a strarr <<< $item
+                IFS=$'\n'
+                read -a out <<< $item
+                if [ ${strarr[0]} != 'PORT' ] && [ ${strarr[0]} != 'INSTANCE' ] 
+                then
+                        if [ $default = 'false' ]
+                        then
+                                echo ${strarr[0]}:
+                                read param
+                                v2=$param
+                                v1=${strarr[0]}
+                                keylist="$keylist;$v1"
+                                paramlist="$paramlist;$v2"
+                        fi
+                        
+
+                        if [ $default = 'true' ]
+                        then
+                                echo ${strarr[0]}: ${strarr[1]}
+                                v2=${strarr[1]}
+                                v1=${strarr[0]}
+                                keylist="$keylist;$v1"
+                                paramlist="$paramlist;$v2"
+
+                        fi
+                fi        
+                done
+                keylist="$keylist'"
+                paramlist="$paramlist'"
+
+                
+
+
+                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.installApp('"$paramlist"','"$keylist"','"$instance"','"$appname"','"$version"',CLI=True)'
+
+        fi
+
+
+
+
+        if [[ $1 = start ]]
+                then
+                var="'$2'"
+                var1ch=$2
+
+                case $var1ch in
+                        -h | --help )           startusage
+                                                return
+                                                ;;
+                        -v | --version | version )  version
+                                                return
+                                                
+                esac
+                shift
+
+                sudo python3 -c 'import sys; sys.path.insert(1, "//opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.startApp('"$var"')'
+        fi
+
+
+        if [[ $1 = stop ]]
+        then
+                var="'$2'"
+                var1ch=$2
+
+                case $var1ch in
+                        -h | --help )           stopusage
+                                                return
+                                                ;;
+                        -v | --version | version )  version
+                                                return
+                                                
+                esac
+                shift
+
+                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.stopApp('"$var"')'
+        fi
+
+        if [[ $1 = remove ]]
+        then
+                var="'$2'"
+                var1ch=$2
+
+                case $var1ch in
+                        -h | --help )           removeusage
+                                                return
+                                                ;;
+                        -v | --version | version )  version
+                                                return
+                                                
+                esac
+                shift
+
+                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.removeApp('"$var"')'
+        fi
+
+        if [[ $1 = status ]]
+        then
+                var="'$2'"
+                var1ch=$2
+
+                case $var1ch in
+                        -h | --help )           statususage
+                                                return
+                                                ;;
+                        -v | --version | version )  version
+                                                return
+                                                
+                esac
+                shift
+
+                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.getStatus('"$var"')'
+        fi
+
+        if [[ $1 = copy ]]
+        then
+                var1="'$2'"
+                var2="'$3'"
+                var1ch=$2
+
+                case $var1ch in
+                        -h | --help )           copyusage
+                                                return
+                                                ;;
+                        -v | --version | version )  version
+                                                return
+                                                
+                esac
+                shift
+
+                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.copyApp('"$var1"','"$var2"')'
+        fi
+
+        if [[ $1 = listApps ]]
+        then
+                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.listApps()'
+
+                while [ "$2" != "" ]; do
+                case $2 in
+                        -h | --help )           listusage
+                                                ;;
+                        -v | --version | version )  version
+                                                ;;
+                        * )                     usage
+                                                error_exit "Parameters not matching"
+                esac
+                shift
+                done
+
+        fi
+
+        if [[ $1 = listinstances ]]
+        then
+
+                case $2 in
+                        -h | --help )           installusage
+                                                return
+                                                ;;
+                        -v | --version | version )  version
+                                                return
+                                                
+                esac
+                shift
+
+                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.listInstalledApps()'
+        fi
+
+        if [[ $1 = startSystem ]]
+        then
+
+                case $2 in
+                        -h | --help )           startbibboxusage
+                                                return
+                                                ;;
+                        -v | --version | version )  version
+                                                return
+                                                
+                esac
+                shift
+
+                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.startBibbox()'
+        fi
+
+        if [[ $1 = restartSystem ]]
+        then
+                case $2 in
+                        -h | --help )           restartbibboxusage
+                                                return
+                                                ;;
+                        -v | --version | version )  version
+                                                return
+                                                
+                esac
+                shift
+
+                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.restartBibbox()'
+        fi
+
+        if [[ $1 = stopSystem ]]
+        then
+
+                case $2 in
+                        -h | --help )           stopbibboxusage
+                                                return
+                                                ;;
+                        -v | --version | version )  version
+                                                return
+                                                
+                esac
+                shift
+
+                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.stopBibbox()'
+        fi
 }
+
+#function bibbox() 
+# {       
+#        var1=$1
+#
+#        case $var1 in
+#                -h | --help )           usage
+#                                        return
+#                                        ;;
+#                -v | --version | version )  version
+#                                        return
+#                                        
+#        esac
+#        shift
+#}
 
 function clean_up() {
 

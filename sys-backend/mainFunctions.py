@@ -147,7 +147,7 @@ class MainFunctions(AppController):
         AppController.checkInput(self, jobID, instanceName, inputparams)
         #AppController.checkStatus(jobID, instanceName, statusList)
         containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
-        AppController.checkDockerState(jobID, instanceName, containerNames, ['paused', 'stopped', 'exited'])
+        AppController.checkDockerState(self, jobID, instanceName, containerNames, ['paused', 'stopped', 'exited'])
         AppController.lock(self, jobID, instanceName)
         AppController.setStatus(self, jobID, 'Starting', instanceName)
         AppController.setUpLog(self, jobID, instanceName)
@@ -282,7 +282,9 @@ class MainFunctions(AppController):
         jobID = AppController.createJobID(self)
         instanceName = 'system'
         appsList = AppController.readAppStore(self, jobID, instanceName)
+        print(appsList)
         return appsList
+        
 
  #   @staticmethod
     def listInstalledApps(self):
