@@ -78,7 +78,7 @@ function bibbox()
                 then
                         if [ $default = 'false' ]
                         then
-                                echo ${strarr[0]}:
+                                echo ${strarr[0]}:  '('default = ${strarr[1]}')'
                                 read param
                                 v2=$param
                                 v1=${strarr[0]}
