@@ -1,4 +1,4 @@
-# BiBBoX System
+# BIBBOX System
 
 This container contains the BiBBoX [BIBBOX APP](http://bibbox.readthedocs.io/en/latest/admin-documentation/ "BIBBOX App Store"). 
 
@@ -24,11 +24,11 @@ If you do not have installed the package curl, you can install it using
 
 `sudo apt-get -y install curl`
 
-##### Install the BiBBoX
+##### Install the BIBBOX
 
 `wget -O - https://raw.githubusercontent.com/bibbox/sys-bibbox/master/install.sh | bash`
 
-## Use the BiBBoX via CLI
+## Use the BIBBOX via CLI
 
 Run 
 
@@ -38,16 +38,30 @@ for further help.
 
 The available commands are:
 
-`bibbox-installApp`
-`bibbox-startApp`
-`bibbox-stopApp`
-`bibbox-copyApp`
-`bibbox-listApps`
-`bibbox-listInstalledApps`
-`bibbox-removeApp`
-`bibbox-getStatus`
-`bibbox-startBibbox`
-`bibbox-stopBibbox`
+`bibbox install`
+
+`bibbox start`
+
+`bibbox stop`
+
+`bibbox restart`
+
+`bibbox copy`
+
+`bibbox listApps`
+
+`bibbox listInstances`
+
+`bibbox remove`
+
+`bibbox status`
+
+`bibbox startSystem`
+
+`bibbox stopSystem`
+
+`bibbox restartSystem`
+
 
 Use the flag -h or --help for a detailed app description.
 
