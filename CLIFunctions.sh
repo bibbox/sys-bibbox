@@ -49,6 +49,37 @@ function bibbox()
                 declare keylist
                 declare paramlist
 
+                x=$(git ls-remote --heads https://github.com/bibbox/${name})
+                
+                branches=()
+                x=$(git ls-remote --heads https://github.com/bibbox/app-nextcloud)
+                branches=()
+                numbers=()
+                for word in $x 
+                do
+                if [[ $word == *_tng ]]
+                then 
+                branch=${word#"refs/heads/"}
+                branches+=($branch)
+                fi
+                done
+
+                sorted=$(echo ${branches[*]} | tr ' ' '\n' | sort --version-sort --field-separator=- -r)
+
+                sortedlist=($sorted)
+
+                newest=${sortedlist[0]}
+
+                echo $newest
+
+
+sorted=$(echo ${branches[*]} | tr ' ' '\n' | sort --version-sort --field-separator=- -r)
+
+sortedlist=($sorted)
+
+newest=${sortedlist[0]}
+
+
                 params=$(curl https://raw.githubusercontent.com/bibbox/"${name}"/"$versionch"/.env)
                 sed -n s/' '/'='/g <<< $params
                 echo https://raw.githubusercontent.com/bibbox/${name}/$versionch/.env

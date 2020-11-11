@@ -66,7 +66,7 @@ class MainFunctions(AppController):
         AppController.setInfo(self, jobID, instanceName,appName,version)
         containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
         AppController.setProxyFiles(self, jobID, instanceName, mainContainer)
-        #AppController.changeSettings(self, jobID, instanceName)
+        AppController.changeSettings(self, jobID, instanceName)
         if CLI == True:
             AppController.writeCLICompose(self, jobID, paramList, keyList, instanceName)
         else:

@@ -442,26 +442,29 @@ class AppController:
             version = 'master'
         bibbox_logger = AppController.setUpLog(self, jobID, 'system', systemonly=True)
         try:
-            url = 'https://raw.githubusercontent.com/bibbox/application-store/master/eB3Kitnew.json'
+            url = 'https://raw.githubusercontent.com/bibbox/application-store/master/bibboxV4.json'
             download = requests.get(url).content
         except Exception:
             raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
         try:
             params = simplejson.loads(download)
         except Exception:
-            bibbox_logger.exception('Error while loading eB3Kit.json file: ', exc_info=True)
-            raise Exception('Error while loading eB3Kit.json file')
+            bibbox_logger.exception('Error while loading bibboxV4.json file: ', exc_info=True)
+            raise Exception('Error while loading bibboxV4.json file')
         appslist=[]
-        try:
-            for i, values in enumerate(params):
-                variable = values['group_members']
-                for i, var in enumerate(variable):
-                    if appName.lower() == var['app_dispay_name'].lower():
-                        appNameNew = var['app_name']
+        # try:
+        #     #or i, values in enumerate(params):
+        #         variable = values['group_members']
+        #         for i, var in enumerate(variable):
+        #             if appName.lower() == var['app_name'].lower():
+        #                 appNameNew = var['app_name']
+    
 
-        except Exception:
-            raise Exception('Error while loading eB3Kit.json file!')
-            bibbox_logger.exception('Error while loading eB3Kit.json file: ', exc_info=True)      
+        # except Exception:
+        #     raise Exception('Error while loading eB3Kit.json file!')
+        #     bibbox_logger.exception('Error while loading eB3Kit.json file: ', exc_info=True) 
+
+        appNameNew = 'app-'+ appName     
         rootdir = dirname(dirname(abspath(__file__)))
         print(rootdir)
         #rootdir = 'opt/bibbox/sys-bibbox'
@@ -510,24 +513,25 @@ class AppController:
         '''
     
         try:
-            url = 'https://raw.githubusercontent.com/bibbox/application-store/master/eB3Kitnew.json'
+            url = 'https://raw.githubusercontent.com/bibbox/application-store/master/bibboxV4.json'
             download = requests.get(url).content
         except Exception:
             raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
         try:
             params = simplejson.loads(download)
         except Exception:
-            bibbox_logger.exception('Error while loading eB3Kit.json file: ', exc_info=True)
-            raise Exception('Error while loading eB3Kit.json file')
+            bibbox_logger.exception('Error while loading bibboxV4.json file: ', exc_info=True)
+            raise Exception('Error while loading bibboxV4.json file')
         appslist=[]
         
-        for i, values in enumerate(params):
-            variable = values['group_members']
-            for i, var in enumerate(variable):
-                if appName.lower() == var['app_dispay_name'].lower():
-                    appName = var['app_name']
-
+        # for i, values in enumerate(params):
+        #     variable = values['group_members']
+        #     for i, var in enumerate(variable):
+        #         if appName.lower() == var['app_dispay_name'].lower():
+        #             appName = var['app_name']
+        appName = 'app-'+appName
         sys.stdout.write(appName+ '\n')
+        
         return appName
 
 
@@ -919,6 +923,13 @@ class AppController:
         output, error = process.communicate()
         if output:
             docker_logger.error( str(output).rstrip())
+        try:
+            process = subprocess.Popen(['docker', 'exec', containerName, '/var/entrypoint.sh'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
+            output, error = process.communicate()
+            if output:
+                docker_logger.error( str(output).rstrip())
+        except:
+            pass
 
  #   @staticmethod
     def stop(self, jobID, instanceName):
@@ -1591,26 +1602,41 @@ class AppController:
             app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(self, jobID, instanceName)
             app_logger.info( 'Change setting files')
             rootdir = dirname(dirname(abspath(__file__)))
-            settingsPath = rootdir + '/application-instance/' + instanceName + '/repo/settings/'
-            if path.exists(settingsPath) == False:
-                app_errorlogger.error('The folder "settings" does not exist in the app repository!')
-            name = instanceName + '.conf'
+            settingsPath = rootdir + '/application-instance/' + instanceName + '/repo/config/'
+            if path.exists(settingsPath) == True:
+                
             
+            
+                for filename in os.listdir(settingsPath):
+                    try:
+                        with open(settingsPath + filename) as template:
+                            file_content = template.read()
+                            file_content = file_content.replace("§§INSTANCENAME", instanceName)
+                            
+                            template = open( settingsPath + filename, 'w+')
+                            template.write(file_content)
+                            template.close()
+
+
+                    except Exception:
+                        app_errorlogger.exception('Fatal error in writing settings file of app: ' + instanceName, exc_info=True)
+
+            entrypointPath = rootdir + '/application-instance/' + instanceName + '/repo/entrypoint.sh'
+
             try:
-                with open(settingsPath + 'settings.xml') as template:
+                with open(entrypointPath) as template:
                     file_content = template.read()
-                    print(instanceName)
+                    
                     file_content = file_content.replace("§§INSTANCENAME", instanceName)
                     
-                    template = open( settingsPath + 'settings.xml', 'w+')
+                    template = open( entrypointPath, 'w+')
                     template.write(file_content)
                     template.close()
 
 
             except Exception:
-                app_errorlogger.exception('Fatal error in writing settings file of app: ' + instanceName, exc_info=True)
-
-            
+                app_errorlogger.exception('Fatal error in writing entrypoint file of app: ' + instanceName, exc_info=True)
+    
             # process = subprocess.Popen(['chmod','444', settingsPath + 'settings.xml'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             # output, error = process.communicate()
             # if output:
