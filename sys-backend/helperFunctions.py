@@ -922,12 +922,12 @@ class AppController:
         process = subprocess.Popen(['docker', 'logs', containerName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
-            docker_logger.error( str(output).rstrip())
+            docker_logger.debug( str(output).rstrip())
         try:
             process = subprocess.Popen(['docker', 'exec', containerName, '/var/entrypoint.sh'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
             output, error = process.communicate()
             if output:
-                docker_logger.error( str(output).rstrip())
+                docker_logger.debug( str(output).rstrip())
         except:
             pass
 
@@ -1619,7 +1619,8 @@ class AppController:
 
 
                     except Exception:
-                        app_errorlogger.exception('Fatal error in writing settings file of app: ' + instanceName, exc_info=True)
+                        pass
+                    #    app_errorlogger.exception('Fatal error in writing settings file of app: ' + instanceName, exc_info=True)
 
             entrypointPath = rootdir + '/application-instance/' + instanceName + '/repo/entrypoint.sh'
 
@@ -1635,7 +1636,8 @@ class AppController:
 
 
             except Exception:
-                app_errorlogger.exception('Fatal error in writing entrypoint file of app: ' + instanceName, exc_info=True)
+                pass
+            #    app_errorlogger.exception('Fatal error in writing entrypoint file of app: ' + instanceName, exc_info=True)
     
             # process = subprocess.Popen(['chmod','444', settingsPath + 'settings.xml'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             # output, error = process.communicate()

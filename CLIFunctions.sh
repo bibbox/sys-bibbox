@@ -9,8 +9,8 @@ function bibbox()
                 appnamech=$2
                 instance="'$3'"
                 instancech=$3
-                version="'$4'"
-                versionch=$4
+                #version="'$4'"
+                #versionch=$4
                 default=false
                 
                 for var in "$@"
@@ -49,35 +49,41 @@ function bibbox()
                 declare keylist
                 declare paramlist
 
-                x=$(git ls-remote --heads https://github.com/bibbox/${name})
-                
-                branches=()
-                x=$(git ls-remote --heads https://github.com/bibbox/app-nextcloud)
-                branches=()
-                numbers=()
-                for word in $x 
-                do
-                if [[ $word == *_tng ]]
-                then 
-                branch=${word#"refs/heads/"}
-                branches+=($branch)
+                if [ -z ${version+y} ]; then
+                        echo No parameter for version got set!
+                        echo Installing the default version.
+                        declare x
+                        x=$(git ls-remote --heads https://github.com/bibbox/${name})
+                        #echo $x
+                        branches=()
+                        #echo ------------
+                        #xlist=($x)
+                        #echo ${xlist[*]}
+                        for word in $x
+                                do
+                                #echo $words
+                                #word=$(echo ${words} | tr ' ' '\n' )
+                                word=${word##*/}
+                                if [[ $word == *_tng ]]
+                                then 
+                                branch=${word#"refs/heads/"}
+                                echo $branch
+                                branches+=($branch)
+                                echo $branches
+                                fi
+                        done
+
+                        sorted=$(echo ${branches[*]} | tr ' ' '\n' | sort --version-sort --field-separator=- -r)
+
+                        sortedlist=($sorted)
+
+                        newest=${sortedlist[0]}
+                        version="'$newest'"
+                        versionch=$newest
+                        echo Latest version is: $newest
                 fi
-                done
-
-                sorted=$(echo ${branches[*]} | tr ' ' '\n' | sort --version-sort --field-separator=- -r)
-
-                sortedlist=($sorted)
-
-                newest=${sortedlist[0]}
-
-                echo $newest
 
 
-sorted=$(echo ${branches[*]} | tr ' ' '\n' | sort --version-sort --field-separator=- -r)
-
-sortedlist=($sorted)
-
-newest=${sortedlist[0]}
 
 
                 params=$(curl https://raw.githubusercontent.com/bibbox/"${name}"/"$versionch"/.env)
@@ -135,7 +141,10 @@ newest=${sortedlist[0]}
                 
 
 
-                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.installApp('"$paramlist"','"$keylist"','"$instance"','"$appname"','"$version"',CLI=True)'
+                #sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.installApp('"$paramlist"','"$keylist"','"$instance"','"$appname"','"$version"',CLI=True)'
+                #echo paramlist keylist instance instancech appname version versionch name
+                unset paramlist keylist instance instancech appname version versionch name word x branch branches
+                #env - /bin/bash
 
         fi
 
