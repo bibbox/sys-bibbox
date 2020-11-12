@@ -841,16 +841,14 @@ class AppController:
             compose = open(appPath + '/docker-compose-template.yml', 'r').read()
         except Exception:
             app_errorlogger.exception('Fatal error in reading compose file: ', exc_info=True)
-        #print(keyList)
-        #print(paramList)
-        #compose = yaml.load(compose)
-        paramList = paramList.split(';')
-        keyList = keyList.split(';')
+        paramList = re.sub("[^\w]", " ", paramList).split()
         
+        keyList = re.sub("[^\w]", " ", keyList).split()
+        
+        print(keyList)
+        print(paramList)
         for i, key in enumerate(keyList):
             if key != '':
-                #print(key)
-                #print(str(paramList[i]))
                 compose = compose.replace('§§' + key, paramList[i])
         
         

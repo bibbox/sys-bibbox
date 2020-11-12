@@ -12,6 +12,7 @@ function bibbox()
                 #version="'$4'"
                 #versionch=$4
                 default=false
+                paramsset=false
                 
                 for var in "$@"
                 do
@@ -29,12 +30,16 @@ function bibbox()
                                                         ;;
                                 -n | --name )           instance="'$4'"
                                                         #echo step1
-                                                        
+                                                        return
                                                         ;;                      
                                 -v | --version )        version="'$4'"
                                                         versionch=$4
                                                         #echo step2
-                                                        
+                                                        return
+                                                        ;;
+                                -p | --params )         paramlistset=$4 
+                                                        echo $paramlistset   
+                                                        paramsset=true     
                                 
                         esac
                         shift
@@ -43,7 +48,6 @@ function bibbox()
                 done
                 
                 
-                #done
                 declare name
                 name=$(sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.getAppName('"$appname"')' 2>&1)
                 declare keylist
@@ -54,22 +58,14 @@ function bibbox()
                         echo Installing the default version.
                         declare x
                         x=$(git ls-remote --heads https://github.com/bibbox/${name})
-                        #echo $x
                         branches=()
-                        #echo ------------
-                        #xlist=($x)
-                        #echo ${xlist[*]}
                         for word in $x
                                 do
-                                #echo $words
-                                #word=$(echo ${words} | tr ' ' '\n' )
                                 word=${word##*/}
                                 if [[ $word == *_tng ]]
                                 then 
                                 branch=${word#"refs/heads/"}
-                                echo $branch
                                 branches+=($branch)
-                                echo $branches
                                 fi
                         done
 
@@ -84,8 +80,6 @@ function bibbox()
                 fi
 
 
-
-
                 params=$(curl https://raw.githubusercontent.com/bibbox/"${name}"/"$versionch"/.env)
                 sed -n s/' '/'='/g <<< $params
                 echo https://raw.githubusercontent.com/bibbox/${name}/$versionch/.env
@@ -94,16 +88,23 @@ function bibbox()
                 #ext = begin
                 keylist="'"
                 paramlist="'"
-                if [ $default = 'false' ]
+                if [ $paramsset = 'false' ]
                 then
-                        echo Please enter user specifications!
+                        if [ $default = 'false' ]
+                        then
+                                echo Please enter user specifications!
+                        fi
+
+                        if [ $default = 'true' ]
+                        then
+                                echo The selected default values are:
+                        fi
+                fi
+                if [ $paramsset = 'true' ]
+                then
+                        echo Parameters set by flag
                 fi
 
-                if [ $default = 'true' ]
-                then
-                        echo The selected default values are:
-                fi
-                
                 for item in $params
                 do
         
@@ -113,39 +114,120 @@ function bibbox()
                 read -a out <<< $item
                 if [ ${strarr[0]} != 'PORT' ] && [ ${strarr[0]} != 'INSTANCE' ] 
                 then
-                        if [ $default = 'false' ]
+                        if [ $paramsset = 'false' ]
                         then
-                                echo ${strarr[0]}:  '('default = ${strarr[1]}')'
-                                read param
-                                v2=$param
-                                v1=${strarr[0]}
-                                keylist="$keylist;$v1"
-                                paramlist="$paramlist;$v2"
+                                if [ $default = 'false' ]
+                                then
+                                        echo ${strarr[0]}:  '('default = ${strarr[1]}')'
+                                        read param
+                                        v2=$param
+                                        v1=${strarr[0]}
+                                        keylist="$keylist;$v1"
+                                        paramlist="$paramlist;$v2"
+                                fi
+                                
+
+                                if [ $default = 'true' ]
+                                then
+                                        echo ${strarr[0]}: ${strarr[1]}
+                                        v2=${strarr[1]}
+                                        v1=${strarr[0]}
+                                        keylist="$keylist;$v1"
+                                        paramlist="$paramlist;$v2"
+
+                                fi
                         fi
-                        
-
-                        if [ $default = 'true' ]
+                        if [ $paramsset = 'true' ]
                         then
-                                echo ${strarr[0]}: ${strarr[1]}
-                                v2=${strarr[1]}
                                 v1=${strarr[0]}
                                 keylist="$keylist;$v1"
-                                paramlist="$paramlist;$v2"
-
+                                paramlist="'$paramlistset'"
                         fi
                 fi        
                 done
                 keylist="$keylist'"
                 paramlist="$paramlist'"
-
-                
-
-
-                #sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.installApp('"$paramlist"','"$keylist"','"$instance"','"$appname"','"$version"',CLI=True)'
-                #echo paramlist keylist instance instancech appname version versionch name
+                if [ $paramsset = 'true' ]
+                then
+                        paramlist="';$paramlistset'"
+                fi
+                echo $paramlist 
+                echo $keylist
+                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.installApp('"$paramlist"','"$keylist"','"$instance"','"$appname"','"$version"',CLI=True)'
                 unset paramlist keylist instance instancech appname version versionch name word x branch branches
-                #env - /bin/bash
 
+        fi
+
+        if [[ $1 = info ]]
+        then
+                appname="'$2'"
+                appnamech=$2
+                
+                case $2 in
+                        -h | --help )           infousage
+                                                return
+                                                ;;
+                        -bv | --bibboxversion )  version
+                                                return
+                                                      
+                esac
+                
+                declare name
+                name=$(sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.getAppName('"$appname"')' 2>&1)
+                declare keylist
+                declare paramlist
+
+                declare x
+                x=$(git ls-remote --heads https://github.com/bibbox/${name})
+                branches=()
+                for word in $x
+                        do
+                        word=${word##*/}
+                        if [[ $word == *_tng ]]
+                        then 
+                        branch=${word#"refs/heads/"}
+                        branches+=($branch)
+                        fi
+                done
+
+                sorted=$(echo ${branches[*]} | tr ' ' '\n' | sort --version-sort --field-separator=- -r)
+
+                sortedlist=($sorted)
+
+                newest=${sortedlist[0]}
+                version="'$newest'"
+                versionch=$newest
+        
+                params=$(curl https://raw.githubusercontent.com/bibbox/"${name}"/"$versionch"/.env)
+                sed -n s/' '/'='/g <<< $params
+                echo https://raw.githubusercontent.com/bibbox/${name}/$versionch/.env
+                
+                keylist="'"
+                paramlist="'"
+                echo
+                echo The default parameters are:
+
+                for item in $params
+                do
+        
+                IFS='='
+                read -a strarr <<< $item
+                IFS=$'\n'
+                read -a out <<< $item
+                if [ ${strarr[0]} != 'PORT' ] && [ ${strarr[0]} != 'INSTANCE' ] 
+                then
+                
+                echo ${strarr[0]}:  '('default = ${strarr[1]}')'
+                        
+                fi        
+                done
+                echo
+                echo The app specifications are:
+                echo Repository name: ${name}
+                echo Available versions:
+                echo ${branches[*]}
+
+                unset paramlist keylist instance instancech appname version versionch name word x branch branches
         fi
 
 
