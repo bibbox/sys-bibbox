@@ -30,12 +30,12 @@ function bibbox()
                                                         ;;
                                 -n | --name )           instance="'$4'"
                                                         #echo step1
-                                                        return
+                                                        
                                                         ;;                      
                                 -v | --version )        version="'$4'"
                                                         versionch=$4
                                                         #echo step2
-                                                        return
+                                                        
                                                         ;;
                                 -p | --params )         paramlistset=$4 
                                                         echo $paramlistset   
@@ -151,8 +151,7 @@ function bibbox()
                 then
                         paramlist="';$paramlistset'"
                 fi
-                echo $paramlist 
-                echo $keylist
+                
                 sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.installApp('"$paramlist"','"$keylist"','"$instance"','"$appname"','"$version"',CLI=True)'
                 unset paramlist keylist instance instancech appname version versionch name word x branch branches
 
@@ -343,7 +342,7 @@ function bibbox()
 
         fi
 
-        if [[ $1 = listinstances ]]
+        if [[ $1 = listInstances ]]
         then
 
                 case $2 in
@@ -405,22 +404,21 @@ function bibbox()
 
                 sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.stopBibbox()'
         fi
-}
 
-#function bibbox() 
-# {       
-#        var1=$1
-#
-#        case $var1 in
-#                -h | --help )           usage
-#                                        return
-#                                        ;;
-#                -v | --version | version )  version
-#                                        return
-#                                        
-#        esac
-#        shift
-#}
+
+   
+        var1=$1
+
+        case $var1 in
+                -h | --help )           usage
+                                        return
+                                        ;;
+                -v | --version | version )  version
+                                        return
+                                        
+        esac
+        shift
+}
 
 function clean_up() {
 
@@ -440,17 +438,23 @@ function installusage()
 {
 
     echo "DESCRIPTION"
-    echo "Installs a new bibbox app with a specific unique name"
+    echo "Installs a new Bibbox app with a specific unique name"
     echo ""
     echo "SYNTAX"
-    echo "bibbox-installApp <instancename> <appname> <version>"
+    echo "bibbox install <appname> -n <instancename> -v <version> -p <paarameters>"
     echo ""
     echo "OPTIONS"
     echo "-h, --help                    Print this help"
-    echo "-v, --version                 Print script information"
+    echo "-bv, --bibboxversion          Print script information"
+    echo "-n, --name                    Specify the name of the installed instance. The instance name can also be set without flag as the second function argument."
+    echo "-v, --version                 Specify the app version you want to install. This flag is optional. If not specified, the newest version gets installed."
+    echo "-p, --params                  The app parameters can be passed to this function automatically. This flag is optional. If not specified, the app parameters can be set to default or set interactively."
+    echo "-d, --default                 If this flag is set, the default app parameters are used for installation."
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-installApp  SeedDMS master"
+    echo "bibbox install nextcloud -n mynextcloud -v v20-0-x_tng -p 'nextcloud,nextcloud'"
+    echo "bibbox install nextcloud -n mynextcloud -d"
+    echo "bibbox install nextcloud mynextcloud"
     echo ""
     echo "PARAMETERS    
 ----------
@@ -476,17 +480,17 @@ function startusage()
 {
 
     echo "DESCRIPTION"
-    echo "Starts the wanted BiBBox app container"
+    echo "Starts the wanted Bibbox app container"
     echo ""
     echo "SYNTAX"
-    echo "bibbox-startApp <instancename>"
+    echo "bibbox start <instancename>"
     echo ""
     echo "OPTIONS"
     echo "-h, --help                    Print this help"
     echo "-v, --version                 Print script information"
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-startApp seeddmstest"
+    echo "bibbox start seeddmstest"
     echo ""
     echo "PARAMETERS
 ----------
@@ -505,17 +509,17 @@ function stopusage()
 {
 
     echo "DESCRIPTION"
-    echo "Stops the wanted BiBBox app container"
+    echo "Stops the wanted Bibbox app container"
     echo ""
     echo "SYNTAX"
-    echo "bibbox-startApp <instancename>"
+    echo "bibbox stop <instancename>"
     echo ""
     echo "OPTIONS"
     echo "-h, --help                    Print this help"
     echo "-v, --version                 Print script information"
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-stopApp seeddmstest"
+    echo "bibbox stop seeddmstest"
     echo ""
     echo "PARAMETERS
 ----------
@@ -534,17 +538,17 @@ function removeusage()
 {
 
     echo "DESCRIPTION"
-    echo "Removes the wanted BiBBox app container"
+    echo "Removes the wanted Bibbox app container"
     echo ""
     echo "SYNTAX"
-    echo "bibbox-removeApp <instancename>"
+    echo "bibbox remove <instancename>"
     echo ""
     echo "OPTIONS"
     echo "-h, --help                    Print this help"
     echo "-v, --version                 Print script information"
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-removeApp seeddmstest"
+    echo "bibbox remove seeddmstest"
     echo ""
     echo "PARAMETERS
 ----------
@@ -566,14 +570,14 @@ function statususage()
     echo "Returns the current status of the wanted application"
     echo ""
     echo "SYNTAX"
-    echo "bibbox-getStatus <instancename>"
+    echo "bibbox status <instancename>"
     echo ""
     echo "OPTIONS"
     echo "-h, --help                    Print this help"
     echo "-v, --version                 Print script information"
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-getStatus seeddmstest"
+    echo "bibbox status seeddmstest"
     echo ""
     echo "PARAMETERS
 ----------
@@ -598,14 +602,14 @@ function copyusage()
     echo "Copies the wanted application"
     echo ""
     echo "SYNTAX"
-    echo "bibbox-copyApp <instancename>"
+    echo "bibbox copy <instancename>"
     echo ""
     echo "OPTIONS"
     echo "-h, --help                    Print this help"
     echo "-v, --version                 Print script information"
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-copyApp oldappname newappname"
+    echo "bibbox copy oldappname newappname"
     echo ""
     echo "PARAMETERS
 ----------
@@ -630,14 +634,14 @@ function listusage()
     echo "Lisis all available applications"
     echo ""
     echo "SYNTAX"
-    echo "bibbox-listApps"
+    echo "bibbox listApps"
     echo ""
     echo "OPTIONS"
     echo "-h, --help                    Print this help"
     echo "-v, --version                 Print script information"
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-listApps"
+    echo "bibbox listApps"
     echo ""
     echo "PARAMETERS
 ----------
@@ -658,14 +662,14 @@ function listinstalledusage()
     echo "Lisis all installed applications"
     echo ""
     echo "SYNTAX"
-    echo "bibbox-listInstalledApps"
+    echo "bibbox listInstances"
     echo ""
     echo "OPTIONS"
     echo "-h, --help                    Print this help"
     echo "-v, --version                 Print script information"
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-listInstalledApps"
+    echo "bibbox listInstances"
     echo ""
     echo "PARAMETERS
 ----------
@@ -683,17 +687,17 @@ function startbibboxusage()
 {
 
     echo "DESCRIPTION"
-    echo "Starts the main bibbox system"
+    echo "Starts the main Bibbox system"
     echo ""
     echo "SYNTAX"
-    echo "bibbox-startBibbox"
+    echo "bibbox startSystem"
     echo ""
     echo "OPTIONS"
     echo "-h, --help                    Print this help"
     echo "-v, --version                 Print script information"
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-startSystem"
+    echo "bibbox startSystem"
     
 }
 
@@ -701,17 +705,17 @@ function stopbibboxusage()
 {
 
     echo "DESCRIPTION"
-    echo "Stops the main bibbox system"
+    echo "Stops the main Bibbox system"
     echo ""
     echo "SYNTAX"
-    echo "bibbox-stopBibbox"
+    echo "bibbox stopSystem"
     echo ""
     echo "OPTIONS"
     echo "-h, --help                    Print this help"
     echo "-v, --version                 Print script information"
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-stopSystem"
+    echo "bibbox stopSystem"
     
     
 }
@@ -720,20 +724,40 @@ function restartbibboxusage()
 {
 
     echo "DESCRIPTION"
-    echo "Restarts the main bibbox system"
+    echo "Restarts the main Bibbox system"
     echo ""
     echo "SYNTAX"
-    echo "bibbox-stopBibbox"
+    echo "bibbox restartSystem"
     echo ""
     echo "OPTIONS"
     echo "-h, --help                    Print this help"
     echo "-v, --version                 Print script information"
     echo ""
     echo "EXAMPLES"
-    echo "bibbox-restartSystem"
+    echo "bibbox restartSystem"
     
     
 }
+
+function infousage()
+{
+
+    echo "DESCRIPTION"
+    echo "Returns install information about a specific application. This information contains the available versions, the input parameters etc."
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox info <appname>"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    echo "EXAMPLES"
+    echo "bibbox info seeddms"
+    
+    
+}
+
 
 function usage()
 {
@@ -741,16 +765,18 @@ function usage()
     echo "DESCRIPTION"
     echo "This module is made to controll the BiBBoX software through a CLI."
     echo "The following functiuons are available:"
-    echo "bibbox-installApp"
-    echo "bibbox-startApp"
-    echo "bibbox-stopApp"
-    echo "bibbox-copyApp"
-    echo "bibbox-listApps"
-    echo "bibbox-listInstalledApps"
-    echo "bibbox-removeApp"
-    echo "bibbox-getStatus"
-    echo "bibbox-startBibbox"
-    echo "bibbox-stopBibbox"
+    echo "bibbox install"
+    echo "bibbox start"
+    echo "bibbox stop"
+    echo "bibbox copy"
+    echo "bibbox listApps"
+    echo "bibbox listInstances"
+    echo "bibbox remove"
+    echo "bibbox status"
+    echo "bibbox startSystem"
+    echo "bibbox stopSystem"
+    echo "bibbox restartSystem"
+    echo "bibbox info"
     echo ""
     echo "For a detailed function documentation please enter:"
     echo "<functionname> -h or <functionname> --help"

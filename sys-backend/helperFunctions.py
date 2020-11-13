@@ -845,8 +845,7 @@ class AppController:
         
         keyList = re.sub("[^\w]", " ", keyList).split()
         
-        print(keyList)
-        print(paramList)
+        
         for i, key in enumerate(keyList):
             if key != '':
                 compose = compose.replace('§§' + key, paramList[i])
