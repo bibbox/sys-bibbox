@@ -5,14 +5,14 @@ sudo chmod -R 777 bibbox/
 cd bibbox/
 git clone https://github.com/bibbox/sys-bibbox.git
 
-cd sys-bibbox
-mkdir -p log
+#cd sys-bibbox
+#mkdir -p log
 
-cd log
-touch system.log
+#cd log
+#touch system.log
 
-cd /opt/bibbox/sys-bibbox/sys-proxy/proxyconfig
-mkdir -p sites/
+#cd /opt/bibbox/sys-bibbox/sys-proxy/proxyconfig
+#mkdir -p sites/
 
 cd /opt/bibbox/sys-bibbox
 source CLIFunctions.sh

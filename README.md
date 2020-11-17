@@ -1,6 +1,6 @@
 # BIBBOX System
 
-This container contains the BiBBoX [BIBBOX APP](http://bibbox.readthedocs.io/en/latest/admin-documentation/ "BIBBOX App Store"). 
+This container contains the [BIBBOX APP](http://bibbox.readthedocs.io/en/latest/admin-documentation/ "BIBBOX App Store"). 
 
 ## Initial Setup
 
