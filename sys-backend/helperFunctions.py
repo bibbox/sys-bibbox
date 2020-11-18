@@ -19,6 +19,7 @@ from subprocess import check_output
 import simplejson
 import re
 import atexit
+from packaging import version
 
 
 
@@ -1444,7 +1445,99 @@ class AppController:
 
         return states
 
- #   @staticmethod
+    def checkProxy(self, containerName):
+        '''
+        Description:
+        -----------
+        Ckecks the state of the proxy container.
+
+        Parameters:
+        ----------
+
+        containerNames: array
+            list of used containers
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
+        bibbox_logger = AppController.setUpLog(self, 'system check', 'system ', systemonly=True)
+        bibbox_logger.info('Performing proxy check!')
+        states = {}
+        process = subprocess.Popen(['docker', 'container', 'inspect', containerName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        state = ''
+        try:
+            params = simplejson.loads(output)
+            state = params[0]['State']['Status']
+        
+            
+            if state == 'running':
+                 bibbox_logger.info('The nginx Container is running. \n Everything OK.')
+            else:
+                 bibbox_logger.error('The nginx Container is not running. \n Please try to restart the bibbox System.')
+        except:
+             bibbox_logger.error('The nginx Container is not running. \n Please try to restart the bibbox System with "bibbox restartSystem".')
+
+        return state
+
+    def checkSystem(self):
+        '''
+        Description:
+        -----------
+        System Check. Checks the versions of the required packages.
+
+        Parameters:
+        ----------
+
+        containerNames: array
+            list of used containers
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
+
+        bibbox_logger = AppController.setUpLog(self, 'system check', 'system ', systemonly=True)
+        bibbox_logger.info('Performing system check!')
+
+        if float(str(sys.version_info[0]) + '.' + str(sys.version_info[1])) > 3.5:
+            bibbox_logger.info('Python Version: ' + str(sys.version_info[0]) + '.' + str(sys.version_info[1]) + ' ---> OK!')
+        else:
+            bibbox_logger.error('You are using a Python version below 3.5 or do not have Python installed. Please install Python 3.5+!')
+            bibbox_logger.error(output)
+
+        process = subprocess.Popen(['docker', 'version', '--format', '{{.Server.Version}}'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        output = output.decode('utf-8')
+        if version.parse(output) > version.parse("19.03.00"):
+            bibbox_logger.info('Docker Version: ' + output + ' ---> OK!')
+        else:
+            bibbox_logger.error('You are using a Docker Engine version below 19.03.0 or do not have Docker Engine installed. Please install Docker Engine 19.03.0+!')
+            bibbox_logger.error(output)
+
+        process = subprocess.Popen(['docker-compose', 'version',  '--short'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        output = output.decode('utf8')
+        
+        if version.parse(str(output)) > version.parse("1.26.0"):
+            bibbox_logger.info('Docker-Compose Version: ' + output + ' --->  OK!')
+        else:
+            bibbox_logger.error('You are using a Docker Compose version below 1.26.0 or do not have Docker Compose installed. Please install Docker Compose 1.26.0+!')
+            bibbox_logger.error(output)
+
+        process = subprocess.Popen(['docker', 'network', 'create', 'bibbox-default-network'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, error = process.communicate()
+        output = output.decode('utf8')
+        if output:
+            bibbox_logger.debug('Creating default network:' + output)
+
     def checkInput(self, jobID, instanceName, inputparams):
         '''
         Description:

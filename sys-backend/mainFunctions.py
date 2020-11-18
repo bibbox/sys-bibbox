@@ -2,6 +2,7 @@
 
 from helperFunctions import AppController
 import subprocess
+import sys
 
 
 __author__ = "Stefan Herdy"
@@ -15,7 +16,8 @@ __status__ = "Development"
 class MainFunctions(AppController):
     def __init__(self):
         super().__init__()
-
+        if sys.version_info[0] < 3:
+            raise Exception("You are using Python 2 or do not have Python installed. Please install Python 3!")
         process = subprocess.Popen(['docker network ls|grep bibbox-default-network > /dev/null || docker network create  bibbox-default-network'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
         #states = AppController.checkDockerState(self, jobID, instanceName, 'local_nginx', ['running'])
 

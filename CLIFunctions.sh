@@ -405,6 +405,27 @@ function bibbox()
                 sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.stopBibbox()'
         fi
 
+        if [[ $1 = checkSystem ]]
+        then
+
+                case $2 in
+                        -h | --help )           checkbibboxusage
+                                                return
+                                                ;;
+                        -v | --version | version )  version
+                                                return
+                                                
+                esac
+                shift
+
+                echo Checking requirements!
+                
+                python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.checkSystem()'
+                state=$(python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.checkProxy("local_nginx")' 2>&1)
+                echo $state
+
+        fi
+
 
    
         var1=$1
