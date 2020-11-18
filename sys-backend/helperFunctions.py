@@ -37,7 +37,10 @@ class AppController:
     def __init__(self):
         self.rootdir = dirname(dirname(abspath(__file__)))
         self.appPath = self.rootdir + '/application-instance'
-        #self.instanceName = ''
+        with open(self.rootdir + '/environment-parameters.json') as infofile:
+            params = json.load(infofile)
+            domain = params[0]['DOMAIN_NAME']
+        
     def __del__(self):
         try:
             jobID = AppController.createJobID(self)

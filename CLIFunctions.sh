@@ -780,6 +780,23 @@ function infousage()
 }
 
 
+function checkbibboxusage()
+{
+
+    echo "DESCRIPTION"
+    echo "Performs System Check. Checks if all required services are running and controls the versions of the used packages."
+    echo ""
+    echo "SYNTAX"
+    echo "bibbox checkSystem"
+    echo ""
+    echo "OPTIONS"
+    echo "-h, --help                    Print this help"
+    echo "-v, --version                 Print script information"
+    echo ""
+    
+    
+}
+
 function usage()
 {
 
