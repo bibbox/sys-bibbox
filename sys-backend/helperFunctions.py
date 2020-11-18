@@ -1538,6 +1538,14 @@ class AppController:
         if output:
             bibbox_logger.debug('Creating default network:' + output)
 
+        bibbox_logger.info('Check internet connection')
+        try:
+            #urllib2.urlopen('http://216.58.192.142', timeout=1)
+            requests.get('http://216.58.192.142', timeout=1)
+            bibbox_logger.debug('Internet connection ---> OK')
+        except: 
+            bibbox_logger.error('Can not connect to the internet!')
+
     def checkInput(self, jobID, instanceName, inputparams):
         '''
         Description:
