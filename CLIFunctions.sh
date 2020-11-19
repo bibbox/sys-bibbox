@@ -652,7 +652,7 @@ function listusage()
 {
 
     echo "DESCRIPTION"
-    echo "Lisis all available applications"
+    echo "Lists all available applications"
     echo ""
     echo "SYNTAX"
     echo "bibbox listApps"
