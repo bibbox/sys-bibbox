@@ -58,7 +58,6 @@ class MainFunctions(AppController):
         except:
             pass
     
-#    @staticmethod
     def installApp(self, paramList, keyList, instanceName, appName, version, CLI=False):
         &#39;&#39;&#39;
         Description:
@@ -110,7 +109,7 @@ class MainFunctions(AppController):
         AppController.composeUp(self, jobID, instanceName, mainContainer)
         AppController.unlock(self, jobID, instanceName)
         states = AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
-        AppController.checkInstall(self, instanceName, states)
+        AppController.checkInstall(self, jobID, instanceName, states)
         AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
         AppController.stopNginx(self, jobID)
         AppController.startNginx(self, jobID)
@@ -137,18 +136,14 @@ class MainFunctions(AppController):
         -------
         
         &#39;&#39;&#39;
-        #statusList = [&#39;Running&#39;]
         jobID = AppController.createJobID(self, )
-        #AppController.setUpLog(jobID, instanceName, systemonly=True)
         AppController.checkExists(self, jobID, instanceName, install=False)
         inputparams = [instanceName]
         AppController.checkInput(self, jobID, instanceName, inputparams)
         containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
         AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
-        #AppController.checkStatus(jobID, instanceName, statusList)
         AppController.lock(self, jobID, instanceName)
         AppController.setStatus(self, jobID, &#39;Stopping&#39;, instanceName)
-        #AppController.setUpLog(jobID, instanceName)
         AppController.stop(self, jobID, instanceName)
         AppController.unlock(self, jobID, instanceName)
         AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
@@ -156,7 +151,6 @@ class MainFunctions(AppController):
 
 
 
- #   @staticmethod
     def startApp(self, instanceName):
         &#39;&#39;&#39;
         Description:
@@ -176,12 +170,10 @@ class MainFunctions(AppController):
         -------
         
         &#39;&#39;&#39;
-        #statusList = [&#39;Stopped&#39;]
         jobID = AppController.createJobID(self, )
         AppController.checkExists(self, jobID, instanceName, install=False)
         inputparams = [instanceName]
         AppController.checkInput(self, jobID, instanceName, inputparams)
-        #AppController.checkStatus(jobID, instanceName, statusList)
         containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
         AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
         AppController.lock(self, jobID, instanceName)
@@ -192,7 +184,6 @@ class MainFunctions(AppController):
         AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
         AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
 
- #   @staticmethod
     def removeApp(self, instanceName):
         &#39;&#39;&#39;
         Description:
@@ -218,10 +209,8 @@ class MainFunctions(AppController):
         AppController.checkInput(self, jobID, instanceName, inputparams)
         AppController.lock(self, jobID, instanceName)
         AppController.setStatus(self, jobID, &#39;Removing App&#39;, instanceName)
-        #AppController.setUpLog(jobID, instanceName, systemonly=True)
         AppController.remove(self, jobID, instanceName)
 
- #   @staticmethod
     def getStatus(self, instanceName):
         &#39;&#39;&#39;
         Description:
@@ -249,12 +238,10 @@ class MainFunctions(AppController):
         inputparams = [instanceName]
         AppController.checkInput(self, jobID, instanceName, inputparams)
         AppController.setUpLog(self, jobID, instanceName)
-        #AppController.status(jobID, instanceName)
         allowedStates = [&#39;all&#39;]
         states = AppController.checkDockerState(self, jobID, instanceName, containerNames, allowedStates)
         return states
 
- #   @staticmethod
     def copyApp(self, instanceName, newName):
         &#39;&#39;&#39;
         Description:
@@ -296,7 +283,6 @@ class MainFunctions(AppController):
         AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
 
         
- #   @staticmethod
     def listApps(self):
 
         &#39;&#39;&#39;
@@ -322,7 +308,6 @@ class MainFunctions(AppController):
         return appsList
         
 
- #   @staticmethod
     def listInstalledApps(self):
 
         &#39;&#39;&#39;
@@ -347,7 +332,6 @@ class MainFunctions(AppController):
         return installedAppsList
 
 
- #   @staticmethod
     def startBibbox(self):
 
         &#39;&#39;&#39;
@@ -368,7 +352,6 @@ class MainFunctions(AppController):
         jobID = AppController.createJobID(self)
         AppController.startNginx(self, jobID)
 
- #   @staticmethod
     def stopBibbox(self):
 
         &#39;&#39;&#39;
@@ -445,7 +428,6 @@ class MainFunctions(AppController):
         except:
             pass
     
-#    @staticmethod
     def installApp(self, paramList, keyList, instanceName, appName, version, CLI=False):
         &#39;&#39;&#39;
         Description:
@@ -497,7 +479,7 @@ class MainFunctions(AppController):
         AppController.composeUp(self, jobID, instanceName, mainContainer)
         AppController.unlock(self, jobID, instanceName)
         states = AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
-        AppController.checkInstall(self, instanceName, states)
+        AppController.checkInstall(self, jobID, instanceName, states)
         AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
         AppController.stopNginx(self, jobID)
         AppController.startNginx(self, jobID)
@@ -524,18 +506,14 @@ class MainFunctions(AppController):
         -------
         
         &#39;&#39;&#39;
-        #statusList = [&#39;Running&#39;]
         jobID = AppController.createJobID(self, )
-        #AppController.setUpLog(jobID, instanceName, systemonly=True)
         AppController.checkExists(self, jobID, instanceName, install=False)
         inputparams = [instanceName]
         AppController.checkInput(self, jobID, instanceName, inputparams)
         containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
         AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
-        #AppController.checkStatus(jobID, instanceName, statusList)
         AppController.lock(self, jobID, instanceName)
         AppController.setStatus(self, jobID, &#39;Stopping&#39;, instanceName)
-        #AppController.setUpLog(jobID, instanceName)
         AppController.stop(self, jobID, instanceName)
         AppController.unlock(self, jobID, instanceName)
         AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
@@ -543,7 +521,6 @@ class MainFunctions(AppController):
 
 
 
- #   @staticmethod
     def startApp(self, instanceName):
         &#39;&#39;&#39;
         Description:
@@ -563,12 +540,10 @@ class MainFunctions(AppController):
         -------
         
         &#39;&#39;&#39;
-        #statusList = [&#39;Stopped&#39;]
         jobID = AppController.createJobID(self, )
         AppController.checkExists(self, jobID, instanceName, install=False)
         inputparams = [instanceName]
         AppController.checkInput(self, jobID, instanceName, inputparams)
-        #AppController.checkStatus(jobID, instanceName, statusList)
         containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
         AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
         AppController.lock(self, jobID, instanceName)
@@ -579,7 +554,6 @@ class MainFunctions(AppController):
         AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
         AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
 
- #   @staticmethod
     def removeApp(self, instanceName):
         &#39;&#39;&#39;
         Description:
@@ -605,10 +579,8 @@ class MainFunctions(AppController):
         AppController.checkInput(self, jobID, instanceName, inputparams)
         AppController.lock(self, jobID, instanceName)
         AppController.setStatus(self, jobID, &#39;Removing App&#39;, instanceName)
-        #AppController.setUpLog(jobID, instanceName, systemonly=True)
         AppController.remove(self, jobID, instanceName)
 
- #   @staticmethod
     def getStatus(self, instanceName):
         &#39;&#39;&#39;
         Description:
@@ -636,12 +608,10 @@ class MainFunctions(AppController):
         inputparams = [instanceName]
         AppController.checkInput(self, jobID, instanceName, inputparams)
         AppController.setUpLog(self, jobID, instanceName)
-        #AppController.status(jobID, instanceName)
         allowedStates = [&#39;all&#39;]
         states = AppController.checkDockerState(self, jobID, instanceName, containerNames, allowedStates)
         return states
 
- #   @staticmethod
     def copyApp(self, instanceName, newName):
         &#39;&#39;&#39;
         Description:
@@ -683,7 +653,6 @@ class MainFunctions(AppController):
         AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
 
         
- #   @staticmethod
     def listApps(self):
 
         &#39;&#39;&#39;
@@ -709,7 +678,6 @@ class MainFunctions(AppController):
         return appsList
         
 
- #   @staticmethod
     def listInstalledApps(self):
 
         &#39;&#39;&#39;
@@ -734,7 +702,6 @@ class MainFunctions(AppController):
         return installedAppsList
 
 
- #   @staticmethod
     def startBibbox(self):
 
         &#39;&#39;&#39;
@@ -755,7 +722,6 @@ class MainFunctions(AppController):
         jobID = AppController.createJobID(self)
         AppController.startNginx(self, jobID)
 
- #   @staticmethod
     def stopBibbox(self):
 
         &#39;&#39;&#39;
@@ -904,7 +870,6 @@ The current status of the application that is used</p></div>
     inputparams = [instanceName]
     AppController.checkInput(self, jobID, instanceName, inputparams)
     AppController.setUpLog(self, jobID, instanceName)
-    #AppController.status(jobID, instanceName)
     allowedStates = [&#39;all&#39;]
     states = AppController.checkDockerState(self, jobID, instanceName, containerNames, allowedStates)
     return states</code></pre>
@@ -982,7 +947,7 @@ The wanted version of the application that is used </p>
     AppController.composeUp(self, jobID, instanceName, mainContainer)
     AppController.unlock(self, jobID, instanceName)
     states = AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
-    AppController.checkInstall(self, instanceName, states)
+    AppController.checkInstall(self, jobID, instanceName, states)
     AppController.setStatus(self, jobID, &#39;Running&#39;, instanceName)
     AppController.stopNginx(self, jobID)
     AppController.startNginx(self, jobID)</code></pre>
@@ -1107,7 +1072,6 @@ The instance name of the application that is used </p>
     AppController.checkInput(self, jobID, instanceName, inputparams)
     AppController.lock(self, jobID, instanceName)
     AppController.setStatus(self, jobID, &#39;Removing App&#39;, instanceName)
-    #AppController.setUpLog(jobID, instanceName, systemonly=True)
     AppController.remove(self, jobID, instanceName)</code></pre>
 </details>
 </dd>
@@ -1179,12 +1143,10 @@ The instance name of the application that is used </p>
     -------
     
     &#39;&#39;&#39;
-    #statusList = [&#39;Stopped&#39;]
     jobID = AppController.createJobID(self, )
     AppController.checkExists(self, jobID, instanceName, install=False)
     inputparams = [instanceName]
     AppController.checkInput(self, jobID, instanceName, inputparams)
-    #AppController.checkStatus(jobID, instanceName, statusList)
     containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
     AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
     AppController.lock(self, jobID, instanceName)
@@ -1264,18 +1226,14 @@ The instance name of the application that is used </p>
     -------
     
     &#39;&#39;&#39;
-    #statusList = [&#39;Running&#39;]
     jobID = AppController.createJobID(self, )
-    #AppController.setUpLog(jobID, instanceName, systemonly=True)
     AppController.checkExists(self, jobID, instanceName, install=False)
     inputparams = [instanceName]
     AppController.checkInput(self, jobID, instanceName, inputparams)
     containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
     AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;running&#39;])
-    #AppController.checkStatus(jobID, instanceName, statusList)
     AppController.lock(self, jobID, instanceName)
     AppController.setStatus(self, jobID, &#39;Stopping&#39;, instanceName)
-    #AppController.setUpLog(jobID, instanceName)
     AppController.stop(self, jobID, instanceName)
     AppController.unlock(self, jobID, instanceName)
     AppController.checkDockerState(self, jobID, instanceName, containerNames, [&#39;paused&#39;, &#39;stopped&#39;, &#39;exited&#39;])
