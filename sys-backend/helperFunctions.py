@@ -49,7 +49,6 @@ class AppController:
         except:
             pass
 
-#    @staticmethod
     def createJobID(self):
         '''
         Description:
@@ -73,7 +72,6 @@ class AppController:
         jobID = jobID + datestring
         return jobID
 
-#    @staticmethod
     def checkExists(self, jobID, instanceName, install):
         '''
         Description:
@@ -120,8 +118,6 @@ class AppController:
             output, error = process.communicate()
             if output:
                 bibbox_logger.debug( str(output))
-            #bibbox_logger.error( ' The folder "/application-instance" does not exist!')
-            #raise Exception('The folder "/application-instance" does not exist')
         if instanceName in os.listdir(appPath):
             exists = True
         else:
@@ -135,7 +131,6 @@ class AppController:
                 bibbox_logger.info('The app you want to use does not exist! App: ' + instanceName)
                 raise Exception('The app you want to use does not exist! App: ' + instanceName)
 
-#    @staticmethod
     def createFolder(self, jobID, instanceName):
         '''
         Description:
@@ -180,7 +175,6 @@ class AppController:
             bibbox_logger.error( 'Error While creating folder for application ' + instanceName + '. The folder "/application-instance' + instanceName + '/log/" does not exist!')
             raise Exception('Error While creating folder for application ' + instanceName + '. The folder "/application-instance" does not exist!')
 
-#    @staticmethod
     def setup_logger(self, jobID, loggerName, log_file, level=logging.DEBUG):
         '''
         Description:
@@ -221,7 +215,6 @@ class AppController:
 
         return logger
     
-#    @staticmethod
     def setUpLog(self, jobID, instanceName, systemonly = False):
         '''
         Description:
@@ -275,7 +268,6 @@ class AppController:
             return bibbox_logger
 
     
-#    @staticmethod
     def setStatus(self, jobID, status, instanceName):
         '''
         Description:
@@ -324,7 +316,6 @@ class AppController:
             raise Exception('Fatal error in writing to STATUS file: ')
 
 
-#    @staticmethod
     def lock(self, jobID, instanceName):
         '''
         Description:
@@ -375,7 +366,6 @@ class AppController:
             app_errorlogger.exception('Something went wrong during writing LOCK file: ', exc_info=True)
             raise Exception('Fatal error in writing LOCK file: ')
 
-#    @staticmethod
     def unlock(self, jobID, instanceName, end = False):
         '''
         Description:
@@ -414,7 +404,6 @@ class AppController:
         app_logger.debug('App ' + instanceName + ' unlocked')
 
 
-#    @staticmethod
     def downloadApp(self, jobID, instanceName,appName,version = 'master'):
         '''
         Description:
@@ -456,18 +445,7 @@ class AppController:
             bibbox_logger.exception('Error while loading bibboxV4.json file: ', exc_info=True)
             raise Exception('Error while loading bibboxV4.json file')
         appslist=[]
-        # try:
-        #     #or i, values in enumerate(params):
-        #         variable = values['group_members']
-        #         for i, var in enumerate(variable):
-        #             if appName.lower() == var['app_name'].lower():
-        #                 appNameNew = var['app_name']
-    
-
-        # except Exception:
-        #     raise Exception('Error while loading eB3Kit.json file!')
-        #     bibbox_logger.exception('Error while loading eB3Kit.json file: ', exc_info=True) 
-
+        
         appNameNew = 'app-'+ appName     
         rootdir = dirname(dirname(abspath(__file__)))
         print(rootdir)
@@ -479,7 +457,6 @@ class AppController:
         app_logger.info( 'Downloading app: ' + appNameNew + '/' + instanceName + ' V:' + version)
         
         process = subprocess.Popen(['git', 'clone','-b', version, 'https://github.com/bibbox/' + appNameNew + '.git', rootdir + '/application-instance/' + instanceName + '/repo/'],text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        #output = process.stdout.readline()
         output, error = process.communicate()
         if output:
             app_logger.debug(str(output).rstrip() )
@@ -528,18 +505,12 @@ class AppController:
             raise Exception('Error while loading bibboxV4.json file')
         appslist=[]
         
-        # for i, values in enumerate(params):
-        #     variable = values['group_members']
-        #     for i, var in enumerate(variable):
-        #         if appName.lower() == var['app_dispay_name'].lower():
-        #             appName = var['app_name']
         appName = 'app-'+appName
         sys.stdout.write(appName+ '\n')
         
         return appName
 
 
-#    @staticmethod
     def setInfo(self, jobID, instanceName,appName,version):
         '''
         Description:
@@ -574,13 +545,7 @@ class AppController:
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
             raise Exception('The folder "/application-instance" does not exist!')
-        #try:
-        #    text_file = open(appPath + '/' + instanceName + '/INFO.json', "w")
-        #    text_file.write(jobID + '\n' + appName + '\n' + instanceName + '\n' + version)
-        #    text_file.close()
-        #except Exception:
-        #    app_logger.exception('Fatal error in writing to INFO file: ', exc_info=True)
-
+    
         data = {}
         data['instanceName'] = instanceName
         data['appName'] = appName
@@ -597,7 +562,6 @@ class AppController:
             raise Exception('Fatal error in during writing install information to info.json file of app: ' + instanceName)
 
 
-#    @staticmethod
     def changeInfo(self, jobID, instanceName, newName):
         '''
         Description:
@@ -648,7 +612,6 @@ class AppController:
                 raise Exception('Could not write to file "info.json" in application folder! ')
 
 
- #   @staticmethod
     def setProxyFiles(self, jobID, instanceName, containerName):
         '''
         Description:
@@ -702,7 +665,6 @@ class AppController:
             app_errorlogger.exception('Something went wrong during writing the proxy file for app: ' + instanceName, exc_info=True)
             raise Exception('Fatal error in during writing the proxy file for app: ' + instanceName)
         
- #   @staticmethod
     def readContainernames(self, jobID, instanceName):
         '''
         Description:
@@ -758,7 +720,6 @@ class AppController:
 
         return ContainerNames, mainContainer
 
-#    @staticmethod
     def writeCompose(self, jobID, paramList, instanceName):
         '''
         Description:
@@ -794,7 +755,6 @@ class AppController:
         except Exception:
             app_errorlogger.exception('Fatal error in reading compose file: ', exc_info=True)
 
-        #compose = yaml.load(compose)
         try:
             for i, key in enumerate(paramList):
                 compose = compose.replace('§§' + key, paramList[key])
@@ -810,7 +770,6 @@ class AppController:
 
 
 
- #   @staticmethod
     def writeCLICompose(self, jobID, paramList, keyList, instanceName):
         '''
         Description:
@@ -862,7 +821,6 @@ class AppController:
         
 
 
-#    @staticmethod
     def composeUp(self, jobID, instanceName, containerName):
         '''
         Description:
@@ -896,8 +854,6 @@ class AppController:
             docker_logger.error( str(output).rstrip())
         process = subprocess.Popen(['docker', 'exec', '-it', 'local_nginx', 'service', 'nginx', 'reload'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding=sys.stdout.encoding)
         output, error = process.communicate()
-        #ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~]|\[0-9][.])')
-        #result = ansi_escape.sub('', output)
         ansi_regex = r'\x1b+\[+\d+\d+;+\d+\d+[m]|' \
              r'\x1b(' \
              r'(\[\??\d+[hl])|' \
@@ -917,7 +873,6 @@ class AppController:
              
         ansi_escape = re.compile(ansi_regex, flags=re.IGNORECASE)
         result = ansi_escape.sub('', output).rstrip()
-        #result = result.replace('m.','').replace('[','')
         if output:
             bibbox_logger.debug( str(output).rstrip())
         process = subprocess.Popen(['docker', 'logs', containerName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
@@ -932,7 +887,6 @@ class AppController:
         except:
             pass
 
- #   @staticmethod
     def stop(self, jobID, instanceName):
         '''
         Description:
@@ -964,9 +918,7 @@ class AppController:
         output, error = process.communicate()
         if output:
             docker_logger.error( str(output).rstrip())
-        #os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml stop ')
 
- #   @staticmethod
     def start(self, jobID, instanceName):
         '''
         Description:
@@ -998,9 +950,7 @@ class AppController:
         output, error = process.communicate()
         if output:
             docker_logger.error( str(output).rstrip())
-        #os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml start ')
 
- #   @staticmethod
     def remove(self, jobID, instanceName):
         '''
         Description:
@@ -1028,7 +978,6 @@ class AppController:
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
             app_errorlogger.error( 'The folder of the app repository does not exist!')
-        #os.system('docker-compose -f ' + appPath + '/docker-compose-template.yml down ')
         process = subprocess.Popen(['docker-compose', '-f', appPath + '/docker-compose-template.yml', 'down'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
         output, error = process.communicate()
         if output:
@@ -1046,7 +995,6 @@ class AppController:
         if output:
             bibbox_logger.error( str(output))
 
- #   @staticmethod
     def status(self, jobID, instanceName):
         '''
         Description:
@@ -1083,7 +1031,6 @@ class AppController:
             app_errorlogger.exception('Could not open STATUS file: ', exc_info=True)
         return file_content
 
- #   @staticmethod
     def checkStatus(self, jobID, instanceName, statusList):
         '''
         Description:
@@ -1119,17 +1066,13 @@ class AppController:
         try:
             with open(appPath + 'STATUS') as statusfile:
                 file_content = statusfile.read()
-                #try:
-                #    file_content.replace('\n', '')
-                #except:
-                #    pass
+                
         except Exception:
             logging.exception('Could not open STATUS file: ', exc_info=True)
         if file_content not in statusList:
             app_errorlogger.exception('Current app status does not allow operation on app: ' + instanceName)
             raise Exception('Current app status does not allow your operation!')
 
- #   @staticmethod
     def copy(self, jobID, instanceName, newName):
         '''
         Description:
@@ -1161,10 +1104,6 @@ class AppController:
         appPath = rootdir + '/application-instance/' + instanceName + '/repo/'
         if path.exists(appPath) == False:
             app_errorlogger.error('The folder of the app repository does not exist!')
-        #process = subprocess.Popen(['sudo', 'cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        
-        #process = subprocess.Popen(['echo', 'vendetta','|', 'sudo', '-S', '-v'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        #process = subprocess.Popen(['echo', 'vendetta','|', 'sudo', '-S', 'cp', '-r', rootdir + '/application-instance/' + instanceName, rootdir + '/application-instance/' + newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         process = subprocess.Popen(['sudo', 'chmod', '-R', '777', rootdir + '/application-instance/' +  instanceName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
         if output:
@@ -1173,12 +1112,8 @@ class AppController:
         output, error = process.communicate()
         if output:
             app_errorlogger.error( str(output))
-        #process = subprocess.Popen(['sudo', 'chmod', '-R', '777', rootdir + '/application-instance/' +  newName], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        #output, error = process.communicate()
-        #if output:
-        #    app_errorlogger.error( str(output))
+        
 
-#    @staticmethod
     def changeCompose(self, jobID, instanceName, newName):
         '''
         Description:
@@ -1262,7 +1197,6 @@ class AppController:
         except Exception:
             app_errorlogger.exception('Fatal error while writing to compose file: ', exc_info=True)
 
- #   @staticmethod
     def readVersion(self, jobID, appName):
         '''
         Description:
@@ -1281,7 +1215,6 @@ class AppController:
             The list of all available apps as json object
         '''
 
-        #app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(jobID, instanceName)
         try:
             url = 'https://raw.githubusercontent.com/bibbox/application-store/master/eB3Kit.json'
             download = requests.get(url).content
@@ -1310,7 +1243,6 @@ class AppController:
 
         return versionList
 
- #   @staticmethod
     def readAppStore(self, jobID, instanceName):
         '''
         Description:
@@ -1355,7 +1287,6 @@ class AppController:
         
 
 
- #   @staticmethod
     def getInstalledApps(self, jobID, instanceName):
         '''
         Description:
@@ -1395,7 +1326,6 @@ class AppController:
         installedAppsList = json.dumps(installedApps)
         return installedAppsList
 
- #   @staticmethod
     def checkDockerState(self, jobID, instanceName, containerNames, allowedStates):
         '''
         Description:
@@ -1427,8 +1357,6 @@ class AppController:
         for name in containerNames:
             process = subprocess.Popen(['docker', 'container', 'inspect', name], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             output, error = process.communicate()
-            #if output:
-            #    app_errorlogger.error( str(output))
             try:
                 params = simplejson.loads(output)
                 status = params[0]['State']['Status']
@@ -1442,9 +1370,6 @@ class AppController:
                 if status not in allowedStates:
                     app_errorlogger.error('Could not perform the wanted task. The allowed states of the app containers are: "' + ', '.join([str(elem) for elem in allowedStates]) + '". But the container of app ' + instanceName + ' has state ' + status + '.')
                     raise Exception('Could not perform the wanted task. The allowed states of the app containers are: ' + ', "'.join([str(elem) for elem in allowedStates]) + '". But the container of app ' + instanceName + ' has state ' + status + '.')
-            #except:
-            #    output = output.decode('ascii').rstrip('\n')
-            #    app_logger.debug( str(output))
 
         return states
 
@@ -1543,7 +1468,6 @@ class AppController:
 
         bibbox_logger.info('Check internet connection')
         try:
-            #urllib2.urlopen('http://216.58.192.142', timeout=1)
             requests.get('http://216.58.192.142', timeout=1)
             bibbox_logger.debug('Internet connection ---> OK')
         except: 
@@ -1598,8 +1522,33 @@ class AppController:
 
         return validAll
 
-#    @staticmethod
-    def checkInstall(self, instanceName, states):
+    def checkInstall(self, jobID, instanceName, states):
+        '''
+        Description:
+        -----------
+        After the installation of an app, this function checks if the installation was sucessfull and the app is running.
+
+        Parameters:
+        ----------
+
+        jobID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        states: json Object
+            List of installed containers and their corresponding state
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
+        app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(self, jobID, instanceName)
+        app_logger.info('Checking if installation of app ' + instanceName + ' was successful!')
         for container in states:
             state = states[container]
             if state != 'running':
@@ -1609,10 +1558,28 @@ class AppController:
                     pass
             if state != 'running':
                 AppController.removeApp(self, instancename)
-                raise Exception('The installation could not be completed. Please read the logs and try again')
+                app_logger.error('The installation could not be completed. Please read the logs and try again')
 
-#    @staticmethod
     def startNginx(self, JobID):
+        '''
+        Description:
+        -----------
+        Starts the nginx proxy of the bibbox system.
+
+        Parameters:
+        ----------
+
+        jobID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         bibbox_logger = AppController.setUpLog(self, JobID, 'system', systemonly=True)
         bibbox_logger.info('Starting nginx container')
         
@@ -1623,8 +1590,26 @@ class AppController:
             output = output.strip()
             bibbox_logger.error(output)
 
-#    @staticmethod
     def stopNginx(self, JobID):
+        '''
+        Description:
+        -----------
+        Stops the nginx proxy of the bibbox system.
+
+        Parameters:
+        ----------
+
+        jobID : str
+            Unique JobID that consists of an uuid and the datetime
+
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        
+        '''
         bibbox_logger = AppController.setUpLog(self, JobID, 'system', systemonly=True)
         bibbox_logger.info('Stopping nginx container')
         
@@ -1639,11 +1624,33 @@ class AppController:
     
 
 
-
-
-
- #   @staticmethod
     def getParams(self, instanceName, appName, version):
+        '''
+        Description:
+        -----------
+        Reads the user parameters of an app.
+
+        Parameters:
+        ----------
+
+        instanceName : str
+            The instance name of the application that is used 
+
+        appName: str
+            Name of the wanted app
+
+        version: str
+            Version of the wanted app
+        
+        Raises:
+        -------
+
+        Returns:
+        -------
+        paramList: array
+            List of all userparameters
+        
+        '''
         try:
             url = 'https://raw.githubusercontent.com/bibbox/' + appName + '/master/.env'
             download = requests.get(url).content
@@ -1659,15 +1666,26 @@ class AppController:
                 pass
             else:
                 paramList[param] = []
-        
-        #with open(appPath + '/' + instanceName + '/params.json', 'w+') as outfile:
-                #json.dump(paramList, outfile)
             
         return paramList, instanceName, appName, version
 
- #   @staticmethod
     def setParams(self, paramList):
-        #data = json.load(paramList)
+        '''
+        Description:
+        -----------
+        Reads the user parameters of an app.
+
+        Parameters:
+        ----------
+        paramList: array
+            List of all userparameters
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        '''
         for key in paramList:
             paramList[key] = 'seeddms'
 
@@ -1675,91 +1693,55 @@ class AppController:
 
 
     def changeSettings(self, jobID, instanceName):
-            '''
-            Description:
-            -----------
-            Creates a proxy config file for the nginx web server to use the app container as sub url.
+        '''
+        Description:
+        -----------
+        Looks for config files of an app and changes them to use the app container as sub url.
 
-            Parameters:
-            ----------
-            Job ID : str
-                Unique JobID that consists of an uuid and the datetime
+        Parameters:
+        ----------
+        Job ID : str
+            Unique JobID that consists of an uuid and the datetime
 
-            instanceName : str
-                The instance name of the application that is used 
-
-            containerName : str
-                The name of the container, that is runninng the application 
-
-            
-            Raises:
-            -------
-
-            Returns:
-            -------
-            
-            '''
-
-            app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(self, jobID, instanceName)
-            app_logger.info( 'Change setting files')
-            rootdir = dirname(dirname(abspath(__file__)))
-            settingsPath = rootdir + '/application-instance/' + instanceName + '/repo/config/'
-            if path.exists(settingsPath) == True:
-                
-            
-            
-                for filename in os.listdir(settingsPath):
-                    try:
-                        with open(settingsPath + filename) as template:
-                            file_content = template.read()
-                            file_content = file_content.replace("§§INSTANCENAME", instanceName)
-                            
-                            template = open( settingsPath + filename, 'w+')
-                            template.write(file_content)
-                            template.close()
+        instanceName : str
+            The instance name of the application that is used 
 
 
-                    except Exception:
-                        pass
-                    #    app_errorlogger.exception('Fatal error in writing settings file of app: ' + instanceName, exc_info=True)
+        
+        Raises:
+        -------
 
-            entrypointPath = rootdir + '/application-instance/' + instanceName + '/repo/entrypoint.sh'
+        Returns:
+        -------
+        
+        '''
 
-            try:
-                with open(entrypointPath) as template:
-                    file_content = template.read()
-                    
-                    file_content = file_content.replace("§§INSTANCENAME", instanceName)
-                    
-                    template = open( entrypointPath, 'w+')
-                    template.write(file_content)
-                    template.close()
+        app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(self, jobID, instanceName)
+        app_logger.info( 'Change setting files')
+        rootdir = dirname(dirname(abspath(__file__)))
+        settingsPath = rootdir + '/application-instance/' + instanceName + '/repo/config/'
+        if path.exists(settingsPath) == True:
+            for filename in os.listdir(settingsPath):
+                try:
+                    with open(settingsPath + filename) as template:
+                        file_content = template.read()
+                        file_content = file_content.replace("§§INSTANCENAME", instanceName)    
+                        template = open( settingsPath + filename, 'w+')
+                        template.write(file_content)
+                        template.close()
+                except:
+                    pass
 
+        entrypointPath = rootdir + '/application-instance/' + instanceName + '/repo/entrypoint.sh'
 
-            except Exception:
-                pass
-            #    app_errorlogger.exception('Fatal error in writing entrypoint file of app: ' + instanceName, exc_info=True)
-    
-            # process = subprocess.Popen(['chmod','444', settingsPath + 'settings.xml'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            # output, error = process.communicate()
-            # if output:
-            #     output = output.decode('utf8')
-            #     output = output.strip()
-
-            # process = subprocess.Popen(['docker', 'exec', 'chmod', '777', '/var/www/seeddms60x/conf/settings.xml', '/bin/bash'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            # output, error = process.communicate()
-            # if output:
-            #     output = output.decode('utf8')
-            #     output = output.strip()
-
-            #     bibbox_logger.error(output)
-            
-            # process = subprocess.Popen(['sudo', 'chown', 'www-data', settingsPath + '/settings.xml'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
-            # output, error = process.communicate()
-            # if output:
-            #     docker_logger.error( str(output).rstrip())
-            # process = subprocess.Popen(['sudo', 'chgrp', 'www-data', settingsPath + '/settings.xml'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf8")
-            # output, error = process.communicate()
-            # if output:
-            #     docker_logger.error( str(output).rstrip())
+        try:
+            with open(entrypointPath) as template:
+                file_content = template.read()
+                file_content = file_content.replace("§§INSTANCENAME", instanceName)
+                template = open( entrypointPath, 'w+')
+                template.write(file_content)
+                template.close()
+        except Exception:
+            pass
+        
             
