@@ -246,6 +246,7 @@ class AppController:
             logpath = appPath + '/' + instanceName + '/log/'
             if path.exists(logpath) == False:
                 raise Exception( ' - The folder "/application-instance/' + instanceName + '/log/" does not exist!')
+            os.system('sudo chmod 777 ' + logpath + '*')
             app_logger = AppController.setup_logger(self, jobID, instanceName + '-app.log', logpath + 'debug.log', level=logging.DEBUG)
             app_errorlogger = AppController.setup_logger(self, jobID, instanceName + '-apperror.log', logpath + 'error.log', level=logging.DEBUG)
             docker_logger = AppController.setup_logger(self, jobID, instanceName + '-docker.log', logpath + 'docker.log', level=logging.DEBUG)
@@ -1314,11 +1315,14 @@ class AppController:
         installedApps = {}
         try:
             for i, folder in enumerate(os.listdir(appPath)):
-                with open(appPath + '/' + folder + '/info.json') as infofile:
-                    data = json.load(infofile)
-                    instanceName = data['instanceName']
-                    appName = data['appName']
-                    installedApps[instanceName] = appName
+                try:
+                    with open(appPath + '/' + folder + '/info.json') as infofile:
+                        data = json.load(infofile)
+                        instanceName = data['instanceName']
+                        appName = data['appName']
+                        installedApps[instanceName] = appName
+                except:
+                    pass
         except Exception:
                 bibbox_logger.exception('Could not open file "info.json" in application folder! ', exc_info=True)
                 raise Exception('Could not open file "info.json" in application folder! ')

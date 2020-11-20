@@ -6,7 +6,7 @@ basePath: "/api/v1"
 tags:
   - name: "apps"
 schemes:
-  - "https"
+  - "http"
 consumes:
   - "application/json"
 produces:
@@ -40,9 +40,73 @@ paths:
         404:
           description: "Could not load list"
       x-swagger-router-controller: "web.controllers.bibbox_controller"
+  /startapp/{instanceName}:
+    get:
+      tags:
+        - "start app"
+      summary: "Starts specific app"
+      operationId: "startApp"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "start an app"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully started app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could not start app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /stopapp/{instanceName}:
+    get:
+      tags:
+        - "stop app"
+      summary: "Starts specific app"
+      operationId: "stopApp"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "stop an app"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully stopped app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could not stop app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /removeapp/{instanceName}:
+    get:
+      tags:
+        - "remove app"
+      summary: "removes specific app"
+      operationId: "removeApp"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "remove an app"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully removed app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could not remove app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
 
 definitions:
   list:
+    type: string
+  string:
     type: string
 
 
