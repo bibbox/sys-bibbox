@@ -76,4 +76,78 @@ def removeApp(instanceName):
 
     return response
 
-listApps()
+def copyApp(instanceName, newName):
+    """Start an app
+
+     
+    """
+    try:
+        controller = MainFunctions()
+        response = controller.copyApp(instanceName, newName), 200
+    except KeyError:
+        response = {}, 404
+
+    return response
+
+def getStatus(instanceName):
+    """Start an app
+
+     
+    """
+    try:
+        controller = MainFunctions()
+        response = controller.getStatus(instanceName), 200
+    except KeyError:
+        response = {}, 404
+
+def startSystem():
+    """Start an app
+
+     
+    """
+    try:
+        controller = MainFunctions()
+        response = controller.startBibbox(), 200
+    except KeyError:
+        response = {}, 404
+
+    return response
+
+def stopSystem():
+    """Start an app
+
+     
+    """
+    try:
+        controller = MainFunctions()
+        response = controller.stopBibbox(), 200
+    except KeyError:
+        response = {}, 404
+
+    return response
+
+def checkSystem():
+    """Start an app
+
+     
+    """
+    try:
+        controller = MainFunctions()
+        response = controller.checkSystem(), 200
+    except KeyError:
+        response = {}, 404
+
+    return response
+
+def restartSystem():
+    """Start an app
+
+     
+    """
+    try:
+        controller = MainFunctions()
+        response = controller.restartBibbox(), 200
+    except KeyError:
+        response = {}, 404
+
+    return response

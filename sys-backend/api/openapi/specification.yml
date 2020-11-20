@@ -103,6 +103,113 @@ paths:
           description: "Could not remove app"
       x-swagger-router-controller: "web.controllers.bibbox_controller"
 
+  /copyapp/{instanceName}/{newName}:
+    get:
+      tags:
+        - "copy app"
+      summary: "copies specific app"
+      operationId: "copyApp"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "old appname"
+          required: true
+          type: "string"
+        - name: "newName"
+          in: "path"
+          description: "new appname"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully copied app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could not copy app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /status/{instanceName}:
+    get:
+      tags:
+        - "return appstatus"
+      summary: "return appstatus"
+      operationId: "getStatus"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "user defined app name"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully loaded status of app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could load status of app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /sysstart:
+    get:
+      tags:
+        - "apps"
+      summary: "Starts the bibbox system"
+      operationId: "startSystem"
+      responses:
+        200:
+          description: "Successfully started Bibbox system"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not start Bibbox system"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /sysstop:
+    get:
+      tags:
+        - "apps"
+      summary: "Stopps the bibbox system"
+      operationId: "stopSystem"
+      responses:
+        200:
+          description: "Successfully stopped Bibbox system"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not stop Bibbox system"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /sysrestart:
+    get:
+      tags:
+        - "apps"
+      summary: "Restarts the bibbox system"
+      operationId: "restartSystem"
+      responses:
+        200:
+          description: "Successfully restarted Bibbox system"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not restart Bibbox system"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /syscheck:
+    get:
+      tags:
+        - "apps"
+      summary: "Checks the bibbox system services abd packages"
+      operationId: "checkSystem"
+      responses:
+        200:
+          description: "Successfully checked Bibbox system"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not check Bibbox system"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
 definitions:
   list:
     type: string
