@@ -421,8 +421,8 @@ function bibbox()
                 echo Checking requirements!
                 
                 python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.checkSystem()'
-                state=$(python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.checkProxy("local_nginx")' 2>&1)
-                echo $state
+                python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.checkProxy("local_nginx")'
+                #echo $state
 
         fi
 

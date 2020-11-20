@@ -20,6 +20,7 @@ import simplejson
 import re
 import atexit
 from packaging import version
+import time
 
 
 
@@ -1404,11 +1405,11 @@ class AppController:
         
             
             if state == 'running':
-                 bibbox_logger.info('The nginx Container is running. \n Everything OK.')
+                 bibbox_logger.info('The nginx Container is running. Everything OK.')
             else:
-                 bibbox_logger.error('The nginx Container is not running. \n Please try to restart the bibbox System.')
+                 bibbox_logger.error('The nginx Container is not running. Please try to restart the bibbox System with "bibbox restartSystem".')
         except:
-             bibbox_logger.error('The nginx Container is not running. \n Please try to restart the bibbox System with "bibbox restartSystem".')
+             bibbox_logger.error('The nginx Container is not running. Please try to restart the bibbox System with "bibbox restartSystem".')
 
         return state
 
@@ -1464,14 +1465,20 @@ class AppController:
         output, error = process.communicate()
         output = output.decode('utf8')
         if output:
-            bibbox_logger.debug('Creating default network:' + output)
+            bibbox_logger.debug('Creating default network if not already created!')
 
         bibbox_logger.info('Check internet connection')
         try:
             requests.get('http://216.58.192.142', timeout=1)
             bibbox_logger.debug('Internet connection ---> OK')
         except: 
-            bibbox_logger.error('Can not connect to the internet!')
+            bibbox_logger.error('Can not establish an internet connection!')
+            time.sleep(1)
+            bibbox_logger.info('Trying to connect again.')
+            try:
+                requests.get('http://216.58.192.142', timeout=1)
+            except:
+                bibbox_logger.error('Can not connect to the internet! Please check your internet connection!')
 
     def checkInput(self, jobID, instanceName, inputparams):
         '''
