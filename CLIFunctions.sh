@@ -230,7 +230,6 @@ function bibbox()
         fi
 
 
-
         if [[ $1 = start ]]
                 then
                 var="'$2'"
