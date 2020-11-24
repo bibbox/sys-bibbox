@@ -62,7 +62,7 @@ function bibbox()
                         for word in $x
                                 do
                                 word=${word##*/}
-                                if [[ $word == *_tng ]]
+                                if [[ $word == *_v4 ]]
                                 then 
                                 branch=${word#"refs/heads/"}
                                 branches+=($branch)
@@ -182,7 +182,7 @@ function bibbox()
                 for word in $x
                         do
                         word=${word##*/}
-                        if [[ $word == *_tng ]]
+                        if [[ $word == *_v4 ]]
                         then 
                         branch=${word#"refs/heads/"}
                         branches+=($branch)
@@ -228,7 +228,6 @@ function bibbox()
 
                 unset paramlist keylist instance instancech appname version versionch name word x branch branches
         fi
-
 
 
 
