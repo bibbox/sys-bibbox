@@ -64,12 +64,14 @@ class MainFunctions(AppController):
         inputparams = [instanceName, appName, version]
         AppController.checkInput(self, jobID, instanceName, inputparams)
         AppController.createFolder(self, jobID, instanceName)
-        AppController.setStatus(self, jobID, 'Prepare Install', instanceName)
+        AppController.setStatus(self, jobID, instanceName, 'preinstall configuration for app ' + appName + ' with name ' + instanceName, 'configureapp')
         AppController.setUpLog(self, jobID, instanceName)
         AppController.lock(self, jobID, instanceName)
-        AppController.setStatus(self, jobID, 'Downloading', instanceName)
+        #AppController.setStatus(self, jobID, 'Downloading', instanceName)
+        AppController.setStatus(self, jobID, instanceName, 'downloading app ' + appName + ' with name ' + instanceName, 'downloadapp')
         AppController.downloadApp(self, jobID, instanceName,appName,version)
-        AppController.setStatus(self, jobID, 'Installing', instanceName)
+        #AppController.setStatus(self, jobID, 'Installing', instanceName)
+        AppController.setStatus(self, jobID, instanceName, 'installing app ' + appName + ' with name ' + instanceName, 'installapp')
         AppController.setInfo(self, jobID, instanceName,appName,version)
         containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
         AppController.setProxyFiles(self, jobID, instanceName, mainContainer)
@@ -80,9 +82,10 @@ class MainFunctions(AppController):
             AppController.writeCompose(self, jobID, paramList, instanceName)
         AppController.composeUp(self, jobID, instanceName, mainContainer)
         AppController.unlock(self, jobID, instanceName)
-        states = AppController.checkDockerState(self, jobID, instanceName, containerNames, ['running'])
+        states, response = AppController.checkDockerState(self, jobID, instanceName, containerNames, ['running'])
+        AppController.setStatus(self, jobID, instanceName, 'installing app ' + appName + ' with name ' + instanceName, 'configureapp', finished=True, result=response)
         AppController.checkInstall(self, jobID, instanceName, states)
-        AppController.setStatus(self, jobID, 'Running', instanceName)
+        #AppController.setStatus(self, jobID, 'Running', instanceName)
         AppController.stopNginx(self, jobID)
         AppController.startNginx(self, jobID)
 
@@ -115,11 +118,12 @@ class MainFunctions(AppController):
         containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
         AppController.checkDockerState(self, jobID, instanceName, containerNames, ['running'])
         AppController.lock(self, jobID, instanceName)
-        AppController.setStatus(self, jobID, 'Stopping', instanceName)
+        AppController.setStatus(self, jobID, instanceName, 'stopping app ' + appName + ' with name ' + instanceName, 'stopapp')        
+        #AppController.setStatus(self, jobID, instanceName, 'stopping app ' + instanceName, 'stopapp')
         AppController.stop(self, jobID, instanceName)
         AppController.unlock(self, jobID, instanceName)
         AppController.checkDockerState(self, jobID, instanceName, containerNames, ['paused', 'stopped', 'exited'])
-        AppController.setStatus(self, jobID, 'Stopped', instanceName)
+        #AppController.setStatus(self, jobID, 'Stopped', instanceName)
 
 
 
@@ -149,12 +153,13 @@ class MainFunctions(AppController):
         containerNames, mainContainer = AppController.readContainernames(self, jobID, instanceName)
         AppController.checkDockerState(self, jobID, instanceName, containerNames, ['paused', 'stopped', 'exited'])
         AppController.lock(self, jobID, instanceName)
-        AppController.setStatus(self, jobID, 'Starting', instanceName)
+        #AppController.setStatus(self, jobID, 'Starting', instanceName)
+        AppController.setStatus(self, jobID, instanceName, 'starting app ' + appName + ' with name ' + instanceName, 'startapp')                
         AppController.setUpLog(self, jobID, instanceName)
         AppController.start(self, jobID, instanceName)
         AppController.unlock(self, jobID, instanceName)
         AppController.checkDockerState(self, jobID, instanceName, containerNames, ['running'])
-        AppController.setStatus(self, jobID, 'Running', instanceName)
+        #AppController.setStatus(self, jobID, 'Running', instanceName)
 
     def removeApp(self, instanceName):
         '''
@@ -180,7 +185,8 @@ class MainFunctions(AppController):
         inputparams = [instanceName]
         AppController.checkInput(self, jobID, instanceName, inputparams)
         AppController.lock(self, jobID, instanceName)
-        AppController.setStatus(self, jobID, 'Removing App', instanceName)
+        AppController.setStatus(self, jobID, instanceName, 'removing app ' + appName + ' with name ' + instanceName, 'removeapp')        
+        #AppController.setStatus(self, jobID, 'Removing App', instanceName)
         AppController.remove(self, jobID, instanceName)
 
     def getStatus(self, instanceName):
@@ -250,9 +256,10 @@ class MainFunctions(AppController):
         ContainerNames, mainContainer = AppController.readContainernames(self, jobID, newName)
         AppController.setProxyFiles(self, jobID, newName, mainContainer)
         AppController.changeInfo(self, jobID, instanceName, newName)
+        AppController.setStatus(self, jobID, instanceName, 'starting copied app ' + appName + ' with name ' + instanceName, 'startapp')        
         AppController.composeUp(self, jobID, newName, mainContainer)
+        AppController.checkDockerState(self, jobID, instanceName, containerNames, ['running'])
         AppController.unlock(self, jobID, newName)
-        AppController.setStatus(self, jobID, 'Running', instanceName)
 
         
     def listApps(self):

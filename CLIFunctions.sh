@@ -245,7 +245,7 @@ function bibbox()
                 esac
                 shift
 
-                sudo python3 -c 'import sys; sys.path.insert(1, "//opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.startApp('"$var"')'
+                sudo python3 -c 'import sys; sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend"); import mainFunctions; x=mainFunctions.MainFunctions(); x.startApp('"$var"')'
         fi
 
 

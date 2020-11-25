@@ -6,3 +6,6 @@ log
 sys-proxy
 
 **/__pycache__
+log/system.log
+sys-backend/activities
+

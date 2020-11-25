@@ -270,7 +270,7 @@ class AppController:
             return bibbox_logger
 
     
-    def setStatus(self, jobID, status, instanceName):
+    def setStatus(self, jobID, instanceName, description, activity, finished=False, result=""):
         '''
         Description:
         -----------
@@ -297,18 +297,43 @@ class AppController:
         '''
 
         app_logger, bibbox_logger, docker_logger, app_errorlogger = AppController.setUpLog(self, jobID, instanceName)
-        app_logger.info('Set status to ' + status )
+        app_logger.info('Set status to ' + activity )
         rootdir = dirname(dirname(abspath(__file__)))
         appPath = rootdir + '/application-instance'
         if path.exists(appPath) == False:
             app_errorlogger.error( ' - The folder "/application-instance" does not exist!')
         process = subprocess.Popen(['touch' , appPath + '/' + instanceName + '/STATUS'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, error = process.communicate()
+        dateObj = datetime.now()
+        datestring = str(dateObj.year) + '-' + str(dateObj.month) + '-' + str(dateObj.day) + '-' + str(dateObj.microsecond)
+        if finished == False:
+            template = {
+                    "name": description,
+                    "appname": instanceName,
+                    "type": activity,
+                    "user_id": jobID,
+                    "start_time": datestring,  
+                    "finished_time":  "",
+                    "state" : "RUNNING",
+                    "result" : result
+                }
+        
+            with open(rootdir + '/' + 'sys-backend/activities/' + jobID + '.json', 'w+') as outfile:
+                json.dump(template, outfile)
+
+        if finished == True:
+            with open(rootdir + '/' + 'sys-backend/activities/' + jobID + '.json', 'w') as outfile:
+                template = json.load(outfile)
+                template["finished_time"] = datestring
+                template["state"] = "FINISHED"
+                template["result"] = result
+                json.dump(template, outfile)
+
         if output:
             app_errorlogger.error( str(output))
         try:
             text_file = open(appPath + '/' + instanceName + '/STATUS', "w")
-            text_file.write(status)
+            text_file.write(activity)
             text_file.close()
         except Exception:
             app_errorlogger.exception('Fatal error in writing to STATUS file: ', exc_info=True)
@@ -1373,10 +1398,12 @@ class AppController:
                 pass
             else:
                 if status not in allowedStates:
+                    response = "ERROR"
                     app_errorlogger.error('Could not perform the wanted task. The allowed states of the app containers are: "' + ', '.join([str(elem) for elem in allowedStates]) + '". But the container of app ' + instanceName + ' has state ' + status + '.')
                     raise Exception('Could not perform the wanted task. The allowed states of the app containers are: ' + ', "'.join([str(elem) for elem in allowedStates]) + '". But the container of app ' + instanceName + ' has state ' + status + '.')
-
-        return states
+                else:
+                    response = "SUCCESS"
+        return states,response
 
     def checkProxy(self, containerName):
         '''
