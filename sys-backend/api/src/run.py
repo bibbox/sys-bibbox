@@ -2,6 +2,7 @@ import os
 
 import connexion
 import sys
+from flask_cors import CORS
 
 sys.path.insert(1, "/opt/bibbox/sys-bibbox/sys-backend/api/src/web")
 
@@ -20,7 +21,7 @@ def create_app():
     flask_app = app.app
     flask_app.config['Access-Control-Allow-Origin'] = '*'
     flask_app.json_encoder = encoder.JSONEncoder
-
+    CORS(flask_app)
     return flask_app
 
 create_app()
