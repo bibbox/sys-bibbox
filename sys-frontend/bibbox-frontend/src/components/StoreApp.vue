@@ -1,9 +1,9 @@
 <template>
-  <div class="card">
+  <div class="card" v-on:click="handleClick">
     <img class="img" :src="appIcon" alt="AppLogo" />
     <div class="container">
       <span class="name">{{ appInfo.short_name }}</span>
-      <p>a data collection software</p>
+      <p>Short description</p>
     </div>
   </div>
 </template>
@@ -23,9 +23,9 @@ export default {
   },
 
   methods: {
-    handleClick() {
-      this.$refs["my-modal"].show();
-    },
+    handleClick(){
+      this.$emit("cardClicked", this.appInfo);
+    }
   },
 
   mounted() {

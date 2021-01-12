@@ -1,7 +1,19 @@
 <template>
   <div style="display: flex; flex-flow: row wrap">
     <div v-for="app in this.apps.value" :key="app">
-      <StoreApp :appName="app" class="storeApp" />
+      <StoreApp :appName="app" class="storeApp" v-on:cardClicked="handleClick"/>
+    </div>
+    <div>
+      <b-modal id="appModal" centered :title="appInfo.short_name" hide-footer>
+        <div>
+          <p><a style="color:#176bae; font-weight:bold">Name</a>
+            <br>
+            {{appInfo.name}}
+          </p>
+          <p>{{appInfo.name}}</p>
+        </div>
+        <b-button block @click="$bvModal.hide('appModal')">Install</b-button>
+      </b-modal>
     </div>
   </div>
 </template>
@@ -13,6 +25,13 @@ import Vue from "vue";
 export default {
   components: {
     StoreApp,
+  },
+
+  methods: {
+    handleClick(appInfo) {
+      this.appInfo = appInfo;
+      this.$bvModal.show("appModal");
+    },
   },
 
   mounted() {
@@ -27,6 +46,7 @@ export default {
   data() {
     return {
       apps: {},
+      appInfo: {},
     };
   },
 };
@@ -69,7 +89,7 @@ export default {
   border-bottom: solid 1px #176bae;
 }
 
-.name:hover {
+.storeApp:hover .name {
   border-bottom: solid 1px white;
 }
 </style>
