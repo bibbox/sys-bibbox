@@ -2,23 +2,17 @@
 
 ## Project setup
 ```
-npm install
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install build-essential
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+nvm install stable
+nvm use stable
+npm install -g @vue/cli
 ```
 
-### Compiles and hot-reloads for development
+## Additional Installations
 ```
-npm run serve
+npm install axios
+vue add bootstrap-vue
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
