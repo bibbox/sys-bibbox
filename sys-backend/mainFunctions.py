@@ -286,6 +286,29 @@ class MainFunctions(AppController):
         print(appsList)
         return appsList
         
+    def listAppsExtended (self):
+
+        '''
+        Description:
+        -----------
+        Lists the available Apps in full Mode
+
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        appslist: json object
+            The list of all available apps as json object
+        '''
+        jobID = AppController.createJobID(self)
+        instanceName = 'system'
+        appsList = AppController.readAppStoreExtended (self, jobID, instanceName)
+        print(appsList)
+        return appsList
 
     def listInstalledApps(self):
 

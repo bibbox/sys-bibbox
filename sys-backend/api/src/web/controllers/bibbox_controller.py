@@ -15,7 +15,7 @@ def listApps():  # noqa: E501
     """
     try:
         controller = MainFunctions()
-        response = controller.listApps(), 200
+        response = controller.listAppsExtended(), 200
     except KeyError:
         response = {}, 404
 

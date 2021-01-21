@@ -1312,7 +1312,38 @@ class AppController:
 
         return appslist
         
+    def readAppStoreExtended(self, jobID, instanceName):
+        '''
+        Description:
+        -----------
+        Lists the available Apps.
 
+        Parameters:
+        ----------
+
+        Raises:
+        -------
+
+        Returns:
+        -------
+        appslist: json object
+            The list of all available apps as json object
+        '''
+        bibbox_logger = AppController.setUpLog(self, jobID, 'system', systemonly=True)
+        try:
+            url = 'https://raw.githubusercontent.com/bibbox/application-store/master/eB3Kit.json'
+            download = requests.get(url).content
+        except Exception:
+            raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
+        try:
+            params = simplejson.loads(download)
+        except Exception:
+            bibbox_logger.exception('Error while loading eB3Kit.json file: ', exc_info=True)
+            raise Exception('Error while loading eB3Kit.json file')
+        appslist=params
+
+        return appslist
+        
 
     def getInstalledApps(self, jobID, instanceName):
         '''
