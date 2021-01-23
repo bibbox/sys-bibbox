@@ -9,7 +9,11 @@ import logging
 from flask import Flask
 from flask_bootstrap import Bootstrap
 
+from flask_restplus import Resource, Api
+from flask_swagger_ui import get_swaggerui_blueprint
+
 from flask_sqlalchemy import SQLAlchemy
+
 from flask_sse import sse
 
 from celery import Celery
@@ -64,11 +68,22 @@ def create_app(config_name):
         slh.setFormatter(formatter)
         logger.addHandler(slh)
 
+
+   
+    print(app.root_path) 
+    
+    swaggerui_blueprint = get_swaggerui_blueprint(
+        '/api/docs',
+        '/static/bibbox-api-spec.yml',
+        config={'app_name': "BIBBOX COMMANDER"}
+    )
+
+    app.register_blueprint(swaggerui_blueprint)
+    
+
     from backend.app.api import api as api_1_0_blueprint
-
-  
-
     app.register_blueprint(api_1_0_blueprint, url_prefix='/api')
+
     app.register_blueprint(sse, url_prefix='/stream')
 
 #    socketio.init_app(app)
