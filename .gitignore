@@ -5,7 +5,9 @@ application-instance
 log
 sys-proxy
 
+sys-commander/data/
+
 **/__pycache__
 log/system.log
 sys-backend/activities
-
+sys-commander/data/postgresql/data/pg_stat_tmp/db_0.stat
