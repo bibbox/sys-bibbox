@@ -5,6 +5,8 @@ info:
 basePath: "/api/v1"
 tags:
   - name: "apps"
+  - name: "users"
+
 schemes:
   - "http"
 consumes:
@@ -12,6 +14,20 @@ consumes:
 produces:
   - "application/json"
 paths:
+  /users:
+    get:
+      tags:
+        - "users"
+      summary: "Get all registered users"
+      operationId: "listUsers"
+      responses:
+        200:
+          description: "Successfully retrived registered users"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
   /apps:
     get:
       tags:
