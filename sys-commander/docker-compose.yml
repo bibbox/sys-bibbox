@@ -1,0 +1,107 @@
+version: '3'
+
+networks:
+    bibbox-default-network:
+      external: true
+
+
+services:
+
+
+  bibbox-sys-commander-nginx:
+    container_name: bibbox-sys-commander-nginx
+    restart: unless-stopped
+    image: nginx
+    links:
+        -  bibbox-sys-commander-backend:backend
+    build:
+      context:    ./nginx
+      dockerfile: Dockerfile
+    volumes:
+     - ./client/dist:/usr/share/nginx/html
+    ports:
+      - "20080:80"
+    depends_on:
+      -  bibbox-sys-commander-backend
+
+  bibbox-sys-commander-backend:
+    container_name: bibbox-sys-commander-backend
+    restart: unless-stopped
+    links:
+        -  bibbox-sys-commander-redis:redis
+        -  bibbox-sys-commander-celery:celery
+        -  bibbox-sys-commander-postgres:postgres
+
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
+
+    volumes:
+      - ./backend:/usr/src/bibbox-sys-commander/backend
+    env_file:
+      - .env
+
+
+  bibbox-sys-commander-celery:
+    container_name:  bibbox-sys-commander-celery
+    restart: unless-stopped
+    links:
+        -  bibbox-sys-commander-redis:redis
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
+    command: "celery worker  -A celery_worker.app_celerey --loglevel=info"
+    user: nobody
+
+    volumes:
+        - ./data/celery:/queue
+    env_file:
+        - .env
+
+  bibbox-sys-commander-celery-monitor:
+    container_name: bibbox-sys-commander-celery-monitor
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+    ports:
+        - "20083:5555"    
+    entrypoint: flower
+    command:  -celery A celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0
+    depends_on:
+      - bibbox-sys-commander-redis
+    volumes:
+     - ./data/celery:/queue
+
+  bibbox-sys-commander-postgres:
+      container_name:  bibbox-sys-commander-postgres
+      restart: unless-stopped
+      build:
+        context:   ./postgresql
+        dockerfile: Dockerfile
+      volumes:
+        - ./data/postgresql/data:/var/lib/postgresql/data
+      env_file:
+        - .env
+
+  bibbox-sys-commander-adminer:
+      container_name:  bibbox-sys-commander-adminer
+      image: adminer
+      restart: unless-stopped
+      links:
+        - bibbox-sys-commander-postgres:postgres
+      ports:
+        - "20084:8080"    
+      env_file:
+        - .env
+
+
+  bibbox-sys-commander-redis:
+      container_name: bibbox-sys-commander-redis
+      image: redis
+      restart: unless-stopped
+      volumes:
+        - ./data/redis/data:/data
+      env_file:
+        - .env
