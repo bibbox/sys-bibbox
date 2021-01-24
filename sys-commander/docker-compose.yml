@@ -4,9 +4,7 @@ networks:
     bibbox-default-network:
       external: true
 
-
 services:
-
 
   bibbox-sys-commander-nginx:
     container_name: bibbox-sys-commander-nginx
@@ -31,16 +29,15 @@ services:
         -  bibbox-sys-commander-redis:redis
         -  bibbox-sys-commander-celery:celery
         -  bibbox-sys-commander-postgres:postgres
-
     build:
       context:    ./backend
       dockerfile: Dockerfile
-
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/bibbox:/opt/bibbox
       - ./backend:/usr/src/bibbox-sys-commander/backend
     env_file:
       - .env
-
 
   bibbox-sys-commander-celery:
     container_name:  bibbox-sys-commander-celery
@@ -54,8 +51,11 @@ services:
     command: "celery worker  -A celery_worker.app_celerey --loglevel=info"
     user: nobody
     volumes:
-        - ./data/celery:/queue
-        - ./backend:/usr/src/bibbox-sys-commander/backend
+      - ./data/celery:/queue
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/bibbox:/opt/bibbox
+      - ./backend:/usr/src/bibbox-sys-commander/backend
+
     env_file:
         - .env
 
@@ -76,6 +76,7 @@ services:
     volumes:
       - ./data/celery:/queue
       - ./backend:/usr/src/bibbox-sys-commander/backend
+      - /opt/bibbox:/opt/bibbox
 
   bibbox-sys-commander-postgres:
       container_name:  bibbox-sys-commander-postgres
@@ -88,6 +89,29 @@ services:
       env_file:
         - .env
 
+  bibbox-sys-commander-redis:
+      container_name: bibbox-sys-commander-redis
+      image: redis
+      restart: unless-stopped
+      volumes:
+        - ./data/redis/data:/data
+      env_file:
+        - .env
+
+  bibbox-sys-commander-cadvisor:      
+      container_name: bibbox-sys-commander-cadvisor
+      image: google/cadvisor:latest
+      restart: unless-stopped
+      ports:
+        - "20085:8080"  
+      volumes:
+        - /:/rootfs:ro 
+        - /var/run:/var/run:ro 
+        - /sys:/sys:ro 
+        - /var/lib/docker/:/var/lib/docker:ro 
+        - /var/run/docker.sock:/var/run/docker.sock:ro 
+        - /dev/disk/:/dev/disk:ro 
+
   bibbox-sys-commander-adminer:
       container_name:  bibbox-sys-commander-adminer
       image: adminer
@@ -99,12 +123,21 @@ services:
       env_file:
         - .env
 
-
-  bibbox-sys-commander-redis:
-      container_name: bibbox-sys-commander-redis
-      image: redis
-      restart: unless-stopped
-      volumes:
-        - ./data/redis/data:/data
-      env_file:
-        - .env
+  bibbox-sys-commander-celery-monitor:
+    container_name: bibbox-sys-commander-celery-monitor
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
+    links:
+        -  bibbox-sys-commander-redis:redis
+    restart: unless-stopped
+    ports:
+        - "20083:5555"    
+    entrypoint: flower
+    command:  -celery A celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0
+    depends_on:
+      - bibbox-sys-commander-redis
+    volumes:
+      - ./data/celery:/queue
+      - ./backend:/usr/src/bibbox-sys-commander/backend
+      - /opt/bibbox:/opt/bibbox

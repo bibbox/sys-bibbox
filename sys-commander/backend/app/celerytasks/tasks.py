@@ -18,6 +18,8 @@ from celery_singleton import Singleton
 catalogue_service = CatalogueService()
 
 
+
+
 @app_celerey.task(bind=True, base=Singleton, name='tasks.syncAppCatalogue')
 def syncAppCatalogue (self, catalogueNames):
     

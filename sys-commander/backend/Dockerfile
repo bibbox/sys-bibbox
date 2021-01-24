@@ -19,7 +19,6 @@ RUN apt-get install -y \
 #
 
 RUN mkdir -p /usr/src/bibbox-sys-commander
-
 # Update working directory
 WORKDIR  /usr/src/bibbox-sys-commander
 
@@ -38,6 +37,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # COPY uswgi.ini
 COPY ./uwsgi.ini /etc/uwsgi.ini
+
+# Install the Docler CLI uswgi.ini
+ENV DOCKERVERSION=18.03.1-ce
+RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKERVERSION}.tgz \
+  && tar xzvf docker-${DOCKERVERSION}.tgz --strip 1 \
+                 -C /usr/local/bin docker/docker \
+  && rm docker-${DOCKERVERSION}.tgz
 
 EXPOSE 5000
 
