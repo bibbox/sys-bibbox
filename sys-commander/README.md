@@ -5,6 +5,7 @@ This directoy contains the BIBBOX COMMANDER (GUI and CLI for BB Version 4).
 ## Quicktstart (for development)
 
 `docker-compose build`
+
 `docker-compose up -d`
 
 `http://127.0.0.1:20080/api/docs/#/`
