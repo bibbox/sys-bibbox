@@ -33,6 +33,20 @@ paths:
           description: "Could not load list"
       x-swagger-router-controller: "web.controllers.bibbox_controller"
   
+    post:
+      tags:
+        - "users"
+      summary: "Get all registered users"
+      operationId: "GenerateUser"
+      responses:
+        200:
+          description: "Successfully retrived registered users"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
   /catalogues:
     get:
       tags:

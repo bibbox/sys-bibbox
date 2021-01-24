@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Angular-Flask-Docker-Skeleton
-
     Main application package
-
 """
+
+
 import logging
 
 from flask import Flask
@@ -27,7 +27,7 @@ from flask_cors import CORS
 
 
 bootstrap = Bootstrap()
-
+app = Flask(__name__)
 db = SQLAlchemy()
 
 app_celerey = Celery(__name__, broker=Config.CELERY_BROKER_URL)
@@ -38,8 +38,7 @@ def create_app(config_name):
     
     print ("HELLO IN INIT OF FLASK APP")
     
-    app = Flask(__name__)
-
+    
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
     app.config.from_object(config[config_name])

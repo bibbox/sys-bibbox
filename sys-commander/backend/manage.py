@@ -10,6 +10,8 @@ from flask_script import Manager
 from backend.app import db, create_app
 from backend.app.models.user  import User
 
+from passlib.apps import custom_app_context as pwd_context
+
 
 COV = coverage(
     branch=True,
@@ -26,7 +28,6 @@ COV = coverage(
         'app/models/*'
     ]
 )
-
 
 COV.start()
 
@@ -79,16 +80,15 @@ def seed_db():
     db.session.add(User(
         username='v',
         email='v@bibbox.com',
-        password='vendetta'
+        password_hash =  pwd_context.encrypt('vendetta')
     ))
     db.session.add(User(
         username='mue',
-        email='heimo.mueller@mac.com',
-        password='denkdenk'
+        email = 'heimo.mueller@mac.com',
+        password_hash = pwd_context.encrypt('vendetta')
     ))
 
     db.session.commit()
-
 
 if __name__ == '__main__':
     manager.run()

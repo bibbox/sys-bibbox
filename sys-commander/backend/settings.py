@@ -24,6 +24,7 @@ class Config(object):
 
     SSE_REDIS_URL = 'redis://redis:6379'
 
+    SECRET_KEY = 'the quick brown fox jumps over the lazy dog'
 
     DB_USER = os.getenv('POSTGRES_USER')
     DB_PASS = os.getenv('POSTGRES_PASSWORD')
