@@ -36,8 +36,23 @@ paths:
     post:
       tags:
         - "users"
-      summary: "Get all registered users"
-      operationId: "GenerateUser"
+      summary: "Generate a user with username / password"
+      operationId: "listUsers"
+      responses:
+        200:
+          description: "Successfully generated a user"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not generate a user"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /token:
+    get:
+      tags:
+        - "users"
+      summary: "Get a t token for authorization"
+      operationId: "listUsers"
       responses:
         200:
           description: "Successfully retrived registered users"
@@ -46,7 +61,22 @@ paths:
         404:
           description: "Could not load list"
       x-swagger-router-controller: "web.controllers.bibbox_controller"
-
+  
+  /secrets:
+    get:
+      tags:
+        - "users"
+      summary: "Check the login / token based authorization"
+      operationId: "listUsers"
+      responses:
+        200:
+          description: "now you kow the secrets"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+ 
   /catalogues:
     get:
       tags:

@@ -56,7 +56,6 @@ class User(BaseModel, db.Model):
         self.email = email
         self.password_hash = password_hash
 
-
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
 

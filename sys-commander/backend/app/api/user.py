@@ -33,7 +33,6 @@ def new_user():
 
 # curl -i -X POST -H "Content-Type: application/json" -d '{"username":"heimo","password":"vendetta"}' http://127.0.0.1:20080/api/v1/users
 
-
 @api.route("/user/<int:id>")
 def get_user(id):
     print ("looking for user with id = ", id)
@@ -47,7 +46,6 @@ def get_auth_token():
     return jsonify({'token': token.decode('ascii'), 'duration': 600})
 
 # curl -u heimo:vendetta -i -X GET http://127.0.0.1:20080/api/v1/token
-
 
 @api.route('/secrets')
 @auth.login_required
