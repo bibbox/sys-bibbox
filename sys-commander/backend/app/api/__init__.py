@@ -10,4 +10,4 @@ from flask import Blueprint
 api = Blueprint('api', __name__)
 print ("HELLO IN INIT OF FLASK API .....")
 
-from backend.app.api import default, user, task 
+from backend.app.api import default, user, catalogue, task 

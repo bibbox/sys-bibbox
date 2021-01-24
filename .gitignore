@@ -8,6 +8,8 @@ sys-proxy
 sys-commander/data/
 
 **/__pycache__
+**/.DS_Store
+
 log/system.log
 sys-backend/activities
 sys-commander/data/postgresql/data/pg_stat_tmp/db_0.stat

@@ -1,1 +1,1 @@
-CREATE DATABASE users;
+CREATE DATABASE bibbox;

@@ -83,7 +83,6 @@ def create_app(config_name):
 
     from backend.app.api import api as api_1_0_blueprint
     app.register_blueprint(api_1_0_blueprint, url_prefix='/api/v1')
-
     app.register_blueprint(sse, url_prefix='/stream')
 
 #    socketio.init_app(app)

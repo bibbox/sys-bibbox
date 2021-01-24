@@ -66,6 +66,7 @@ def cov():
         return 0
     return 1
 
+
 @manager.command
 def recreate_db():
     db.drop_all()
@@ -87,6 +88,7 @@ def seed_db():
     ))
 
     db.session.commit()
+
 
 if __name__ == '__main__':
     manager.run()

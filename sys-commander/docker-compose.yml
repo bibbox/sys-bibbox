@@ -47,14 +47,15 @@ services:
     restart: unless-stopped
     links:
         -  bibbox-sys-commander-redis:redis
+        -  bibbox-sys-commander-postgres:postgres
     build:
       context:    ./backend
       dockerfile: Dockerfile
     command: "celery worker  -A celery_worker.app_celerey --loglevel=info"
     user: nobody
-
     volumes:
         - ./data/celery:/queue
+        - ./backend:/usr/src/bibbox-sys-commander/backend
     env_file:
         - .env
 
@@ -63,7 +64,8 @@ services:
     build:
       context:    ./backend
       dockerfile: Dockerfile
-
+    links:
+        -  bibbox-sys-commander-redis:redis
     restart: unless-stopped
     ports:
         - "20083:5555"    
@@ -72,7 +74,8 @@ services:
     depends_on:
       - bibbox-sys-commander-redis
     volumes:
-     - ./data/celery:/queue
+      - ./data/celery:/queue
+      - ./backend:/usr/src/bibbox-sys-commander/backend
 
   bibbox-sys-commander-postgres:
       container_name:  bibbox-sys-commander-postgres

@@ -78,7 +78,7 @@ class SQLAlchemyService(BaseService):
         data = self.__model__.query.all()
         return self.return_response(data)
 
-    def allasdict(self):
+    def all_as_dict(self):
         data = self.__model__.query.all()
         return [row.as_dict() for row in data]
 
