@@ -20,6 +20,10 @@ This directoy contains the BIBBOX COMMANDER (GUI and CLI for BB Version 4).
 
 `http://127.0.0.1:20080/api/v1/users/`
 
+## Within the Flask Server
+
+`docker exec -it bibbox-sys-commander-backend /bin/bash`
+
 ## Debug Tools
 
 ### Celery Monitor 

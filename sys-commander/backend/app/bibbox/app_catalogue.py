@@ -44,11 +44,13 @@ class AppCatalogue():
 
   def appDescriptions  (self, catalogueName):
       syncAppCatalogue.delay ( self.availableCatalogues() )
-      c = catalogue_service.catalogue (catalogueName).as_dict()   
-      apps = simplejson.loads(c['content'])  
-      for app_groups in apps:
-          for group_member in app_groups ['group_members']:
-            group_member['icon_url'] = 'https://raw.githubusercontent.com/bibbox/' +  group_member['app_name'] + '/master/icon.png'
+      c = catalogue_service.catalogue (catalogueName) 
+      apps = []
+      if c:  
+          apps = simplejson.loads(c['content'])  
+          for app_groups in apps:
+              for group_member in app_groups ['group_members']:
+                group_member['icon_url'] = 'https://raw.githubusercontent.com/bibbox/' +  group_member['app_name'] + '/master/icon.png'
       return apps
 
   def appDescription   (self, catalogueName, appName):
