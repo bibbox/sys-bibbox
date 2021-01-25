@@ -33,10 +33,10 @@ This directoy contains the BIBBOX COMMANDER (GUI and CLI for BB Version 4).
 `http://127.0.0.1:12000/bibbox/celerymon/`
 
 ### Adminer   
-`http://127.0.0.1:8010/bibbox/adminer/`
+`http://127.0.0.1:12000bibbox/adminer/`
 
 ### cadvisor
-`http://127.0.0.1:8010/bibbox/cadvisor/`
+`http://127.0.0.1:12000/bibbox/cadvisor/`
 * server postgres
 * username postgres
 * passpword postgres
