@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Angular-Flask-Docker-Skeleton
-    Main application package
+"""Angular-Flask-Docker-Skeleton Main application package
 """
 
 
@@ -26,6 +25,9 @@ from flask_cors import CORS
 #from flask_socketio import SocketIO
 
 
+# review and restructer tha Application Context
+# https://flask.palletsprojects.com/en/1.1.x/patterns/appfactories/ 
+
 bootstrap = Bootstrap()
 app = Flask(__name__)
 db = SQLAlchemy()
@@ -35,9 +37,6 @@ app_celerey = Celery(__name__, broker=Config.CELERY_BROKER_URL)
 #socketio = SocketIO()
 
 def create_app(config_name):
-    
-    print ("HELLO IN INIT OF FLASK APP")
-    
     
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -67,21 +66,18 @@ def create_app(config_name):
         slh.setFormatter(formatter)
         logger.addHandler(slh)
 
-
-   
-    print(app.root_path) 
-    
+    # swagger base URL has to be specified   
     swaggerui_blueprint = get_swaggerui_blueprint(
-        '/api/docs',
-        '/static/bibbox-api-spec.yml',
+        '/bibbox/api/docs',
+        '/bibbox/static/bibbox-api-spec.yml',
         config={'app_name': "BIBBOX COMMANDER"}
     )
 
     app.register_blueprint(swaggerui_blueprint)
     
-
     from backend.app.api import api as api_1_0_blueprint
-    app.register_blueprint(api_1_0_blueprint, url_prefix='/api/v1')
+    
+    app.register_blueprint(api_1_0_blueprint,  url_prefix='/bibbox/api/v1')
     app.register_blueprint(sse, url_prefix='/stream')
 
 #    socketio.init_app(app)

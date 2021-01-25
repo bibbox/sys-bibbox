@@ -30,15 +30,16 @@ class AppCatalogue():
 
   def appNames  (self, catalogueName):
       syncAppCatalogue.delay ( self.availableCatalogues() )
-      c = catalogue_service.catalogue (catalogueName).as_dict()   
-      apps = simplejson.loads(c['content'])  
       
+      c = catalogue_service.catalogue (catalogueName)
       appDescr = {}
-      for app_groups in apps:
-          for group_member in app_groups ['group_members']:
-             app_name =  group_member ['app_name']
-             appDescr[app_name]  = 'https://github.com/bibbox/' + app_name
-      
+      if c:
+          apps = simplejson.loads(c['content'])  
+          appDescr = {}
+          for app_groups in apps:
+            for group_member in app_groups ['group_members']:
+                app_name =  group_member ['app_name']
+                appDescr[app_name]  = 'https://github.com/bibbox/' + app_name 
       appNames = sorted (list(appDescr))
       return  appNames 
 

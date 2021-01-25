@@ -8,17 +8,20 @@ This directoy contains the BIBBOX COMMANDER (GUI and CLI for BB Version 4).
 
 `docker-compose up -d`
 
-`http://127.0.0.1:20080/api/docs/#/`
+`http://127.0.0.1:12000`
 
-`http://127.0.0.1:20080/api/v1/catalogues`
+`http://127.0.0.1:12000/bibbox/api/docs/#/`
 
-`http://127.0.0.1:20080/api/v1/catalogues/active`
+`http://127.0.0.1:12000/bibbox/api/v1/catalogues`
 
-`http://127.0.0.1:20080/api/v1/apps`
+`http://127.0.0.1:12000/bibbox/api/v1/catalogues/active`
 
-`http://127.0.0.1:20080/api/v1/app_names`
+`http://127.0.0.1:12000/bibbox/api/v1/apps`
 
-`http://127.0.0.1:20080/api/v1/users/`
+`http://127.0.0.1:12000/bibbox/api/v1/app_names`
+
+`http://127.0.0.1:12000/bibbox/api/v1/users/`
+
 
 ## Within the Flask Server
 
@@ -27,10 +30,16 @@ This directoy contains the BIBBOX COMMANDER (GUI and CLI for BB Version 4).
 ## Debug Tools
 
 ### Celery Monitor 
-`http://127.0.0.1:20083/tasks`
+`http://127.0.0.1:12000/bibbox/celerymon/`
+`http://127.0.0.1:12002`
 
-### Adminer / Postgres  
-`http://127.0.0.1:20084`
+### Adminer   
+`http://127.0.0.1:8010/bibbox/adminer/`
+`http://127.0.0.1:12002`
+
+### cadvisor
+`http://127.0.0.1:8010/bibbox/cadvisor/`
+`http://127.0.0.1:12002`
 * server postgres
 * username postgres
 * passpword postgres

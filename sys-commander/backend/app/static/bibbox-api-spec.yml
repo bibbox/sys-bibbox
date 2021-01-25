@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   version: "1.0.0"
   title: "Bibbox"
-basePath: "/api/v1"
+basePath: "/bibbox/api/v1"
 tags:
   - name: "app catalogue"
   - name: "instances"
