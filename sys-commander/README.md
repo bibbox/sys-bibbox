@@ -31,15 +31,12 @@ This directoy contains the BIBBOX COMMANDER (GUI and CLI for BB Version 4).
 
 ### Celery Monitor 
 `http://127.0.0.1:12000/bibbox/celerymon/`
-`http://127.0.0.1:12002`
 
 ### Adminer   
 `http://127.0.0.1:8010/bibbox/adminer/`
-`http://127.0.0.1:12002`
 
 ### cadvisor
 `http://127.0.0.1:8010/bibbox/cadvisor/`
-`http://127.0.0.1:12002`
 * server postgres
 * username postgres
 * passpword postgres
