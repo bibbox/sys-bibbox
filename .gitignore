@@ -6,6 +6,9 @@ log
 sys-proxy
 
 sys-commander/data/
+sys-commander/sys-commander-local-env/
+
+
 
 **/__pycache__
 **/.DS_Store
@@ -13,3 +16,5 @@ sys-commander/data/
 log/system.log
 sys-backend/activities
 sys-commander/data/postgresql/data/pg_stat_tmp/db_0.stat
+sys-commander/backend/mist.py
+sys-commander/backend/mist.txt

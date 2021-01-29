@@ -1,0 +1,7 @@
+python3 -m venv sys-commander-local-env
+source sys-commander-local-env/bin/activate
+pip3 list --format=freeze  > backend/requirements.txt
+pip3 install -r backend/requirements.txt 
+
+export PYTHONPATH=.
+code .

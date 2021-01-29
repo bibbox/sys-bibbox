@@ -18,9 +18,9 @@ flask-swagger-ui==3.36.0
 flask-cors==2.1.0
 flask_httpauth
 sqlalchemy==1.2.8
-uwsgi==2.0.17
-gevent==1.4.0
-psycopg2==2.6.1
+uwsgi
+gevent
+psycopg2-binary
 Werkzeug==0.14.1
 amqp==2.2.2
 Babel==2.5.3
@@ -33,7 +33,7 @@ pytz==2018.3
 redis==2.10.6
 tornado==5.0.2
 vine==1.1.4
-python-dotenv==0.10.1
+python-dotenv
 passlib
 itsdangerous
 docker
