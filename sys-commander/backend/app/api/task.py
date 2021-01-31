@@ -4,7 +4,8 @@ import re
 from flask import Blueprint
 from flask import jsonify
 
-from backend.app.api import api
+from backend.app import apiblueprint as api
+
 
 from backend.app import app_celerey
 

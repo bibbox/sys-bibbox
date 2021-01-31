@@ -18,12 +18,7 @@ class CatalogueService(SQLAlchemyService):
 
     def catalogue (self, catalogueName):
         
-        c = self.__model__.query.filter(self.__model__.name.in_([catalogueName])).all()
-        #print ("type of C   = ", type(c), "length = ", len(c)  )
-        #print ("type of C[0] = ",type(c[0]) )
-        r = {}
-        if c:
-            #print ("LIST IS NON EMPTY TAKE THE FIRST" )
-            r = c[0].as_dict()           
-        return r
+        c = self.__model__.query.filter(self.__model__.name.in_([catalogueName])).first()
+        return c
+
 

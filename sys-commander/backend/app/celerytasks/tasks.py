@@ -52,4 +52,4 @@ def syncAppCatalogue (self, catalogueNames):
             db.session.add(ce)
             db.session.commit()
 
-
+    

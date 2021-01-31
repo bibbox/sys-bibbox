@@ -7,7 +7,8 @@ from flask_httpauth import HTTPBasicAuth
 from backend.app import db
 from backend.app.models.user import User
 from backend.app.services.user_service import UserService
-from backend.app.api import api
+
+from backend.app import apiblueprint as api
 
 user_service = UserService()
 auth = HTTPBasicAuth()

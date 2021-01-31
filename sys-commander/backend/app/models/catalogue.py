@@ -26,7 +26,7 @@ class BaseModel(db.Model):
 
 
 class Catalogue (BaseModel, db.Model):
-    """Model for Apps table"""
+    """Model for Catalogue table"""
     __tablename__ = "catalogue"
 
     id        = db.Column(db.Integer, primary_key=True, autoincrement=True)

@@ -9,6 +9,7 @@ from flask_script import Manager
 
 from backend.app import db, create_app
 from backend.app.models.user  import User
+from backend.app.models.app  import App as BibboxApp
 
 from passlib.apps import custom_app_context as pwd_context
 
@@ -33,15 +34,13 @@ COV.start()
 
 # create flask application instance
 
-app = create_app ('development')
-
-# test websockets
-#socketio, app  = create_app ('development')
+app = create_app ('production')
 
 manager = Manager(app)
 
-print ("=========== ENVIRONMENT ============")
+print ("=========== MANAGE.PY ENVIRONMENT ============")
 print ("FLASK_CONFIG = ", os.environ["FLASK_CONFIG"])
+print ("SQLSTRING= ", app.config["DB_SERVICE"])
 
 @manager.command
 def test():

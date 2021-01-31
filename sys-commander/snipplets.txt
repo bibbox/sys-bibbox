@@ -1,7 +1,14 @@
 python3 -m venv sys-commander-local-env
-source sys-commander-local-env/bin/activate
 pip3 list --format=freeze  > backend/requirements.txt
 pip3 install -r backend/requirements.txt 
 
+
+
+source sys-commander-local-env/bin/activate
 export PYTHONPATH=.
 code .
+
+
+docker exec -it bibbox-sys-commander-backend  /bin/bash
+ps aux | grep uwsgi
+kill - SIGHUP

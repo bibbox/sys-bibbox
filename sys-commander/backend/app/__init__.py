@@ -5,7 +5,8 @@
 
 import logging
 
-from flask import Flask
+from flask import Flask, Blueprint, url_for, render_template
+from flask_restplus import Resource, Api
 from flask_bootstrap import Bootstrap
 
 from flask_restplus import Resource, Api
@@ -13,7 +14,6 @@ from flask_swagger_ui import get_swaggerui_blueprint
 
 from flask_sqlalchemy import SQLAlchemy
 
-from flask_sse import sse
 
 from celery import Celery
 from celery.signals import after_setup_logger
@@ -28,19 +28,26 @@ from flask_cors import CORS
 # review and restructer tha Application Context
 # https://flask.palletsprojects.com/en/1.1.x/patterns/appfactories/ 
 
+
 bootstrap = Bootstrap()
 app = Flask(__name__)
 db = SQLAlchemy()
 
+apiblueprint = Blueprint('api', __name__)
+restapi = Api (apiblueprint)
+
+
 app_celerey = Celery(__name__, broker=Config.CELERY_BROKER_URL)
 
-#socketio = SocketIO()
 
 def create_app(config_name):
     
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
+    print ("CREATE APP IN ", config_name, " MODE")
+    
     app.config.from_object(config[config_name])
+
     bootstrap.init_app(app)
     db.init_app(app)
     db.app = app
@@ -57,7 +64,7 @@ def create_app(config_name):
 
     logger = logging.getLogger(__name__)
 
-    @after_setup_logger.connect
+    @after_setup_logger.connect 
     def setup_loggers(logger, *args, **kwargs):
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -74,13 +81,12 @@ def create_app(config_name):
     )
 
     app.register_blueprint(swaggerui_blueprint)
-    
-    from backend.app.api import api as api_1_0_blueprint
-    
-    app.register_blueprint(api_1_0_blueprint,  url_prefix='/bibbox/api/v1')
-    app.register_blueprint(sse, url_prefix='/stream')
+   
+    @app.route("/")
+    def main():
+        return app.send_static_file('main.html')
 
-#    socketio.init_app(app)
-#    return socketio, app
+    import backend.app.api
+    app.register_blueprint(apiblueprint,  url_prefix='/api/v1')
 
     return app

@@ -4,6 +4,7 @@
 from flask import Blueprint
 from flask import Flask, request, jsonify
 
+from backend.app import apiblueprint as api
 
 route = Blueprint('command', __name__)
 

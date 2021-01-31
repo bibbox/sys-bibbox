@@ -25,15 +25,19 @@ class BaseModel(db.Model):
                 for c in inspect(self).mapper.column_attrs}
 
 
-class Apps(BaseModel, db.Model):
-    """Model for Apps table"""
+class BibboxApp (BaseModel, db.Model):
+    """Model for App table"""
     __tablename__ = "apps"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    appname = db.Column(db.String(128), nullable=False)
-    appdescription  = db.Column(db.String(2048), nullable=False)
+    id                      = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    appid                   = db.Column(db.String(128), nullable=False)
+    version                 = db.Column(db.String(128), nullable=False)
+    appinfo                 = db.Column(db.UnicodeText(), nullable=False)
+    environment_parameters  = db.Column(db.UnicodeText(), nullable=False)
 
-    def __init__(self, appname, appdescription):
+    def __init__(self, appid, version, appinfo, environment_parameters):
         super().__init__()
-        self.appname = appname
-        self.appdescription = appdescription
+        self.appid   = appid
+        self.version = version
+        self.appinfo = appinfo
+        self.environment_parameters = environment_parameters

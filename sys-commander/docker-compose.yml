@@ -18,7 +18,7 @@ services:
       - ./client/dist:/usr/share/nginx/html
       - ./proxy-configs/nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - "12000:80"
+      - "8080:80"
     depends_on:
       -  bibbox-sys-commander-backend
 
@@ -32,6 +32,8 @@ services:
     build:
       context:    ./backend
       dockerfile: Dockerfile
+    ports:
+        - "5010:5000"  
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/bibbox:/opt/bibbox
@@ -68,9 +70,9 @@ services:
         -  bibbox-sys-commander-redis:redis
     restart: unless-stopped
     ports:
-        - "12001:5555"    
+        - "5011:5555"    
     entrypoint: flower
-    command:  -celery A celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0 -url_prefix=bibbox/celerymon
+    command:  -celery A celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0 
     depends_on:
       - bibbox-sys-commander-redis
     volumes:
@@ -84,6 +86,8 @@ services:
       build:
         context:   ./postgresql
         dockerfile: Dockerfile
+      ports:
+        - "5432:5432" 
       volumes:
         - ./data/postgresql/data:/var/lib/postgresql/data
       env_file:
@@ -93,6 +97,8 @@ services:
       container_name: bibbox-sys-commander-redis
       image: redis
       restart: unless-stopped
+      ports:
+        - "6379:6379" 
       volumes:
         - ./data/redis/data:/data
       env_file:
@@ -106,7 +112,7 @@ services:
       links:
         - bibbox-sys-commander-postgres:postgres
       ports:
-        - "12002:8080" 
+        - "5012:8080" 
       environment:
         ADMINER_DEFAULT_DB_DRIVER: pgsql
         ADMINER_DEFAULT_DB_HOST: postgres
@@ -117,7 +123,7 @@ services:
       image: gcr.io/cadvisor/cadvisor 
       restart: unless-stopped
       ports:
-        - "12003:8080"  
+        - "5013:8080"  
       volumes:
         - /:/rootfs:ro 
         - /var/run:/var/run:ro 
@@ -125,6 +131,4 @@ services:
         - /var/lib/docker/:/var/lib/docker:ro 
         - /var/run/docker.sock:/var/run/docker.sock:ro 
         - /dev/disk/:/dev/disk:ro 
-      command:
-        - '-url_base_prefix=/bibbox/cadvisor'    
   

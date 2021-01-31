@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
-"""User Route for Catalogues"""
+"""User Route for App Catalogues"""
 
 from flask import Blueprint, request, jsonify
-from flask_restplus import Api, Resource, fields
+from flask_restplus import Namespace, Api, Resource, fields, reqparse
 
-from backend.app.api import api
-from backend.app import db
+from backend.app import app, db, restapi
+
 from backend.app.models.catalogue import Catalogue
 from backend.app.services.catalogue_service import CatalogueService
 
+from backend.app.models.app import BibboxApp
 
 catalogue_service = CatalogueService()
 
@@ -19,27 +20,62 @@ appCatalogue = AppCatalogue ()
 # take finaly this approach (doc out of code) 
 # https://towardsdatascience.com/working-with-apis-using-flask-flask-restplus-and-swagger-ui-7cf447deda7f 
 
+
+api = Namespace('apps', description='Catalogue Ressources')
+restapi.add_namespace (api, '/apps')
+
+
+installparameter = api.model('InstallParameter', {
+    'id': fields.Integer(readonly=True, description='The task unique identifier'),
+    'task': fields.String(required=True, description='The task details')
+})
+
+
 @api.route("/catalogues")
-def  get_catalogues ():
-    cat = appCatalogue.availableCatalogues ()
-    return jsonify(cat)
+class Catalogues(Resource):
+    def get(self):
+        cat = appCatalogue.availableCatalogues ()
+        return cat
 
-@api.route("/catalogues/active", methods = ['POST', 'GET'])
-def  get_active_catalogue ():
-    if request.method == 'POST':
-       pass
-    else:
-       activeCatalogueName = appCatalogue.activeCatalogue ()    
-    return jsonify(activeCatalogueName)
+@api.route("/catalogues/active")
+class ActiveCatalogue(Resource):
+    def get(self):
+        return appCatalogue.activeCatalogue ()  
 
-@api.route("/apps")
-def  get_full_app_descriptions_from_active_catalogue ():
-    activeCatalogeName = appCatalogue.activeCatalogue ()   
-    apps = appCatalogue.appDescriptions (activeCatalogeName)
-    return jsonify(apps)
+@api.route("/")
+class AppsInActiveCataloge(Resource):
+    def get(self):
+        activeCatalogeName = appCatalogue.activeCatalogue ()   
+        apps = appCatalogue.appDescriptions (activeCatalogeName)
+        return apps
 
-@api.route("/app_names")
-def  get_app_names_from_active_catalogue ():
-    activeCatalogeName = appCatalogue.activeCatalogue ()   
-    appnames = appCatalogue.appNames (activeCatalogeName)
-    return jsonify(appnames)
+#http://127.0.0.1:5010/api/v1/apps/envparameter?appid=app-xnat&version=development
+@api.param('version', 'version')
+@api.param('appid', 'app id')
+@api.route("/envparameter")
+class InstallParameter(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('version')
+        parser.add_argument('appid')
+        args = parser.parse_args()
+        version = args['version']
+        appid = args['appid']
+        envpar = appCatalogue.environment_parameters (appid, version)   
+        return envpar
+
+@api.param('version', 'version')
+@api.param('appid', 'app id')
+@api.route("/info")
+class AppInfo (Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('version')
+        parser.add_argument('appid')
+        args = parser.parse_args()
+        version = args['version']
+        appid = args['appid']
+        appinfo = appCatalogue.appInfo (appid, version)   
+        return appinfo
+# demo
+# http://127.0.0.1:5010/api/v1/apps/info?appid=app-redcap&version=development

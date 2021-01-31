@@ -5,7 +5,5 @@
 
 """
 
-from flask import Blueprint
-
-api = Blueprint('api', __name__)
-from backend.app.api import default, user, catalogue, task 
+#from backend.app.api.instance import api as instance_api
+from backend.app.api import  catalogue, instance, default, user, task

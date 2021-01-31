@@ -22,21 +22,10 @@ RUN mkdir -p /usr/src/bibbox-sys-commander
 # Update working directory
 WORKDIR  /usr/src/bibbox-sys-commander
 
-# copy everything from this directory to server/flask docker container
+# install all packages ...
 COPY ./requirements.txt /usr/src/bibbox-sys-commander
-COPY ./entrypoint.sh   /usr/src/bibbox-sys-commander
-COPY ./*.py      /usr/src/bibbox-sys-commander/
-COPY ./uwsgi.*   /usr/src/bibbox-sys-commander/
-COPY ./.env     /usr/src/bibbox-sys-commander
-
-# Give execute permission to below file, so that the script can be executed by docker.
-RUN chmod 777 /usr/src/bibbox-sys-commander/entrypoint.sh
-
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
-
-# COPY uswgi.ini
-COPY ./uwsgi.ini /etc/uwsgi.ini
 
 # Install the Docler CLI uswgi.ini
 ENV DOCKERVERSION=18.03.1-ce
@@ -44,6 +33,15 @@ RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${
   && tar xzvf docker-${DOCKERVERSION}.tgz --strip 1 \
                  -C /usr/local/bin docker/docker \
   && rm docker-${DOCKERVERSION}.tgz
+
+COPY ./entrypoint.sh   /usr/src/bibbox-sys-commander
+# Give execute permission to below file, so that the script can be executed by docker.
+RUN chmod 777 /usr/src/bibbox-sys-commander/entrypoint.sh
+
+COPY ./*.py            /usr/src/bibbox-sys-commander/
+COPY ./uwsgi.*         /usr/src/bibbox-sys-commander/
+COPY ./uwsgi.ini       /etc/uwsgi.ini
+COPY ./.env            /usr/src/bibbox-sys-commander
 
 EXPOSE 5000
 
