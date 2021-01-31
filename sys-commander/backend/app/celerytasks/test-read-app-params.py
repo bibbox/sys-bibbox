@@ -47,7 +47,6 @@ def loadAndCheckJsonFromGit (url):
     json_again = simplejson.dumps(json_as_dict)  
     return json_again
 
-
 def readallparams ():
     catalogueNames = ['bibbox', 'eB3Kit']  
     catalogueName = 'bibbox'  

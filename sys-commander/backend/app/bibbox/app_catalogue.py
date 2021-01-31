@@ -43,6 +43,7 @@ class AppCatalogue():
             for group_member in app_groups ['group_members']:
                 app_name =  group_member ['app_name']
                 appDescr[app_name]  = 'https://github.com/bibbox/' + app_name 
+
       appNames = sorted (list(appDescr))
       return  appNames 
 
@@ -54,7 +55,16 @@ class AppCatalogue():
           apps = simplejson.loads(c.content)  
           for app_groups in apps:
               for group_member in app_groups ['group_members']:
+                app_name =  group_member ['app_name']
                 group_member['icon_url'] = 'https://raw.githubusercontent.com/bibbox/' +  group_member['app_name'] + '/master/icon.png'
+                for v in group_member ['versions']:
+                    if v['docker_version'] == 'development':
+                        v['appinfo'] =  'https://raw.githubusercontent.com/bibbox/' + app_name   + '/master/appinfo.json'
+                        v['environment-parameters'] =  'https://raw.githubusercontent.com/bibbox/' + app_name   + '/master/environment-parameters.json'
+                    else:
+                        v['appinfo'] =  'https://raw.githubusercontent.com/bibbox/' + app_name   + '/' + v['docker_version'] + '/appinfo.json'
+                        v['environment-parameters'] =  'https://raw.githubusercontent.com/bibbox/' + app_name   + '/' + v['docker_version'] + '/environment-parameters.json'
+
       return apps
 
   def appDescription   (self, catalogueName, appName):
