@@ -18,3 +18,4 @@ sys-backend/activities
 sys-commander/data/postgresql/data/pg_stat_tmp/db_0.stat
 sys-commander/backend/mist.py
 sys-commander/backend/mist.txt
+sys-commander/backend/app/celerytasks/_test-read-app-params.py
