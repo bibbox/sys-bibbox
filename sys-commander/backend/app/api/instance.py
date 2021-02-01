@@ -113,6 +113,10 @@ class Instance(Resource):
         return message, 202    
 
 
+#
+# dirty test code
+#
+
 import uuid
 import requests
 if __name__ == "__main__":
@@ -121,7 +125,7 @@ if __name__ == "__main__":
     print ('response from server:',res.text)
 
 
-    print("try to calls")
+    print("try to call")
     paylod = {
         "appname": "app-seedms",
         "version" :  "development",
