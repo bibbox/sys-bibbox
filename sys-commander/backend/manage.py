@@ -9,7 +9,7 @@ from flask_script import Manager
 
 from backend.app import db, create_app
 from backend.app.models.user  import User
-from backend.app.models.app  import App as BibboxApp
+from backend.app.models.app  import BibboxApp
 
 from passlib.apps import custom_app_context as pwd_context
 
