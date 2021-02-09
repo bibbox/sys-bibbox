@@ -19,7 +19,6 @@ instancemodel = api.model('Model', {
 # thats the path inside the container !
 DEFAULTPATH = "/opt/bibbox/instances/"
 
-
 def instanceDesc ():
     path = DEFAULTPATH + instanceDescr['instancename'] + "/instance.json"
     with open(path) as f: 

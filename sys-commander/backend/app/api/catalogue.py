@@ -13,7 +13,7 @@ from backend.app.models.app import BibboxApp
 
 catalogue_service = CatalogueService()
 
-from backend.app.bibbox.app_catalogue  import AppCatalogue
+from backend.app.bibbox.app  import AppCatalogue
 
 appCatalogue = AppCatalogue ()
 
