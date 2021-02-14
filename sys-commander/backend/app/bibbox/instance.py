@@ -74,7 +74,7 @@ class Instance  ():
 
 
 # some test code for development
-# this should finaly be made in an unittest
+# this should finaly be done in an unittest
 
 if __name__ == '__main__':
     print ("====================== INSTANCE CONTROLOER DEVELOPMENT TEST =====================")
