@@ -6,9 +6,9 @@ import inspect
 class InstanceDescription  ():
     def __init__(self):
         self.instancename = 'sample-instance'
-        self.appname      = 'app-seedms'
-        self.version      = '1.0'
-        self.status       = 'INSTALLING'
+        self.appname      = 'app-appid'
+        self.version      = 'version string'
+        self.state        = 'JUSTBORN'
 
     @classmethod
     def fromdict(cls, descrdict):
@@ -16,6 +16,11 @@ class InstanceDescription  ():
         for key in descrdict: 
             setattr(item, key, descrdict[key]) 
         return item
+
+    @classmethod
+    def states (cls):
+        # the 'DELETED' state never will be set ....
+        return ('JUSTBORN', 'INSTALLING', 'STARTING', 'RUNING', 'STOPPING', 'STOPPED', 'DELETING', 'ERROR', 'DELETED')
 
 class Instance  ():
 
@@ -25,7 +30,7 @@ class Instance  ():
     example_description = InstanceDescription.fromdict ({'instancename': 'test', 
                                                          'appname': 'app-seedms', 
                                                          'version': 'development', 
-                                                         'status': 'INSTALLING'})
+                                                         'state':   'INSTALLING'})
 
     example_description_as_dict = example_description.__dict__
 
@@ -73,8 +78,12 @@ class Instance  ():
 
 if __name__ == '__main__':
     print ("====================== INSTANCE CONTROLOER DEVELOPMENT TEST =====================")
+    print ("Default Value in the InstanceDescription Class =>", InstanceDescription().__dict__)
+    print ("Example Value in the Instance Class            =>", Instance.example_description_as_dict)
+    print ("States =>", InstanceDescription.states())
+
     iIds = Instance.ids ()
-    print (Instance.example_description_as_dict)
+  
     print (iIds)
     for id in iIds:
         instance = Instance (id)
