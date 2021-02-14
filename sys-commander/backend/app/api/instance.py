@@ -13,7 +13,7 @@ instancemodel = api.model('Model', {
     'instancename' : fields.String,
     'appname': fields.String,
     'version' :  fields.String,
-    'status' : fields.String
+    'state' : fields.String
 })
 
 # thats the path inside the container !
@@ -67,8 +67,8 @@ class Instance(Resource):
         instanceDescr = {
             'instancename': instancename,
             'appname':      appname,
-            'version':     version,
-            'status': "INSTALLING"            
+            'version':      version,
+            'state':        "INSTALLING"            
         }
 
         installInstance.delay ( instanceDescr )
@@ -98,7 +98,7 @@ class Instance(Resource):
             'instancename' : "xxx",
             'appname': "xxxx",
             'version' :  "xxxx",
-            'status' : "DELETING"            
+            'state' : "DELETING"            
         }
 
         message =  {
