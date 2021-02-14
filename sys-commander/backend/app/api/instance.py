@@ -4,7 +4,7 @@ from flask import Flask, request
 from flask_restplus import Namespace, Api, Resource, fields
 from backend.app import app, db, restapi
 
-from backend.app.celerytasks.instance_controler  import installInstance, deleteInstance
+from backend.app.bibbox.instance_controler  import installInstance, deleteInstance
 
 api = Namespace('instances', description='Instance Ressources')
 restapi.add_namespace (api, '/instances')
@@ -67,8 +67,8 @@ class Instance(Resource):
         instanceDescr = {
             'instancename': instancename,
             'appname':      appname,
-            'version' :     version,
-            'status' : "INSTALLING"            
+            'version':     version,
+            'status': "INSTALLING"            
         }
 
         installInstance.delay ( instanceDescr )

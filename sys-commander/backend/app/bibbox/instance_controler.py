@@ -1,39 +1,55 @@
 import os
-import json
+import time
+import random
+import logging
+import requests
+import simplejson
+
+from flask import current_app, render_template
+from backend.app import app_celerey
+from backend.app import db
 
 
- 
-class InstanceControler ():
+from celery.task.control import inspect
+from celery_singleton import Singleton
 
-  """Controler Class for the BIBBOX INSTANCES """
+# thats the path inside the container !
+DEFAULTPATH = "/opt/bibbox/instances/"
 
-  def __init__(self, baseUrl ='/opt/bibbox/instances/'):
-      # text if the directoy exists otherwise raise an exeption and write the appropiate stuff in the log file
-      self.baseUrl = baseUrl
 
-#
-# how should we name the functions, with get or without get 
+@app_celerey.task(bind=True,  name='instance.stopInstance')
+def stopInstance (self, instanceDescr):
+    pass
 
-  def getInstanceIds (self):
-      # we need some error handling here
-      list = os.listdir(self.baseUrl)
-      return list
+@app_celerey.task(bind=True, name='instance.startInstance')
+def startInstance (self, instanceDescr):
+    pass
 
-  def getInstanceDescription (self, id):
-      path = self.baseUrl + id + "/instance.json"
-      with open(path) as f: 
-          idescr = json.load(f)
-      return idescr
+@app_celerey.task(bind=True,  name='instance.copyInstance')
+def copyInstance (self, instanceDescr):
+    pass
 
-# some test code for development
-# this should finaly be made in an unittest
+@app_celerey.task(bind=True,  name='instance.installInstance')
+def installInstance (self, instanceDescr):
+    path = DEFAULTPATH + instanceDescr['instancename']
+    try:
+        os.mkdir(path)
+        path = DEFAULTPATH + instanceDescr['instancename'] + "/instance.json"
+        with open(path, 'w') as f: 
+            simplejson.dump (instanceDescr, f)
+    except OSError:
+        print ("Creation of the directory %s failed" % path)
+    else:
+        print ("Successfully created the directory %s " % path)
+  
 
-if __name__ == '__main__':
-    print ("====================== INSTANCE CONTROLOER DEVELOPMENT TEST =====================")
-    ic = InstanceControler()
-    iIds = ic.getInstanceIds ()
-    print (iIds)
-    for id in iIds:
-        iDescr = ic.getInstanceDescription (id)
-        print (iDescr)
-    print ("======================              DONE                     ====================")
+@app_celerey.task(bind=True,  name='instance.deleteInstance')
+def deleteInstance (self, instanceDescr):
+    path = DEFAULTPATH + instanceDescr['instancename']
+    try:
+        os.rmdir(path)
+    except OSError:
+        print ("Creation of the directory %s failed" % path)
+    else:
+        print ("Successfully deleted the directory %s " % path)
+
