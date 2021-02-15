@@ -20,7 +20,7 @@ class InstanceDescription  ():
     @classmethod
     def states (cls):
         # the 'DELETED' state never will be set ....
-        return ('JUSTBORN', 'INSTALLING', 'STARTING', 'RUNING', 'STOPPING', 'STOPPED', 'DELETING', 'ERROR', 'DELETED')
+        return ('JUSTBORN', 'INSTALLING', 'STARTING', 'RUNNING', 'STOPPING', 'STOPPED', 'DELETING', 'ERROR', 'DELETED')
 
 class Instance  ():
 
