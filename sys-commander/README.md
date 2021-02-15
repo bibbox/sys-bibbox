@@ -7,7 +7,7 @@ This directoy contains the BIBBOX COMMANDER (GUI and CLI for BB Version 4).
 `docker-compose build`
 `docker-compose up -d`
 
-`http://127.0.0.1:5000`
+`http://127.0.0.1:5010`
 
 
 ## Within the Flask Server
@@ -17,17 +17,17 @@ This directoy contains the BIBBOX COMMANDER (GUI and CLI for BB Version 4).
 ## Debug Tools
 
 ### Celery Monitor 
-`http://127.0.0.1:5010`
+`http://127.0.0.1:5011`
 
 ### Adminer   
-`http://127.0.0.1:5020`
+`http://127.0.0.1:5012`
 * server postgres
 * username postgres
 * passpword postgres
 * database bibbox
 
 ### cadvisor
-`http://127.0.0.1:5030`
+`http://127.0.0.1:5013`
 
 
 ## Structure
