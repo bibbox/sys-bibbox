@@ -26,6 +26,8 @@ def instanceDesc ():
     return idescr
 
 @api.route('/ping')
+@api.doc(params={'murks': 'test'})
+@api.doc("Just to test if the Instance PI is alive")
 class Ping(Resource):
     def get(self):
         return {"reply":"PONG"}
@@ -53,23 +55,12 @@ class Instance(Resource):
              params={ 'id': 'Instance ID' })
     def post(self, id):
 
-        # make this more dynamic and check the parameters
-        instancename = id
-        appname = request.json['appname']
-        version = request.json['version']
-        parameters  = request.json['appname']
+        instanceDescr = request.json
+        instanceDescr['instancename'] = id
+        instanceDescr['state'] = 'JUSTBORN'    
 
         jobID = 27
         jobURL = "api/v1/activities/27"
-
-        # call the generation of a instance
-
-        instanceDescr = {
-            'instancename': instancename,
-            'appname':      appname,
-            'version':      version,
-            'state':        "INSTALLING"            
-        }
 
         installInstance.delay ( instanceDescr )
 
@@ -80,7 +71,6 @@ class Instance(Resource):
                 },
              "instance" :  instanceDescr        
         }
-
         return message, 202
 
     def delete(self, id):
@@ -123,12 +113,16 @@ if __name__ == "__main__":
     res = requests.get('http://127.0.0.1:5010/api/v1/instances')
     print ('response from server:',res.text)
 
-
     print("try to call")
     paylod = {
-        "appname": "app-seedms",
-        "version" :  "development",
-        "parameters" : []               
+        "appname"     : "app-wordpress",
+        "version"     :  "V4",
+        "displayname" : "Wordpress Test",
+        "dataroot"    : '/opt/bibbox/instance-data/',
+        "parameters"  : 
+            {
+                '§MYSQL_ROOT_PASSWORD' :'quaksi'
+            }            
     }
     res = requests.post('http://127.0.0.1:5010/api/v1/instances/' + str(uuid.uuid4()), json=paylod)
     print ('response from server:',res.text)
