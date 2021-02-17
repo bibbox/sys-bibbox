@@ -1,9 +1,55 @@
 #
 # docker-compose from template
 #
-
 import yaml
 import re
+
+
+class ComposeTemplate ():
+
+    def __init__(self, template, parameters):
+    
+    def getCompose (self):    
+        # gets a valid yaml file, which will be our final docker-compose
+        # replace parameters
+
+        # delete proxy and ports entry
+
+    def getComposeLocal (self):    
+        # gets a valid yaml file, which will be our final docker-compose
+        # replace §§INSTANCE  by 'bibbox
+        # delete proxy  entry
+        # remove all network entries
+
+    def getProxyInformation (self):    
+         # gets the proxy information
+
+        # replace parameters
+
+        # get information for 
+
+        # §§INSTANCE = 'test"
+        result = [
+            {
+            'urlprefix' : 'test',  
+            'type' : 'PRIMARY', 
+            'container' : 'test-wordpress:80',
+            'template'  : 'default',
+            'displayname' : 'Wordpress'
+            },
+            {
+            'urlprefix' : 'test-adminer',  
+            'type' : 'HELPER', 
+            'container' : 'test-wordpress-adminer:8080',
+            'template'  : 'default',
+            'displayname' : 'Adminer'
+            }
+        ]
+            
+    def getContainerNames (self):    
+
+
+
 
 def generateComposeFromTemplate(
         instancename: str, 
