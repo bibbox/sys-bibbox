@@ -42,6 +42,8 @@ def copyInstance (self, instanceDescr):
 @app_celerey.task(bind=True,  name='instance.installInstance')
 def installInstance (self, instanceDescr):
     path = DEFAULTPATH + instanceDescr['instancename']
+    # appinfo.json, fileinfo.json, docker-compose-template.yml, 
+
     try:
         os.mkdir(path)
         path = DEFAULTPATH + instanceDescr['instancename'] + "/instance.json"
