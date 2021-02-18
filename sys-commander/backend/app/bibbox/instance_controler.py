@@ -4,11 +4,12 @@ import random
 import logging
 import requests
 import simplejson
+import yaml
 
 from flask import current_app, render_template
 from backend.app import app_celerey
 from backend.app import db
-from backend.app.bibbox import docker_compose_util
+#from backend.app.bibbox import compose_template
 
 
 from celery.task.control import inspect
@@ -58,13 +59,11 @@ def installInstance (self, instanceDescr):
         filename = getBaseUrlRaw (app_name, version) + 'docker-compose-template.yml'
 
         # woher das passwort beziehen?
-        # work in progress
-        docker_compose_util.generateComposeFromTemplate(
-            instanceDescr['instancename'], 
-            "Dummypassword", 
-            DEFAULTPATH, 
-            getBaseUrlRaw (app_name, version)
-            DEFAULTPATH + instanceDescr['instancename'])
+        # path_to_template = ...        
+        # with open(path_to_template + "docker-compose-template.yml", 'r') as template_obj:
+        #     template_str = template_obj.read()
+        #     compose_class_instance = ComposeTemplate(template_str, [instanceDescr['instancename'], "test_pw", DEFAULTPATH])
+
 
     except OSError:
         print ("Creation of the directory %s failed" % path)
