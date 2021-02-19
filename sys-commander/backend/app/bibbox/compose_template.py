@@ -115,7 +115,9 @@ class ComposeTemplate ():
         return re.sub(r'§§[A-Z_]+', lambda match: passed_dict.get(match.group()), self.template_str)
 
 #### testing 
-with open("docker-compose-template-testing.yml", 'r') as template_obj:
+import os 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+with open(dir_path + "/docker-compose-template-testing.yml", 'r') as template_obj:
     template_str = template_obj.read()
     compose_class_instance = ComposeTemplate(template_str, ["test-instance-Name", "test_pw", "/opt/test/directory"])
 
@@ -129,7 +131,9 @@ print(yaml.dump(compose_class_instance.getComposeLocal(), default_flow_style=Fal
 
 print("\n{} {} {}\n".format("#"*repeat, "PROXY INFO", "#"*repeat))
 proxy_infos = compose_class_instance.getProxyInformation()
-print("{}\n{}".format(proxy_infos[0], proxy_infos[1]))
+for _ in proxy_infos:
+    print(_)
+
 
 print("\n{} {} {}\n".format("#"*repeat, "CONTAINER NAMES", "#"*repeat))
 print(compose_class_instance.getContainerNames())
