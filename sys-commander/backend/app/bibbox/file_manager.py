@@ -5,21 +5,22 @@ import os
 
 
 
-
+instancename = "a9ba2c6e-f183-4480-a353-bbe13f1b802e"
 
 class FileManager():
     def __init__(self):
         self.DEFAULTPATH = "/opt/bibbox/instances/"
 
 
-    def copyFileFromWeb   (self, fileurl, instancename, filename):
+    def copyFileFromWeb (self, fileurl, instancename, filename):
         try:
             download = requests.get(fileurl).content
             print (fileurl)
-            #print (download)
         except Exception:
             raise Exception('Something went wrong during connecting to the Web. Please Check your internet connection!')
+
         filename =  self.DEFAULTPATH  + instancename + "/" + filename
+
         with open(filename, 'wb') as f:
             f.write(download)
     
@@ -37,32 +38,46 @@ class FileManager():
         return burl
 
 
+    # does this function belong in this class? wip
+    from backend.app.bibbox.instance import InstanceDescription
+    
+    def updateInstanceState(self, path_to_file, state_to_set):
+        if state_to_set in InstanceDescription().states():
+            with open(path, 'w') as f: 
+                instanceDescr['state'] = state_to_set
+                simplejson.dump (instanceDescr, f)
+        else:
+            raise Exception("Trying to set unknown App State")
+                
+
+
+
 if __name__ == "__main__":
     print ("====================== FILENMANAGER DEVELOPMENT TEST =====================")
-    fm = FileManager()
+    file_manager = FileManager()
 
     download_files  = ['docker-compose-template.yml', 'fileinfo.json', 'appinfo.json']
     for fn in download_files:
-        fm.copyFileFromGithub ('bibbox', 'app-wordpress', 'V4', fn , '4773d31a-20f0-4d21-83a0-9686e9d6cb1e',  fn)
+        file_manager.copyFileFromGithub ('bibbox', 'app-wordpress', 'V4', fn , instancename,  fn)
 
 
-    filename =  fm.DEFAULTPATH  + '4773d31a-20f0-4d21-83a0-9686e9d6cb1e' + "/" + 'fileinfo.json'
+    filename =  file_manager.DEFAULTPATH  + instancename + "/" + 'fileinfo.json'
     with open(filename, 'r') as f:
         fileinfo = json.load (f)
 
-    for dtc in fileinfo['makefolders']: 
-        dirname =  fm.DEFAULTPATH  + '4773d31a-20f0-4d21-83a0-9686e9d6cb1e' + "/" + dtc
+    for directory_to_copy in fileinfo['makefolders']: 
+        dirname =  file_manager.DEFAULTPATH  + instancename + "/" + directory_to_copy
         if not os.path.exists(dirname):
             os.makedirs(dirname)
         
-    for ftc in fileinfo['copyfiles']:
-        src = ftc["source"]
-        dest = ftc["destination"]
-        print (src, dest)
-        if ('https://' in src or 'http://' in src):
-            fm.copyFileFromWeb    (src, '4773d31a-20f0-4d21-83a0-9686e9d6cb1e',  dest)
+    for file_to_copy in fileinfo['copyfiles']:
+        source = file_to_copy["source"]
+        destination = file_to_copy["destination"]
+        print (source, destination)
+        if ('https://' in source or 'http://' in source):
+            file_manager.copyFileFromWeb    (source, instancename,  destination)
         else:
-            fm.copyFileFromGithub ('bibbox', 'app-wordpress', 'V4', src, '4773d31a-20f0-4d21-83a0-9686e9d6cb1e',  dest)
+            file_manager.copyFileFromGithub ('bibbox', 'app-wordpress', 'V4', source, instancename,  destination)
 
 
     print ("======================              DONE                     ====================")

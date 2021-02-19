@@ -9,7 +9,10 @@ import yaml
 from flask import current_app, render_template
 from backend.app import app_celerey
 from backend.app import db
-#from backend.app.bibbox import compose_template
+
+from backend.app.bibbox.compose_template import ComposeTemplate
+from backend.app.bibbox.file_manager import FileManager
+
 
 
 from celery.task.control import inspect
@@ -44,18 +47,22 @@ def copyInstance (self, instanceDescr):
 def installInstance (self, instanceDescr):
     path = DEFAULTPATH + instanceDescr['instancename']
     # appinfo.json, fileinfo.json, docker-compose-template.yml, 
-
+    
+    file_manager = FileManager()
+        
     try:
         os.mkdir(path)
         path = DEFAULTPATH + instanceDescr['instancename'] + "/instance.json"
         with open(path, 'w') as f: 
+            instanceDescr['state'] = 'INSTALLING'
             simplejson.dump (instanceDescr, f)
-        instanceDescr['state'] = 'INSTALLING'
-        with open(path, 'w') as f: 
-            simplejson.dump (instanceDescr, f)
-
+            
         app_name = instanceDescr['appname']
         version = instanceDescr['version']
+
+
+
+
         filename = getBaseUrlRaw (app_name, version) + 'docker-compose-template.yml'
 
         # testing

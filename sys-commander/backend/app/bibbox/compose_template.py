@@ -136,27 +136,28 @@ with open(dir_path + "/test_output/docker-compose-template-testing.yml", 'r') as
     }
 
     compose_class_instance = ComposeTemplate(template_str, payload)
-    # compose_class_instance = ComposeTemplate(template_str, ["test-instance-Name", "/opt/test/directory", "test_pw"])
 
-repeat = 50
+repeat = 25
 
-print("\n{} {} {}\n".format("#"*repeat, "COMPOSE TEMPLATE ", "#"*repeat))
+
+print ("=========================== YAML PARSING DEVELOPMENT TEST =========================")
+print("\n{} {} {}\n".format("-"*repeat, "COMPOSE TEMPLATE ", "-"*repeat))
 print(yaml.dump(yaml.safe_load(compose_class_instance.template_str), default_flow_style=False))
 
-print("\n{} {} {}\n".format("#"*repeat, "COMPOSE", "#"*repeat))
+print("\n{} {} {}\n".format("-"*repeat, "COMPOSE", "-"*repeat))
 print(yaml.dump(compose_class_instance.getCompose(), default_flow_style=False))
 
-print("\n{} {} {}\n".format("#"*repeat, "COMPOSE LOCAL", "#"*repeat))
+print("\n{} {} {}\n".format("-"*repeat, "COMPOSE LOCAL", "-"*repeat))
 print(yaml.dump(compose_class_instance.getComposeLocal(), default_flow_style=False))
 
-print("\n{} {} {}\n".format("#"*repeat, "PROXY INFO", "#"*repeat))
+print("\n{} {} {}\n".format("-"*repeat, "PROXY INFO", "-"*repeat))
 proxy_infos = compose_class_instance.getProxyInformation()
 for _ in proxy_infos:
     print(_)
 
 
-print("\n{} {} {}\n".format("#"*repeat, "CONTAINER NAMES", "#"*repeat))
+print("\n{} {} {}".format("-"*repeat, "CONTAINER NAMES", "-"*repeat))
 print(compose_class_instance.getContainerNames())
-print("\n")
+print ("======================              DONE                     ====================")
 
 ### testing ende
