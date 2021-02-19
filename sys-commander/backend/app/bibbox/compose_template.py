@@ -114,10 +114,12 @@ class ComposeTemplate ():
     def __replacePlaceholders(self, passed_dict):
         return re.sub(r'§§[A-Z_]+', lambda match: passed_dict.get(match.group()), self.template_str)
 
-#### testing 
+### testing 
 import os 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-with open(dir_path + "/docker-compose-template-testing.yml", 'r') as template_obj:
+
+print(dir_path)
+with open(dir_path + "/test_output/docker-compose-template-testing.yml", 'r') as template_obj:
     template_str = template_obj.read()
     compose_class_instance = ComposeTemplate(template_str, ["test-instance-Name", "test_pw", "/opt/test/directory"])
 

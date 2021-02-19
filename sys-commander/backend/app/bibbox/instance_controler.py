@@ -58,12 +58,11 @@ def installInstance (self, instanceDescr):
         version = instanceDescr['version']
         filename = getBaseUrlRaw (app_name, version) + 'docker-compose-template.yml'
 
-        # woher das passwort beziehen?
-        # path_to_template = ...        
-        # with open(path_to_template + "docker-compose-template.yml", 'r') as template_obj:
+        # testing
+        # path_to_template = str(os.path.dirname(os.path.realpath(__file__))) + "/test_output/"
+        # with open(path_to_template + "docker-compose-template-testing.yml", 'r') as template_obj:
         #     template_str = template_obj.read()
         #     compose_class_instance = ComposeTemplate(template_str, [instanceDescr['instancename'], "test_pw", DEFAULTPATH])
-
 
     except OSError:
         print ("Creation of the directory %s failed" % path)
