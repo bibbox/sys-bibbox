@@ -1,11 +1,21 @@
+import os 
 import yaml
 
+from backend.app.bibbox.file_manager import FileManager
+
+fm = FileManager()
+
+
+# TODO can we just initaite the class with the instance name and then read and write the stuff directly from the directory
+#      we could also renamoe the class to BIBBOXconfigurator, as we are doing template and proxies
+#      I would even do the update of the INSTANCE file wirh the prxy information and other things in this class
 
 class ComposeTemplate ():
 
-    def __init__(self, template_str, payload):
+    
+    def __init__(self, template_str, instanceDescr):
         self.template_str = template_str
-        self.payload = payload
+        self.instanceDescr = instanceDescr
 
     #### todo: add more validators
     # @property
@@ -20,22 +30,21 @@ class ComposeTemplate ():
     
     def getCompose (self):
 
-        compose_str = self.__replacePlaceholders(self.payload)
+        compose_str = self.__replacePlaceholders(self.instanceDescr)
         keys_to_remove = [
              "proxy", 
              "ports"
             ]
 
         compose_str = self.__removeKeysFromNestedDict(yaml.safe_load(compose_str), keys_to_remove)
-
         return compose_str
 
     def getComposeLocal (self):
 
-        modified_payload = self.payload
-        modified_payload['instancename'] = 'bibbox'
+        modified_instanceDescr = self.instanceDescr
+        modified_instanceDescr['instancename'] = 'bibbox'
 
-        compose_local_str = self.__replacePlaceholders(modified_payload)
+        compose_local_str = self.__replacePlaceholders(modified_instanceDescr)
 
         keys_to_remove = [
              "proxy", 
@@ -49,14 +58,12 @@ class ComposeTemplate ():
     
     def getProxyInformation (self):
 
-        compose_str = self.__replacePlaceholders(self.payload)
+        compose_str = self.__replacePlaceholders(self.instanceDescr)
         proxy_info = []
         services_dict = yaml.safe_load(compose_str)['services']
 
-
-
-        for key in services_dict.keys():
-            if 'proxy' in services_dict[key]:
+        for service_key in services_dict.keys():
+            if 'proxy' in services_dict[service_key]:
                 proxy_entry = {
                     'urlprefix'     : '',
                     'type'          : '',
@@ -64,17 +71,53 @@ class ComposeTemplate ():
                     'displayname'   : '',
                     'container'     : ''
                 }
-                port_suffix = services_dict[key]['ports'][0].split(":")[-1]
-                proxy_entry['container'] = "{}:{}".format(services_dict[key]['container_name'], port_suffix)
-                for kv_pair in services_dict[key]['proxy']:
-                    for key in kv_pair:
-                        proxy_entry[key] = kv_pair.get(key)
+                port_suffix = services_dict[service_key]['ports'][0].split(":")[-1]
+                proxy_entry['container'] = "{}:{}".format(services_dict[service_key]['container_name'], port_suffix)
+                print (services_dict[service_key]['proxy'])
+                # TODO some yaml error / speciality of strings
+                #    mybe this is a bug in the yaml library, what if just use the lib to valide a yaml and "sonst" operate on strings ...
+                #    https://stackoverflow.com/questions/19109912/yaml-do-i-need-quotes-for-strings-in-yaml
+                #    [{'type': 'PRIMARY'}, {'urlprefix': '10-wptest'}, {'template': 'default'}, "displayname:'Wordpress'"]
+                for kv_pair in services_dict[service_key]['proxy']:
+                    # do we need this ugly workaround
+                    if type (kv_pair) == str:
+                        k = kv_pair.split(":")[0]
+                        v = kv_pair.split(":")[1]
+                        kv_pair_v2[k] = v
+                    else:
+                        kv_pair_v2 = kv_pair
+                    for key in kv_pair_v2:
+                        proxy_entry[key] = kv_pair_v2.get(key)
+                
                 proxy_info.append(proxy_entry)
 
         return proxy_info
-            
+
+    def generateProxyFile (self):
+
+        # read this from the config directory
+        proxyfilecontent = ""
+        defaultTemplate = fm.getConfigFile ('proxy-default.template')
+        config = fm.getBIBBOXconfig ()
+        print (config)
+        print (config['baseurl'])
+        print (defaultTemplate)
+        proxyinfomation = self.getProxyInformation ()
+        for pi in proxyinfomation:
+            print ( pi['template'], pi['urlprefix'], pi['container'])
+            if (pi['template'] == 'default'):
+                proxy = defaultTemplate.replace('§§BASEURL',   config['baseurl'])
+                proxy = proxy.replace('§§INSTANCEID', pi['urlprefix'])
+                proxy = proxy.replace('§§CONTAINERNAME', pi['container'])                
+                proxyfilecontent = proxyfilecontent + proxy + '\n\n' # if the template has no newline at the end
+            else:
+                pass
+        filename = '005-' + self.instanceDescr['instancename'] + '.conf'
+        fm.writeProxyFile (filename, proxyfilecontent)
+
+
     def getContainerNames (self):
-        compose_str = self.__replacePlaceholders(self.payload)
+        compose_str = self.__replacePlaceholders(self.instanceDescr)
         container_names = []
         
         services_dict = yaml.safe_load(compose_str)['services']
@@ -103,61 +146,64 @@ class ComposeTemplate ():
     def __replacePlaceholders(self, compose_dict):
         str = self.template_str
         str = str.replace('§§INSTANCE', compose_dict['instancename'])
-        str = str.replace('§§DATAROOT', compose_dict['dataroot'][:-1]) # [:-1] to remove trailing /
         
-        # only applicable if §§KEY in docker-compose-template.yml == KEY in payload['payload'] (without §§ Prefix) 
-        # for key, value in self.payload.items():
+        # only applicable if §§KEY in docker-compose-template.yml == KEY in instanceDescr['instanceDescr'] (without §§ Prefix) 
+        # for key, value in self.instanceDescr.items():
         #     if not isinstance(value, dict):
         #         str = str.replace('§§' + key, value)
 
-        for key, value in self.payload['payload'].items():
+        for key, value in self.instanceDescr['parameters'].items():
             str = str.replace('§§' + key, value)
 
         return str
 
-### testing 
-import os 
-dir_path = os.path.dirname(os.path.realpath(__file__))
+### dev testing 
+if __name__ == "__main__":  
 
-print(dir_path)
-with open(dir_path + "/test_output/docker-compose-template-testing.yml", 'r') as template_obj:
-    template_str = template_obj.read()
 
-    payload = {
-        "appname"       : "app-wordpress",
-        "instancename"  : "app-wordpress-instance", #id
-        "version"       : "V4",
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+
+    print(dir_path)
+    with open(dir_path + "/test_output/docker-compose-template-testing.yml", 'r') as template_obj:
+        template_str = template_obj.read()
+
+    instanceDescr = {
+        "instancename"  : "wptest",
         "displayname"   : "Wordpress Test",
-        "dataroot"      : "/opt/bibbox/instance-data/",
-        "payload"       : 
-                    {
-                        "MYSQL_ROOT_PASSWORD" : "quaksi"
-                    }            
+        "app" : {
+            "organization": "bibbox",
+            "name"        : "app-wordpress",
+            "version"     : "V4",
+        },
+        "parameters"       : 
+                {
+            "MYSQL_ROOT_PASSWORD" : "quaksi"
+        }            
     }
 
-    compose_class_instance = ComposeTemplate(template_str, payload)
+    compose_class_instance = ComposeTemplate(template_str, instanceDescr)
+    compose_class_instance.generateProxyFile ()
 
-repeat = 25
+    repeat = 25
+
+    print ("=========================== YAML PARSING DEVELOPMENT TEST =========================")
+    print("\n{} {} {}\n".format("-"*repeat, "COMPOSE TEMPLATE ", "-"*repeat))
+    print(yaml.dump(yaml.safe_load(compose_class_instance.template_str), default_flow_style=False))
+
+    print("\n{} {} {}\n".format("-"*repeat, "COMPOSE", "-"*repeat))
+    print(yaml.dump(compose_class_instance.getCompose(), default_flow_style=False))
+
+    print("\n{} {} {}\n".format("-"*repeat, "COMPOSE LOCAL", "-"*repeat))
+    print(yaml.dump(compose_class_instance.getComposeLocal(), default_flow_style=False))
+
+    print("\n{} {} {}\n".format("-"*repeat, "PROXY INFO", "-"*repeat))
+    proxy_infos = compose_class_instance.getProxyInformation()
+    for _ in proxy_infos:
+        print(_)
 
 
-print ("=========================== YAML PARSING DEVELOPMENT TEST =========================")
-print("\n{} {} {}\n".format("-"*repeat, "COMPOSE TEMPLATE ", "-"*repeat))
-print(yaml.dump(yaml.safe_load(compose_class_instance.template_str), default_flow_style=False))
-
-print("\n{} {} {}\n".format("-"*repeat, "COMPOSE", "-"*repeat))
-print(yaml.dump(compose_class_instance.getCompose(), default_flow_style=False))
-
-print("\n{} {} {}\n".format("-"*repeat, "COMPOSE LOCAL", "-"*repeat))
-print(yaml.dump(compose_class_instance.getComposeLocal(), default_flow_style=False))
-
-print("\n{} {} {}\n".format("-"*repeat, "PROXY INFO", "-"*repeat))
-proxy_infos = compose_class_instance.getProxyInformation()
-for _ in proxy_infos:
-    print(_)
-
-
-print("\n{} {} {}".format("-"*repeat, "CONTAINER NAMES", "-"*repeat))
-print(compose_class_instance.getContainerNames())
-print ("======================              DONE                     ====================")
+    print("\n{} {} {}".format("-"*repeat, "CONTAINER NAMES", "-"*repeat))
+    print(compose_class_instance.getContainerNames())
+    print ("======================              DONE                     ====================")
 
 ### testing ende

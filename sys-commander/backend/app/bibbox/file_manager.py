@@ -1,25 +1,26 @@
+
 import requests 
 import json 
 import os
+
+from backend.app.bibbox.instance import InstanceDescription
+
 # add gitpython to requirements.txt
 
 
-
-instancename = "a9ba2c6e-f183-4480-a353-bbe13f1b802e"
-
 class FileManager():
     def __init__(self):
-        self.DEFAULTPATH = "/opt/bibbox/instances/"
-
+        self.INSTANCEPATH = "/opt/bibbox/instances/"
+        self.CONFIGPATH   = "/opt/bibbox/config/"
+        self.PROXYPATH    = "/opt/bibbox/proxy/"
 
     def copyFileFromWeb (self, fileurl, instancename, filename):
         try:
             download = requests.get(fileurl).content
-            print (fileurl)
         except Exception:
             raise Exception('Something went wrong during connecting to the Web. Please Check your internet connection!')
 
-        filename =  self.DEFAULTPATH  + instancename + "/" + filename
+        filename =  self.INSTANCEPATH  + instancename + "/" + filename
 
         with open(filename, 'wb') as f:
             f.write(download)
@@ -28,6 +29,50 @@ class FileManager():
         fileurl = self.__getBaseUrlRaw (organization, repository, version) + '/' + filename
         self.copyFileFromWeb (fileurl, instancename, destinationfilename)
 
+    def copyAllFilesToInstanceDirectory (self, instanceDescr):
+
+        instancename = instanceDescr['instancename']
+        organization = instanceDescr['app']['organization']
+        repository = instanceDescr['app']['name']
+        version    = instanceDescr['app']['version']
+
+        for fn in ('docker-compose-template.yml', 'fileinfo.json', 'appinfo.json'):
+            self.copyFileFromGithub (organization, repository, version, fn , instancename,  fn)
+
+        filename =  self.INSTANCEPATH  + instancename + "/" + 'fileinfo.json'
+        with open(filename, 'r') as f:
+            fileinfo = json.load (f)
+
+        for directory_to_copy in fileinfo['makefolders']: 
+            dirname =  self.INSTANCEPATH  + instancename + "/" + directory_to_copy
+            if not os.path.exists(dirname):
+                os.makedirs(dirname)
+            
+        for file_to_copy in fileinfo['copyfiles']:
+            source = file_to_copy["source"]
+            destination = file_to_copy["destination"]
+            if ('https://' in source or 'http://' in source):
+                self.copyFileFromWeb    (source, instancename,  destination)
+            else:
+                self.copyFileFromGithub (organization, repository, version, source, instancename,  destination)
+
+    def getConfigFile (self, name):
+         filename =  self.CONFIGPATH  + name
+         with open(filename, 'r') as f:
+            content = f.read ()
+         return content 
+
+    # should we make for the config a own class, or even integrae it into the FLASK confid ?
+    def getBIBBOXconfig (self):
+        path =  self.CONFIGPATH  + 'bibbox.config'
+        config   = self.__readJsonFile (path)
+        return config
+        
+    def writeProxyFile (self, name, content):
+         filename =  self.PROXYPATH + 'sites/' + name
+         with open(filename, 'w') as f:
+            f.write (content)
+         return content 
 
     def __getBaseUrlRaw (self, organization, repository, version):
         burl = ''
@@ -37,10 +82,19 @@ class FileManager():
             burl = 'https://raw.githubusercontent.com/'  + organization + '/' + repository   + '/' + version + '/'
         return burl
 
+    def __readJsonFile (self, path):
+        reader = open(path, 'r')
+        try:
+            c = reader.read()
+            idescr = json.loads(c)
+        finally:
+            reader.close()
+        return idescr
+
 
     # does this function belong in this class? wip
-    from backend.app.bibbox.instance import InstanceDescription
-    
+    # good question 
+        
     def updateInstanceState(self, path_to_file, state_to_set):
         if state_to_set in InstanceDescription().states():
             with open(path, 'w') as f: 
@@ -49,38 +103,4 @@ class FileManager():
         else:
             raise Exception("Trying to set unknown App State")
                 
-
-
-
-if __name__ == "__main__":
-    print ("====================== FILENMANAGER DEVELOPMENT TEST =====================")
-    file_manager = FileManager()
-
-    download_files  = ['docker-compose-template.yml', 'fileinfo.json', 'appinfo.json']
-    for fn in download_files:
-        file_manager.copyFileFromGithub ('bibbox', 'app-wordpress', 'V4', fn , instancename,  fn)
-
-
-    filename =  file_manager.DEFAULTPATH  + instancename + "/" + 'fileinfo.json'
-    with open(filename, 'r') as f:
-        fileinfo = json.load (f)
-
-    for directory_to_copy in fileinfo['makefolders']: 
-        dirname =  file_manager.DEFAULTPATH  + instancename + "/" + directory_to_copy
-        if not os.path.exists(dirname):
-            os.makedirs(dirname)
-        
-    for file_to_copy in fileinfo['copyfiles']:
-        source = file_to_copy["source"]
-        destination = file_to_copy["destination"]
-        print (source, destination)
-        if ('https://' in source or 'http://' in source):
-            file_manager.copyFileFromWeb    (source, instancename,  destination)
-        else:
-            file_manager.copyFileFromGithub ('bibbox', 'app-wordpress', 'V4', source, instancename,  destination)
-
-
-    print ("======================              DONE                     ====================")
-
-
 

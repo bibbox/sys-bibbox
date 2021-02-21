@@ -4,7 +4,7 @@ from flask import Flask, request
 from flask_restplus import Namespace, Api, Resource, fields
 from backend.app import app, db, restapi
 
-from backend.app.bibbox.instance_controler  import installInstance, deleteInstance
+from backend.app.bibbox.instance_controler  import installInstance, deleteInstance, testProcessAsync
 
 api = Namespace('instances', description='Instance Ressources')
 restapi.add_namespace (api, '/instances')
@@ -16,11 +16,13 @@ instancemodel = api.model('Model', {
     'state' : fields.String
 })
 
+# TODO
 # thats the path inside the container !
-DEFAULTPATH = "/opt/bibbox/instances/"
+# this should only be used in the file_manager
+INSTANCEPATH = "/opt/bibbox/instances/"
 
 def instanceDesc ():
-    path = DEFAULTPATH + instanceDescr['instancename'] + "/instance.json"
+    path = INSTANCEPATH + instanceDescr['instancename'] + "/instance.json"
     with open(path) as f: 
         idescr = json.load(f)
     return idescr
@@ -32,11 +34,18 @@ class Ping(Resource):
     def get(self):
         return {"reply":"PONG"}
 
+@api.route('/pong')
+@api.doc("Just to test if the Instance PI is alive")
+class Ping(Resource):
+    def get(self):
+        testProcessAsync.delay()
+        return {"reply":"PING"}
+
 @api.route('/')
 class InstanceList(Resource):
     def get(self):
         # should we put in an own class ?, maybe yes ...
-        path = DEFAULTPATH 
+        path = INSTANCEPATH 
         i_list = os.listdir(path)
         print(i_list)
         return i_list, 200
@@ -114,14 +123,14 @@ class Instance(Resource):
 #     print ('response from server:',res.text)
 
 #     print("try to call")
-#     paylod = {
-#         "appname"     : "app-wordpress",
-#         "version"     : "V4",
+#     payload = {
+#         "organization"  : "bibbox",
+#         "appname"       : "app-wordpress",
+#         "version"       : "V4",
 #         "displayname" : "Wordpress Test",
-#         "dataroot"    : "/opt/bibbox/instance-data/",
 #         "parameters"  : 
 #             {
-#                 "§MYSQL_ROOT_PASSWORD" :"quaksi"
+#                 "MYSQL_ROOT_PASSWORD" :"quaksi"
 #             }            
 #     }
 #     res = requests.post('http://127.0.0.1:5010/api/v1/instances/' + str(uuid.uuid4()), json=paylod)

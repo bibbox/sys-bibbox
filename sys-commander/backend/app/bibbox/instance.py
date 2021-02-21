@@ -3,6 +3,10 @@ import json
 import inspect
 
 
+# TODO
+# extend teh InstanceDescritpion class with all teh functionality to descrine an Instance
+# maybe evend rename it to Instance
+
 class InstanceDescription  ():
     def __init__(self):
         self.instancename = 'sample-instance'
@@ -21,6 +25,10 @@ class InstanceDescription  ():
     def states (cls):
         # the 'DELETED' state never will be set ....
         return ('JUSTBORN', 'INSTALLING', 'STARTING', 'RUNNING', 'STOPPING', 'STOPPED', 'DELETING', 'ERROR', 'DELETED')
+
+# TODO
+# move this functionality to the file_maneger
+# renove then the Instance class
 
 class Instance  ():
 
@@ -58,9 +66,15 @@ class Instance  ():
         idescr = self.__readJsonFile (inspect.stack()[0][3]  + '.json')
         return idescr
 
-    def portinfo (self):
-        idescr = self.__readJsonFile (inspect.stack()[0][3]  + '.json')
-        return idescr
+    def composeTemplate (self):
+        
+        path = self.BASEURL + self.id + '/' + 'docker-compose-template.yml'
+        reader = open(path, 'r')
+        try:
+            c = reader.read()
+        finally:
+            reader.close()
+        return c
 
     def __readJsonFile (self, name):
         path = self.BASEURL + self.id + '/' + name
