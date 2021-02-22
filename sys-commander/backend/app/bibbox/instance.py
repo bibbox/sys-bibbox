@@ -2,6 +2,7 @@ import os
 import json
 import inspect
 
+from backend.app.bibbox.file_manager import FileManager
 
 # TODO
 # extend teh InstanceDescritpion class with all teh functionality to descrine an Instance
@@ -27,7 +28,7 @@ class InstanceDescription  ():
         return ('JUSTBORN', 'INSTALLING', 'STARTING', 'RUNNING', 'STOPPING', 'STOPPED', 'DELETING', 'ERROR', 'DELETED')
 
 # TODO
-# move this functionality to the file_maneger
+# move this functionality to the file_manager
 # renove then the Instance class
 
 class Instance  ():
@@ -44,7 +45,11 @@ class Instance  ():
 
 
     def __init__(self, id):
+
         # test if the directoy exists otherwise raise an exeption and write the appropiate stuff in the log file
+        # try:
+        #   if os.path.exists( path_to_instance_dir ):
+        
         # test if the default config file exists, otherwise log a warning
         # please note that the instance itself is genrated / deleted by the instance_controller and not by the instance class
         self.id = id

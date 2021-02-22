@@ -77,19 +77,20 @@ class BBconfigurator ():
                 #    mybe this is a bug in the yaml library, what if just use the lib to valide a yaml and "sonst" operate on strings ...
                 #    https://stackoverflow.com/questions/19109912/yaml-do-i-need-quotes-for-strings-in-yaml
                 #    [{'type': 'PRIMARY'}, {'urlprefix': '10-wptest'}, {'template': 'default'}, "displayname:'Wordpress'"]
-                # for kv_pair in services_dict[service_key]['proxy']:
-                #     # do we need this ugly workaround --> no
-                #     if type (kv_pair) == str:
-                #         k = kv_pair.split(":")[0]
-                #         v = kv_pair.split(":")[1]
-                #         kv_pair_v2[k] = v
-                #     else:
-                #         kv_pair_v2 = kv_pair
-                #     for key in kv_pair_v2:
-                #         proxy_entry[key] = kv_pair_v2.get(key)
+                for kv_pair in services_dict[service_key]['proxy']:
+                    # do we need this ugly workaround
+                    print("\n"*20 + kv_pair + "\n"*20)
+                    if type (kv_pair) == str:
+                        k = kv_pair.split(":")[0]
+                        v = kv_pair.split(":")[1]
+                        kv_pair_v2[k] = v
+                    else:
+                        kv_pair_v2 = kv_pair
+                    for key in kv_pair_v2:
+                        proxy_entry[key] = kv_pair_v2.get(key)
 
-                for key, value in services_dict[service_key]['proxy'].items():
-                    proxy_entry[key] = value
+                # for key, value in services_dict[service_key]['proxy']:
+                #     proxy_entry[key] = value
                 
                 proxy_info.append(proxy_entry)
 
@@ -162,6 +163,7 @@ class BBconfigurator ():
     def __replacePlaceholders (self, compose_dict):
         str = self.template_str
         str = str.replace('§§INSTANCE', compose_dict['instancename'])
+        print(str + "\n"*20)
         
         # only applicable if §§KEY in docker-compose-template.yml == KEY in instanceDescr['instanceDescr'] (without §§ Prefix) 
         # for key, value in self.instanceDescr.items():
@@ -170,7 +172,7 @@ class BBconfigurator ():
 
         for key, value in self.instanceDescr['parameters'].items():
             str = str.replace('§§' + key, value)
-
+        
         return str
 
 ### dev testing 
