@@ -136,6 +136,9 @@ class BBconfigurator ():
         return container_names
 
     def updateInstanceJSON (self):
+        # TODO
+        # - are we here in the right directory ?
+        # - why only update the prxy file ?
         with open('instance.json', 'wb') as instance_json:
             try:
                 data = json.loads(instance_json)
