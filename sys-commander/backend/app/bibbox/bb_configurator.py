@@ -72,20 +72,24 @@ class BBconfigurator ():
                 port_suffix = services_dict[service_key]['ports'][0].split(":")[-1]
                 proxy_entry['container'] = "{}:{}".format(services_dict[service_key]['container_name'], port_suffix)
                 print (services_dict[service_key]['proxy'])
+
                 # TODO some yaml error / speciality of strings
                 #    mybe this is a bug in the yaml library, what if just use the lib to valide a yaml and "sonst" operate on strings ...
                 #    https://stackoverflow.com/questions/19109912/yaml-do-i-need-quotes-for-strings-in-yaml
                 #    [{'type': 'PRIMARY'}, {'urlprefix': '10-wptest'}, {'template': 'default'}, "displayname:'Wordpress'"]
-                for kv_pair in services_dict[service_key]['proxy']:
-                    # do we need this ugly workaround
-                    if type (kv_pair) == str:
-                        k = kv_pair.split(":")[0]
-                        v = kv_pair.split(":")[1]
-                        kv_pair_v2[k] = v
-                    else:
-                        kv_pair_v2 = kv_pair
-                    for key in kv_pair_v2:
-                        proxy_entry[key] = kv_pair_v2.get(key)
+                # for kv_pair in services_dict[service_key]['proxy']:
+                #     # do we need this ugly workaround --> no
+                #     if type (kv_pair) == str:
+                #         k = kv_pair.split(":")[0]
+                #         v = kv_pair.split(":")[1]
+                #         kv_pair_v2[k] = v
+                #     else:
+                #         kv_pair_v2 = kv_pair
+                #     for key in kv_pair_v2:
+                #         proxy_entry[key] = kv_pair_v2.get(key)
+
+                for key, value in services_dict[service_key]['proxy'].items():
+                    proxy_entry[key] = value
                 
                 proxy_info.append(proxy_entry)
 
@@ -106,8 +110,9 @@ class BBconfigurator ():
             if (pi['template'] == 'default'):
                 proxy = defaultTemplate.replace('§§BASEURL',   config['baseurl'])
                 proxy = proxy.replace('§§INSTANCEID', pi['urlprefix'])
-                proxy = proxy.replace('§§CONTAINERNAME', pi['container'])                
-                proxyfilecontent = proxyfilecontent + proxy + '\n\n' # if the template has no newline at the end
+                proxy = proxy.replace('§§CONTAINERNAME', pi['container'])
+                if not proxyfilecontent.endswith("\n\n"):                
+                    proxyfilecontent = proxyfilecontent + proxy + '\n\n' # if the template has no newline at the end
             else:
                 # TODO
                 # dynamic templates
@@ -129,7 +134,17 @@ class BBconfigurator ():
 
         return container_names
 
-    def __removeKeysFromNestedDict(self, compose_dict, keys_to_remove):
+    def updateInstanceJSON (self):
+        with open('instance.json', 'wb') as instance_json:
+            try:
+                data = json.loads(instance_json)
+                instance_json.seek(0)
+                data["proxy"] = self.getProxyInformation()
+            except IOError as ex:
+                print(ex + " Error occurred while trying to update instance.json file.")
+
+
+    def __removeKeysFromNestedDict (self, compose_dict, keys_to_remove):
         dict_temp = compose_dict.copy()
 
         for key in dict_temp.keys():
@@ -144,7 +159,7 @@ class BBconfigurator ():
 
         return compose_dict
 
-    def __replacePlaceholders(self, compose_dict):
+    def __replacePlaceholders (self, compose_dict):
         str = self.template_str
         str = str.replace('§§INSTANCE', compose_dict['instancename'])
         
@@ -182,7 +197,7 @@ if __name__ == "__main__":
     }
 
     compose_class_instance = BBconfigurator(template_str, instanceDescr)
-    # compose_class_instance.generateProxyFile ()
+    compose_class_instance.generateProxyFile ()
 
     repeat = 25
 
