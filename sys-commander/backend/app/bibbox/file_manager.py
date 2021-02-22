@@ -7,6 +7,21 @@ from backend.app.bibbox.instance import InstanceDescription
 
 # add gitpython to requirements.txt
 
+# TODO
+#
+# to overcome the 'RAW CACHE' problem, we have to use git directly
+# this seems to be the standard lib
+# https://gitpython.readthedocs.io/en/stable/tutorial.html
+#
+# then it would make sense to mit the Github functions in a seperate class
+# which makes a local copy/cache of the github repository with the correct 
+# version. 
+# 
+# in offline mode, we couöd then just read from the local dir
+#  => we need a global config saying, that we work in offline mode 
+#  => and a cache-all function downling all the reproes and builiding all images
+#  
+
 
 class FileManager():
     def __init__(self):
@@ -26,6 +41,10 @@ class FileManager():
             f.write(download)
     
     def copyFileFromGithub (self, organization, repository, version, filename, instancename, destinationfilename):
+        #
+        # TODO replace this with the local 'roberts' variant
+        #      (after a first protype of the frontend is running) 
+        #
         fileurl = self.__getBaseUrlRaw (organization, repository, version) + '/' + filename
         self.copyFileFromWeb (fileurl, instancename, destinationfilename)
 
