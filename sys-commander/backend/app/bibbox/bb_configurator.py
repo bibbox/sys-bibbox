@@ -3,14 +3,12 @@ import yaml
 
 from backend.app.bibbox.file_manager import FileManager
 
-fm = FileManager()
-
 
 # TODO can we just initaite the class with the instance name and then read and write the stuff directly from the directory
 #      we could also renamoe the class to BBconfigurator, as we are doing template and proxies
 #      I would even do the update of the INSTANCE file with the proxy information and other things in this class
 
-class ComposeTemplate ():
+class BBconfigurator ():
 
     
     def __init__(self, template_str, instanceDescr):
@@ -95,6 +93,7 @@ class ComposeTemplate ():
 
     def generateProxyFile (self):
 
+        fm = FileManager()
         proxyfilecontent = ""
         defaultTemplate = fm.getConfigFile ('proxy-default.template')
         config = fm.getBIBBOXconfig ()
@@ -182,8 +181,8 @@ if __name__ == "__main__":
         }            
     }
 
-    compose_class_instance = ComposeTemplate(template_str, instanceDescr)
-    compose_class_instance.generateProxyFile ()
+    compose_class_instance = BBconfigurator(template_str, instanceDescr)
+    # compose_class_instance.generateProxyFile ()
 
     repeat = 25
 

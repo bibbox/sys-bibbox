@@ -13,7 +13,7 @@ from flask import current_app, render_template
 from backend.app import app_celerey
 from backend.app import db
 
-from backend.app.bibbox.compose_template import ComposeTemplate
+from backend.app.bibbox.bb_configurator import BBconfigurator
 from backend.app.bibbox.file_manager import FileManager
 from backend.app.bibbox.instance import Instance
 
@@ -71,8 +71,8 @@ def installInstance (self, instanceDescr):
     # generate the docker-compose file
     try:
         template_str = instance.composeTemplate()    
-        compose_template = ComposeTemplate (template_str, instanceDescr)
-        docker_compose = yaml.dump(compose_template.getCompose(), default_flow_style=False) 
+        bb_configurator = BBconfigurator (template_str, instanceDescr)
+        docker_compose = yaml.dump(bb_configurator.getCompose(), default_flow_style=False) 
         with open(compose_file_name, 'w') as f:       
             f.write ( docker_compose )
     except:
@@ -84,8 +84,8 @@ def installInstance (self, instanceDescr):
     # write the proxy file
     try:
         template_str = instance.composeTemplate()    
-        compose_template = ComposeTemplate (template_str, instanceDescr)
-        compose_template.generateProxyFile()
+        bb_configurator = BBconfigurator (template_str, instanceDescr)
+        bb_configurator.generateProxyFile()
     except:
         raise
         print ("ERROR in the generation of the Proxy File" )
@@ -171,7 +171,7 @@ def deleteInstance (self, instanceDescr):
 # make this a helper function, with the stripping 
 def testProcess():
     print ('XXXXXXXXXXXXXXXXXXXXXXXXX')
-    process = subprocess.Popen(['docker-compose', '-f', '/opt/bibbox/instances/10-wptest/docker-compose.yml', 'up', '-d'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+    process = subprocess.Popen(['docker-compose', '-f', '/opt/bibbox/instances/wptest02/docker-compose.yml', 'up', '-d'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
     i = 0
     while True:
         line = process.stdout.readline()
@@ -219,9 +219,9 @@ if __name__ == "__main__":
             }            
     }
     
-    compose_template = ComposeTemplate (template_str, payload)
-    dc = compose_template.getCompose()
-    dc = yaml.dump(compose_template.getCompose(), default_flow_style=False)
+    bb_configurator = BBconfigurator (template_str, payload)
+    dc = bb_configurator.getCompose()
+    dc = yaml.dump(bb_configurator.getCompose(), default_flow_style=False)
     #print (dc)
 
     compose_file_name = INSTANCEPATH + payload['instancename'] + "/docker-compose.yml"
