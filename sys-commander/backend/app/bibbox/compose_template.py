@@ -7,8 +7,8 @@ fm = FileManager()
 
 
 # TODO can we just initaite the class with the instance name and then read and write the stuff directly from the directory
-#      we could also renamoe the class to BIBBOXconfigurator, as we are doing template and proxies
-#      I would even do the update of the INSTANCE file wirh the prxy information and other things in this class
+#      we could also renamoe the class to BBconfigurator, as we are doing template and proxies
+#      I would even do the update of the INSTANCE file with the proxy information and other things in this class
 
 class ComposeTemplate ():
 
@@ -95,7 +95,6 @@ class ComposeTemplate ():
 
     def generateProxyFile (self):
 
-        # read this from the config directory
         proxyfilecontent = ""
         defaultTemplate = fm.getConfigFile ('proxy-default.template')
         config = fm.getBIBBOXconfig ()
@@ -111,7 +110,10 @@ class ComposeTemplate ():
                 proxy = proxy.replace('§§CONTAINERNAME', pi['container'])                
                 proxyfilecontent = proxyfilecontent + proxy + '\n\n' # if the template has no newline at the end
             else:
+                # TODO
+                # dynamic templates
                 pass
+
         filename = '005-' + self.instanceDescr['instancename'] + '.conf'
         fm.writeProxyFile (filename, proxyfilecontent)
 
@@ -159,7 +161,6 @@ class ComposeTemplate ():
 
 ### dev testing 
 if __name__ == "__main__":  
-
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
