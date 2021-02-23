@@ -44,6 +44,11 @@ def installInstance (self, instanceDescr):
     
     file_manager = FileManager()
 
+    # check if directory structure is valid, fixes structure if invalid
+    # needs to be called sooner, but where/when?
+    file_manager.checkDirectoryStructure()
+
+
     # generate the instance directory    
     try:
         os.mkdir(path)
@@ -91,6 +96,16 @@ def installInstance (self, instanceDescr):
         print ("ERROR in the generation of the Proxy File" )
     else:
         print ("Successfully created the proxy file" )
+
+    # write the instances.json file
+    try:
+        file_manager.writeInstancesJsonFile()
+    except:
+        raise
+        print (" ERROR in the generation of the instances.json File")
+    else:
+        print ("Successfully created the instances.json File")
+
 
     # call docker-compose up
     print (compose_file_name)
@@ -154,6 +169,9 @@ def installInstance (self, instanceDescr):
             # same stuff here, also write this in the log file
             print (lineerror.rstrip())
 
+
+    # testing to update instance json 
+    file_manager.updateInstanceJSON(instanceDescr['instancename'], "RUNNING")
 
 @app_celerey.task(bind=True,  name='instance.deleteInstance')
 def deleteInstance (self, instanceDescr):

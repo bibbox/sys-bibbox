@@ -1,10 +1,12 @@
 import os
+import json
 
 from flask import Flask, request
 from flask_restplus import Namespace, Api, Resource, fields
 from backend.app import app, db, restapi
 
 from backend.app.bibbox.instance_controler  import installInstance, deleteInstance, testProcessAsync
+from backend.app.bibbox.file_manager import FileManager
 
 api = Namespace('instances', description='Instance Ressources')
 restapi.add_namespace (api, '/instances')
@@ -45,10 +47,16 @@ class Ping(Resource):
 class InstanceList(Resource):
     def get(self):
         # should we put in an own class ?, maybe yes ...
-        path = INSTANCEPATH 
-        i_list = os.listdir(path)
-        print(i_list)
-        return i_list, 200
+        fm = FileManager()
+        # TODO
+        # - error if file does not exist
+
+        try: 
+            result = fm.getInstancesJSONFile()
+        except:
+            result = "Could not get instances.json content"
+
+        return json.loads(result), 200
 
 
 @api.route('/<id>')
