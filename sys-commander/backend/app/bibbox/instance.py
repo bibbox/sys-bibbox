@@ -2,7 +2,6 @@ import os
 import json
 import inspect
 
-from backend.app.bibbox.file_manager import FileManager
 
 # TODO
 # extend teh InstanceDescritpion class with all teh functionality to descrine an Instance

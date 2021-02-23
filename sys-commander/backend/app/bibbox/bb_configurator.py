@@ -79,7 +79,7 @@ class BBconfigurator ():
                 #    [{'type': 'PRIMARY'}, {'urlprefix': '10-wptest'}, {'template': 'default'}, "displayname:'Wordpress'"]
                 for kv_pair in services_dict[service_key]['proxy']:
                     # do we need this ugly workaround
-                    print("\n"*20 + kv_pair + "\n"*20)
+                    # print("\n"*20 + kv_pair + "\n"*20)
                     if type (kv_pair) == str:
                         k = kv_pair.split(":")[0]
                         v = kv_pair.split(":")[1]
