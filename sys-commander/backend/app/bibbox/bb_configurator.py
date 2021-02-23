@@ -79,7 +79,7 @@ class BBconfigurator ():
                 #    [{'type': 'PRIMARY'}, {'urlprefix': '10-wptest'}, {'template': 'default'}, "displayname:'Wordpress'"]
                 for kv_pair in services_dict[service_key]['proxy']:
                     # do we need this ugly workaround
-                    # print("\n"*20 + kv_pair + "\n"*20)
+                    
                     if type (kv_pair) == str:
                         k = kv_pair.split(":")[0]
                         v = kv_pair.split(":")[1]
@@ -153,9 +153,8 @@ class BBconfigurator ():
         return compose_dict
 
     def __replacePlaceholders (self, compose_dict):
-        str = self.template_str
-        str = str.replace('§§INSTANCE', compose_dict['instancename'])
-        print(str + "\n"*20)
+        comp_str = self.template_str
+        comp_str = comp_str.replace('§§INSTANCE', compose_dict['instancename'])
         
         # only applicable if §§KEY in docker-compose-template.yml == KEY in instanceDescr['instanceDescr'] (without §§ Prefix) 
         # for key, value in self.instanceDescr.items():
@@ -163,9 +162,9 @@ class BBconfigurator ():
         #         str = str.replace('§§' + key, value)
 
         for key, value in self.instanceDescr['parameters'].items():
-            str = str.replace('§§' + key, value)
+            comp_str = comp_str.replace('§§' + key, value)
         
-        return str
+        return comp_str
 
 ### dev testing 
 if __name__ == "__main__":  
