@@ -71,7 +71,7 @@ class BBconfigurator ():
                 }
                 port_suffix = services_dict[service_key]['ports'][0].split(":")[-1]
                 proxy_entry['container'] = "{}:{}".format(services_dict[service_key]['container_name'], port_suffix)
-                print (services_dict[service_key]['proxy'])
+                # print (services_dict[service_key]['proxy'])
 
                 # TODO some yaml error / speciality of strings
                 #    mybe this is a bug in the yaml library, what if just use the lib to valide a yaml and "sonst" operate on strings ...
@@ -80,7 +80,7 @@ class BBconfigurator ():
                 for kv_pair in services_dict[service_key]['proxy']:
                     # do we need this ugly workaround
                     
-                    if type (kv_pair) == str:
+                    if isinstance(kv_pair, str):
                         k = kv_pair.split(":")[0]
                         v = kv_pair.split(":")[1]
                         kv_pair_v2[k] = v

@@ -107,6 +107,11 @@ def installInstance (self, instanceDescr):
         print ("Successfully created the instances.json File")
 
 
+    # testing to update instance json 
+    file_manager.updateInstanceJsonState(instanceDescr['instancename'], "RUNNING")
+    file_manager.updateInstanceJsonProxy(instanceDescr['instancename'], bb_configurator.getProxyInformation())
+
+
     # call docker-compose up
     print (compose_file_name)
 #    process = subprocess.Popen(['ls', '-la', '/opt/bibbox/instances'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
@@ -170,8 +175,7 @@ def installInstance (self, instanceDescr):
             print (lineerror.rstrip())
 
 
-    # testing to update instance json 
-    file_manager.updateInstanceJSON(instanceDescr['instancename'], "RUNNING")
+
 
 @app_celerey.task(bind=True,  name='instance.deleteInstance')
 def deleteInstance (self, instanceDescr):

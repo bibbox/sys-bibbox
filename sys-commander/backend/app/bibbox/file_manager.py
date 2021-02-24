@@ -6,6 +6,7 @@ import os
 from backend.app.bibbox.instance import InstanceDescription
 
 
+
 # add gitpython to requirements.txt
 
 # TODO
@@ -106,7 +107,7 @@ class FileManager():
             status = Exception
         return status
 
-    def updateInstanceJSON (self, instance_name, state_to_set):
+    def updateInstanceJsonState (self, instance_name, state_to_set):
         # TODO
         # - are we here in the right directory ?    --> now we are
         # - why only update the prxy file ?         --> we wanted to add the proxy infos to the instance.json file. should we do that still?
@@ -120,10 +121,6 @@ class FileManager():
             raise Exception("Error occurred during update of instance.json: Trying to set unknown instance state.")
         else:
             content["state"] = state_to_set
-
-        # add proxy info if not already set
-        if "proxy" not in content:
-            content["proxy"] = "TODO"
     
         
         # write updated content to instance.json file
@@ -132,29 +129,54 @@ class FileManager():
                 f.truncate(0)
                 f.write (json.dumps(content))
         except IOError as ex:
-                print(ex + " Error occurred while trying to update instance.json file.")
+                print(ex + " Error occurred while trying to update state in instance.json file.")
 
 
-        # to keep the instances.json file updated
-        self.writeInstancesJsonFile()
+    def updateInstanceJsonProxy (self, instance_name, proxy_content):
+        # read content from files
+        contentInstance = self.__readJsonFile(self.INSTANCEPATH + instance_name + "/instance.json")
 
-        # TODO
-        # decide if this is the way we want to handle it, or do we first call the writeInstancesJsonFile() function whenever we want to access instances.json
+        proxyInfos = {}
+        for containerInfo in proxy_content:
+            proxyInfos[containerInfo['container']] = containerInfo
+
+        if proxyInfos:
+            contentInstance["proxy"] = proxyInfos
+        else:
+            contentInstance["proxy"] = "none"
+        
+        # write updated content to instance.json file
+        try:     
+            with open(self.INSTANCEPATH + instance_name + '/instance.json', 'w+') as f:
+                f.truncate(0)
+                f.write (json.dumps(contentInstance))
+        except IOError as ex:
+                print(ex + " Error occurred while trying to update proxy infos in instance.json file.")
+
 
     def writeInstancesJsonFile (self):
         content = {}
         for instance_name in os.listdir(self.INSTANCEPATH):
             if os.path.isdir(self.INSTANCEPATH + instance_name):
                 content[instance_name] = self.__readJsonFile(self.INSTANCEPATH + instance_name + '/instance.json')
+        
+        # TODO
+        # - sort dict by top level keys (instance names)
+
         with open(self.INSTANCEPATH + 'instances.json', 'w+') as f:
             f.truncate(0)
             f.write (json.dumps(content))
 
     def getInstancesJSONFile (self):
-         filename =  self.INSTANCEPATH  + 'instances.json'
-         with open(filename, 'r') as f:
-            content = f.read ()
-         return content 
+        try:
+            self.writeInstancesJsonFile()
+        except:
+            pass
+        
+        filename =  self.INSTANCEPATH  + 'instances.json'
+        with open(filename, 'r') as f:
+           content = f.read ()
+        return content 
 
 
     def __getBaseUrlRaw (self, organization, repository, version):

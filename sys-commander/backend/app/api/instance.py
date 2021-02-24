@@ -52,11 +52,11 @@ class InstanceList(Resource):
         # - error if file does not exist
 
         try: 
-            result = fm.getInstancesJSONFile()
+            result = json.loads(fm.getInstancesJSONFile())
         except:
-            result = "Could not get instances.json content"
+            result = []
 
-        return json.loads(result), 200
+        return result, 200
 
 
 @api.route('/<id>')
