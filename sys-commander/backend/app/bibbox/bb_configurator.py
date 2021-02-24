@@ -15,16 +15,6 @@ class BBconfigurator ():
         self.template_str = template_str
         self.instanceDescr = instanceDescr
 
-    #### todo: add more validators
-    # @property
-    # def template_str(self):
-    #     return self._template_str
-
-    # @template_str.setter
-    # def template_str(self, template_str):
-    #     if not len(template_str): raise Exception("Instantiating failed. Empty Template String.")
-    #     self._template_str = template_str
-
     
     def getCompose (self):
 
