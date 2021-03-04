@@ -86,7 +86,12 @@ def seed_db():
         email = 'heimo.mueller@mac.com',
         password_hash = pwd_context.encrypt('vendetta')
     ))
-
+    db.session.add(User(
+        username = 'admin'
+        email = 'admin@admin.at'
+        password_hash = pwd_context.encrypt('vendetta')
+    ))
+    
     db.session.commit()
 
 if __name__ == '__main__':
