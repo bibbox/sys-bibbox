@@ -87,8 +87,8 @@ def seed_db():
         password_hash = pwd_context.encrypt('vendetta')
     ))
     db.session.add(User(
-        username = 'admin'
-        email = 'admin@admin.at'
+        username = 'admin',
+        email = 'admin@admin.at',
         password_hash = pwd_context.encrypt('vendetta')
     ))
     
