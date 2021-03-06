@@ -31,13 +31,13 @@ def instanceDesc ():
 
 @api.route('/ping')
 @api.doc(params={'murks': 'test'})
-@api.doc("Just to test if the Instance PI is alive")
+@api.doc("Just to test if the Instance API is alive")
 class Ping(Resource):
     def get(self):
         return {"reply":"PONG"}
 
 @api.route('/pong')
-@api.doc("Just to test if the Instance PI is alive")
+@api.doc("Test a async Process through the Instance API")
 class Ping(Resource):
     def get(self):
         testProcessAsync.delay()
@@ -66,6 +66,7 @@ class Instance(Resource):
     def get(self):
         idescr = json.load(id)
         return idescr, 200
+
 
     @api.doc(responses={403: 'Not Authorized'})
     @api.doc(responses={ 202: 'Accepted', 400: 'Invalid Argument', 500: 'Mapping Key Error' }, 

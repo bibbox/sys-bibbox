@@ -10,6 +10,7 @@ from flask_restplus import Resource, Api
 from flask_bootstrap import Bootstrap
 
 from flask_restplus import Resource, Api
+
 from flask_swagger_ui import get_swaggerui_blueprint
 
 from flask_sqlalchemy import SQLAlchemy
