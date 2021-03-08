@@ -155,10 +155,10 @@ class FileManager():
 
 
     def writeInstancesJsonFile (self):
-        content = {}
+        content = []
         for instance_name in os.listdir(self.INSTANCEPATH):
             if os.path.isdir(self.INSTANCEPATH + instance_name):
-                content[instance_name] = self.__readJsonFile(self.INSTANCEPATH + instance_name + '/instance.json')
+                content.append(self.__readJsonFile(self.INSTANCEPATH + instance_name + '/instance.json'))
         
         # TODO
         # - sort dict by top level keys (instance names)
