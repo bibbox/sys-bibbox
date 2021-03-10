@@ -156,7 +156,9 @@ class FileManager():
             if os.path.isdir(self.INSTANCEPATH + instance_name):
                 content.append(self.__readJsonFile(self.INSTANCEPATH + instance_name + '/instance.json'))
         
-        # TODO - sort dict by top level keys (instance names)
+        # sorts dict by instance names
+        content.sort(key=lambda x: x['instancename'])
+
 
         with open(self.INSTANCEPATH + 'instances.json', 'w+') as f:
             f.truncate(0)
