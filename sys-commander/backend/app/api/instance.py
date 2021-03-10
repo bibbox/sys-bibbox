@@ -48,8 +48,7 @@ class InstanceList(Resource):
     def get(self):
         # should we put in an own class ?, maybe yes ...
         fm = FileManager()
-        # TODO
-        # - error if file does not exist
+        # TODO - error if file does not exist
 
         try: 
             result = json.loads(fm.getInstancesJSONFile())

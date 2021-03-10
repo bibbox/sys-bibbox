@@ -76,7 +76,6 @@ class BBconfigurator ():
         
         proxyinfomation = self.getProxyInformation ()
         for pi in proxyinfomation:
-            print(pi)
             if (pi['TEMPLATE'] == 'default'):
                 proxy = defaultTemplate.replace('§§BASEURL',   config['baseurl'])
                 proxy = proxy.replace('§§INSTANCEID', pi['URLPREFIX'])

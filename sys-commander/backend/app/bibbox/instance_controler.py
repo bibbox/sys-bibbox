@@ -154,9 +154,8 @@ def installInstance (self, instanceDescr):
             # same stuff here, also write this in the log file
             print (lineerror.rstrip())
 
-    #restart apache
-    # TODO 
-    # make a reload instead a restart
+    # restart apache
+    # TODO make a reload instead a restart
     process = subprocess.Popen(['docker', 'restart', 'bibbox-sys-commander-apacheproxy'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
     while True:
         line = process.stdout.readline()

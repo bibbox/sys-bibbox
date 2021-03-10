@@ -108,10 +108,6 @@ class FileManager():
         return status
 
     def updateInstanceJsonState (self, instance_name, state_to_set):
-        # TODO
-        # - are we here in the right directory ?    --> now we are
-        # - why only update the prxy file ?         --> we wanted to add the proxy infos to the instance.json file. should we do that still?
-
         # read content from file
         content = self.__readJsonFile(self.INSTANCEPATH + instance_name + "/instance.json")
 
@@ -135,10 +131,10 @@ class FileManager():
     def updateInstanceJsonProxy (self, instance_name, proxy_content):
         # read content from files
         contentInstance = self.__readJsonFile(self.INSTANCEPATH + instance_name + "/instance.json")
-
-        proxyInfos = {}
+        
+        proxyInfos = []
         for containerInfo in proxy_content:
-            proxyInfos[containerInfo['container']] = containerInfo
+            proxyInfos.append(containerInfo)
 
         if proxyInfos:
             contentInstance["proxy"] = proxyInfos
@@ -160,8 +156,7 @@ class FileManager():
             if os.path.isdir(self.INSTANCEPATH + instance_name):
                 content.append(self.__readJsonFile(self.INSTANCEPATH + instance_name + '/instance.json'))
         
-        # TODO
-        # - sort dict by top level keys (instance names)
+        # TODO - sort dict by top level keys (instance names)
 
         with open(self.INSTANCEPATH + 'instances.json', 'w+') as f:
             f.truncate(0)
