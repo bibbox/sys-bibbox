@@ -61,7 +61,6 @@ class BBconfigurator ():
                 }
                 port_suffix = services_dict[service_key]['ports'][0].split(":")[-1]
                 proxy_entry['container'] = "{}:{}".format(services_dict[service_key]['container_name'], port_suffix)
-                # print (services_dict[service_key]['proxy'])
 
                 # TODO some yaml error / speciality of strings
                 #    mybe this is a bug in the yaml library, what if just use the lib to valide a yaml and "sonst" operate on strings ...
@@ -79,7 +78,9 @@ class BBconfigurator ():
                     for key in kv_pair_v2:
                         proxy_entry[key] = kv_pair_v2.get(key)
 
-                # for key, value in services_dict[service_key]['proxy']:
+                ## Below code will work after altering the compose template by removing the dashes '-' preceding the proxy_entry items
+                ## Explanation: In YAML, dashes '-' indicate the start of a list item, so our key-value-pairs are handled as one list-item string
+                # for key, value in services_dict[service_key]['proxy'].items():
                 #     proxy_entry[key] = value
                 
                 proxy_info.append(proxy_entry)
