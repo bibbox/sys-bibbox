@@ -38,7 +38,7 @@ class ContainerHelper():
 
 
     def deleteStoppedInstanceContainers(self, instance_name):
-        removed = self.client.containers.prune() #filters={'name': instance_name}
+        removed = self.client.containers.prune(filters={"label":["com.docker.compose.project={}".format(instance_name)]})
         status = ""
         if removed['ContainersDeleted']:
             status = "Removed containers: {}".format([x for x in removed['ContainersDeleted']])

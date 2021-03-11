@@ -186,9 +186,7 @@ def deleteInstance (self, instance_name):
     instance_path = fm.INSTANCEPATH + instance_name
 
     try:
-        print("======================= DELETING STOPPED CONTAINERS =========================")
         ch.deleteStoppedInstanceContainers(instance_name)
-        print("=============================================================================")
         fm.removeAllFilesInDir(instance_path)
     except OSError:
         print ("Deletion of the directory %s failed" % instance_path)
