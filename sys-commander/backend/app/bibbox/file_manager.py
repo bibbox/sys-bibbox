@@ -2,6 +2,7 @@
 import requests 
 import json 
 import os
+import shutil
 
 from backend.app.bibbox.instance import InstanceDescription
 
@@ -125,7 +126,7 @@ class FileManager():
                 f.truncate(0)
                 f.write (json.dumps(content))
         except IOError as ex:
-                print(ex + " Error occurred while trying to update state in instance.json file.")
+            print(ex + " Error occurred while trying to update state in instance.json file.")
 
 
     def updateInstanceJsonProxy (self, instance_name, proxy_content):
@@ -147,7 +148,7 @@ class FileManager():
                 f.truncate(0)
                 f.write (json.dumps(contentInstance))
         except IOError as ex:
-                print(ex + " Error occurred while trying to update proxy infos in instance.json file.")
+            print(ex + " Error occurred while trying to update proxy infos in instance.json file.")
 
 
     def writeInstancesJsonFile (self):
@@ -159,10 +160,40 @@ class FileManager():
         # sorts dict by instance names
         content.sort(key=lambda x: x['instancename'])
 
+        try: 
+            with open(self.INSTANCEPATH + 'instances.json', 'w+') as f:
+                f.truncate(0)
+                f.write (json.dumps(content))
+        except IOError as ex:
+            print(ex + " Error occurred while trying to write instances.json file.")
 
-        with open(self.INSTANCEPATH + 'instances.json', 'w+') as f:
-            f.truncate(0)
-            f.write (json.dumps(content))
+    # needs root permissions --> given as it runs inside docker container
+    def removeAllFilesInDir(self, directory_path):
+        print("Removing files")
+        for filename in os.listdir(directory_path):
+            file_path = os.path.join(directory_path, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+                print("Removed: {}".format(filename))
+            except Exception as e:
+                print('Failed to delete %s. Reason: %s' % (file_path, e))
+        else:
+            try:
+                os.rmdir(directory_path)
+            except Exception as e:
+                print('Failed to delete %s. Reason: %s' % (directory_path, e))
+        print("finished")
+
+    def removeProxyConfigFile(self, instance_name):
+        print("Removing Proxy Config file")
+        for filename in os.listdir(self.PROXYPATH + "sites/"):
+            if instance_name in filename:
+                file_path = self.PROXYPATH + "sites/" + filename
+                os.unlink(file_path)
+
 
     def getInstancesJSONFile (self):
         try:
@@ -175,6 +206,10 @@ class FileManager():
            content = f.read ()
         return content 
 
+    def getInstanceJSONContent(self, instance_name):
+        for instance_dir_name in os.listdir(self.INSTANCEPATH):
+            if instance_dir_name == instance_name and os.path.isdir(self.INSTANCEPATH + instance_dir_name):
+                return self.__readJsonFile(self.INSTANCEPATH + instance_dir_name + '/instance.json')
 
     def __getBaseUrlRaw (self, organization, repository, version):
         burl = ''

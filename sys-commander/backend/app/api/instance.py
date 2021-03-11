@@ -5,7 +5,7 @@ from flask import Flask, request
 from flask_restplus import Namespace, Api, Resource, fields
 from backend.app import app, db, restapi
 
-from backend.app.bibbox.instance_controler  import installInstance, deleteInstance, testProcessAsync
+from backend.app.bibbox.instance_controler  import installInstance, stopInstance, deleteInstance, testProcessAsync
 from backend.app.bibbox.file_manager import FileManager
 
 api = Namespace('instances', description='Instance Ressources')
@@ -101,47 +101,27 @@ class Instance(Resource):
         # call the deletion of a instance
         appname = "get instance JSON from the instance controler, which simply reads the instance.json file in the instance directory"
 
-        instanceToBeDeleted= {
-            'instancename' : "xxx",
-            'appname': "xxxx",
-            'version' :  "xxxx",
-            'state' : "DELETING"            
-        }
+        fm = FileManager()
+        instanceToBeDeleted = fm.getInstanceJSONContent(instancename)
+
+        # this should execute first
+        stopInstance.delay(instancename)
+
+        # remove if race condition is fixed
+        import time
+        time.sleep(8)
+
+        # this should execute only after stopInstance has finished executing
+        deleteInstance.delay(instancename)
+
 
         message =  {
               "task": {
                 "href": jobURL,
                 "id": jobID
                 },
-             "instance" :  instanceToBeDeleted        
+             "instance" :  instanceToBeDeleted,
+             "status": "PLACEHOLDER"        
         }
 
         return message, 202    
-
-
-#
-# dirty test code
-#
-
-# import uuid
-# import requests
-# if __name__ == "__main__":
-    
-#     res = requests.get('http://127.0.0.1:5010/api/v1/instances')
-#     print ('response from server:',res.text)
-
-#     print("try to call")
-#     payload = {
-#         "organization"  : "bibbox",
-#         "appname"       : "app-wordpress",
-#         "version"       : "V4",
-#         "displayname" : "Wordpress Test",
-#         "parameters"  : 
-#             {
-#                 "MYSQL_ROOT_PASSWORD" :"quaksi"
-#             }            
-#     }
-#     res = requests.post('http://127.0.0.1:5010/api/v1/instances/' + str(uuid.uuid4()), json=paylod)
-#     print ('response from server:',res.text)
-
-

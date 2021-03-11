@@ -16,6 +16,7 @@ from backend.app import db
 from backend.app.bibbox.bb_configurator import BBconfigurator
 from backend.app.bibbox.file_manager import FileManager
 from backend.app.bibbox.instance import Instance
+from backend.app.bibbox.container_helper import ContainerHelper
 
 from celery.task.control import inspect
 from celery_singleton import Singleton
@@ -27,7 +28,8 @@ PROXYPATH    = "/opt/bibbox/proxy/sites/"
 
 @app_celerey.task(bind=True,  name='instance.stopInstance')
 def stopInstance (self, instanceName):
-    pass
+    ch = ContainerHelper();
+    ch.stopInstanceContainers(instanceName)
 
 @app_celerey.task(bind=True, name='instance.startInstance')
 def startInstance (self, instanceName):
@@ -177,16 +179,31 @@ def installInstance (self, instanceDescr):
 
 
 @app_celerey.task(bind=True,  name='instance.deleteInstance')
-def deleteInstance (self, instanceDescr):
-    path = INSTANCEPATH + instanceDescr['instancename']
-    try:
+def deleteInstance (self, instance_name):
+    ch = ContainerHelper()        
+    fm = FileManager()
 
-        # hier kommt alles andere davor 
-        os.rmdir(path)
+    instance_path = fm.INSTANCEPATH + instance_name
+
+    try:
+        print("======================= DELETING STOPPED CONTAINERS =========================")
+        ch.deleteStoppedInstanceContainers(instance_name)
+        print("=============================================================================")
+        fm.removeAllFilesInDir(instance_path)
     except OSError:
-        print ("Creation of the directory %s failed" % path)
+        print ("Deletion of the directory %s failed" % instance_path)
     else:
-        print ("Successfully deleted the directory %s " % path)
+        print ("Successfully deleted the directory %s " % instance_path)
+    
+
+    try:
+        fm.removeProxyConfigFile(instance_name)
+    except OSError:
+        print ("Deletion of the proxy file of %s failed" % instance_name)
+    else:
+        print ("Successfully deleted the proxy file of %s " % instance_name)
+    
+    
 
 # TODO
 # make this a helper function, with the stripping 
