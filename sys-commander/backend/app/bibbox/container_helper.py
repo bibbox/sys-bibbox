@@ -19,7 +19,7 @@ class ContainerHelper():
     def stopInstanceContainers(self, instance_name):
         instance_containers = []
         for container in self.client.containers.list():
-            if instance_name in container.name:
+            if "{}-".format(instance_name) in container.name:
                 instance_containers.append(container)
             
         self.__stopContainers(instance_containers)  

@@ -186,13 +186,20 @@ def deleteInstance (self, instance_name):
     instance_path = fm.INSTANCEPATH + instance_name
 
     try:
-        ch.deleteStoppedInstanceContainers(instance_name)
         fm.removeAllFilesInDir(instance_path)
     except OSError:
         print ("Deletion of the directory %s failed" % instance_path)
     else:
         print ("Successfully deleted the directory %s " % instance_path)
     
+
+    try:
+        ch.deleteStoppedInstanceContainers(instance_name)
+    except OSError:
+        print ("Deletion of stopped %s containers failed" % instance_name)
+    else:
+        print ("Successfully deleted the %s containers" % instance_name)
+
 
     try:
         fm.removeProxyConfigFile(instance_name)
