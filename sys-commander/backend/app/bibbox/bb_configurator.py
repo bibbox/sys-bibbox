@@ -81,7 +81,7 @@ class BBconfigurator ():
                 proxy = proxy.replace('§§INSTANCEID', pi['URLPREFIX'])
                 proxy = proxy.replace('§§CONTAINERNAME', pi['CONTAINER'])
                 if not proxyfilecontent.endswith("\n\n"):                
-                    proxyfilecontent = proxyfilecontent + proxy + '\n\n' # if the template has no newline at the end
+                    proxyfilecontent = proxyfilecontent + proxy + '\n\n'
             else:
                 # TODO
                 # dynamic templates

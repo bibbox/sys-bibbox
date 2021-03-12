@@ -180,28 +180,28 @@ def installInstance (self, instanceDescr):
 
 @app_celerey.task(bind=True,  name='instance.deleteInstance')
 def deleteInstance (self, instance_name):
-    stopInstance(instance_name)
 
-    
     ch = ContainerHelper()        
     fm = FileManager()
-
     instance_path = fm.INSTANCEPATH + instance_name
+    
 
     try:
+        stopInstance(instance_name)
+        ch.deleteStoppedInstanceContainers(instance_name)
+    except OSError:
+        print ("Deletion of stopped %s containers failed" % instance_name)
+    else:
+        print ("Successfully deleted the %s containers" % instance_name)
+
+    
+    try:       
         fm.removeAllFilesInDir(instance_path)
     except OSError:
         print ("Deletion of the directory %s failed" % instance_path)
     else:
         print ("Successfully deleted the directory %s " % instance_path)
     
-
-    try:
-        ch.deleteStoppedInstanceContainers(instance_name)
-    except OSError:
-        print ("Deletion of stopped %s containers failed" % instance_name)
-    else:
-        print ("Successfully deleted the %s containers" % instance_name)
 
 
     try:
