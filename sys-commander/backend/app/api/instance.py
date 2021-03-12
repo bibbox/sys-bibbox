@@ -103,18 +103,7 @@ class Instance(Resource):
 
         fm = FileManager()
         instanceToBeDeleted = fm.getInstanceJSONContent(instancename)
-
-        # this should execute first
-        stopInstance.delay(instancename)
-
-        # remove if race condition is fixed
-        import time
-        time.sleep(8)
-
-        # this should execute only after stopInstance has finished executing
-        deleteInstance.delay(instancename)
-
-
+    
         message =  {
               "task": {
                 "href": jobURL,
@@ -123,5 +112,9 @@ class Instance(Resource):
              "instance" :  instanceToBeDeleted,
              "status": "PLACEHOLDER"        
         }
+
+        deleteInstance.delay(instancename)
+
+
 
         return message, 202    
