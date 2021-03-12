@@ -75,12 +75,16 @@ class SQLAlchemyService(BaseService):
         return obj
 
     def all(self):
-        data = self.__model__.query.all()
-        return self.return_response(data)
-
+        return self.__model__.query.all()
+        
     def all_as_dict(self):
         data = self.__model__.query.all()
         return [row.as_dict() for row in data]
+
+    def return_all_as_json_response(self, data):
+        data = self.__model__.query.all()
+        data_dict = [row.as_dict() for row in data]
+        return jsonify(data_dict)
 
     def get(self, id):
         r = self.__model__.query.get(id)
@@ -95,6 +99,3 @@ class SQLAlchemyService(BaseService):
         self.__db__.session.commit()
         return None
 
-    def return_response(self, data):
-        data_dict = [row.as_dict() for row in data]
-        return jsonify(data_dict)
