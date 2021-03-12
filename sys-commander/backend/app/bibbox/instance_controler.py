@@ -180,6 +180,9 @@ def installInstance (self, instanceDescr):
 
 @app_celerey.task(bind=True,  name='instance.deleteInstance')
 def deleteInstance (self, instance_name):
+    stopInstance(instance_name)
+
+    
     ch = ContainerHelper()        
     fm = FileManager()
 
