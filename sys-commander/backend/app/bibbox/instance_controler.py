@@ -13,10 +13,10 @@ from flask import current_app, render_template
 from backend.app import app_celerey
 from backend.app import db
 
-from backend.app.bibbox.bb_configurator import BBconfigurator
-from backend.app.bibbox.file_manager import FileManager
+from backend.app.bibbox.instance_handler import InstanceHandler
+from backend.app.bibbox.file_handler import FileHandler
 from backend.app.bibbox.instance import Instance
-from backend.app.bibbox.container_helper import ContainerHelper
+from backend.app.bibbox.docker_handler import DockerHandler
 
 from celery.task.control import inspect
 from celery_singleton import Singleton
@@ -28,8 +28,8 @@ PROXYPATH    = "/opt/bibbox/proxy/sites/"
 
 @app_celerey.task(bind=True,  name='instance.stopInstance')
 def stopInstance (self, instanceName):
-    ch = ContainerHelper();
-    ch.stopInstanceContainers(instanceName)
+    dh = DockerHandler();
+    dh.docker_stopInstance(instanceName)
 
 @app_celerey.task(bind=True, name='instance.startInstance')
 def startInstance (self, instanceName):
@@ -44,11 +44,11 @@ def installInstance (self, instanceDescr):
     path = INSTANCEPATH + instanceDescr['instancename']
     # appinfo.json, fileinfo.json, docker-compose-template.yml, 
     
-    file_manager = FileManager()
+    file_handler = FileHandler()
 
     # check if directory structure is valid, fixes structure if invalid
     # needs to be called sooner, but where/when?
-    file_manager.checkDirectoryStructure()
+    file_handler.checkDirectoryStructure()
 
 
     # generate the instance directory    
@@ -66,7 +66,7 @@ def installInstance (self, instanceDescr):
         print ("Successfully created the directory %s " % path)
   
     # copy all file from the APP repository to the instance Directory
-    file_manager.copyAllFilesToInstanceDirectory (instanceDescr)
+    file_handler.copyAllFilesToInstanceDirectory (instanceDescr)
 
     # now we can generate an Instance object
     instance = Instance (instanceDescr['instancename'])
@@ -78,8 +78,8 @@ def installInstance (self, instanceDescr):
     # generate the docker-compose file
     try:
         template_str = instance.composeTemplate()    
-        bb_configurator = BBconfigurator (template_str, instanceDescr)
-        docker_compose = yaml.dump(bb_configurator.getCompose(), default_flow_style=False) 
+        instance_handler =  InstanceHandler (template_str, instanceDescr)
+        docker_compose = yaml.dump(instance_handler.getCompose(), default_flow_style=False) 
         with open(compose_file_name, 'w') as f:       
             f.write ( docker_compose )
     except:
@@ -91,8 +91,8 @@ def installInstance (self, instanceDescr):
     # write the proxy file
     try:
         template_str = instance.composeTemplate()    
-        bb_configurator = BBconfigurator (template_str, instanceDescr)
-        bb_configurator.generateProxyFile()
+        instance_handler =  InstanceHandler (template_str, instanceDescr)
+        instance_handler.generateProxyFile()
     except:
         raise
         print ("ERROR in the generation of the Proxy File" )
@@ -101,7 +101,7 @@ def installInstance (self, instanceDescr):
 
     # write the instances.json file
     try:
-        file_manager.writeInstancesJsonFile()
+        file_handler.writeInstancesJsonFile()
     except:
         raise
         print (" ERROR in the generation of the instances.json File")
@@ -110,8 +110,8 @@ def installInstance (self, instanceDescr):
 
 
     # testing to update instance json 
-    file_manager.updateInstanceJsonState(instanceDescr['instancename'], "RUNNING")
-    file_manager.updateInstanceJsonProxy(instanceDescr['instancename'], bb_configurator.getProxyInformation())
+    file_handler.updateInstanceJsonState(instanceDescr['instancename'], "INSTALLING")
+    file_handler.updateInstanceJsonProxy(instanceDescr['instancename'], instance_handler.getProxyInformation())
 
 
     # call docker-compose up
@@ -181,14 +181,14 @@ def installInstance (self, instanceDescr):
 @app_celerey.task(bind=True,  name='instance.deleteInstance')
 def deleteInstance (self, instance_name):
 
-    ch = ContainerHelper()        
-    fm = FileManager()
-    instance_path = fm.INSTANCEPATH + instance_name
+    dh = DockerHandler()        
+    fh = FileHandler()
+    instance_path = fh.INSTANCEPATH + instance_name
     
 
     try:
         stopInstance(instance_name)
-        ch.deleteStoppedInstanceContainers(instance_name)
+        dh.docker_deleteStoppedContainers(instance_name)
     except OSError:
         print ("Deletion of stopped %s containers failed" % instance_name)
     else:
@@ -196,7 +196,7 @@ def deleteInstance (self, instance_name):
 
     
     try:       
-        fm.removeAllFilesInDir(instance_path)
+        fh.removeAllFilesInDir(instance_path)
     except OSError:
         print ("Deletion of the directory %s failed" % instance_path)
     else:
@@ -205,7 +205,7 @@ def deleteInstance (self, instance_name):
 
 
     try:
-        fm.removeProxyConfigFile(instance_name)
+        fh.removeProxyConfigFile(instance_name)
     except OSError:
         print ("Deletion of the proxy file of %s failed" % instance_name)
     else:
@@ -265,7 +265,7 @@ if __name__ == "__main__":
             }            
     }
     
-    bb_configurator = BBconfigurator (template_str, payload)
+    instance_handler =  InstanceHandler (template_str, payload)
     dc = bb_configurator.getCompose()
     dc = yaml.dump(bb_configurator.getCompose(), default_flow_style=False)
     #print (dc)

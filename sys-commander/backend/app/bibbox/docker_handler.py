@@ -1,13 +1,14 @@
 import docker
 import os
 
-class ContainerHelper():
+class DockerHandler():
 
     def __init__(self):
         self.client = docker.from_env()
 
 
-    def stopAllAppContainers(self):
+    # unused
+    def docker_stopAllApps(self):
         app_containers = []
         for container in self.client.containers.list():
             if "bibbox-sys-commander" not in container.name:
@@ -16,7 +17,7 @@ class ContainerHelper():
         self.__stopContainers(app_containers)
 
 
-    def stopInstanceContainers(self, instance_name):
+    def docker_stopInstance(self, instance_name):
         instance_containers = []
         for container in self.client.containers.list():
             if "{}-".format(instance_name) in container.name:
@@ -26,7 +27,7 @@ class ContainerHelper():
 
 
     # unused
-    def deleteAllStoppedAppContainers(self):
+    def docker_deleteAllStoppedApps(self):
         # TODO: exclude bibbox-sys-commander-* containers
 
         print("Removing stopped containers...")
@@ -37,7 +38,12 @@ class ContainerHelper():
             print("No containers to remove.")
 
 
-    def deleteStoppedInstanceContainers(self, instance_name):
+    # TODO
+    def docker_getContainerLogs(self, container_name):
+        pass
+
+
+    def docker_deleteStoppedContainers(self, instance_name):
         removed = self.client.containers.prune(filters={"label":["com.docker.compose.project={}".format(instance_name)]})
         status = ""
         if removed['ContainersDeleted']:
@@ -50,7 +56,6 @@ class ContainerHelper():
 
     def __stopContainers(self, containers):
         for container in containers:
-
             print("Stopping container: {}...  ".format(container.name), end="")
             container.stop()
             print("Stopped container: {}.\n".format(container.name))    

@@ -26,7 +26,7 @@ from backend.app.bibbox.instance import InstanceDescription
 #  
 
 
-class FileManager():
+class FileHandler():
     
     def __init__(self):
         self.INSTANCEPATH = "/opt/bibbox/instances/"

@@ -24,10 +24,14 @@ class InstanceDescription  ():
     @classmethod
     def states (cls):
         # the 'DELETED' state never will be set ....
-        return ('JUSTBORN', 'INSTALLING', 'STARTING', 'RUNNING', 'STOPPING', 'STOPPED', 'DELETING', 'ERROR', 'DELETED')
+        return ('JUSTBORN', 'INSTALLING', 'STARTING' 'STOPPING', 'STOPPED', 'DELETING', 'ERROR', 'DELETED')
+
+    @classmethod
+    def running_state (cls):
+        return ('RUNNING', 'ERROR')
 
 # TODO
-# move this functionality to the file_manager
+# move this functionality to the file_handler
 # renove then the Instance class
 
 class Instance  ():

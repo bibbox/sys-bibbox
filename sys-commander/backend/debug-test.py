@@ -1,6 +1,6 @@
 """
 
-"""
+
 
 from backend.app import db, create_app
 from backend.app.models.user  import User
@@ -24,3 +24,4 @@ if __name__ == '__main__':
         iDescr = ic.getInstanceDescription (id)
         print (iDescr)
 
+"""

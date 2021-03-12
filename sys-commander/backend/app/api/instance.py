@@ -6,7 +6,7 @@ from flask_restplus import Namespace, Api, Resource, fields
 from backend.app import app, db, restapi
 
 from backend.app.bibbox.instance_controler  import installInstance, stopInstance, deleteInstance, testProcessAsync
-from backend.app.bibbox.file_manager import FileManager
+from backend.app.bibbox.file_handler import FileHandler
 
 api = Namespace('instances', description='Instance Ressources')
 restapi.add_namespace (api, '/instances')
@@ -20,7 +20,7 @@ instancemodel = api.model('Model', {
 
 # TODO
 # thats the path inside the container !
-# this should only be used in the file_manager
+# this should only be used in the file_handler
 INSTANCEPATH = "/opt/bibbox/instances/"
 
 def instanceDesc ():
@@ -47,11 +47,11 @@ class Ping(Resource):
 class InstanceList(Resource):
     def get(self):
         # should we put in an own class ?, maybe yes ...
-        fm = FileManager()
+        fh = FileHandler()
         # TODO - error if file does not exist
 
         try: 
-            result = json.loads(fm.getInstancesJSONFile())
+            result = json.loads(fh.getInstancesJSONFile())
         except:
             result = []
 
@@ -101,8 +101,8 @@ class Instance(Resource):
         # call the deletion of a instance
         appname = "get instance JSON from the instance controler, which simply reads the instance.json file in the instance directory"
 
-        fm = FileManager()
-        instanceToBeDeleted = fm.getInstanceJSONContent(instancename)
+        fh = FileHandler()
+        instanceToBeDeleted = fh.getInstanceJSONContent(instancename)
     
         message =  {
               "task": {
