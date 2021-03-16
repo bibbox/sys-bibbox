@@ -26,7 +26,7 @@ class BaseModel(db.Model):
 
 class Task (BaseModel, db.Model):
     """Model for Task table"""
-    __tablename__ = "task"
+    __tablename__ = "tasks"
 
     id              = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name            = db.Column(db.String(128), nullable=False)

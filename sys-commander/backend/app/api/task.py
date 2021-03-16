@@ -18,6 +18,7 @@ task_service = TaskService()
 class TaskListAll(Resource):
     @api.doc("get all celery tasks")
     def get(self):
+        # task_service.all()
         print ("get all celery tasks")
         i = app_celery.control.inspect()   
         activeTasks = i.active()
