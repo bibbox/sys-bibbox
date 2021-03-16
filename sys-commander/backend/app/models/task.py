@@ -31,7 +31,6 @@ class Task (BaseModel, db.Model):
     id              = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name            = db.Column(db.String(128), nullable=False)
     type_           = db.Column(db.String(20), nullable=False)
-    user_id         = db.Column(db.Integer, nullable=False)
     start_time      = db.Column(db.DateTime, nullable=False)
     finished_time   = db.Column(db.DateTime, nullable=False)
     state           = db.Column(db.String, nullable=False)
@@ -50,6 +49,9 @@ class Task (BaseModel, db.Model):
 
 
 '''
+    removed: user_id, user_name --> unnecessary
+
+
   {
     "name": "Name of the activity, specified by the owner of the task",
     "type": "INSTALLAPP | UPDATEAPP | DELETEAPP | BACKUPAPP",

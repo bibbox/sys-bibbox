@@ -16,7 +16,8 @@ class TaskService(SQLAlchemyService):
         # Creating a parent class ref to access parent class methods.
         self.parentClassRef = super(TaskService, self)
 
-    def update(self):
+    def update(self, id):
         # Update "state" value, f.e. after finishing task
+        # load task with id from db, set state to ____.
+        # commit
         pass
-    
