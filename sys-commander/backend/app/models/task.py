@@ -32,8 +32,8 @@ class Task (BaseModel, db.Model):
     name            = db.Column(db.String(128), nullable=False)
     type_           = db.Column(db.String(20), nullable=False)
     user_id         = db.Column(db.Integer, nullable=False)
-    start_time      = db.Column(db.String, nullable=False)
-    finished_time   = db.Column(db.String, nullable=False)
+    start_time      = db.Column(db.DateTime, nullable=False)
+    finished_time   = db.Column(db.DateTime, nullable=False)
     state           = db.Column(db.String, nullable=False)
     result          = db.Column(db.String, nullable=False)
 
