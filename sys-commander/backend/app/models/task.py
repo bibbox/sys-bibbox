@@ -36,11 +36,10 @@ class Task (BaseModel, db.Model):
     state           = db.Column(db.String, nullable=False)
     result          = db.Column(db.String, nullable=False)
 
-    def __init__(self, name, type_, user_id, start_time, finished_time, state, result):
+    def __init__(self, name, type_, start_time, finished_time, state, result):
         super().__init__()
         self.name           = name
         self.type_          = type_
-        self.user_id        = user_id
         self.start_time     = start_time
         self.finished_time  = finished_time
         self.state          = state

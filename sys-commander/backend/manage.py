@@ -98,15 +98,15 @@ def seed_db():
         import time
         from datetime import datetime
         db.session.add(Task(
-            name = "test instance.installInstance"
-            type = "INSTALLAPP"
-            start_time = datetime.fromtimestamp(time.time() - 100)
-            finished_time = datetime.fromtimestamp(time.time())
-            state = "FINISHED"
+            name = "test instance.installInstance",
+            type_ = "INSTALLAPP",
+            start_time = datetime.fromtimestamp(time.time() - 100),
+            finished_time = datetime.fromtimestamp(time.time()),
+            state = "FINISHED",
             result = "SUCCESS"
         ))
-    except:
-        print("Adding Task entry failed")
+    except Exception as ex:
+        print("Adding Task entry failed. Reason: {}".format(ex))
 
     db.session.commit()
 
