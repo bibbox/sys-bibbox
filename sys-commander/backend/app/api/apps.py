@@ -5,16 +5,12 @@ from flask import Blueprint, request, jsonify
 from flask_restplus import Namespace, Api, Resource, fields, reqparse
 
 from backend.app import app, db, restapi
-
+from backend.app.bibbox.app  import AppCatalogue
+from backend.app.models.app import BibboxApp
 from backend.app.models.catalogue import Catalogue
 from backend.app.services.catalogue_service import CatalogueService
 
-from backend.app.models.app import BibboxApp
-
 catalogue_service = CatalogueService()
-
-from backend.app.bibbox.app  import AppCatalogue
-
 appCatalogue = AppCatalogue ()
 
 # take finaly this approach (doc out of code) 

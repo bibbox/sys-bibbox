@@ -5,6 +5,6 @@
 
 """
 
-from backend.app.api import  catalogue, instance, default, user, task
+from backend.app.api import  apps, instance, default, user, task
 
 

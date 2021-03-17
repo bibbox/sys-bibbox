@@ -26,7 +26,7 @@ from backend.app.bibbox.instance import InstanceDescription
 #  
 
 
-class FileManager():
+class FileHandler():
     
     def __init__(self):
         self.INSTANCEPATH = "/opt/bibbox/instances/"
@@ -185,7 +185,7 @@ class FileManager():
                 os.rmdir(directory_path)
             except Exception as e:
                 print('Failed to delete %s. Reason: %s' % (directory_path, e))
-        print("finished")
+        print("finished 'removing files' operation")
 
     def removeProxyConfigFile(self, instance_name):
         print("Removing Proxy Config file")
