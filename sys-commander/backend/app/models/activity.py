@@ -36,6 +36,8 @@ class Activity (BaseModel, db.Model):
     state           = db.Column(db.String, nullable=False)
     result          = db.Column(db.String, nullable=False)
 
+    logs            = db.relationship('Log', back_populates='activity', lazy=True, cascade_backrefs=True, cascade="all, delete")
+
     def __init__(self, name, type_, start_time, finished_time, state, result):
         super().__init__()
         self.name           = name

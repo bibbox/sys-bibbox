@@ -14,7 +14,7 @@ class ActivityService(SQLAlchemyService):
 
     def __init__(self):
         # Creating a parent class ref to access parent class methods.
-        self.parentClassRef = super(TaskService, self)
+        self.parentClassRef = super(ActivityService, self)
 
     def update(self, id):
         # Update "state" value, f.e. after finishing activity
