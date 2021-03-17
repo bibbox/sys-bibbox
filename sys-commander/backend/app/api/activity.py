@@ -5,21 +5,21 @@ from flask import Flask, request, Blueprint, jsonify
 from flask_restplus import Namespace, Api, Resource, fields
 from backend.app import apiblueprint as api, app_celerey as app_celery, app, db, restapi
 
-from backend.app.services.task_service import TaskService
+from backend.app.services.activity_service import ActivityService
 
 
-api = Namespace('tasks', description='Task Resources')
-restapi.add_namespace (api, '/tasks')
+api = Namespace('activities', description='Activity Resources')
+restapi.add_namespace (api, '/activities')
 
 
-task_service = TaskService()
+activity_service = ActivityService()
 
 @api.route("/")
-class TaskListAll(Resource):
-    @api.doc("get all celery tasks")
+class ActivityListAll(Resource):
+    @api.doc("get all celery activities")
     def get(self):
         # task_service.all()
-        print ("get all celery tasks")
+        print ("get all celery activities")
         i = app_celery.control.inspect()   
         activeTasks = i.active()
         scheduledTasks = i.reserved() 
@@ -29,10 +29,10 @@ class TaskListAll(Resource):
 
 
 @api.route("/active")
-class TaskListActive(Resource):
-    @api.doc("get all active celery tasks")
+class ActivityListActive(Resource):
+    @api.doc("get all active celery activities")
     def get(self):
-        print ("get all active celery tasks")
+        print ("get all active celery activities")
         i = app_celery.control.inspect()   
         activeTasks = i.active()
     
@@ -40,10 +40,10 @@ class TaskListActive(Resource):
 
 
 @api.route("/scheduled")
-class TaskListScheduled(Resource):
-    @api.doc("get all scheduled tasks")
+class ActivityListScheduled(Resource):
+    @api.doc("get all scheduled activities")
     def get(self):
-        print ("get all scheduled celery tasks")
+        print ("get all scheduled celery activities")
         i = app_celery.control.inspect()
         scheduledTasks = i.reserved() 
     
@@ -51,19 +51,19 @@ class TaskListScheduled(Resource):
 
 
 @api.route("/finished")
-class TaskListFinished(Resource):
-    @api.doc("get all finished celery tasks")
+class ActivityListFinished(Resource):
+    @api.doc("get all finished celery activities")
     def get(self):
-        print ("get all scheduled celery tasks")
+        print ("get all scheduled celery activities")
         i = app_celery.control.inspect()
         doneTasks = "done placeholder"  #i.done() 
     
         return jsonify( doneTasks )
 
 @api.route("/<int:id>")
-@api.doc(params={'id': 'task id'})
-class Task(Resource):
+@api.doc(params={'id': 'Activity id'})
+class Activity(Resource):
     @api.doc("get celery task by ID")
     def get(self):
-        print("get task-info of task: {}".format(id))
+        print("get task-info of activity: {}".format(id))
         return jsonify({"status": 200, "msg":"Details for Celery Task %d are"%id } )

@@ -34,7 +34,7 @@ class DockerHandler():
         print("Removing stopped containers...")
         removed = self.client.containers.prune()
         if removed['ContainersDeleted']:
-            print("Removed containers: {}".format([x for x in removed['ContainersDeleted']]))
+            print("Removed containers: {}".format([container_id for container_id in removed['ContainersDeleted']]))
         else:
             print("No containers to remove.")
 

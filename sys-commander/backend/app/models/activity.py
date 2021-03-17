@@ -24,9 +24,9 @@ class BaseModel(db.Model):
                 for c in inspect(self).mapper.column_attrs}
 
 
-class Task (BaseModel, db.Model):
-    """Model for Task table"""
-    __tablename__ = "tasks"
+class Activity (BaseModel, db.Model):
+    """Model for Activity table"""
+    __tablename__ = "Activities"
 
     id              = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name            = db.Column(db.String(128), nullable=False)
