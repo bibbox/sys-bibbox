@@ -88,44 +88,7 @@ def seed_db():
         email = 'heimo.mueller@mac.com',
         password_hash = pwd_context.encrypt('vendetta')
     ))
-    db.session.add(User(
-        username = 'admin',
-        email = 'admin@admin.at',
-        password_hash = pwd_context.encrypt('vendetta')
-    ))
-
-
-    ## start of debug-test. remove later
-    try:
-        # testing if activity table works
-        import time
-        from datetime import datetime
-        db.session.add(Activity(
-            name = "test instance.installInstance",
-            type_ = "INSTALLAPP",
-            start_time = datetime.fromtimestamp(time.time() - 100),
-            finished_time = datetime.fromtimestamp(time.time()),
-            state = "FINISHED",
-            result = "SUCCESS"
-        ))
-
-        db.session.add(Log(
-            log_message = "this is test-log-message 1 for Activity/task with id 1",
-            type_ = "INFO",
-            activity_id = 1
-        ))
-
-        db.session.add(Log(
-            log_message = "this is test-log-message 2 for Activity/task with id 1",
-            type_ = "WARNING",
-            activity_id = 1
-        ))
-
-    except Exception as ex:
-        print("Adding Activity/Task entry failed. Reason: {}".format(ex))
-    ## end of debug test
-
-
+    
     db.session.commit()
 
 if __name__ == '__main__':
