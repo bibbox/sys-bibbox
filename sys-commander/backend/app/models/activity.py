@@ -32,11 +32,16 @@ class Activity (BaseModel, db.Model):
     name            = db.Column(db.String(128), nullable=False)
     type_           = db.Column(db.String(20), nullable=False)
     start_time      = db.Column(db.DateTime, nullable=False)
-    finished_time   = db.Column(db.DateTime, nullable=False)
+    finished_time   = db.Column(db.DateTime, nullable=True)
     state           = db.Column(db.String, nullable=False)
-    result          = db.Column(db.String, nullable=False)
+    result          = db.Column(db.String, nullable=True)
 
-    logs            = db.relationship('Log', back_populates='activity', lazy=True, cascade_backrefs=True, cascade="all, delete")
+    logs            = db.relationship(
+                        'Log', 
+                        back_populates='activity', 
+                        lazy=True, 
+                        cascade="all, delete",
+                        passive_deletes=True)
 
     def __init__(self, name, type_, start_time, finished_time, state, result):
         super().__init__()

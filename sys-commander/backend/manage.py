@@ -97,7 +97,7 @@ def seed_db():
 
     ## start of debug-test. remove later
     try:
-        # testing if task table works
+        # testing if activity table works
         import time
         from datetime import datetime
         db.session.add(Activity(
@@ -110,19 +110,19 @@ def seed_db():
         ))
 
         db.session.add(Log(
-            log_message = "this is test-log-message 1 for task with id 1",
+            log_message = "this is test-log-message 1 for Activity/task with id 1",
             type_ = "INFO",
             activity_id = 1
         ))
 
         db.session.add(Log(
-            log_message = "this is test-log-message 2 for task with id 1",
+            log_message = "this is test-log-message 2 for Activity/task with id 1",
             type_ = "WARNING",
             activity_id = 1
         ))
 
     except Exception as ex:
-        print("Adding Task entry failed. Reason: {}".format(ex))
+        print("Adding Activity/Task entry failed. Reason: {}".format(ex))
     ## end of debug test
 
 
