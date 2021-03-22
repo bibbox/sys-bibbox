@@ -20,6 +20,11 @@ class ActivityService(SQLAlchemyService):
         self.parentClassRef = super(ActivityService, self)
 
     def create(self, name, type_):
+        '''
+        Inserts a new 'Activity' entry into the DB.
+        Returns the ID of the newly created Activity.
+        '''
+
         ac = Activity(
             name = name,
             type_ = type_,
@@ -37,9 +42,9 @@ class ActivityService(SQLAlchemyService):
 
 
     def update(self, id, state, result):
-        # Update "state" value, f.e. after finishing activity
-        # load activity with id from db, set state to ____.
-        # commit
+        '''
+        Updates state and/or result property of 'Activity' entry with given ID in DB.
+        '''
 
         activity = db.session \
                         .query(Activity) \

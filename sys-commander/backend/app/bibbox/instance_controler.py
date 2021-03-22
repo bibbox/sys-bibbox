@@ -56,10 +56,10 @@ def installInstance (self, instanceDescr):
 
 
     # activity service for db-stuff with activity entries
-    activity_serv = ActivityService()
+    activity_service = ActivityService()
     
     # create activity entry in db -> returns ID of created entry 
-    activity_id = activity_serv.create(f"Install instance: {instanceDescr['instancename']}", "INSTALL_INSTANCE")
+    activity_id = activity_service.create(f"Install instance: {instanceDescr['instancename']}", "INSTALL_INSTANCE")
 
     # logger service for creating custom logger
     logger_serv = DBLoggerService(activity_id, f"[INSTALL] {instanceDescr['instancename']}")
@@ -78,10 +78,10 @@ def installInstance (self, instanceDescr):
                 simplejson.dump (instanceDescrInTheFile, f)
         except OSError:
             #print ("Creation of the directory %s failed" % path)
-            logger.error("Creation of the directory %s failed" % (instanceDescr['instancename'] + "/instance.json"))
+            logger.error("Creation of the directory {} failed".format(instanceDescr['instancename'] + "/instance.json"))
         else:
             #print ("Successfully created the directory %s " % path)
-            logger.info("Successfully created the directory %s " % (instanceDescr['instancename'] + "/instance.json"))
+            logger.info("Successfully created the directory {}.".format(instanceDescr['instancename'] + "/instance.json"))
     
         # copy all file from the APP repository to the instance Directory
         file_handler.copyAllFilesToInstanceDirectory (instanceDescr)
@@ -102,11 +102,11 @@ def installInstance (self, instanceDescr):
                 f.write ( docker_compose )
         except:
             #print ("ERROR in the generation of the Docker Compose" )
-            logger.error("Creation of the %s docker-compose file failed", (instanceDescr['instancename'] + "/docker-compose.yml"))
+            logger.error("Creation of the {} docker-compose file failed.".format(instanceDescr['instancename'] + "/docker-compose.yml"))
             raise
         else:
             #print ("Successfully created the docker-compose" )
-            logger.info("Successfully created the %s docker-compose file.", (instanceDescr['instancename'] + "/docker-compose.yml"))
+            logger.info("Successfully created the {} docker-compose file.".format(instanceDescr['instancename'] + "/docker-compose.yml"))
 
         # write the proxy file
         try:
@@ -115,11 +115,11 @@ def installInstance (self, instanceDescr):
             instance_handler.generateProxyFile()
         except:
             #print ("ERROR in the generation of the Proxy File" )
-            logger.error("Creation of the %s proxy file failed", ('005-' + instanceDescr['instancename'] + ".conf"))
+            logger.error("Creation of the {} proxy file failed".format('005-' + instanceDescr['instancename'] + ".conf"))
             raise
         else:
             #print ("Successfully created the proxy file" )
-            logger.info("Successfully created the %s proxy file.", ('005-' + instanceDescr['instancename'] + ".conf"))
+            logger.info("Successfully created the {} proxy file.".format('005-' + instanceDescr['instancename'] + ".conf"))
 
         # write the instances.json file
         try:
@@ -202,9 +202,9 @@ def installInstance (self, instanceDescr):
 
     except Exception as ex:
         print(ex)
-        activity_serv.update(activity_id, "ERROR", "FAILURE")
+        activity_service.update(activity_id, "ERROR", "FAILURE")
     else:
-        activity_serv.update(activity_id, "FINISHED", "SUCCESS")
+        activity_service.update(activity_id, "FINISHED", "SUCCESS")
 
 
 @app_celerey.task(bind=True,  name='instance.deleteInstance')
@@ -215,10 +215,10 @@ def deleteInstance (self, instance_name):
     instance_path = fh.INSTANCEPATH + instance_name
 
     # activity service for db-stuff with activity entries
-    activity_serv = ActivityService()
+    activity_service = ActivityService()
     
     # create activity entry in db -> returns ID of created entry 
-    activity_id = activity_serv.create(f"Delete instance: {instance_name}", "DELETE_INSTANCE")
+    activity_id = activity_service.create(f"Delete instance: {instance_name}", "DELETE_INSTANCE")
 
     # logger service for creating custom logger
     logger_serv = DBLoggerService(activity_id, f"[DELETE] {instance_name}")
@@ -230,44 +230,44 @@ def deleteInstance (self, instance_name):
         try:
             stopInstance(instance_name)
         except OSError:
-            print ("Stopping %s containers failed" % instance_name)
-            logger.error("Stopping %s containers failed" % instance_name)
+            print ("Stopping {} containers failed.".format(instance_name))
+            logger.error("Stopping {} containers failed".format(instance_name))
         else:
-            print ("Successfully stopped the %s containers" % instance_name)
-            logger.info("Successfully stopped the %s containers" % instance_name)
+            print ("Successfully stopped the {} containers".format(instance_name))
+            logger.info("Successfully stopped the {} containers".format(instance_name))
 
         try:
             dh.docker_deleteStoppedContainers(instance_name)
         except OSError:
-            print ("Deletion of stopped %s containers failed" % instance_name)
-            logger.error("Deletion of stopped %s containers failed" % instance_name)
+            print ("Deletion of stopped {} containers failed".format(instance_name))
+            logger.error("Deletion of stopped {} containers failed".format(instance_name))
         else:
-            print ("Successfully deleted the %s containers" % instance_name)
-            logger.info("Successfully deleted the %s containers" % instance_name)
+            print ("Successfully deleted the {} containers".format(instance_name))
+            logger.info("Successfully deleted the {} containers".format(instance_name))
         
         try:       
             fh.removeAllFilesInDir(instance_path)
         except OSError:
-            print ("Deletion of the directory %s failed" % instance_path)
-            logger.error("Deletion of the directory %s failed" % instance_path)
+            print ("Deletion of the directory {} failed".format(instance_name))
+            logger.error("Deletion of the directory {} failed".format(instance_name))
         else:
-            print ("Successfully deleted the directory %s " % instance_path)
-            logger.info("Successfully deleted the directory %s " % instance_path)
+            print ("Successfully deleted the directory {} ".format(instance_name))
+            logger.info("Successfully deleted the directory {} ".format(instance_name))
 
 
         try:
             fh.removeProxyConfigFile(instance_name)
         except OSError:
-            print ("Deletion of the proxy file of %s failed" % instance_name)
-            logger.error("Deletion of the proxy file of %s failed" % instance_name)
+            print ("Deletion of the proxy file of {} failed".format(instance_name))
+            logger.error("Deletion of the proxy file of {} failed".format(instance_name))
         else:
-            print ("Successfully deleted the proxy file of %s " % instance_name)
-            logger.info("Successfully deleted the proxy file of %s " % instance_name)
+            print ("Successfully deleted the proxy file of {} ".format(instance_name))
+            logger.info("Successfully deleted the proxy file of {} ".format(instance_name))
     
-        activity_serv.update(activity_id, "FINISHED", "SUCCESS")
+        activity_service.update(activity_id, "FINISHED", "SUCCESS")
 
     except Exception as ex:
-        activity_serv.update(activity_id, "ERROR", "FAILURE")
+        activity_service.update(activity_id, "ERROR", "FAILURE")
     
     
     
