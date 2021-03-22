@@ -52,7 +52,7 @@ class FileHandler():
         fileurl = self.__getBaseUrlRaw (organization, repository, version) + '/' + filename
         self.copyFileFromWeb (fileurl, instancename, destinationfilename)
 
-    def copyAllFilesToInstanceDirectory (self, instanceDescr):
+    def copyAllFilesToInstanceDirectory (self, instanceDescr, logger=None):
 
         instancename = instanceDescr['instancename']
         organization = instanceDescr['app']['organization']
@@ -60,6 +60,8 @@ class FileHandler():
         version    = instanceDescr['app']['version']
 
         for fn in ('docker-compose-template.yml', 'fileinfo.json', 'appinfo.json'):
+            if logger:
+                logger.info("Copying file {} from GitHub.".format(fn))
             self.copyFileFromGithub (organization, repository, version, fn , instancename,  fn)
 
         filename =  self.INSTANCEPATH  + instancename + "/" + 'fileinfo.json'
@@ -69,11 +71,15 @@ class FileHandler():
         for directory_to_copy in fileinfo['makefolders']: 
             dirname =  self.INSTANCEPATH  + instancename + "/" + directory_to_copy
             if not os.path.exists(dirname):
+                if logger:
+                    logger.info("Creating directory: {}".format(dirname))
                 os.makedirs(dirname)
             
         for file_to_copy in fileinfo['copyfiles']:
             source = file_to_copy["source"]
             destination = file_to_copy["destination"]
+            if logger:
+                logger.info("Copying file from {} to {}.".format(source, destination))
             if ('https://' in source or 'http://' in source):
                 self.copyFileFromWeb    (source, instancename,  destination)
             else:

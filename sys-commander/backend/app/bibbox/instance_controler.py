@@ -78,13 +78,13 @@ def installInstance (self, instanceDescr):
                 simplejson.dump (instanceDescrInTheFile, f)
         except OSError:
             #print ("Creation of the directory %s failed" % path)
-            logger.error("Creation of the directory {} failed".format(instanceDescr['instancename'] + "/instance.json"))
+            logger.error("Creation of the directory {} failed.".format(instanceDescr['instancename'] + "/instance.json"))
         else:
             #print ("Successfully created the directory %s " % path)
             logger.info("Successfully created the directory {}.".format(instanceDescr['instancename'] + "/instance.json"))
     
         # copy all file from the APP repository to the instance Directory
-        file_handler.copyAllFilesToInstanceDirectory (instanceDescr)
+        file_handler.copyAllFilesToInstanceDirectory (instanceDescr, logger)
 
         # now we can generate an Instance object
         instance = Instance (instanceDescr['instancename'])
@@ -115,7 +115,7 @@ def installInstance (self, instanceDescr):
             instance_handler.generateProxyFile()
         except:
             #print ("ERROR in the generation of the Proxy File" )
-            logger.error("Creation of the {} proxy file failed".format('005-' + instanceDescr['instancename'] + ".conf"))
+            logger.error("Creation of the {} proxy file failed.".format('005-' + instanceDescr['instancename'] + ".conf"))
             raise
         else:
             #print ("Successfully created the proxy file" )
@@ -126,11 +126,11 @@ def installInstance (self, instanceDescr):
             file_handler.writeInstancesJsonFile()
         except:
             #print (" ERROR in the generation of the instances.json File")
-            logger.error("Creation of the instances.json file failed")
+            logger.error("Creation of the instances.json file failed.")
             raise
         else:
             #print ("Successfully created the instances.json File")
-            logger.info("Successfully created the instances.json file")
+            logger.info("Successfully created the instances.json file.")
 
 
         # testing to update instance json 
@@ -141,6 +141,7 @@ def installInstance (self, instanceDescr):
         # call docker-compose up
         print (compose_file_name)
         # process = subprocess.Popen(['ls', '-la', '/opt/bibbox/instances'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+        logger.info("Running docker-compose up.")
         process = subprocess.Popen(['docker-compose', '-f', compose_file_name, 'up', '-d'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
 
         # TOOO
@@ -182,7 +183,7 @@ def installInstance (self, instanceDescr):
 
         # restart apache
         # TODO make a reload instead a restart
-        logger.info("restarting bibbox-sys-commander-apacheproxy...")
+        logger.info("Restarting bibbox-sys-commander-apacheproxy...")
         process = subprocess.Popen(['docker', 'restart', 'bibbox-sys-commander-apacheproxy'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
         while True:
             line = process.stdout.readline()
@@ -202,8 +203,10 @@ def installInstance (self, instanceDescr):
 
     except Exception as ex:
         print(ex)
+        logger.warn("Installing instance {} failed: {}.".format(instanceDescr['instancename'], ex))
         activity_service.update(activity_id, "ERROR", "FAILURE")
     else:
+        logger.info("Successfully installed instance {}.".format(instanceDescr['instancename']))
         activity_service.update(activity_id, "FINISHED", "SUCCESS")
 
 
@@ -231,16 +234,16 @@ def deleteInstance (self, instance_name):
             stopInstance(instance_name)
         except OSError:
             print ("Stopping {} containers failed.".format(instance_name))
-            logger.error("Stopping {} containers failed".format(instance_name))
+            logger.error("Stopping {} containers failed.".format(instance_name))
         else:
             print ("Successfully stopped the {} containers".format(instance_name))
-            logger.info("Successfully stopped the {} containers".format(instance_name))
+            logger.info("Successfully stopped the {} containers.".format(instance_name))
 
         try:
             dh.docker_deleteStoppedContainers(instance_name)
         except OSError:
-            print ("Deletion of stopped {} containers failed".format(instance_name))
-            logger.error("Deletion of stopped {} containers failed".format(instance_name))
+            print ("Deletion of stopped {} containers failed.".format(instance_name))
+            logger.error("Deletion of stopped {} containers failed.".format(instance_name))
         else:
             print ("Successfully deleted the {} containers".format(instance_name))
             logger.info("Successfully deleted the {} containers".format(instance_name))
@@ -248,27 +251,30 @@ def deleteInstance (self, instance_name):
         try:       
             fh.removeAllFilesInDir(instance_path)
         except OSError:
-            print ("Deletion of the directory {} failed".format(instance_name))
-            logger.error("Deletion of the directory {} failed".format(instance_name))
+            print ("Deletion of the directory {} failed.".format(instance_name))
+            logger.error("Deletion of the directory {} failed.".format(instance_name))
         else:
-            print ("Successfully deleted the directory {} ".format(instance_name))
-            logger.info("Successfully deleted the directory {} ".format(instance_name))
+            print ("Successfully deleted the directory {}.".format(instance_name))
+            logger.info("Successfully deleted the directory {}.".format(instance_name))
 
 
         try:
             fh.removeProxyConfigFile(instance_name)
         except OSError:
-            print ("Deletion of the proxy file of {} failed".format(instance_name))
-            logger.error("Deletion of the proxy file of {} failed".format(instance_name))
+            print ("Deletion of the proxy file of {} failed.".format(instance_name))
+            logger.error("Deletion of the proxy file of {} failed.".format(instance_name))
         else:
-            print ("Successfully deleted the proxy file of {} ".format(instance_name))
-            logger.info("Successfully deleted the proxy file of {} ".format(instance_name))
-    
-        activity_service.update(activity_id, "FINISHED", "SUCCESS")
+            print ("Successfully deleted the proxy file of {}.".format(instance_name))
+            logger.info("Successfully deleted the proxy file of {}.".format(instance_name))
 
     except Exception as ex:
+        logger.warn("Deleting instance {} failed: {}.".format(instance_name, ex))
         activity_service.update(activity_id, "ERROR", "FAILURE")
     
+    else:
+        logger.info("Sucessfully deleted instance {}.".format(instance_name))
+        activity_service.update(activity_id, "FINISHED", "SUCCESS")
+        
     
     
 
