@@ -230,27 +230,7 @@ def deleteInstance (self, instance_name):
     # get custom logger from logger service
     logger = logger_serv.getLogger()
 
-    try:
-        try:
-            stopInstance(instance_name)
-        except OSError as ex:
-            print ("Stopping {} containers failed. Exception: {}".format(instance_name, ex))
-            logger.error("Stopping {} containers failed. Exception: {}".format(instance_name, ex))
-            raise
-        else:
-            print ("Successfully stopped the {} containers".format(instance_name))
-            logger.info("Successfully stopped the {} containers.".format(instance_name))
-
-        try:
-            dh.docker_deleteStoppedContainers(instance_name)
-        except OSError as ex:
-            print ("Deletion of stopped {} containers failed. Exception: {}".format(instance_name, ex))
-            logger.error("Deletion of stopped {} containers failed. Exception: {}".format(instance_name, ex))
-            raise
-        else:
-            print ("Successfully deleted the {} containers".format(instance_name))
-            logger.info("Successfully deleted the {} containers".format(instance_name))
-        
+    try:                
         try:       
             fh.removeAllFilesInDir(instance_path)
         except OSError as ex:
@@ -272,15 +252,37 @@ def deleteInstance (self, instance_name):
             print ("Successfully deleted the proxy file of {}.".format(instance_name))
             logger.info("Successfully deleted the proxy file of {}.".format(instance_name))
 
+
+        try:
+            stopInstance(instance_name)
+        except OSError as ex:
+            print ("Stopping {} containers failed. Exception: {}".format(instance_name, ex))
+            logger.error("Stopping {} containers failed. Exception: {}".format(instance_name, ex))
+            raise
+        else:
+            print ("Successfully stopped the {} containers".format(instance_name))
+            logger.info("Successfully stopped the {} containers.".format(instance_name))
+
+
+        try:
+            dh.docker_deleteStoppedContainers(instance_name)
+        except OSError as ex:
+            print ("Deletion of stopped {} containers failed. Exception: {}".format(instance_name, ex))
+            logger.error("Deletion of stopped {} containers failed. Exception: {}".format(instance_name, ex))
+            raise
+        else:
+            print ("Successfully deleted the {} containers".format(instance_name))
+            logger.info("Successfully deleted the {} containers".format(instance_name))
+
+
     except Exception as ex:
-        logger.warn("Deleting instance {} failed: {}.".format(instance_name, ex))
+        logger.error("Deleting instance {} failed: {}.".format(instance_name, ex))
         activity_service.update(activity_id, "ERROR", "FAILURE")
     
     else:
         logger.info("Sucessfully deleted instance {}.".format(instance_name))
         activity_service.update(activity_id, "FINISHED", "SUCCESS")
         
-    
     
 
 # TODO

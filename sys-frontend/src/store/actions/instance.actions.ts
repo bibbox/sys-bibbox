@@ -6,8 +6,11 @@ export enum InstanceActionTypes {
   LOAD_INSTANCES_SUCCESS = '[INSTANCE] Load Instance Success',
   LOAD_INSTANCES_FAILURE = '[INSTANCE] Load Instance Failure',
   ADD_INSTANCE = '[INSTANCE] Add Instance',
-  // ADD_INSTANCE_SUCCESS = '[INSTANCE] Add Instance Success',
-  // ADD_INSTANCE_FAILURE = '[INSTANCE] Add Instance Failure',
+  ADD_INSTANCE_SUCCESS = '[INSTANCE] Add Instance Success',
+  ADD_INSTANCE_FAILURE = '[INSTANCE] Add Instance Failure',
+  DELETE_INSTANCE = '[INSTANCE] Delete Instance',
+  DELETE_INSTANCE_SUCCESS = '[INSTANCE] Delete Instance Success',
+  DELETE_INSTANCE_FAILURE = '[INSTANCE] Delete Instance Failure'
 }
 
 export class LoadInstanceAction implements Action {
