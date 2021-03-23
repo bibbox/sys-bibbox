@@ -1,0 +1,86 @@
+.application-group-item {
+  padding: 15px 10px 10px 10px;
+  text-align: center;
+  width: 150px;
+  float: left;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+  color: rgb(85, 95, 125);
+  border-radius: 0 10px;
+  margin: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  position: relative;
+
+  .name {
+    float: left;
+    width: 100%;
+    height: 50px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-bottom: solid 1px rgb(85, 95, 125);
+    transition: border 0.2s ease-in-out;
+    -webkit-transition: border 0.2s ease-in-out
+  }
+
+  .description {
+    text-align: left;
+    font-size: 13px;
+    width: 100%;
+    display: inline-block;
+    color: #666;
+    transition: color 0.2s ease-in-out;
+    -webkit-transition: color 0.2s ease-in-out
+  }
+
+  .decoration {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 80px
+  }
+
+  img {
+    width: 100%;
+    height: auto
+  }
+
+  .character, .icon {
+    font-size: 35px;
+    float: left;
+    width: 100%;
+    margin-bottom: 10px
+  }
+
+  img {
+    width: 90px;
+    height: 90px
+  }
+}
+
+
+.application-group-item:hover {
+  color: white;
+  background: #6496b4
+}
+
+.application-group-item.highlight .name,
+.application-group-item:hover .name {
+  border-bottom: solid 1px white
+}
+
+.application-group-item.highlight .description,
+.application-group-item:hover .description {
+  color: white
+}
+
+.application-group-item.highlight .tag,
+.application-group-item:hover .tag {
+  color: white;
+  background: rgba(255, 255, 255, 0.2)
+}
+
+.application-group-item:hover .tag:hover{
+  background: rgba(0, 0, 0, 0.9)
+}

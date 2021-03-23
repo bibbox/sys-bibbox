@@ -1,0 +1,35 @@
+<mat-card>
+  <mat-card-title>
+    {{instance.displayname}}
+  </mat-card-title>
+  <mat-card-subtitle>
+    {{ instance.instancename}}
+  </mat-card-subtitle>
+  <mat-card-content>
+    <span *ngIf="instance.short_description">{{instance.short_description}}</span>
+    <!--         <img src="{{store}}" alt="404" class="application-icon">-->
+    <!--          {{instance.state}}-->
+    <!--          <span *ngFor="let entry of instance.proxy">-->
+    <!--            <br/> new proxy entry:-->
+    <!--            {{entry.DISPLAYNAME}}-->
+    <!--            {{entry.TYPE}}-->
+    <!--            {{entry.TEMPLATE}}-->
+    <!--          </span>-->
+  </mat-card-content>
+  <mat-card-actions class="mat-card-action-buttons">
+    <a [routerLink]="'/instances/'+instance.instancename">
+      <button mat-button matTooltip="Dashboard">
+        <span class="fas fa-cog"></span>
+      </button>
+    </a>
+    <button mat-button matTooltip="Logs">
+      <span class="fas fa-book"></span>
+    </button>
+<!--    <button mat-button matTooltip="Info">-->
+<!--      <span class="fas fa-info"></span>-->
+<!--    </button>-->
+    <button mat-button matTooltip="Open">
+      <span class="fas fa-power-off"></span>
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,74 @@
+@import '../../../styles-variables';
+@import "src/styles.scss";
+
+
+#applications {
+  display: flex;
+  flex-flow: row wrap;
+
+  #applications-results {
+    display: flex;
+    flex-flow: row wrap;
+    padding: 0 10px;
+    border-left: solid 1px #CCC
+  }
+}
+
+
+@media only screen and (max-width: 600px) {
+  #app-filter #tagger {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  #applications {
+    #tagger {
+      width: 100%
+    }
+
+    .facet-wrapper{
+      width: 100%;
+      padding: 0 10px
+    }
+
+    .facet-title{
+      padding: 0
+    }
+
+    #applications-results{
+      float: left;
+      width: 100%;
+      margin-top: 30px;
+      display: inline-block;
+      border-left: 0;
+      padding: 0
+    }
+  }
+
+  .overlay-content-title{
+    width: 100%
+  }
+
+  .overlay-content-controls{
+    float: left;
+    width: auto;
+    margin-top: 15px
+  }
+
+  .overlay-content-left,
+  .overlay-content-right{
+    float: left;
+    width: 100%
+  }
+
+  .overlay-content-right{
+    margin-top: 25px
+  }
+
+  .overlay-content-left{
+    > span {
+      width: 100%;
+      margin-right: 0
+    }
+  }
+}

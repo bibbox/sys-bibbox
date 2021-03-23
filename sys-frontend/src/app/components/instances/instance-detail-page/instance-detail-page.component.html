@@ -1,0 +1,66 @@
+
+<!--<div *ngIf="{{detailScreen}} == 'dashboard'"> dashboard </div>-->
+<!--<div *ngIf="{{detailScreen}} == 'logs'"> logs </div>-->
+<!--<div *ngIf="{{detailScreen}} == 'info'"> info </div>-->
+
+<mat-tab-group animationDuration="0ms" mat-align-tabs="center">
+  <mat-tab label="Dashboard">
+    Instance Name: {{ instance.instancename } } <br/> App: instance.app.name <br/> Version: instance.app.version
+
+    <!-- GitHub Repo, Install Instructions -->
+    Containers: for entry in instance.proxy --> instance.proxy.CONTAINER <br/>
+    Instance: instancepath? <br/>
+    proxy: proxypath? <br/>
+
+    <mat-grid-list cols="2" rowHeight="100px">
+      <mat-grid-tile>
+        <h3>Instance-Name</h3>
+        instance.instancename
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <h3>Display-Name</h3>
+        instance.displayname
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <div class="form-group">
+      <label for="ShortDescriptionTextarea">Short Description</label>
+      <textarea class="form-control" id="ShortDescriptionTextarea" rows="5"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="LongDescriptionTextArea">Long Description</label>
+      <textarea class="form-control" id="LongDescriptionTextArea" rows="5"></textarea>
+    </div>
+    <button> Save </button>
+  </mat-tab>
+
+
+  <mat-tab label="Logs">
+    <mat-grid-list cols="1" rowHeight="50px">
+      <div *ngFor="let docker_container of [1, 2, 3]"> <!-- instance.proxy -->
+        <mat-grid-tile class="app-log-item">
+          a
+        </mat-grid-tile>
+      </div>
+      <mat-grid-tile  class="app-log-item">
+        <mat-list>
+          <mat-list-item>
+            <label for="log-container-install">Install</label>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-card id="log-container-install">
+              <mat-card-content>
+                INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
+                INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
+                INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
+                INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
+                INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
+              </mat-card-content>
+            </mat-card>
+          </mat-list-item>
+        </mat-list>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-tab>
+</mat-tab-group>
