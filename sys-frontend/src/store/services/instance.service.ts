@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {InstanceItem} from '../models/instance-item.model';
 import {Store} from '@ngrx/store';
 import {AddInstanceAction} from '../actions/instance.actions';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,33 @@ import {AddInstanceAction} from '../actions/instance.actions';
 export class InstanceService {
 
   instanceItems: InstanceItem[];
+
   constructor(
     private http: HttpClient,
     private store: Store<{AppState}>) { }
 
-  getAllInstances(): void {
-    this.http.get(API_INSTANCES_URL)
-      .subscribe((instanceItems: InstanceItem[]) => {
-        this.instanceItems = instanceItems;
-        this.storeRetrievedInstances();
-      });
+  loadInstances(): Observable<InstanceItem[]>{
+    return this.http.get<InstanceItem[]>(API_INSTANCES_URL);
+      // .subscribe((instanceItems: InstanceItem[]) => {
+      //   this.instanceItems = instanceItems;
+      //   this.storeRetrievedInstances();
+      // });
+  }
+
+  // addInstance(instanceName: string, payload:  ): void {
+  //   this.http.post<InstanceItem>(API_INSTANCES_URL + instanceName);
+  //
+  // }
+
+  deleteInstance(instanceName: string): any {
+    return this.http.delete(`${API_INSTANCES_URL}/${instanceName}`)
+      .pipe(
+        // TODO
+      );
+  }
+
+  updateInstanceDescription(): any {
+
   }
 
   storeRetrievedInstances(): void {

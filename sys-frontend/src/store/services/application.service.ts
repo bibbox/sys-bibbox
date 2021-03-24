@@ -15,7 +15,7 @@ export class ApplicationService {
     private http: HttpClient,
     private store: Store<{AppState}>) { }
 
-  getAllApplications(): void {
+  loadApplications(): void {
     this.http.get(API_APPLICATIONS_URL)
       .subscribe((applicationsGroups: ApplicationGroupItem[]) => {
         this.applicationsGroups = applicationsGroups;

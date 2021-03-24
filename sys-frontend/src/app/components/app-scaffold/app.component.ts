@@ -20,7 +20,7 @@ export class AppComponent implements OnInit{
     private readonly applicationService: ApplicationService) { }
 
   ngOnInit(): void {
-    this.instanceService.getAllInstances();
-    this.applicationService.getAllApplications();
+    this.instanceService.loadInstances();
+    this.applicationService.loadApplications();
   }
 }

@@ -13,17 +13,17 @@ export enum InstanceActionTypes {
   DELETE_INSTANCE_FAILURE = '[INSTANCE] Delete Instance Failure'
 }
 
-export class LoadInstanceAction implements Action {
+export class LoadInstancesAction implements Action {
   readonly type = InstanceActionTypes.LOAD_INSTANCES;
 }
 
-export class LoadInstanceSuccessAction implements Action {
+export class LoadInstancesSuccessAction implements Action {
   readonly type = InstanceActionTypes.LOAD_INSTANCES_SUCCESS;
 
   constructor(public payload: Array<InstanceItem>) {}
 }
 
-export class LoadInstanceFailureAction implements Action {
+export class LoadInstancesFailureAction implements Action {
   readonly type = InstanceActionTypes.LOAD_INSTANCES_FAILURE;
 
   constructor(public payload: Error) {}
@@ -35,8 +35,45 @@ export class AddInstanceAction implements Action {
   constructor(public payload: InstanceItem) {}
 }
 
+export class AddInstanceSuccessAction implements Action {
+  readonly type = InstanceActionTypes.ADD_INSTANCE_SUCCESS;
+
+  constructor(public payload: InstanceItem) {}
+}
+
+export class AddInstanceFailureAction implements Action {
+  readonly type = InstanceActionTypes.ADD_INSTANCE_FAILURE;
+
+  constructor(public payload: Error) {}
+}
+
+export class DeleteInstanceAction implements Action {
+  readonly type = InstanceActionTypes.DELETE_INSTANCE;
+
+  constructor(public payload: string) {}
+}
+
+export class DeleteInstanceSuccessAction implements Action {
+  readonly type = InstanceActionTypes.DELETE_INSTANCE_SUCCESS;
+
+  constructor(public payload: string) {}
+}
+
+export class DeleteInstanceFailureAction implements Action {
+  readonly type = InstanceActionTypes.DELETE_INSTANCE_FAILURE;
+
+  constructor(public payload: Error) {}
+}
+
+
+
 export type InstanceAction =
-  LoadInstanceAction
-  | LoadInstanceSuccessAction
-  | LoadInstanceFailureAction
-  | AddInstanceAction; // | DeleteInstanceAction | ...
+  LoadInstancesAction
+  | LoadInstancesSuccessAction
+  | LoadInstancesFailureAction
+  | AddInstanceAction
+  | AddInstanceSuccessAction
+  | AddInstanceFailureAction
+  | DeleteInstanceAction
+  | DeleteInstanceSuccessAction
+  | DeleteInstanceFailureAction;

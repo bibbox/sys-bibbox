@@ -1,16 +1,75 @@
 import {InstanceItem} from '../models/instance-item.model';
 import {InstanceAction, InstanceActionTypes} from '../actions/instance.actions';
 
-const initialState: Array<InstanceItem> = [];
+export interface InstanceState {
+  list: InstanceItem[];
+  loading: boolean;
+  error: Error;
+}
+
+const initialState: InstanceState = {
+  list: [],
+  loading: false,
+  error: undefined
+};
 
 export function InstanceReducer(
-  state: Array<InstanceItem> = initialState,
+  state: InstanceState = initialState,
   action: InstanceAction
 ): any {
   switch (action.type) {
+    case InstanceActionTypes.LOAD_INSTANCES:
+      return {
+        ...state,
+        loading: true
+      };
+    case InstanceActionTypes.LOAD_INSTANCES_SUCCESS:
+      return {
+        ...state,
+        list: action.payload,
+        loading: false
+      };
+    case InstanceActionTypes.LOAD_INSTANCES_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false
+      };
     case InstanceActionTypes.ADD_INSTANCE:
-      return [...state, action.payload];
+      return {
+        ...state,
+        loading: true
+      };
+    case InstanceActionTypes.ADD_INSTANCE_SUCCESS:
+      return {
+        ...state,
+        list: [...state.list, action.payload],
+        loading: false
+      };
+    case InstanceActionTypes.ADD_INSTANCE_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false
+      };
+    case InstanceActionTypes.DELETE_INSTANCE:
+      return {
+        ...state,
+        loading: true
+      };
+    case InstanceActionTypes.DELETE_INSTANCE_SUCCESS:
+      return {
+        ...state,
+        list: state.list.filter(item => item.instancename !== action.payload),
+        loading: false
+      };
+    case InstanceActionTypes.DELETE_INSTANCE_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false
+      };
     default:
-      return [...state];
+      return {...state};
   }
 }
