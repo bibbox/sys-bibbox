@@ -41,7 +41,7 @@ class Activity (BaseModel, db.Model):
                         back_populates='activity', 
                         lazy=True, 
                         cascade="all, delete",
-                        passive_deletes=True)
+                        passive_deletes=False)
 
     def __init__(self, name, type_, start_time, finished_time, state, result):
         super().__init__()
