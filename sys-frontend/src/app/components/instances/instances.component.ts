@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable} from 'rxjs';
-import {InstanceItem} from '../../../store/models/instance-item.model';
+import {InstanceItem} from '../../store/models/instance-item.model';
 import {Store} from '@ngrx/store';
 
 @Component({

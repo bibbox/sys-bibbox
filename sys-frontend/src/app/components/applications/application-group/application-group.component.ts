@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ApplicationGroupItem} from '../../../../store/models/application-group-item.model';
+import {ApplicationGroupItem} from '../../../store/models/application-group-item.model';
 
 @Component({
   selector: 'app-application-group',

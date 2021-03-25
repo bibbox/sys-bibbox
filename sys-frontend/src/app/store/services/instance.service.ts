@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {API_INSTANCES_URL} from '../../app/commons';
+import {API_INSTANCES_URL} from '../../commons';
 import {HttpClient} from '@angular/common/http';
 import {InstanceItem} from '../models/instance-item.model';
 import {Store} from '@ngrx/store';
@@ -25,12 +25,11 @@ export class InstanceService {
       // });
   }
 
-  // addInstance(instanceName: string, payload:  ): void {
-  //   this.http.post<InstanceItem>(API_INSTANCES_URL + instanceName);
-  //
-  // }
+  addInstance(instanceName: string, payload: JSON): Observable<InstanceItem> {
+    return this.http.post<InstanceItem>(API_INSTANCES_URL + instanceName, payload);
+  }
 
-  deleteInstance(instanceName: string): any {
+  deleteInstance(instanceName: string): Observable<any> {
     return this.http.delete(`${API_INSTANCES_URL}/${instanceName}`)
       .pipe(
         // TODO

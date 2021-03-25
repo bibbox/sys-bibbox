@@ -21,8 +21,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import {FormsModule} from '@angular/forms';
-import {ApplicationGroupReducer} from '../store/reducers/application.reducer';
-import {InstanceReducer} from '../store/reducers/instance.reducer';
+import {ApplicationGroupReducer} from './store/reducers/application.reducer';
+import {InstanceReducer} from './store/reducers/instance.reducer';
 import {HttpClientModule} from '@angular/common/http';
 import {MatCardModule} from '@angular/material/card';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
@@ -36,6 +36,8 @@ import {MatListModule} from '@angular/material/list';
 import { ApplicationGroupComponent } from './components/applications/application-group/application-group.component';
 import {ApplicationTileComponent} from './components/applications/application-group/application-tile/application-tile.component';
 import { InstanceTileComponent } from './components/instances/instance-tile/instance-tile.component';
+import {EffectsModule} from '@ngrx/effects';
+import {InstanceEffects} from './store/effects/instance.effects';
 
 
 @NgModule({
@@ -86,6 +88,7 @@ import { InstanceTileComponent } from './components/instances/instance-tile/inst
       instances: InstanceReducer,
       applications: ApplicationGroupReducer,
     }),
+    EffectsModule.forRoot([InstanceEffects]),
     StoreDevtoolsModule.instrument({maxAge: 25}),
     MatTabsModule,
 

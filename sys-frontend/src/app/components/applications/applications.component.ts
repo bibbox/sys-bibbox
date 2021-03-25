@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ApplicationGroupItem} from '../../../store/models/application-group-item.model';
+import {ApplicationGroupItem} from '../../store/models/application-group-item.model';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 

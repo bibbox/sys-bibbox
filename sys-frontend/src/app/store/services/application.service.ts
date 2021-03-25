@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Store} from '@ngrx/store';
 import {ApplicationGroupItem} from '../models/application-group-item.model';
-import {API_APPLICATIONS_URL} from '../../app/commons';
+import {API_APPLICATIONS_URL} from '../../commons';
 import {AddApplicationGroupAction} from '../actions/applications.actions';
 
 @Injectable({

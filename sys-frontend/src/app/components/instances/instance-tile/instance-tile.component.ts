@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {InstanceItem} from '../../../../store/models/instance-item.model';
+import {InstanceItem} from '../../../store/models/instance-item.model';
 
 @Component({
   selector: 'app-instance-tile',

@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {APP_TITLE_LONG} from '../../commons';
 import {HttpClient} from '@angular/common/http';
 import {Store} from '@ngrx/store';
-import {InstanceService} from '../../../store/services/instance.service';
-import {ApplicationService} from '../../../store/services/application.service';
+import {InstanceService} from '../../store/services/instance.service';
+import {ApplicationService} from '../../store/services/application.service';
 
 @Component({
   selector: 'app-root',
