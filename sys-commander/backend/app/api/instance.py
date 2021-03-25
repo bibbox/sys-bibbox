@@ -110,7 +110,6 @@ class Instance(Resource):
                 "id": jobID
                 },
              "instance" :  instanceToBeDeleted,
-             "status": "PLACEHOLDER"        
         }
 
         deleteInstance.delay(instancename)

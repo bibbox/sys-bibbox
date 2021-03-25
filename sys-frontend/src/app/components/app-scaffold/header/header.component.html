@@ -1,0 +1,14 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <div class="branding">
+      <img [src]="[logoPath]" [alt]="[logoPath]" class="mat-icon-no-color example-icon navbar-icon"/>
+      <span> | {{title}}</span>
+    </div>
+    <span class="menu-spacer"></span>
+    <div class="nav-buttons">
+      <button mat-button *ngFor="let item of navigation" [routerLink]="[item.link]" routerLinkActive="active">
+        {{item.label}}
+      </button>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

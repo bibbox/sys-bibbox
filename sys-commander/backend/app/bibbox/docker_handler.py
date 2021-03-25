@@ -17,6 +17,7 @@ class DockerHandler():
         self.__stopContainers(app_containers)
 
 
+    # TODO: docker-compose stop
     def docker_stopInstance(self, instance_name):
         instance_containers = []
         for container in self.client.containers.list():
@@ -33,7 +34,7 @@ class DockerHandler():
         print("Removing stopped containers...")
         removed = self.client.containers.prune()
         if removed['ContainersDeleted']:
-            print("Removed containers: {}".format([x for x in removed['ContainersDeleted']]))
+            print("Removed containers: {}".format([container_id for container_id in removed['ContainersDeleted']]))
         else:
             print("No containers to remove.")
 
@@ -41,7 +42,6 @@ class DockerHandler():
     # TODO
     def docker_getContainerLogs(self, container_name):
         pass
-
 
     def docker_deleteStoppedContainers(self, instance_name):
         removed = self.client.containers.prune(filters={"label":["com.docker.compose.project={}".format(instance_name)]})

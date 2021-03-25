@@ -10,7 +10,6 @@ from flask_script import Manager
 from backend.app import db, create_app
 from backend.app.models.user  import User
 from backend.app.models.app  import BibboxApp
-from backend.app.models.task import Task
 
 from passlib.apps import custom_app_context as pwd_context
 
@@ -87,27 +86,7 @@ def seed_db():
         email = 'heimo.mueller@mac.com',
         password_hash = pwd_context.encrypt('vendetta')
     ))
-    db.session.add(User(
-        username = 'admin',
-        email = 'admin@admin.at',
-        password_hash = pwd_context.encrypt('vendetta')
-    ))
-
-    try:
-        # testing if task table works
-        import time
-        from datetime import datetime
-        db.session.add(Task(
-            name = "test instance.installInstance",
-            type_ = "INSTALLAPP",
-            start_time = datetime.fromtimestamp(time.time() - 100),
-            finished_time = datetime.fromtimestamp(time.time()),
-            state = "FINISHED",
-            result = "SUCCESS"
-        ))
-    except Exception as ex:
-        print("Adding Task entry failed. Reason: {}".format(ex))
-
+    
     db.session.commit()
 
 if __name__ == '__main__':
