@@ -1,7 +1,7 @@
-import {InstanceItem} from './instance-item.model';
-import {ApplicationGroupItem} from './application-group-item.model';
+import {InstanceState} from '../reducers/instance.reducer';
+import {ApplicationGroupState} from '../reducers/application.reducer';
 
 export interface AppState {
-  readonly instance: Array<InstanceItem>;
-  readonly applications: Array<ApplicationGroupItem>;
+  readonly instances: InstanceState;
+  readonly applications: ApplicationGroupState;
 }

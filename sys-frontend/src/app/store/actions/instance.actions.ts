@@ -3,8 +3,8 @@ import {InstanceItem} from '../models/instance-item.model';
 
 export enum InstanceActionTypes {
   LOAD_INSTANCES = '[INSTANCE] Load Instances',
-  LOAD_INSTANCES_SUCCESS = '[INSTANCE] Load Instance Success',
-  LOAD_INSTANCES_FAILURE = '[INSTANCE] Load Instance Failure',
+  LOAD_INSTANCES_SUCCESS = '[INSTANCE] Load Instances Success',
+  LOAD_INSTANCES_FAILURE = '[INSTANCE] Load Instances Failure',
   ADD_INSTANCE = '[INSTANCE] Add Instance',
   ADD_INSTANCE_SUCCESS = '[INSTANCE] Add Instance Success',
   ADD_INSTANCE_FAILURE = '[INSTANCE] Add Instance Failure',

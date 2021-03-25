@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Store} from '@ngrx/store';
 import {ApplicationGroupItem} from '../models/application-group-item.model';
 import {API_APPLICATIONS_URL} from '../../commons';
-import {AddApplicationGroupAction} from '../actions/applications.actions';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +15,8 @@ export class ApplicationService {
     private http: HttpClient,
     private store: Store<{AppState}>) { }
 
-  loadApplications(): void {
-    this.http.get(API_APPLICATIONS_URL)
-      .subscribe((applicationsGroups: ApplicationGroupItem[]) => {
-        this.applicationsGroups = applicationsGroups;
-        this.storeRetrievedApplications();
-      });
-  }
-
-  storeRetrievedApplications(): void {
-    console.log(this.applicationsGroups); // TODO: Remove in production
-    for (const applicationGroup of this.applicationsGroups) {
-      this.store.dispatch(new AddApplicationGroupAction(applicationGroup));
-    }
+  loadApplications(): Observable<ApplicationGroupItem[]> {
+    return this.http.get<ApplicationGroupItem[]>(API_APPLICATIONS_URL);
   }
 
 }

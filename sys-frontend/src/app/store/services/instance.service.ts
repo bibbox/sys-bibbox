@@ -3,7 +3,6 @@ import {API_INSTANCES_URL} from '../../commons';
 import {HttpClient} from '@angular/common/http';
 import {InstanceItem} from '../models/instance-item.model';
 import {Store} from '@ngrx/store';
-import {AddInstanceAction} from '../actions/instance.actions';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -19,10 +18,6 @@ export class InstanceService {
 
   loadInstances(): Observable<InstanceItem[]>{
     return this.http.get<InstanceItem[]>(API_INSTANCES_URL);
-      // .subscribe((instanceItems: InstanceItem[]) => {
-      //   this.instanceItems = instanceItems;
-      //   this.storeRetrievedInstances();
-      // });
   }
 
   addInstance(instanceName: string, payload: JSON): Observable<InstanceItem> {
@@ -40,12 +35,6 @@ export class InstanceService {
 
   }
 
-  storeRetrievedInstances(): void {
-    console.log(this.instanceItems); // TODO: Remove in production
-    for (const instance of this.instanceItems) {
-      this.store.dispatch(new AddInstanceAction(instance));
-    }
-  }
 
   // getInstanceByID() {
   // }

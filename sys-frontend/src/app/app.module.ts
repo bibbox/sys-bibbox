@@ -38,6 +38,7 @@ import {ApplicationTileComponent} from './components/applications/application-gr
 import { InstanceTileComponent } from './components/instances/instance-tile/instance-tile.component';
 import {EffectsModule} from '@ngrx/effects';
 import {InstanceEffects} from './store/effects/instance.effects';
+import {ApplicationsEffects} from './store/effects/applications.effects';
 
 
 @NgModule({
@@ -88,7 +89,7 @@ import {InstanceEffects} from './store/effects/instance.effects';
       instances: InstanceReducer,
       applications: ApplicationGroupReducer,
     }),
-    EffectsModule.forRoot([InstanceEffects]),
+    EffectsModule.forRoot([InstanceEffects, ApplicationsEffects]),
     StoreDevtoolsModule.instrument({maxAge: 25}),
     MatTabsModule,
 

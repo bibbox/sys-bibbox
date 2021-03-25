@@ -5,8 +5,10 @@
     </div>
   </div>
   <div class="row-align-items-end">
-    <div *ngFor="let instance of instanceItems$ | async" class="col-md-1 col-lg-4" >
-      <app-instance-tile [instance]="instance"></app-instance-tile>
+    <div *ngIf="(instanceItems$ | async)">
+      <div *ngFor="let instance of instanceItems$ | async" class="col-md-1 col-lg-4" >
+        <app-instance-tile [instance]="instance"></app-instance-tile>
+      </div>
     </div>
   </div>
 </div>
