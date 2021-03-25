@@ -41,6 +41,9 @@ class DBLoggerService():
         MAX_BYTES = 100000 # Maximum size for a log file
         BACKUP_COUNT = 3 # Maximum number of old log files
         RELATIVE_LOG_PATH = '../../logs/'
+        # TODO: Move to /var/log/bibbox/
+        # - mount folder into bibbox-sys-commander-backend container
+
         log_format = logging.Formatter('[%(levelname)s] %(asctime)s - %(message)s')
 
         debug_file_handler = RotatingFileHandler(os.path.join(os.path.dirname(os.path.realpath(__file__)), RELATIVE_LOG_PATH + 'debug.log'), maxBytes=MAX_BYTES, backupCount=BACKUP_COUNT)
