@@ -18,4 +18,7 @@ export class InstanceDetailPageComponent implements OnInit {
     // this.instance$ = this.store.select(store => store.instances.list.filter(instanceName => 'wptest02'));
   }
 
+  log(message: string): void {
+    console.log(message);
+  }
 }
