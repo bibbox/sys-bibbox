@@ -156,6 +156,23 @@ class FileHandler():
         except IOError as ex:
             print(ex + " Error occurred while trying to update proxy infos in instance.json file.")
 
+    def updateInstanceJsonDescription (self, instance_name, short_description=None, long_description=None):
+        # read content from file
+        content = self.__readJsonFile(self.INSTANCEPATH + instance_name + "/instance.json")
+
+        if short_description:
+           content['short_description'] = short_description
+        if long_description:
+            content['long_description'] = long_description
+    
+        # write updated content to instance.json file
+        try:     
+            with open(self.INSTANCEPATH + instance_name + '/instance.json', 'w+') as f:
+                f.truncate(0)
+                f.write (json.dumps(content))
+        except IOError as ex:
+            print(ex + " Error occurred while trying to update state in instance.json file.")
+
 
     def writeInstancesJsonFile (self):
         content = []

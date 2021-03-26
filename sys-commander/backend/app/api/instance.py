@@ -117,3 +117,24 @@ class Instance(Resource):
 
 
         return message, 202    
+
+    # def patch(self, id):
+        
+        # instance_name = id
+        # payload = request.json
+
+        # jobID = 27
+        # jobURL = "api/v1/activities/27"
+
+        # instanceToBeUpdated = fh.getInstanceJSONContent(instance_name)
+        # message = {
+        #     "task": {
+        #         "href": jobURL,
+        #         "id": jobID
+        #         },
+        #     "instance" :  instanceToBeUpdated,
+        # }
+
+        # #updateInstanceDescription.delay(instance_name, payload)
+
+        # return message, 202

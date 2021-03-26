@@ -43,6 +43,38 @@ def startInstance (self, instanceName):
 def copyInstance (self, instanceNameSrc, instanceNameDest):
     pass
 
+@app_celerey.task(bind=True,  name='instance.updateInstanceDescription')
+def updateInstanceDescription (self, instanceName, payload):
+
+     # activity service for db-stuff with activity entries
+    activity_service = ActivityService()
+    
+    # create activity entry in db -> returns ID of created entry 
+    activity_id = activity_service.create(f"Update instance: {instanceName}", "UPDATE_INSTANCE_DESCRIPTION")
+
+    # logger service for creating custom logger
+    logger_serv = DBLoggerService(activity_id, f"[UPDATE DESCRIPTION] {instanceName}")
+    logger = logger_serv.getLogger()
+
+    if 'short_description' in payload:
+        short_description = payload['short_description']
+    else:
+        short_description = None
+
+
+    if 'long_description' in payload:
+        long_description = payload['long_description']
+    else:
+        long_description = None
+    
+    fh = FileHandler()
+    try:
+        fh.updateInstanceJsonDescription(instanceName, short_description, long_description)
+    except Exception as ex:
+        logger.error(f"Updating instance.json file of instance {instanceName} failed. Exception: {ex}.")
+    else:
+        logger.info(f"Successfully updated instance.json of instance {instanceName}.")
+
 @app_celerey.task(bind=True,  name='instance.installInstance')
 def installInstance (self, instanceDescr):
     path = INSTANCEPATH + instanceDescr['instancename']

@@ -38,27 +38,27 @@ class DBLoggerService():
         return self.logger
 
     def _configLogger(self):
-        MAX_BYTES = 100000 # Maximum size for a log file
+        MAX_BYTES = 5000000 # Maximum size for a log file
         BACKUP_COUNT = 3 # Maximum number of old log files
-        RELATIVE_LOG_PATH = '../../logs/'
+        
         # TODO: Move to /var/log/bibbox/
         # - mount folder into bibbox-sys-commander-backend container
 
         log_format = logging.Formatter('[%(levelname)s] %(asctime)s - %(message)s')
 
-        debug_file_handler = RotatingFileHandler(os.path.join(os.path.dirname(os.path.realpath(__file__)), RELATIVE_LOG_PATH + 'debug.log'), maxBytes=MAX_BYTES, backupCount=BACKUP_COUNT)
+        debug_file_handler = RotatingFileHandler(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../../logs/debug.log'), maxBytes=MAX_BYTES, backupCount=BACKUP_COUNT)
         debug_file_handler.setFormatter(log_format)
         debug_file_handler.setLevel(logging.DEBUG)
 
-        info_file_handler = RotatingFileHandler(os.path.join(os.path.dirname(os.path.realpath(__file__)),  RELATIVE_LOG_PATH + 'info.log'), maxBytes=MAX_BYTES, backupCount=BACKUP_COUNT)
+        info_file_handler = RotatingFileHandler(os.path.join(os.path.dirname(os.path.realpath(__file__)),  '../../logs/info.log'), maxBytes=MAX_BYTES, backupCount=BACKUP_COUNT)
         info_file_handler.setFormatter(log_format)
         info_file_handler.setLevel(logging.INFO)
 
-        warn_file_handler = RotatingFileHandler(os.path.join(os.path.dirname(os.path.realpath(__file__)),  RELATIVE_LOG_PATH + 'warning.log'), maxBytes=MAX_BYTES, backupCount=BACKUP_COUNT)
+        warn_file_handler = RotatingFileHandler(os.path.join(os.path.dirname(os.path.realpath(__file__)),  '../../logs/warning.log'), maxBytes=MAX_BYTES, backupCount=BACKUP_COUNT)
         warn_file_handler.setFormatter(log_format)
         warn_file_handler.setLevel(logging.WARNING)
         
-        error_file_handler = RotatingFileHandler(os.path.join(os.path.dirname(os.path.realpath(__file__)), RELATIVE_LOG_PATH + 'error.log'), maxBytes=MAX_BYTES, backupCount=BACKUP_COUNT)
+        error_file_handler = RotatingFileHandler(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../../logs/error.log'), maxBytes=MAX_BYTES, backupCount=BACKUP_COUNT)
         error_file_handler.setFormatter(log_format)
         error_file_handler.setLevel(logging.ERROR)
 
