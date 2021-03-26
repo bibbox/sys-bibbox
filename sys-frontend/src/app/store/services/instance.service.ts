@@ -25,14 +25,14 @@ export class InstanceService {
   }
 
   deleteInstance(instanceName: string): Observable<any> {
-    return this.http.delete(`${API_INSTANCES_URL}/${instanceName}`)
+    return this.http.delete(API_INSTANCES_URL + instanceName)
       .pipe(
         // TODO
       );
   }
 
-  updateInstanceDescription(): any {
-
+  updateInstanceDescription(instanceName: string, shortDescr: string, longDescr: string): Observable<InstanceItem> {
+    return this.http.patch<InstanceItem>(API_INSTANCES_URL + instanceName, {short_description: shortDescr, long_description: longDescr});
   }
 
 
