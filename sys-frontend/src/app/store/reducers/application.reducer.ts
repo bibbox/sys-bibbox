@@ -18,8 +18,6 @@ export function ApplicationGroupReducer(
   action: ApplicationGroupAction
 ): any {
   switch (action.type) {
-    case ApplicationGroupActionTypes.ADD_APPLICATION_GROUP:
-      return {...state, ...action.payload};
     case ApplicationGroupActionTypes.LOAD_APPLICATION_GROUP:
       return {
         ...state,
@@ -29,7 +27,8 @@ export function ApplicationGroupReducer(
       return {
         ...state,
         list: action.payload,
-        loading: false
+        loading: false,
+        error: undefined
       };
     case ApplicationGroupActionTypes.LOAD_APPLICATION_GROUP_FAILURE:
       return {

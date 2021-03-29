@@ -27,7 +27,8 @@ export function InstanceReducer(
       return {
         ...state,
         list: action.payload,
-        loading: false
+        loading: false,
+        error: undefined
       };
     case InstanceActionTypes.LOAD_INSTANCES_FAILURE:
       return {
@@ -44,7 +45,8 @@ export function InstanceReducer(
       return {
         ...state,
         list: [...state.list, action.payload],
-        loading: false
+        loading: false,
+        error: undefined
       };
     case InstanceActionTypes.ADD_INSTANCE_FAILURE:
       return {
@@ -61,7 +63,8 @@ export function InstanceReducer(
       return {
         ...state,
         list: state.list.filter(item => item.instancename !== action.payload),
-        loading: false
+        loading: false,
+        error: undefined
       };
     case InstanceActionTypes.DELETE_INSTANCE_FAILURE:
       return {
