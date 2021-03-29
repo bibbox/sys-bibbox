@@ -39,6 +39,11 @@ import { InstanceTileComponent } from './components/instances/instance-tile/inst
 import {EffectsModule} from '@ngrx/effects';
 import {InstanceEffects} from './store/effects/instance.effects';
 import {ApplicationsEffects} from './store/effects/applications.effects';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { InstallScreenComponent } from './components/applications/install-screen/install-screen.component';
+import { InstallScreenDialogComponent } from './components/applications/install-screen-dialog/install-screen-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 @NgModule({
@@ -59,6 +64,9 @@ import {ApplicationsEffects} from './store/effects/applications.effects';
     ApplicationGroupComponent,
     ApplicationTileComponent,
     InstanceTileComponent,
+    NotFoundComponent,
+    InstallScreenComponent,
+    InstallScreenDialogComponent,
   ],
   imports: [
     // angular
@@ -78,7 +86,9 @@ import {ApplicationsEffects} from './store/effects/applications.effects';
     MatCardModule,
     MatTabsModule,
     MatListModule,
+    MatDialogModule,
     MatGridListModule,
+    MatFormFieldModule,
     FontAwesomeModule,
     FlexLayoutModule,
     FormsModule,

@@ -10,9 +10,12 @@ import {ImprintComponent} from './components/about/imprint/imprint.component';
 import {ActivitiesComponent} from './components/activities/activities.component';
 import {LoginComponent} from './components/login/login.component';
 import {InstanceDetailPageComponent} from './components/instances/instance-detail-page/instance-detail-page.component';
+import {NotFoundComponent} from './components/not-found/not-found.component';
+import {InstallScreenComponent} from './components/applications/install-screen/install-screen.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
+  { path: 'install/:application_name/:version', component: InstallScreenComponent, pathMatch: 'full'},
   { path: 'applications', component: ApplicationsComponent, pathMatch: 'full'},
   { path: 'instances/:instance_name', component: InstanceDetailPageComponent, pathMatch: 'full'},
   { path: 'instances', component: InstancesComponent, pathMatch: 'full'},
@@ -26,7 +29,7 @@ const routes: Routes = [
 
   // auth
   { path: 'login', component: LoginComponent, pathMatch: 'full'},
-  { path: '**', redirectTo: '/login'},
+  { path: '**', component: NotFoundComponent},
 ];
 
 @NgModule({

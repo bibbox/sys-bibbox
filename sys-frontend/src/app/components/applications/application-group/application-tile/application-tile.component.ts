@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ApplicationItem} from '../../../../store/models/application-group-item.model';
+import {MatDialog} from '@angular/material/dialog';
+import {InstallScreenDialogComponent} from '../../install-screen-dialog/install-screen-dialog.component';
 
 @Component({
   selector: 'app-application-tile',
@@ -8,11 +10,23 @@ import {ApplicationItem} from '../../../../store/models/application-group-item.m
 })
 export class ApplicationTileComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   @Input() application: ApplicationItem;
 
   ngOnInit(): void {
+  }
+
+  openInstallScreenDialog(): void {
+    console.log(this.application);
+    const dialogRef = this.dialog.open(InstallScreenDialogComponent, {data: {application: this.application}});
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+
+    console.log(this.application);
+    // TODO
   }
 
 }

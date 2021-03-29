@@ -1,7 +1,7 @@
-<div class="application-group-item">
+<div class="application-group-item" (click)="openInstallScreenDialog()">
   <span *ngIf="application.decoration" class="decoration">
-    <img *ngIf="application.decoration == 'new'" src="assets/img/new.png">
-    <img *ngIf="application.decoration == 'announced'" src="assets/img/announced.png">
+    <img *ngIf="application.decoration == 'new'" src="assets/img/new.png" alt="new">
+    <img *ngIf="application.decoration == 'announced'" src="assets/img/announced.png" alt="announced">
   </span>
     <span class="name"> {{application.app_display_name}} </span>
     <span class="icon">
