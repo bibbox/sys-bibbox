@@ -19,9 +19,7 @@ export class ApplicationTileComponent implements OnInit {
 
   openInstallScreenDialog(): void {
     this.dialog.open(InstallScreenDialogComponent, {
-      data: {
-        application: this.application
-      }
+      data: this.application
     });
   }
 

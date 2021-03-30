@@ -27,11 +27,13 @@
     <form class="description-form">
       <mat-form-field class="description-form-field">
         <mat-label>Short Description</mat-label>
-        <textarea matInput placeholder="---"></textarea>
+        <!--suppress HtmlFormInputWithoutLabel -->
+        <textarea matInput cdkTextareaAutosize placeholder="---"></textarea>
       </mat-form-field> <br/><br/>
       <mat-form-field class="description-form-field">
         <mat-label>Long Description</mat-label>
-        <textarea matInput placeholder="---"></textarea>
+        <!--suppress HtmlFormInputWithoutLabel -->
+        <textarea matInput cdkTextareaAutosize placeholder="---"></textarea>
       </mat-form-field>
     </form>
     <button (click)="log('save')"> Save </button>

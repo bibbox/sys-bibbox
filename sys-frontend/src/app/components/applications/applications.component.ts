@@ -18,9 +18,9 @@ export class ApplicationsComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.applicationGroupItems$ = this.store.select(store => store.applications.list);
-    this.loading$ = this.store.select(store => store.applications.loading);
-    this.error$ = this.store.select(store => store.applications.error);
+    this.applicationGroupItems$ = this.store.select(store => store.applicationGroups.list);
+    this.loading$ = this.store.select(store => store.applicationGroups.loading);
+    this.error$ = this.store.select(store => store.applicationGroups.error);
 
     this.store.dispatch(new LoadApplicationGroupAction());
   }

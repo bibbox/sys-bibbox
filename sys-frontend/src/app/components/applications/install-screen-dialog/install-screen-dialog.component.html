@@ -10,39 +10,50 @@
         <button id="overlay-install" [mat-dialog-close]="true" (click)="installApp()"> Install </button>
         <div id="app-detail">
           <span class="app-detail-label"> Name </span><br/>
-          {{data.app_name}}
+          {{applicationItem.app_display_name}}
           <br/><br/>
 
           <span class="app-detail-label"> Shortname </span><br/>
-          {{data.app_display_name}}
+<!--          {{data.app_display_name}}-->
           <br/><br/>
 
           <span class="app-detail-label"> Docker versions </span><br/>
-          {{data.versions}} <!-- TODO reel picker-->
+<!--          {{data.versions}} &lt;!&ndash; TODO reel picker&ndash;&gt;-->
+
+          <mat-form-field appearance="fill">
+<!--            <mat-label>Docker Versions</mat-label>-->
+            <mat-select [(value)]="selectedVersion">
+              <mat-option *ngFor="let version of applicationItem.versions" [value]="version">
+                {{version.docker_version}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
           <br/><br/>
 
           <span class="app-detail-label"> Version </span><br/>
-          as
+          {{selectedVersion.version}}
           <br/><br/>
 
           <span class="app-detail-label"> Github URL </span><br/>
-          df
+
           <br/><br/>
 
           <span class="app-detail-label"> Catalogue URL </span><br/>
-          gh
+
           <br/><br/>
 
           <span class="app-detail-label"> Application URL </span><br/>
-          jk
+
           <br/><br/>
 
           <span class="app-detail-label"> Tags </span><br/>
-          l
+          <span *ngFor="let tag of applicationItem.tags">
+            {{tag}}
+          </span>
           <br/><br/>
 
           <span class="app-detail-label"> Description </span><br/>
-          y
+          {{applicationItem.short_description}}
           <br/><br/>
         </div>
       </div>

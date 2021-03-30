@@ -19,4 +19,8 @@ export class ApplicationService {
     return this.http.get<ApplicationGroupItem[]>(API_APPLICATIONS_URL);
   }
 
+  getApplicationFromStore(): any {
+    // return this.store.select(ApplicationItem => A)
+    return {name : 'test'};
+  }
 }

@@ -14,7 +14,7 @@ export interface ApplicationItem {
   icon_url: string;
 }
 
-interface IVersions {
+export interface IVersions {
   docker_version: string;
   version: string;
   tooltip: string;

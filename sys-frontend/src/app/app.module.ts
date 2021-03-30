@@ -21,7 +21,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import {FormsModule} from '@angular/forms';
-import {ApplicationGroupReducer} from './store/reducers/application.reducer';
+import {ApplicationGroupReducer} from './store/reducers/application-group.reducer';
 import {InstanceReducer} from './store/reducers/instance.reducer';
 import {HttpClientModule} from '@angular/common/http';
 import {MatCardModule} from '@angular/material/card';
@@ -46,6 +46,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {AuthReducer} from './store/reducers/auth.reducer';
 import {MatInputModule} from '@angular/material/input';
+import {MatOptionModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -88,6 +90,7 @@ import {MatInputModule} from '@angular/material/input';
     MatCardModule,
     MatTabsModule,
     MatListModule,
+    MatSelectModule,
     MatInputModule,
     MatDialogModule,
     MatGridListModule,
@@ -100,12 +103,13 @@ import {MatInputModule} from '@angular/material/input';
     // store
     StoreModule.forRoot({
       instances: InstanceReducer,
-      applications: ApplicationGroupReducer,
+      applicationGroups: ApplicationGroupReducer,
       auth: AuthReducer,
     }),
     EffectsModule.forRoot([InstanceEffects, ApplicationsEffects]),
     StoreDevtoolsModule.instrument({maxAge: 25}),
     MatTabsModule,
+    MatOptionModule,
 
   ],
   bootstrap: [AppComponent]
