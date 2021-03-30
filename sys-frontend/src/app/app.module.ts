@@ -44,6 +44,8 @@ import { InstallScreenComponent } from './components/applications/install-screen
 import { InstallScreenDialogComponent } from './components/applications/install-screen-dialog/install-screen-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {AuthReducer} from './store/reducers/auth.reducer';
+import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
@@ -86,6 +88,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatCardModule,
     MatTabsModule,
     MatListModule,
+    MatInputModule,
     MatDialogModule,
     MatGridListModule,
     MatFormFieldModule,
@@ -98,6 +101,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     StoreModule.forRoot({
       instances: InstanceReducer,
       applications: ApplicationGroupReducer,
+      auth: AuthReducer,
     }),
     EffectsModule.forRoot([InstanceEffects, ApplicationsEffects]),
     StoreDevtoolsModule.instrument({maxAge: 25}),

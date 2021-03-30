@@ -12,7 +12,7 @@
 
     <div class="docs-footer-navbar">
       <div class="col-sm-auto">
-        <button mat-button mat-raised-button color="primary" class="nav-button m-2 aboutbutton" *ngFor="let item of bottomNavigation" [routerLink]="[item.link]" routerLinkActive="active">
+        <button class="nav-button m-2 aboutbutton" *ngFor="let item of bottomNavigation" [routerLink]="[item.link]" routerLinkActive="active">
           {{item.label}}
         </button>
       </div>

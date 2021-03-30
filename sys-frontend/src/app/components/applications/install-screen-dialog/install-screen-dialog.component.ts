@@ -9,10 +9,10 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 })
 export class InstallScreenDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<InstallScreenDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public applicationItem: ApplicationItem) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: ApplicationItem) { }
 
   ngOnInit(): void {
+
   }
 
   installApp(): void {

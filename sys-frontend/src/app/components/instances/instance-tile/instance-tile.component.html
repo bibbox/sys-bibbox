@@ -18,17 +18,19 @@
   </mat-card-content>
   <mat-card-actions class="mat-card-action-buttons">
     <a [routerLink]="'/instances/'+instance.instancename">
-      <button mat-button matTooltip="Dashboard">
+      <button matTooltip="Dashboard">
         <span class="fas fa-cog"></span>
       </button>
     </a>
-    <button mat-button matTooltip="Logs">
-      <span class="fas fa-book"></span>
-    </button>
+    <a [routerLink]="'/instances/'+instance.instancename">
+      <button matTooltip="Logs">
+        <span class="fas fa-book"></span>
+      </button>
+    </a>
 <!--    <button mat-button matTooltip="Info">-->
 <!--      <span class="fas fa-info"></span>-->
 <!--    </button>-->
-    <button mat-button matTooltip="Open">
+    <button matTooltip="Open">
       <span class="fas fa-power-off"></span>
     </button>
   </mat-card-actions>

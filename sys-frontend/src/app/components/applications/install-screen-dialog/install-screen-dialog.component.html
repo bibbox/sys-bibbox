@@ -1,7 +1,51 @@
-<h2 mat-dialog-title>{{applicationItem.app_display_name}}</h2>
-<div mat-dialog-content>
-  TODO: Form Field
-  <div mat-dialog-actions>
-    <button mat-button (click)="installApp()">Install</button>
+<div id="overlay-wrapper">
+  <div id="overlay-inner">
+    <div id="overlay-close-wrapper">
+      <div id="overlay-close-body">
+        <img [mat-dialog-close]="true" src="../../../../assets/img/close.png" alt="X">
+      </div>
+    </div>
+    <div id="overlay-body">
+      <div id="overlay-content">
+        <button id="overlay-install" [mat-dialog-close]="true" (click)="installApp()"> Install </button>
+        <div id="app-detail">
+          <span class="app-detail-label"> Name </span><br/>
+          {{data.app_name}}
+          <br/><br/>
+
+          <span class="app-detail-label"> Shortname </span><br/>
+          {{data.app_display_name}}
+          <br/><br/>
+
+          <span class="app-detail-label"> Docker versions </span><br/>
+          {{data.versions}} <!-- TODO reel picker-->
+          <br/><br/>
+
+          <span class="app-detail-label"> Version </span><br/>
+          as
+          <br/><br/>
+
+          <span class="app-detail-label"> Github URL </span><br/>
+          df
+          <br/><br/>
+
+          <span class="app-detail-label"> Catalogue URL </span><br/>
+          gh
+          <br/><br/>
+
+          <span class="app-detail-label"> Application URL </span><br/>
+          jk
+          <br/><br/>
+
+          <span class="app-detail-label"> Tags </span><br/>
+          l
+          <br/><br/>
+
+          <span class="app-detail-label"> Description </span><br/>
+          y
+          <br/><br/>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
