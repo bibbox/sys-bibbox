@@ -20,8 +20,11 @@ export class InstallScreenDialogComponent implements OnInit {
   ngOnInit(): void {
     this.selectedVersion = this.applicationItem.versions[0];
   }
-  installApp(): void {
+  openInstallScreen(): void {
+
     console.warn(this.applicationItem);
     // todo: store call for add Instance
+    // todo: open install screen and pass relevant arguments (applicationItem, selectedVersion)
+    // todo: where do I get the 'organization' parameter from?
   }
 }

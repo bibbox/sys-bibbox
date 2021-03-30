@@ -12,4 +12,12 @@ export class InstallScreenComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+  cancel(): void {
+
+  }
+
+  install(): void {
+
+  }
 }

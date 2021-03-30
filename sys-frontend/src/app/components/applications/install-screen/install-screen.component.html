@@ -1,1 +1,28 @@
-<p>install-screen works!</p>
+<span style="float: left; width: 100%">
+<div id="app-install" style="display:block;">
+  <form action="">
+    <div class="app-install-text">
+      <h2>app-name</h2>
+      <span> Please fill out the form to install the application. </span>
+    </div>
+    <input type="hidden" name="applicationname" value="" readonly="">
+    <input type="hidden" name="version" value="" readonly=""><br/>
+
+    <label for="instanceid"> Application ID</label>
+    <input type="text" value="" name="instanceid" required="" id="instanceid">
+    <span class="field-description"> Subdomain of your application URL. <b>The application ID can not be changed after the installation.</b></span>
+
+    <label for="instancename"> Application Name</label>
+    <input type="text" value="" name="instancename" required="" id="instancename">
+    <span class="field-description">Full name of your application, can be changed later on.</span>
+
+    <!-- TODO the dynamic envparam input fields -->
+
+    <span class="install-submit">
+      <button class="app-install-cancel" type="button" (click)="cancel()">Cancel</button>
+      <button class="app-install-submit" type="submit" (click)="install()">Install</button>
+    </span>
+
+  </form>
+</div>
+</span>

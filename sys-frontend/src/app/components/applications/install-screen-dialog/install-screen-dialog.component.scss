@@ -79,6 +79,29 @@
     float: left;
     width: 100%;
     margin-bottom: 20px;
+
+    .tag{
+      padding: 2px 5px;
+      min-width: initial;
+      margin: 0 5px 5px 0;
+      float: left;
+      font-size: 12px;
+      border: 0;
+      background: rgba(0, 0, 0, 0.07);
+      box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+      border-radius: 3px;
+      color: #333;
+      cursor: pointer
+    }
+
+    .tag.white {
+      background: rgba(255, 255, 255, 0.2)
+    }
+
+    .tag:hover {
+      background: rgba(0, 0, 0, 0.9);
+      color: white
+    }
   }
 
   #overlay-content {
@@ -108,4 +131,8 @@
 
 #overlay-toggle {
   margin-bottom: 20px
+}
+
+.docker-select-panel-class {
+  font-size: 12px;
 }
