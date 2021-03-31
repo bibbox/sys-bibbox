@@ -19,7 +19,7 @@ import { ImprintComponent } from './components/about/imprint/imprint.component';
 import { ActivitiesComponent } from './components/activities/activities.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { StoreModule } from '@ngrx/store';
+import {MetaReducer, State, StoreModule} from '@ngrx/store';
 import {FormsModule} from '@angular/forms';
 import {ApplicationGroupReducer} from './store/reducers/application-group.reducer';
 import {InstanceReducer} from './store/reducers/instance.reducer';
@@ -48,7 +48,12 @@ import {AuthReducer} from './store/reducers/auth.reducer';
 import {MatInputModule} from '@angular/material/input';
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
+import {environment} from '../environments/environment';
+import {storeFreeze} from 'ngrx-store-freeze';
+import {AppState} from './store/models/app-state.model';
+import { FacetSearchComponent } from './components/applications/facet-search/facet-search.component';
 
+export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
 
 @NgModule({
   declarations: [
@@ -71,6 +76,7 @@ import {MatSelectModule} from '@angular/material/select';
     NotFoundComponent,
     InstallScreenComponent,
     InstallScreenDialogComponent,
+    FacetSearchComponent,
   ],
   imports: [
     // angular
@@ -105,9 +111,9 @@ import {MatSelectModule} from '@angular/material/select';
       instances: InstanceReducer,
       applicationGroups: ApplicationGroupReducer,
       auth: AuthReducer,
-    }),
+    }, { metaReducers }),
     EffectsModule.forRoot([InstanceEffects, ApplicationsEffects]),
-    StoreDevtoolsModule.instrument({maxAge: 25}),
+    StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store' }),
     MatTabsModule,
     MatOptionModule,
 

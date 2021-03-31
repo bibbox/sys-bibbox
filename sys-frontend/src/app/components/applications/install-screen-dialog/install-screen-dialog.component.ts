@@ -22,7 +22,7 @@ export class InstallScreenDialogComponent implements OnInit {
   }
   openInstallScreen(): void {
 
-    console.warn(this.applicationItem);
+    // console.warn(this.applicationItem);
     // todo: store call for add Instance
     // todo: open install screen and pass relevant arguments (applicationItem, selectedVersion)
     // todo: where do I get the 'organization' parameter from?

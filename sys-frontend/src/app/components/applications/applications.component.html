@@ -1,4 +1,10 @@
-<div id="applications">
+<div id="applications" fxLayout="row">
+  <div class = "tagger">
+
+  </div>
+  <div class= "tag-sidenav">
+    <app-facet-search></app-facet-search>
+  </div>
   <div id="applications-results">
     <div *ngFor="let applicationGroup of applicationGroupItems$ | async">
       <app-application-group [applicationGroup]="applicationGroup"></app-application-group>

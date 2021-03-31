@@ -15,12 +15,7 @@ export class AppComponent implements OnInit{
 
   constructor(
     private http: HttpClient,
-    private store: Store<{AppState}>,
-    private readonly instanceService: InstanceService,
-    private readonly applicationService: ApplicationService) { }
+    private store: Store<{AppState}>) { }
 
-  ngOnInit(): void {
-    this.instanceService.loadInstances();
-    this.applicationService.loadApplications();
-  }
+  ngOnInit(): void { }
 }

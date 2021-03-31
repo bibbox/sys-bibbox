@@ -1,28 +1,28 @@
 import { Action } from '@ngrx/store';
 import {ApplicationGroupItem} from '../models/application-group-item.model';
 
-export enum ApplicationGroupActionTypes {
-  LOAD_APPLICATION_GROUP          = '[APPLICATON] Load Application Group',
-  LOAD_APPLICATION_GROUP_SUCCESS  = '[APPLICATON] Load Application Group Success',
-  LOAD_APPLICATION_GROUP_FAILURE  = '[APPLICATON] Load Application Group Failure',
+export enum ApplicationGroupsActionTypes {
+  LOAD_APPLICATION_GROUPS          = '[APPLICATON GROUP] Load Application Groups',
+  LOAD_APPLICATION_GROUPS_SUCCESS  = '[APPLICATON GROUP] Load Application Groups Success',
+  LOAD_APPLICATION_GROUPS_FAILURE  = '[APPLICATON GROUP] Load Application Groups Failure',
 }
 
-export class LoadApplicationGroupAction implements Action {
-  readonly type = ApplicationGroupActionTypes.LOAD_APPLICATION_GROUP;
+export class LoadApplicationGroupsAction implements Action {
+  readonly type = ApplicationGroupsActionTypes.LOAD_APPLICATION_GROUPS;
 }
 
-export class LoadApplicationGroupSuccessAction implements Action {
-  readonly type = ApplicationGroupActionTypes.LOAD_APPLICATION_GROUP_SUCCESS;
+export class LoadApplicationGroupsSuccessAction implements Action {
+  readonly type = ApplicationGroupsActionTypes.LOAD_APPLICATION_GROUPS_SUCCESS;
 
   constructor(public payload: Array<ApplicationGroupItem>) {}
 }
 
-export class LoadApplicationGroupFailureAction implements Action {
-  readonly type = ApplicationGroupActionTypes.LOAD_APPLICATION_GROUP_FAILURE;
+export class LoadApplicationGroupsFailureAction implements Action {
+  readonly type = ApplicationGroupsActionTypes.LOAD_APPLICATION_GROUPS_FAILURE;
 
   constructor(public payload: Error) {}
 }
-export type ApplicationGroupAction =
-  LoadApplicationGroupAction
-  | LoadApplicationGroupSuccessAction
-  | LoadApplicationGroupFailureAction;
+export type ApplicationGroupsAction =
+  LoadApplicationGroupsAction
+  | LoadApplicationGroupsSuccessAction
+  | LoadApplicationGroupsFailureAction;

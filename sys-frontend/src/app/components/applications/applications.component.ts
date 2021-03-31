@@ -3,7 +3,7 @@ import {ApplicationGroupItem} from '../../store/models/application-group-item.mo
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {AppState} from '../../store/models/app-state.model';
-import {LoadApplicationGroupAction} from '../../store/actions/applications.actions';
+import {LoadApplicationGroupsAction} from '../../store/actions/applications.actions';
 
 @Component({
   selector: 'app-applications',
@@ -12,16 +12,16 @@ import {LoadApplicationGroupAction} from '../../store/actions/applications.actio
 })
 export class ApplicationsComponent implements OnInit {
   applicationGroupItems$: Observable<Array<ApplicationGroupItem>>;
-  loading$: Observable<boolean>;
-  error$: Observable<Error>;
+  // loading$: Observable<boolean>;
+  // error$: Observable<Error>;
 
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.applicationGroupItems$ = this.store.select(store => store.applicationGroups.list);
-    this.loading$ = this.store.select(store => store.applicationGroups.loading);
-    this.error$ = this.store.select(store => store.applicationGroups.error);
+    this.store.dispatch(new LoadApplicationGroupsAction());
 
-    this.store.dispatch(new LoadApplicationGroupAction());
+    this.applicationGroupItems$ = this.store.select(store => store.applicationGroups.list);
+    // this.loading$ = this.store.select(store => store.applicationGroups.loading);
+    // this.error$ = this.store.select(store => store.applicationGroups.error);
   }
 }

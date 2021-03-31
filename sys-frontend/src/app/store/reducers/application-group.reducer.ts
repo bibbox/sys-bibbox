@@ -1,5 +1,5 @@
 import {ApplicationGroupItem} from '../models/application-group-item.model';
-import {ApplicationGroupAction, ApplicationGroupActionTypes} from '../actions/applications.actions';
+import {ApplicationGroupsAction, ApplicationGroupsActionTypes} from '../actions/applications.actions';
 
 export interface ApplicationGroupState {
   list: ApplicationGroupItem[];
@@ -14,23 +14,23 @@ const initialState: ApplicationGroupState = {
 };
 
 export function ApplicationGroupReducer(
-  state: ApplicationGroupState= initialState,
-  action: ApplicationGroupAction
+  state: ApplicationGroupState = initialState,
+  action: ApplicationGroupsAction
 ): any {
   switch (action.type) {
-    case ApplicationGroupActionTypes.LOAD_APPLICATION_GROUP:
+    case ApplicationGroupsActionTypes.LOAD_APPLICATION_GROUPS:
       return {
         ...state,
         loading: true
       };
-    case ApplicationGroupActionTypes.LOAD_APPLICATION_GROUP_SUCCESS:
+    case ApplicationGroupsActionTypes.LOAD_APPLICATION_GROUPS_SUCCESS:
       return {
         ...state,
         list: action.payload,
         loading: false,
         error: undefined
       };
-    case ApplicationGroupActionTypes.LOAD_APPLICATION_GROUP_FAILURE:
+    case ApplicationGroupsActionTypes.LOAD_APPLICATION_GROUPS_FAILURE:
       return {
         ...state,
         error: action.payload,

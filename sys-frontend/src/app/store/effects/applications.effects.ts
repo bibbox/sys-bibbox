@@ -4,8 +4,8 @@ import {catchError, map, mergeMap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {ApplicationService} from '../services/application.service';
 import {
-  ApplicationGroupActionTypes,
-  LoadApplicationGroupAction, LoadApplicationGroupFailureAction, LoadApplicationGroupSuccessAction
+  ApplicationGroupsActionTypes,
+  LoadApplicationGroupsAction, LoadApplicationGroupsFailureAction, LoadApplicationGroupsSuccessAction
 } from '../actions/applications.actions';
 
 @Injectable()
@@ -13,12 +13,12 @@ export class ApplicationsEffects {
 
   loadApplicationGroups$ =  createEffect(() =>
     this.actions$.pipe(
-      ofType<LoadApplicationGroupAction>(ApplicationGroupActionTypes.LOAD_APPLICATION_GROUP),
+      ofType<LoadApplicationGroupsAction>(ApplicationGroupsActionTypes.LOAD_APPLICATION_GROUPS),
       mergeMap(
         () => this.applicationService.loadApplications()
           .pipe(
-            map(data => new LoadApplicationGroupSuccessAction(data)),
-            catchError(error => of(new LoadApplicationGroupFailureAction(error)))
+            map(data => new LoadApplicationGroupsSuccessAction(data)),
+            catchError(error => of(new LoadApplicationGroupsFailureAction(error)))
           )
       )
     )
