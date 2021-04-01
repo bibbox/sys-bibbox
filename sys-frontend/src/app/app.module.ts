@@ -51,7 +51,9 @@ import {MatSelectModule} from '@angular/material/select';
 import {environment} from '../environments/environment';
 import {storeFreeze} from 'ngrx-store-freeze';
 import {AppState} from './store/models/app-state.model';
-import { FacetSearchComponent } from './components/applications/facet-search/facet-search.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { TestComponent } from './components/test/test.component';
+import { CheckboxItemComponent } from './components/test/checkbox-item/checkbox-item.component';
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
 
@@ -76,7 +78,8 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     NotFoundComponent,
     InstallScreenComponent,
     InstallScreenDialogComponent,
-    FacetSearchComponent,
+    TestComponent,
+    CheckboxItemComponent,
   ],
   imports: [
     // angular
@@ -101,6 +104,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     MatDialogModule,
     MatGridListModule,
     MatFormFieldModule,
+    MatCheckboxModule,
     FontAwesomeModule,
     FlexLayoutModule,
     FormsModule,

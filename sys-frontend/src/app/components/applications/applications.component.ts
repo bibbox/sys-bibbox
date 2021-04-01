@@ -15,6 +15,12 @@ export class ApplicationsComponent implements OnInit {
   // loading$: Observable<boolean>;
   // error$: Observable<Error>;
 
+  tags: [
+    {name: 'TEST-ADMIN', checked: false, color: 'primary', count: 5},
+    {name: 'TEST-ADMINISTRATION', checked: false, color: 'primary', count: 3 },
+    {name: 'TEST-BI', checked: false, color: 'primary', count: 3 },
+  ];
+
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
@@ -23,5 +29,10 @@ export class ApplicationsComponent implements OnInit {
     this.applicationGroupItems$ = this.store.select(store => store.applicationGroups.list);
     // this.loading$ = this.store.select(store => store.applicationGroups.loading);
     // this.error$ = this.store.select(store => store.applicationGroups.error);
+  }
+
+
+  doNothing(): void {
+
   }
 }

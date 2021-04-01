@@ -31,32 +31,34 @@
     display: inline-block;
     color: #666;
     transition: color 0.2s ease-in-out;
-    -webkit-transition: color 0.2s ease-in-out
+    -webkit-transition: color 0.2s ease-in-out;
   }
 
   .decoration {
     position: absolute;
     top: -6px;
     right: -6px;
-    width: 100px;
+    width: 80px;
+
+    img {
+      width: 100%;
+      height: auto
+    }
   }
 
-  img {
-    width: 100%;
-    height: auto
-  }
 
   .character, .icon {
     font-size: 35px;
     float: left;
     width: 100%;
-    margin-bottom: 10px
+    margin-bottom: 10px;
+
+    img {
+      width: 90px;
+      height: 90px
+    }
   }
 
-  img {
-    width: 90px;
-    height: 90px
-  }
 }
 
 

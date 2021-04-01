@@ -3,7 +3,19 @@
 
   </div>
   <div class= "tag-sidenav">
-    <app-facet-search></app-facet-search>
+    <div id = "facet-container">
+      <div id = "facet-search">
+        <!-- MAT CHIPS etc. -->
+      </div>
+      <ul>
+        <li *ngFor="let tag of tags">
+          <mat-checkbox [(ngModel)]="tag.checked" [color]="tag.color" (ngModelChange)="doNothing()">
+            {{tag.name}}
+          </mat-checkbox>
+        </li>
+      </ul>
+
+    </div>
   </div>
   <div id="applications-results">
     <div *ngFor="let applicationGroup of applicationGroupItems$ | async">

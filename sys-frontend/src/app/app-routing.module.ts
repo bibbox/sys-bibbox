@@ -12,6 +12,7 @@ import {LoginComponent} from './components/login/login.component';
 import {InstanceDetailPageComponent} from './components/instances/instance-detail-page/instance-detail-page.component';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {InstallScreenComponent} from './components/applications/install-screen/install-screen.component';
+import {TestComponent} from './components/test/test.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -27,9 +28,13 @@ const routes: Routes = [
   { path: 'partners', component: PartnersComponent, pathMatch: 'full'},
   { path: 'imprint', component: ImprintComponent, pathMatch: 'full'},
 
+
+  // test
+  { path: 'test', component: TestComponent, pathMatch: 'full'},
+
   // auth
   { path: 'login', component: LoginComponent, pathMatch: 'full'},
-  { path: '**', component: NotFoundComponent},
+  { path: '**', component: NotFoundComponent}, // -> 404 page
 ];
 
 @NgModule({
