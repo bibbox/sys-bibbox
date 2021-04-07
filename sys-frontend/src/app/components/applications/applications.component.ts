@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {ApplicationGroupItem} from '../../store/models/application-group-item.model';
-import {Store} from '@ngrx/store';
+import * as applicationGroupActions from '../../store/actions/applications.actions';
+import * as applicationGroupReducer from '../../store/reducers/application-group.reducer';
+
+import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {AppState} from '../../store/models/app-state.model';
-import {LoadApplicationGroupsAction} from '../../store/actions/applications.actions';
 
 @Component({
   selector: 'app-applications',
@@ -11,7 +13,7 @@ import {LoadApplicationGroupsAction} from '../../store/actions/applications.acti
   styleUrls: ['./applications.component.scss']
 })
 export class ApplicationsComponent implements OnInit {
-  applicationGroupItems$: Observable<Array<ApplicationGroupItem>>;
+  applicationGroupItems$: Observable<ApplicationGroupItem[]>;
   // loading$: Observable<boolean>;
   // error$: Observable<Error>;
 
@@ -24,11 +26,9 @@ export class ApplicationsComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new LoadApplicationGroupsAction());
+    this.store.dispatch(new applicationGroupActions.LoadApplicationGroupsAction());
 
-    this.applicationGroupItems$ = this.store.select(store => store.applicationGroups.list);
-    // this.loading$ = this.store.select(store => store.applicationGroups.loading);
-    // this.error$ = this.store.select(store => store.applicationGroups.error);
+    this.applicationGroupItems$ = this.store.pipe(select(applicationGroupReducer.loadApplications));
   }
 
 

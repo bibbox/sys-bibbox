@@ -14,7 +14,7 @@ export class LoadApplicationGroupsAction implements Action {
 export class LoadApplicationGroupsSuccessAction implements Action {
   readonly type = ApplicationGroupsActionTypes.LOAD_APPLICATION_GROUPS_SUCCESS;
 
-  constructor(public payload: Array<ApplicationGroupItem>) {}
+  constructor(public payload: ApplicationGroupItem[]) {}
 }
 
 export class LoadApplicationGroupsFailureAction implements Action {

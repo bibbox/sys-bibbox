@@ -20,7 +20,7 @@ export class LoadInstancesAction implements Action {
 export class LoadInstancesSuccessAction implements Action {
   readonly type = InstanceActionTypes.LOAD_INSTANCES_SUCCESS;
 
-  constructor(public payload: Array<InstanceItem>) {}
+  constructor(public payload: InstanceItem[]) {}
 }
 
 export class LoadInstancesFailureAction implements Action {

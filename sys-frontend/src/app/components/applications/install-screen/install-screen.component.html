@@ -1,8 +1,7 @@
-<span style="float: left; width: 100%">
 <div id="app-install" style="display:block;">
   <form action="">
     <div class="app-install-text">
-      <h2>app-name</h2>
+      <h2>{{application.app_display_name}}</h2>
       <span> Please fill out the form to install the application. </span>
     </div>
     <input type="hidden" name="applicationname" value="" readonly="">
@@ -22,7 +21,5 @@
       <button class="app-install-cancel" type="button" (click)="cancel()">Cancel</button>
       <button class="app-install-submit" type="submit" (click)="install()">Install</button>
     </span>
-
   </form>
 </div>
-</span>

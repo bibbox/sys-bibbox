@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ApplicationItem} from '../../../store/models/application-group-item.model';
 
 @Component({
   selector: 'app-install-screen',
@@ -7,14 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InstallScreenComponent implements OnInit {
 
-  constructor() { }
+  constructor(private activatedRoute: ActivatedRoute,
+              private router: Router) {
+  }
+  application: ApplicationItem;
 
   ngOnInit(): void {
+    this.application = history.state;
   }
 
 
   cancel(): void {
-
+    this.router.navigateByUrl('/applications');
   }
 
   install(): void {

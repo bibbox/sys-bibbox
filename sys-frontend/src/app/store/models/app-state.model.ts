@@ -3,7 +3,7 @@ import {ApplicationGroupState} from '../reducers/application-group.reducer';
 import {AuthState} from '../reducers/auth.reducer';
 
 export interface AppState {
-  readonly instances: InstanceState;
-  readonly applicationGroups: ApplicationGroupState;
-  readonly auth: AuthState;
+  instances: InstanceState;
+  applicationGroups: ApplicationGroupState;
+  auth: AuthState;
 }

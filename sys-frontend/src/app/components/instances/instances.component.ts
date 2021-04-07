@@ -11,7 +11,7 @@ import {LoadInstancesAction} from '../../store/actions/instance.actions';
   styleUrls: ['./instances.component.scss']
 })
 export class InstancesComponent implements OnInit {
-  instanceItems$: Observable<Array<InstanceItem>>;
+  instanceItems$: Observable<InstanceItem[]>;
   loading$: Observable<boolean>;
   error$: Observable<Error>;
 
