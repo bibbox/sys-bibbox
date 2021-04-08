@@ -1,7 +1,6 @@
 import {ApplicationGroupItem} from '../models/application-group-item.model';
 import {ApplicationGroupsAction, ApplicationGroupsActionTypes} from '../actions/applications.actions';
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
-import {createFeatureSelector, createSelector} from '@ngrx/store';
 
 export interface ApplicationGroupState extends EntityState<ApplicationGroupItem>{
   selectedEntityID: number | null;
@@ -49,33 +48,11 @@ export function ApplicationGroupReducer(
       return {...state};
   }
 }
-const getApplicationGroupFeatureState = createFeatureSelector<ApplicationGroupState>('applicationGroups');
 
-export const loadApplications = createSelector(
-  getApplicationGroupFeatureState,
-  ApplicationGroupAdapter.getSelectors().selectAll
-);
+// export const applicationGroupReducer = createReducer(
+//   initialState,
+//   on(LoadApplicationGroupsAction, state => ({...state, loading: true})),
+// );
 
-export const getApplicationGroupsLoading = createSelector(
-  getApplicationGroupFeatureState,
-  (state: ApplicationGroupState) => state.loading
-);
-
-
-export const getApplicationGroupsError = createSelector(
-  getApplicationGroupFeatureState,
-  (state: ApplicationGroupState) => state.error
-);
-
-export const getCurrentApplicationGroupID = createSelector(
-  getApplicationGroupFeatureState,
-  (state: ApplicationGroupState) => state.selectedEntityID
-);
-
-export const getCurrentApplicationGroup = createSelector(
-  getApplicationGroupFeatureState,
-  getCurrentApplicationGroupID,
-  state => state.entities[state.selectedEntityID]
-);
 
 

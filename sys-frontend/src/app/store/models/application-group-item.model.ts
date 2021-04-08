@@ -1,9 +1,12 @@
+import {EntityState} from '@ngrx/entity';
+
 export interface ApplicationGroupItem {
   group_name: string;
-  group_members: ApplicationItem[];
+  group_members: EntityState<ApplicationItem>;
 }
 
 export interface ApplicationItem {
+  group_name?: string;
   app_name: string;
   app_display_name: string;
   short_description: string;
@@ -20,4 +23,26 @@ export interface IVersions {
   tooltip: string;
   appinfo: string;
   environment_parameters: string;
+}
+
+export interface AppInfo {
+  name: string;
+  short_name: string;
+  version: string;
+  description: string;
+  short_description: string;
+  catalog_url: string;
+  application_url: string;
+  tags: string[];
+  application_documentation_url: string;
+}
+
+export interface EnvironmentParameters {
+  id: string;
+  display_name: string;
+  type: string;
+  default_value: string;
+  description: string;
+  min_length: string;
+  max_length: string;
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ApplicationGroupItem} from '../../store/models/application-group-item.model';
 import * as applicationGroupActions from '../../store/actions/applications.actions';
-import * as applicationGroupReducer from '../../store/reducers/application-group.reducer';
+import * as applicationGroupSelector from '../../store/selectors/application-group.selector';
 
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
@@ -28,7 +28,7 @@ export class ApplicationsComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(new applicationGroupActions.LoadApplicationGroupsAction());
 
-    this.applicationGroupItems$ = this.store.pipe(select(applicationGroupReducer.loadApplications));
+    this.applicationGroupItems$ = this.store.pipe(select(applicationGroupSelector.loadApplications));
   }
 
 
