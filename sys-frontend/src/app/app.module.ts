@@ -20,7 +20,7 @@ import { ActivitiesComponent } from './components/activities/activities.componen
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MetaReducer, State, StoreModule} from '@ngrx/store';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ApplicationGroupReducer} from './store/reducers/application-group.reducer';
 import {InstanceReducer} from './store/reducers/instance.reducer';
 import {HttpClientModule} from '@angular/common/http';
@@ -81,47 +81,48 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     TestComponent,
     CheckboxItemComponent,
   ],
-  imports: [
-    // angular
-    BrowserModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    AppRoutingModule,
+    imports: [
+        // angular
+        BrowserModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        AppRoutingModule,
 
-    // http client
-    HttpClientModule,
+        // http client
+        HttpClientModule,
 
-    // design
-    MatButtonModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatIconModule,
-    MatCardModule,
-    MatTabsModule,
-    MatListModule,
-    MatSelectModule,
-    MatInputModule,
-    MatDialogModule,
-    MatGridListModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    FontAwesomeModule,
-    FlexLayoutModule,
-    FormsModule,
-    NgbModule,
+        // design
+        MatButtonModule,
+        MatToolbarModule,
+        MatTooltipModule,
+        MatIconModule,
+        MatCardModule,
+        MatTabsModule,
+        MatListModule,
+        MatSelectModule,
+        MatInputModule,
+        MatDialogModule,
+        MatGridListModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        FontAwesomeModule,
+        FlexLayoutModule,
+        FormsModule,
+        NgbModule,
 
-    // store
-    StoreModule.forRoot({
-      instances: InstanceReducer,
-      applicationGroups: ApplicationGroupReducer,
-      auth: AuthReducer,
-    }, { metaReducers }),
-    EffectsModule.forRoot([InstanceEffects, ApplicationsEffects]),
-    StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store' }),
-    MatTabsModule,
-    MatOptionModule,
+        // store
+        StoreModule.forRoot({
+            instances: InstanceReducer,
+            applicationGroups: ApplicationGroupReducer,
+            auth: AuthReducer,
+        }, {metaReducers}),
+        EffectsModule.forRoot([InstanceEffects, ApplicationsEffects]),
+        StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
+        MatTabsModule,
+        MatOptionModule,
+        ReactiveFormsModule,
 
-  ],
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

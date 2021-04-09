@@ -19,8 +19,9 @@ export class ApplicationTileComponent implements OnInit {
 
   openInstallScreenDialog(): void {
     const dialogRef = this.dialog.open(InstallScreenDialogComponent, {
-      data: this.application
+      data: this.application,
     });
+
     dialogRef.afterClosed().subscribe(value => {
       console.log(`Dialog sent: ${value}`);
     });
