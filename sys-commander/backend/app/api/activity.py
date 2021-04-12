@@ -14,6 +14,12 @@ restapi.add_namespace (api, '/activities')
 
 activity_service = ActivityService()
 
+'''
+TODO
+I've implemented these wrong, only the scheduled api route seems ok.
+ - Lukas
+'''
+
 @api.route("/")
 class ActivityListAll(Resource):
     @api.doc("get all celery activities")
@@ -60,10 +66,10 @@ class ActivityListFinished(Resource):
     
         return jsonify( doneTasks )
 
-@api.route("/<int:id>")
+@api.route("/<id>")
 @api.doc(params={'id': 'Activity id'})
 class Activity(Resource):
     @api.doc("get celery task by ID")
-    def get(self):
+    def get(self, id):
         print("get task-info of activity: {}".format(id))
-        return jsonify({"status": 200, "msg":"Details for Celery Task %d are"%id } )
+        return jsonify({"status": 200, "msg":"Details for Celery Task %s are"%id } )

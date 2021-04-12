@@ -62,8 +62,9 @@ class InstanceList(Resource):
 @api.doc(params={'id': 'An ID'})
 class Instance(Resource):
     
-    def get(self):
-        idescr = json.load(id)
+    def get(self, id):
+        fh = FileHandler()
+        idescr = fh.getInstanceJSONContent(id)
         return idescr, 200
 
 
