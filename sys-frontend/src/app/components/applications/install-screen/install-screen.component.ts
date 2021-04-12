@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApplicationItem, EnvironmentParameters, IVersions} from '../../../store/models/application-group-item.model';
 import {ApplicationService} from '../../../store/services/application.service';
-import {Form, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {InstanceService} from '../../../store/services/instance.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class InstallScreenComponent implements OnInit {
   environmentParameters: EnvironmentParameters[];
 
   installForm: FormGroup;
-  envParamFormArray: FormArray;
+  envParamFormGroup: FormGroup;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -38,7 +38,6 @@ export class InstallScreenComponent implements OnInit {
   ngOnInit(): void {
     this.appItem = history.state[0];
     this.selectedVersion = history.state[1];
-    this.loadEnvParams().then();
 
     this.installForm = this.formBuilder.group(
       {
@@ -46,8 +45,10 @@ export class InstallScreenComponent implements OnInit {
         version: this.selectedVersion.docker_version,
         instance_id: ['', Validators.required],
         instance_name: ['', Validators.required],
-        envParams: this.formBuilder.array([]),
+        envParams: new FormGroup({}),
       });
+
+    this.loadEnvParams().then();
   }
 
   async loadEnvParams(): Promise<void> {
@@ -62,55 +63,49 @@ export class InstallScreenComponent implements OnInit {
 
 
   initEnvParamFormFields(): void {
-    this.envParamFormArray = this.installForm.get('envParams') as FormArray;
+    this.envParamFormGroup = this.installForm.get('envParams') as FormGroup;
     for (const envParam of this.environmentParameters) {
-      this.envParamFormArray.push(this.addEnvParamFormField(envParam));
+      this.envParamFormGroup.addControl(
+        envParam.id.valueOf(),
+        new FormControl(
+          envParam.default_value.valueOf(), [
+            Validators.required,
+            Validators.minLength(Number(envParam.min_length)),
+            Validators.minLength(Number(envParam.max_length)),
+          ]));
     }
   }
-
-  addEnvParamFormField(envParamEntry: EnvironmentParameters): FormControl {
-    console.warn(envParamEntry);
-    console.warn(envParamEntry.default_value.valueOf());
-    return this.formBuilder.control({
-      value: [envParamEntry.default_value.valueOf(),
-      [
-        Validators.required,
-        Validators.minLength(Number(envParamEntry.min_length)),
-        Validators.minLength(Number(envParamEntry.max_length)),
-      ]
-    ]});
-  }
-
 
   cancel(): void {
     this.router.navigateByUrl('/applications').then();
   }
 
   install(): void {
-  const payload = {
-    displayname : this.installForm.value.instance_name,
-    app : {
-      organization : 'bibbox',
-      name         : this.installForm.value.app_name,
-      version      : this.installForm.value.version,
-    },
-    parameters  : { }
-  };
+    console.log('install');
+    console.log(this.envParamFormGroup.value);
 
+    const payload = {
+      displayname : this.installForm.value.instance_name,
+      app : {
+        organization : 'bibbox',
+        name         : this.installForm.value.app_name,
+        version      : this.installForm.value.version,
+      },
+      parameters  : this.envParamFormGroup.value
+    };
 
-  // TODO: get inserted form values.
-  // for (const envParam of this.envParamForms.value) {
-  //   payload.parameters[envParam] = envParam.value;
-  // }
-
-  console.log(payload);
-  // this.instanceService.addInstance(this.installForm.value.instance_id, payload);
+    console.log(payload);
+    console.log(this.installForm.value.instance_id);
+    this.instanceService.addInstance(this.installForm.value.instance_id, JSON.stringify(payload)).toPromise().then(
+      res => console.log(res)
+    );
   }
 
   test(value: string): void {
     value = this.installForm.value.instance_name;
     console.log(value);
   }
+
 }
 
 

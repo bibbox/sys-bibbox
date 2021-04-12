@@ -1,20 +1,29 @@
 import {InstanceItem} from '../models/instance-item.model';
 import {InstanceAction, InstanceActionTypes} from '../actions/instance.actions';
+import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
 
-export interface InstanceState {
-  list: InstanceItem[];
+export interface InstanceState extends EntityState<InstanceItem>{
+  selectedEntityID: number | null;
   loading: boolean;
   error: Error;
 }
 
-const initialState: InstanceState = {
-  list: [],
+export const InstanceAdapter: EntityAdapter<InstanceItem> = createEntityAdapter<InstanceItem>({
+  selectId: (a: InstanceItem) => a.instancename,
+});
+
+const defaultState: InstanceState = {
+  ids: [],
+  entities: {},
+  selectedEntityID: null,
   loading: false,
   error: undefined
 };
 
+export const initialState = InstanceAdapter.getInitialState(defaultState);
+
 export function InstanceReducer(
-  state: InstanceState = initialState,
+  state: InstanceState = defaultState,
   action: InstanceAction
 ): any {
   switch (action.type) {
@@ -24,12 +33,11 @@ export function InstanceReducer(
         loading: true
       };
     case InstanceActionTypes.LOAD_INSTANCES_SUCCESS:
-      return {
+      return InstanceAdapter.addMany(action.payload, {
         ...state,
-        list: action.payload,
         loading: false,
         error: undefined
-      };
+      });
     case InstanceActionTypes.LOAD_INSTANCES_FAILURE:
       return {
         ...state,
@@ -42,12 +50,11 @@ export function InstanceReducer(
         loading: true
       };
     case InstanceActionTypes.ADD_INSTANCE_SUCCESS:
-      return {
+      return InstanceAdapter.addOne(action.payload, {
         ...state,
-        list: [...state.list, action.payload],
         loading: false,
         error: undefined
-      };
+      });
     case InstanceActionTypes.ADD_INSTANCE_FAILURE:
       return {
         ...state,
@@ -60,12 +67,11 @@ export function InstanceReducer(
         loading: true
       };
     case InstanceActionTypes.DELETE_INSTANCE_SUCCESS:
-      return {
+      return InstanceAdapter.removeOne(action.payload, {
         ...state,
-        list: state.list.filter(item => item.instancename !== action.payload),
         loading: false,
         error: undefined
-      };
+      });
     case InstanceActionTypes.DELETE_INSTANCE_FAILURE:
       return {
         ...state,

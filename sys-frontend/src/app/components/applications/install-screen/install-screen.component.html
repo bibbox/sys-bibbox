@@ -8,7 +8,7 @@
 <!--    <input type="hidden" name="version" value="{{selectedVersion.docker_version}}" readonly=""><br/>-->
 
     <label for="instance_id"> Application ID</label>
-    <input type="text" value="" name="instance_id" required id="instance_id">
+    <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id">
     <span class="field-description"> Subdomain of your application URL. <b>The application ID can not be changed after the installation.</b></span>
 
     <label for="instance_name"> Application Name</label>
@@ -17,13 +17,13 @@
 
     <ng-container formArrayName="envParams" *ngFor="let envparam of environmentParameters; let i = index">
       <label> {{envparam.display_name}} </label>
-      <input type="text" name="{{envparam.display_name}}" [formControlName]="i">
+      <input type="{{envparam.type}}" name="{{envparam.id}}" formControlName="{{envparam.id}}" placeholder="{{envparam.default_value}}">
       <span class="field-description">{{envparam.description}}</span>
     </ng-container>
 
     <span class="install-submit">
       <button class="app-install-cancel" type="button" (click)="cancel()">Cancel</button>
-      <button class="app-install-submit" type="submit" [disabled]="!installForm.valid" (click)="install()">Install</button>
+      <button class="app-install-submit" type="submit" (click)="install()">Install</button> <!-- [disabled]="!installForm.valid" -->
     </span>
   </form>
 </div>

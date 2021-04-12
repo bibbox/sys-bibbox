@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable} from 'rxjs';
 import {InstanceItem} from '../../store/models/instance-item.model';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {AppState} from '../../store/models/app-state.model';
 import {LoadInstancesAction} from '../../store/actions/instance.actions';
+import * as instanceSelector from '../../store/selectors/instance.selector';
 
 @Component({
   selector: 'app-instances',
@@ -17,7 +18,7 @@ export class InstancesComponent implements OnInit {
 
   constructor(private store: Store<AppState>) {}
   ngOnInit(): void {
-    this.instanceItems$ = this.store.select(store => store.instances.list);
+    this.instanceItems$ = this.store.pipe(select(instanceSelector.loadInstances));
     this.loading$ = this.store.select(store => store.instances.loading);
     this.error$ = this.store.select(store => store.instances.error);
 

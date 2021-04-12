@@ -20,7 +20,7 @@ export class InstanceService {
     return this.http.get<InstanceItem[]>(API_INSTANCES_URL);
   }
 
-  addInstance(instanceName: string, payload: JSON): Observable<InstanceItem> {
+  addInstance(instanceName: string, payload: string): Observable<InstanceItem> {
     return this.http.post<InstanceItem>(API_INSTANCES_URL + instanceName, payload);
   }
 
