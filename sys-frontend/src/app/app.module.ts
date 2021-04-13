@@ -19,11 +19,11 @@ import { ImprintComponent } from './components/about/imprint/imprint.component';
 import { ActivitiesComponent } from './components/activities/activities.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {MetaReducer, State, StoreModule} from '@ngrx/store';
+import {MetaReducer, StoreModule} from '@ngrx/store';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ApplicationGroupReducer} from './store/reducers/application-group.reducer';
 import {InstanceReducer} from './store/reducers/instance.reducer';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MatCardModule} from '@angular/material/card';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {MatTooltipModule} from '@angular/material/tooltip';
@@ -54,6 +54,8 @@ import {AppState} from './store/models/app-state.model';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { TestComponent } from './components/test/test.component';
 import { CheckboxItemComponent } from './components/test/checkbox-item/checkbox-item.component';
+import {HttperrorInterceptor} from './httperror.interceptor';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
 
@@ -100,11 +102,15 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
         MatTabsModule,
         MatListModule,
         MatSelectModule,
+        MatSnackBarModule,
         MatInputModule,
         MatDialogModule,
         MatGridListModule,
         MatFormFieldModule,
         MatCheckboxModule,
+        MatTabsModule,
+        MatOptionModule,
+        ReactiveFormsModule,
         FontAwesomeModule,
         FlexLayoutModule,
         FormsModule,
@@ -118,11 +124,16 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
         }, {metaReducers}),
         EffectsModule.forRoot([InstanceEffects, ApplicationsEffects]),
         StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
-        MatTabsModule,
-        MatOptionModule,
-        ReactiveFormsModule,
 
     ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttperrorInterceptor,
+      multi: true,
+      deps: [MatSnackBar]
+    }
+  ]
 })
 export class AppModule {}

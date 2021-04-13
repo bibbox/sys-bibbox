@@ -1,5 +1,6 @@
 #app-dashboard {
-  display: none;
+  flex-direction: column;
+  display: flex;
 
   .app-dashboard-header {
     float: left;
@@ -63,6 +64,7 @@
 
       table {
         width: 100%;
+        direction: ltr;
 
         td {
           padding: 5px 15px 5px 0;
@@ -169,8 +171,12 @@
     background: rgb(140, 210, 90)
   }
 
-  .maintenance {
-    background: #ebd67a
+  .in_operation {
+    background: #ebd67a;
+  }
+
+  .stopped {
+    background: rgb(222, 65, 65)
   }
 
   input [type=text],
@@ -328,6 +334,14 @@
     float: left;
     width: 100%;
     text-align: center
+  }
+}
+.description-form {
+  align-items: center;
+
+  .description-form-field {
+    min-width: 80%;
+    min-height: 100px;
   }
 }
 

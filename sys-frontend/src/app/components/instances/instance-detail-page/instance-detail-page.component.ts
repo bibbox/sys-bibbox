@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {InstanceItem} from '../../../store/models/instance-item.model';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/models/app-state.model';
@@ -16,8 +16,9 @@ export class InstanceDetailPageComponent implements OnInit {
   instance$: Observable<InstanceItem>;
   instanceItem: InstanceItem;
   instanceName: string;
+  instanceLinks = [{label: '', url: ''}];
+  instanceContainers = [];
   tabIndex = 0;
-  links = [];
 
   constructor(
     private store: Store<AppState>,
@@ -40,17 +41,24 @@ export class InstanceDetailPageComponent implements OnInit {
           return this.instanceItem = item;
         })
       );
-
     if (this.instanceItem !== undefined) {
-      this.links = [
-        { url: this.instanceItem, label: 'GitHub Repository' },
-        { url: 'https://www.github.com/bibbox/'
+      this.instanceLinks = [
+        { label: 'GitHub Repository:',
+          url: 'https://www.github.com/bibbox/'
+            + this.instanceItem.app.name},
+        { label: 'Install Instructions:',
+          url: 'https://www.github.com/bibbox/'
             + this.instanceItem.app.name
             + '/blob/'
             + this.instanceItem.app.version
-            + '/INSTALL-APP.md',
-          label: 'Install Instructions' }
+            + '/INSTALL-APP.md', }
       ];
+      this.instanceContainers = ['placeholder_container_1', 'placeholder_container_2', 'placeholder_container_3'];
+      this.instanceItem.proxy.forEach(
+        function(proxyEntry): void {
+          this.instanceContainers.push(proxyEntry.CONTAINER);
+        }
+      );
     }
   }
 
