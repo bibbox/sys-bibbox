@@ -16,7 +16,7 @@ export class InstanceDetailPageComponent implements OnInit {
   instance$: Observable<InstanceItem>;
   instanceItem: InstanceItem;
   instanceName: string;
-  instanceLinks = [{label: '', url: ''}];
+  instanceLinks = [];
   instanceContainers = [];
   tabIndex = 0;
 
@@ -35,30 +35,34 @@ export class InstanceDetailPageComponent implements OnInit {
   ngOnInit(): void {
 
     this.instanceName = this.route.snapshot.paramMap.get('instance_name');
-    this.instance$ = this.store.pipe(select(InstanceSelector.selectCurrentInstance, this.instanceName))
-      .pipe(
-        map((item: InstanceItem) => {
-          return this.instanceItem = item;
-        })
-      );
-    if (this.instanceItem !== undefined) {
-      this.instanceLinks = [
-        { label: 'GitHub Repository:',
-          url: 'https://www.github.com/bibbox/'
-            + this.instanceItem.app.name},
-        { label: 'Install Instructions:',
-          url: 'https://www.github.com/bibbox/'
-            + this.instanceItem.app.name
-            + '/blob/'
-            + this.instanceItem.app.version
-            + '/INSTALL-APP.md', }
-      ];
-      this.instanceContainers = ['placeholder_container_1', 'placeholder_container_2', 'placeholder_container_3'];
-      this.instanceItem.proxy.forEach(
-        function(proxyEntry): void {
-          this.instanceContainers.push(proxyEntry.CONTAINER);
-        }
-      );
+    this.instance$ = this.store.pipe(select(InstanceSelector.selectCurrentInstance, this.instanceName));
+    this.instance$.subscribe(
+      (instanceItem) => {
+        this.instanceItem = instanceItem;
+        this.loadGithubLinks();
+        this.loadContainerNames();
+      });
+  }
+
+  loadGithubLinks(): void {
+    // get instance links
+    this.instanceLinks = [
+      { label: 'GitHub Repository:',
+        url: 'https://www.github.com/bibbox/'
+          + this.instanceItem.app.name},
+      { label: 'Install Instructions:',
+        url: 'https://www.github.com/bibbox/'
+          + this.instanceItem.app.name
+          + '/blob/'
+          + this.instanceItem.app.version
+          + '/INSTALL-APP.md', }
+    ];
+  }
+
+  loadContainerNames(): void {
+    // get container names
+    for (const entry of this.instanceItem.proxy) {
+      this.instanceContainers.push(entry.CONTAINER);
     }
   }
 

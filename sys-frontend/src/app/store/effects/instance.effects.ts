@@ -17,7 +17,7 @@ export class InstanceEffects {
     this.actions$.pipe(
       ofType<LoadInstancesAction>(InstanceActionTypes.LOAD_INSTANCES),
       mergeMap(
-        () => this.instanceService.loadInstances()
+        () => this.instanceService.getInstances()
           .pipe(
             map(data => new LoadInstancesSuccessAction(data)),
             catchError(error => of(new LoadInstancesFailureAction(error)))
@@ -29,7 +29,7 @@ export class InstanceEffects {
     this.actions$.pipe(
       ofType<AddInstanceAction>(InstanceActionTypes.ADD_INSTANCE),
       mergeMap(
-        () => this.instanceService.addInstance('instanceNameToAdd', JSON.parse('{InstancePOSTItem}')) // TODO: correct parameters
+        () => this.instanceService.postInstance('instanceNameToAdd', JSON.parse('{InstancePOSTItem}')) // TODO: correct parameters
           .pipe(
             map(data => new AddInstanceSuccessAction(data)),
             catchError(error => of(new AddInstanceFailureAction(error)))

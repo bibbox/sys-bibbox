@@ -16,34 +16,23 @@ export class InstanceService {
     private http: HttpClient,
     private store: Store<{AppState}>) { }
 
-  loadInstances(): Observable<InstanceItem[]>{
+  getInstances(): Observable<InstanceItem[]>{
     return this.http.get<InstanceItem[]>(API_INSTANCES_URL);
   }
 
-  addInstance(instanceName: string, payload: string): Observable<InstanceItem> {
+  getInstanceById(id: string): Observable<InstanceItem>{
+    return this.http.get<InstanceItem>(API_INSTANCES_URL + id);
+  }
+
+  postInstance(instanceName: string, payload: string): Observable<InstanceItem> {
     return this.http.post<InstanceItem>(API_INSTANCES_URL + instanceName, payload);
   }
 
   deleteInstance(instanceName: string): Observable<any> {
-    return this.http.delete(API_INSTANCES_URL + instanceName)
-      .pipe(
-        // TODO
-      );
+    return this.http.delete(API_INSTANCES_URL + instanceName);
   }
 
   updateInstanceDescription(instanceName: string, shortDescr: string, longDescr: string): Observable<InstanceItem> {
     return this.http.patch<InstanceItem>(API_INSTANCES_URL + instanceName, {short_description: shortDescr, long_description: longDescr});
   }
-
-
-  // getInstanceByID() {
-  // }
-  //
-  // postInstance() {
-  //
-  // }
-  //
-  // deleteInstanceByID {
-  //
-  // }
 }

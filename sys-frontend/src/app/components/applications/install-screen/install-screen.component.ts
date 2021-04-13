@@ -95,9 +95,11 @@ export class InstallScreenComponent implements OnInit {
     };
 
     console.log(payload);
-    this.instanceService.addInstance(this.installForm.value.instance_id, JSON.stringify(payload)).toPromise().then(
-      res => console.log(res)
-    );
+    this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
+      .toPromise()
+      .then(
+        res => console.log(res)
+      );
     this.router.navigateByUrl('/instances').then();
   }
 
