@@ -18,7 +18,7 @@ export class InstancesComponent implements OnInit {
 
   constructor(private store: Store<AppState>) {}
   ngOnInit(): void {
-    this.instanceItems$ = this.store.pipe(select(instanceSelector.loadInstances));
+    this.instanceItems$ = this.store.pipe(select(instanceSelector.selectAllInstances));
     this.loading$ = this.store.select(store => store.instances.loading);
     this.error$ = this.store.select(store => store.instances.error);
 

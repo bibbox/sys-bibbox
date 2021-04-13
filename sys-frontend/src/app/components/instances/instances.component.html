@@ -1,12 +1,12 @@
-<div class="container">
+<div class="instances">
   <div class="row">
     <div class="col-md-12">
       <h1 class="main-heading"> INSTANCES </h1>
     </div>
   </div>
-  <div class="row-align-items-end">
+  <div class="instances_results">
     <div *ngIf="(instanceItems$ | async)">
-      <div *ngFor="let instance of instanceItems$ | async" class="col-md-1 col-lg-4" >
+      <div *ngFor="let instance of instanceItems$ | async">
         <app-instance-tile [instance]="instance"></app-instance-tile>
       </div>
     </div>

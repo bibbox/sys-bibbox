@@ -4,7 +4,7 @@ export interface InstanceItem {
   short_description?: string;
   long_description?: string;
   state: string;
-  app: IApp[];
+  app: IApp;
   proxy: IProxy[];
 }
 

@@ -3,14 +3,27 @@ import {InstanceAction, InstanceActionTypes} from '../actions/instance.actions';
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
 
 export interface InstanceState extends EntityState<InstanceItem>{
-  selectedEntityID: number | null;
+  selectedEntityID: number;
   loading: boolean;
   error: Error;
+
+}
+
+export function selectInstanceId(a: InstanceItem): string {
+  return a.instancename;
+}
+
+export function sortByName(a: InstanceItem, b: InstanceItem): number {
+  return a.instancename.localeCompare(b.instancename);
 }
 
 export const InstanceAdapter: EntityAdapter<InstanceItem> = createEntityAdapter<InstanceItem>({
-  selectId: (a: InstanceItem) => a.instancename,
+  selectId: selectInstanceId,
+  sortComparer: sortByName,
 });
+
+export const getSelectedInstanceId = (state: InstanceState) => state.selectedEntityID;
+
 
 const defaultState: InstanceState = {
   ids: [],
@@ -82,3 +95,11 @@ export function InstanceReducer(
       return {...state};
   }
 }
+
+export const {
+  selectAll: selectAllInstances,
+  selectEntities: selectInstanceEntities,
+  selectIds: selectInstanceIds,
+  selectTotal: selectInstanceTotal
+
+} = InstanceAdapter.getSelectors();

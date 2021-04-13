@@ -4,67 +4,89 @@
 <!--<div *ngIf="{{detailScreen}} == 'info'"> info </div>-->
 
 <mat-tab-group animationDuration="0ms" mat-align-tabs="center" [selectedIndex]="tabIndex">
-  <mat-tab label="Dashboard">
-    Instance Name: {{ instance.instancename } } <br/> App: instance.app.name <br/> Version: instance.app.version
+  <ng-container *ngIf="instance$ | async">
 
-    <!-- GitHub Repo, Install Instructions -->
-    Containers: for entry in instance.proxy --> instance.proxy.CONTAINER <br/>
-    Instance: instancepath? <br/>
-    proxy: proxypath? <br/>
+    <mat-tab label="Dashboard">
 
-    <mat-grid-list cols="2" rowHeight="100px">
-      <mat-grid-tile>
-        <h3>Instance-Name</h3>
-        instance.instancename
-      </mat-grid-tile>
+      ID: {{instanceItem.instancename}}, App: {{instanceItem.app.name}}, Version: {{instanceItem.app.version}} <br/><br/>
 
-      <mat-grid-tile>
-        <h3>Display-Name</h3>
-        instance.displayname
-      </mat-grid-tile>
-    </mat-grid-list>
+      <!-- GitHub Repo, Install Instructions -->
+      <ng-container *ngFor="let link of links">
+        {{link.label}} <a href="{{link.url}}" target="_blank" rel="noopener noreferrer">{{link.url}}</a>
+      </ng-container>
+      Containers: for entry in instance.proxy --> instance.proxy.CONTAINER <br/>
+      Instance: instancepath? <br/>
+      proxy: proxypath? <br/>
 
-    <form class="description-form">
-      <mat-form-field class="description-form-field">
-        <mat-label>Short Description</mat-label>
-        <!--suppress HtmlFormInputWithoutLabel -->
-        <textarea matInput cdkTextareaAutosize placeholder="---"></textarea>
-      </mat-form-field> <br/><br/>
-      <mat-form-field class="description-form-field">
-        <mat-label>Long Description</mat-label>
-        <!--suppress HtmlFormInputWithoutLabel -->
-        <textarea matInput cdkTextareaAutosize placeholder="---"></textarea>
-      </mat-form-field>
-    </form>
-    <button (click)="log('save')"> Save </button>
-  </mat-tab>
-
-
-  <mat-tab label="Logs">
-    <mat-grid-list cols="1" rowHeight="50px">
-      <div *ngFor="let docker_container of [1, 2, 3]"> <!-- instance.proxy -->
-        <mat-grid-tile class="app-log-item">
-          a
+      <mat-grid-list cols="2" rowHeight="100px">
+        <mat-grid-tile>
+          <h3>Instance-Name</h3>
+          {{instanceItem.instancename}}
         </mat-grid-tile>
-      </div>
-      <mat-grid-tile  class="app-log-item">
-        <mat-list>
-          <mat-list-item>
-            <label for="log-container-install">Install</label>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-card id="log-container-install">
-              <mat-card-content>
-                INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
-                INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
-                INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
-                INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
-                INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
-              </mat-card-content>
-            </mat-card>
-          </mat-list-item>
-        </mat-list>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </mat-tab>
+
+        <mat-grid-tile>
+          <h3>Display-Name</h3>
+          {{instanceItem.displayname}}
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <!--
+       mat button if state === running ...
+       show red/green dot based on state
+
+       -->
+      <button *ngIf="instanceItem.state === 'RUNNING'">
+        Stop
+      </button>
+      <button *ngIf="instanceItem.state === 'STOPPED'">
+        Start
+      </button>
+      <button *ngIf="instanceItem.state === 'INSTALLING'" disabled>
+        Start
+      </button>
+
+      <form class="description-form">
+        <mat-form-field class="description-form-field">
+          <mat-label>Short Description</mat-label>
+          <!--suppress HtmlFormInputWithoutLabel -->
+          <textarea matInput cdkTextareaAutosize placeholder="---"></textarea>
+        </mat-form-field> <br/><br/>
+        <mat-form-field class="description-form-field">
+          <mat-label>Long Description</mat-label>
+          <!--suppress HtmlFormInputWithoutLabel -->
+          <textarea matInput cdkTextareaAutosize placeholder="---"></textarea>
+        </mat-form-field>
+      </form>
+      <button (click)="log('save')"> Save </button>
+    </mat-tab>
+
+
+    <mat-tab label="Logs">
+      <mat-grid-list cols="1" rowHeight="50px">
+        <div *ngFor="let docker_container of [1, 2, 3]"> <!-- instance.proxy -->
+          <mat-grid-tile class="app-log-item">
+            a
+          </mat-grid-tile>
+        </div>
+        <mat-grid-tile  class="app-log-item">
+          <mat-list>
+            <mat-list-item>
+              <label for="log-container-install">Install</label>
+            </mat-list-item>
+            <mat-list-item>
+              <mat-card id="log-container-install">
+                <mat-card-content>
+                  INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
+                  INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
+                  INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
+                  INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
+                  INSTALL LOGS LOREM IPSUM DOLOR ....<br/>
+                </mat-card-content>
+              </mat-card>
+            </mat-list-item>
+          </mat-list>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-tab>
+  </ng-container>
 </mat-tab-group>

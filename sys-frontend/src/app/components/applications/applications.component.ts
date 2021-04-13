@@ -29,6 +29,8 @@ export class ApplicationsComponent implements OnInit {
     this.store.dispatch(new applicationGroupActions.LoadApplicationGroupsAction());
 
     this.applicationGroupItems$ = this.store.pipe(select(applicationGroupSelector.loadApplications));
+
+    console.log(this.applicationGroupItems$);
   }
 
 

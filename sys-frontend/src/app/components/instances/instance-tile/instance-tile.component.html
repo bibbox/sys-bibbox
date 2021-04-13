@@ -17,12 +17,12 @@
     <!--          </span>-->
   </mat-card-content>
   <mat-card-actions class="mat-card-action-buttons">
-    <a [routerLink]="'/instances/'+instance.instancename">
+    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 0}">
       <button matTooltip="Dashboard">
         <span class="fas fa-cog"></span>
       </button>
     </a>
-    <a [routerLink]="'/instances/'+instance.instancename">
+    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 1}">
       <button matTooltip="Logs">
         <span class="fas fa-book"></span>
       </button>

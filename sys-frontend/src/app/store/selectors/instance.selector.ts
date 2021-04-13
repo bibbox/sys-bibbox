@@ -1,30 +1,39 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {InstanceAdapter, InstanceState} from '../reducers/instance.reducer';
+import * as fromInstance from '../reducers/instance.reducer';
+import {Dictionary} from '@ngrx/entity';
+import {InstanceItem} from '../models/instance-item.model';
 
-const getInstanceFeatureState = createFeatureSelector<InstanceState>('instances');
+const selectInstanceState = createFeatureSelector<fromInstance.InstanceState>('instances');
 
-export const loadInstances = createSelector(
-  getInstanceFeatureState,
-  InstanceAdapter.getSelectors().selectAll
+
+export const selectInstanceIds = createSelector(
+  selectInstanceState,
+  fromInstance.selectInstanceIds
 );
 
-export const getInstancesLoading = createSelector(
-  getInstanceFeatureState,
-  (state: InstanceState) => state.loading
+export const selectInstanceEntities = createSelector(
+  selectInstanceState,
+  fromInstance.selectInstanceEntities,
 );
 
-export const getInstancesError = createSelector(
-  getInstanceFeatureState,
-  (state: InstanceState) => state.error
+export const selectAllInstances = createSelector(
+  selectInstanceState,
+  fromInstance.selectAllInstances
 );
 
-export const getCurrentInstanceID = createSelector(
-  getInstanceFeatureState,
-  (state: InstanceState) => state.selectedEntityID
+export const selectInstanceTotal = createSelector(
+  selectInstanceState,
+  fromInstance.selectInstanceTotal
 );
 
-export const getCurrentInstance = createSelector(
-  getInstanceFeatureState,
-  getCurrentInstanceID,
-  state => state.entities[state.selectedEntityID]
+export const selectCurrentInstanceId = createSelector(
+  selectInstanceState,
+  fromInstance.getSelectedInstanceId
+);
+
+export const selectCurrentInstance = createSelector(
+    selectInstanceEntities,
+    (instanceEntities, instanceId: string) => {
+      return instanceEntities[instanceId];
+    }
 );

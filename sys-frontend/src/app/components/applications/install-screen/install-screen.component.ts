@@ -29,7 +29,7 @@ export class InstallScreenComponent implements OnInit {
 
     // TODO: Find better Workaround
     // this prevents opening this view from somewhere other than the install screen dialog, as we get no state passed then
-    if (!(history.state[0])){
+    if (this.router.getCurrentNavigation().extras.state === undefined){
       this.router.navigateByUrl('/applications').then();
     }
   }
@@ -95,10 +95,10 @@ export class InstallScreenComponent implements OnInit {
     };
 
     console.log(payload);
-    console.log(this.installForm.value.instance_id);
     this.instanceService.addInstance(this.installForm.value.instance_id, JSON.stringify(payload)).toPromise().then(
       res => console.log(res)
     );
+    this.router.navigateByUrl('/instances').then();
   }
 
   test(value: string): void {
