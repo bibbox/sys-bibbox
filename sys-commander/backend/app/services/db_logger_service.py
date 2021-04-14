@@ -19,6 +19,7 @@ class DBLogsHandler(logging.Handler):
             trace = traceback.format_exc()
         
         log = Log(
+            timestamp   = record.__dict__['asctime'],
             log_message = record.__dict__['msg'],
             type_       = record.__dict__['levelname'],
             activity_id = self.activity_id
