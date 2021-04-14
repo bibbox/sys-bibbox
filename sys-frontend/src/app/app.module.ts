@@ -56,6 +56,7 @@ import { TestComponent } from './components/test/test.component';
 import { CheckboxItemComponent } from './components/test/checkbox-item/checkbox-item.component';
 import {HttperrorInterceptor} from './httperror.interceptor';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { InstanceDetailsLogContainerComponent } from './components/instances/instance-detail-page/instance-details-log-container/instance-details-log-container.component';
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
 
@@ -82,50 +83,51 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     InstallScreenDialogComponent,
     TestComponent,
     CheckboxItemComponent,
+    InstanceDetailsLogContainerComponent,
   ],
-    imports: [
-        // angular
-        BrowserModule,
-        BrowserAnimationsModule,
-        CommonModule,
-        AppRoutingModule,
+  imports: [
+    // angular
+    BrowserModule,
+    BrowserAnimationsModule,
+    CommonModule,
+    AppRoutingModule,
 
-        // http client
-        HttpClientModule,
+    // http client
+    HttpClientModule,
 
-        // design
-        MatButtonModule,
-        MatToolbarModule,
-        MatTooltipModule,
-        MatIconModule,
-        MatCardModule,
-        MatTabsModule,
-        MatListModule,
-        MatSelectModule,
-        MatSnackBarModule,
-        MatInputModule,
-        MatDialogModule,
-        MatGridListModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatTabsModule,
-        MatOptionModule,
-        ReactiveFormsModule,
-        FontAwesomeModule,
-        FlexLayoutModule,
-        FormsModule,
-        NgbModule,
+    // design
+    MatButtonModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatCardModule,
+    MatTabsModule,
+    MatListModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    MatInputModule,
+    MatDialogModule,
+    MatGridListModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatTabsModule,
+    MatOptionModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
+    FlexLayoutModule,
+    FormsModule,
+    NgbModule,
 
-        // store
-        StoreModule.forRoot({
-            instances: InstanceReducer,
-            applicationGroups: ApplicationGroupReducer,
-            auth: AuthReducer,
-        }, {metaReducers}),
-        EffectsModule.forRoot([InstanceEffects, ApplicationsEffects]),
-        StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
+    // store
+    StoreModule.forRoot({
+      instances: InstanceReducer,
+      applicationGroups: ApplicationGroupReducer,
+      auth: AuthReducer,
+    }, {metaReducers}),
+    EffectsModule.forRoot([InstanceEffects, ApplicationsEffects]),
+    StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
 
-    ],
+  ],
   bootstrap: [AppComponent],
   providers: [
     {

@@ -9,7 +9,6 @@ import {APP_TITLE_LONG} from '../../../commons';
 export class HeaderComponent implements OnInit {
   title = APP_TITLE_LONG;
 
-  logoPath = '../../../../assets/img/silicolab_logo.svg';
   navigation = [
     { link: 'applications', label: 'Applications' },
     { link: 'instances', label: 'Instances' },

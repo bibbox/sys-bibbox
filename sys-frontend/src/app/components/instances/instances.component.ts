@@ -16,12 +16,17 @@ export class InstancesComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<Error>;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) {
+    this.store.dispatch(new LoadInstancesAction());
+  }
+
   ngOnInit(): void {
+    this.getFromStore();
+  }
+
+  getFromStore(): void {
     this.instanceItems$ = this.store.pipe(select(instanceSelector.selectAllInstances));
     this.loading$ = this.store.select(store => store.instances.loading);
     this.error$ = this.store.select(store => store.instances.error);
-
-    this.store.dispatch(new LoadInstancesAction());
   }
 }

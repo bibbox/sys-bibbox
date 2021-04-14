@@ -5,7 +5,8 @@ import {AppState} from '../../../store/models/app-state.model';
 import {Observable} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as InstanceSelector from '../../../store/selectors/instance.selector';
-import {map} from 'rxjs/operators';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {InstanceService} from '../../../store/services/instance.service';
 
 @Component({
   selector: 'app-instance-detail-page',
@@ -13,19 +14,28 @@ import {map} from 'rxjs/operators';
   styleUrls: ['./instance-detail-page.component.scss']
 })
 export class InstanceDetailPageComponent implements OnInit {
+  tabIndex = 0;
   instance$: Observable<InstanceItem>;
   instanceItem: InstanceItem;
   instanceName: string;
+
   instanceLinks = [];
-  instanceContainers = [];
-  tabIndex = 0;
+  instanceContainerNames = [];
+  instanceContainerLogs = {}; // TODO
+
+  instanceNameShort: string;
+  instanceNameLong: string;
+  instanceDescriptionShort: string;
+  instanceDescriptionLong: string;
 
   constructor(
     private store: Store<AppState>,
     private route: ActivatedRoute,
     private router: Router,
+    private snackbar: MatSnackBar,
+    private instanceService: InstanceService
   ) {
-    // redirect if state is empty -> caused by reloading current view
+    // redirect if state is empty -> caused by hard reloading current view
     if (this.router.getCurrentNavigation().extras.state === undefined){
       this.router.navigateByUrl('/instances').then();
     }
@@ -41,6 +51,8 @@ export class InstanceDetailPageComponent implements OnInit {
         this.instanceItem = instanceItem;
         this.loadGithubLinks();
         this.loadContainerNames();
+        this.instanceNameLong = instanceItem.short_description;
+        this.instanceNameShort = instanceItem.displayname;
       });
   }
 
@@ -60,14 +72,29 @@ export class InstanceDetailPageComponent implements OnInit {
   }
 
   loadContainerNames(): void {
-    // get container names
+    // get container names of instance
     for (const entry of this.instanceItem.proxy) {
-      this.instanceContainers.push(entry.CONTAINER);
+
+      // remove portinfo
+      const containerName = entry.CONTAINER.replace(/:[0-9]+/, '');
+      this.instanceContainerNames.push(containerName);
     }
   }
 
-  log(message: string): void {
-    console.log(message);
-    console.log(this.instance$);
+  deleteInstance(): void {
+    console.log('delete instance:' + this.instanceItem.instancename);
+    this.instanceService.deleteInstance(this.instanceItem.instancename).subscribe(
+      (res: JSON) => console.log(res)
+    );
+    this.router.navigateByUrl('/instances').then();
+  }
+
+  startInstance(): void {
+    console.log('startInstance ' + this.instanceItem.instancename);
+  }
+
+  saveInstanceChanges(): void {
+    console.log('save instance changes');
+    this.snackbar.open(JSON.stringify(this.instanceItem), 'OK', {horizontalPosition: 'center', verticalPosition: 'bottom'});
   }
 }

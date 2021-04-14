@@ -8,7 +8,7 @@ export interface InstanceItem {
   proxy: IProxy[];
 }
 
-interface IProxy {
+export interface IProxy {
   CONTAINER: string;
   URLPREFIX: string;
   TYPE: string;
@@ -16,7 +16,7 @@ interface IProxy {
   DISPLAYNAME: string;
 }
 
-interface IApp {
+export interface IApp {
   organization: string;
   name: string;
   version: string;

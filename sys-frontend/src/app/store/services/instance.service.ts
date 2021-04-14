@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {API_INSTANCES_URL} from '../../commons';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {InstanceItem} from '../models/instance-item.model';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
@@ -12,9 +12,8 @@ export class InstanceService {
 
   instanceItems: InstanceItem[];
 
-  constructor(
-    private http: HttpClient,
-    private store: Store<{AppState}>) { }
+  constructor(private http: HttpClient) {
+  }
 
   getInstances(): Observable<InstanceItem[]>{
     return this.http.get<InstanceItem[]>(API_INSTANCES_URL);
@@ -25,7 +24,9 @@ export class InstanceService {
   }
 
   postInstance(instanceName: string, payload: string): Observable<InstanceItem> {
-    return this.http.post<InstanceItem>(API_INSTANCES_URL + instanceName, payload);
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/json; charset=utf-8');
+    return this.http.post<InstanceItem>(API_INSTANCES_URL + instanceName, payload, {headers});
   }
 
   deleteInstance(instanceName: string): Observable<any> {

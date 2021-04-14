@@ -38,10 +38,10 @@ class DockerHandler():
         else:
             print("No containers to remove.")
 
+    def docker_getContainerLogs(self, container_name, tail=200):
+        container = self.client.containers.list(filters={"label":["com.docker.compose.service={}".format(container_name)]})[0]
+        return container.logs(tail)
 
-    # TODO
-    def docker_getContainerLogs(self, container_name):
-        pass
 
     def docker_deleteStoppedContainers(self, instance_name):
         removed = self.client.containers.prune(filters={"label":["com.docker.compose.project={}".format(instance_name)]})

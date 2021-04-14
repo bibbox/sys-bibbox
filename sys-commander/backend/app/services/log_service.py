@@ -16,3 +16,13 @@ class LogService(SQLAlchemyService):
         # Creating a parent class ref to access parent class methods.
         self.parentClassRef = super(LogService, self)
 
+
+    def select(self, activity_id, limit=None):
+        pass
+
+        ## TODO:
+        # SELECT "id" FROM "Activities" WHERE "name" LIKE '%instance_name%' AND "name" NOT LIKE '%Delete%' ORDER BY "id" DESC LIMIT 1
+        # --> do we allow duplicate InstanceNames when original instance is deleted already?
+        # 
+        # SELECT * FROM "Logs" WHERE "activity_id" = 'activity_id'
+

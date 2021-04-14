@@ -1,13 +1,14 @@
-#app-dashboard {
+#instance-details {
   flex-direction: column;
   display: flex;
+  max-width: 100%;
 
-  .app-dashboard-header {
+  .instance-details-header {
     float: left;
     width: 100%;
     margin-bottom: 20px;
 
-    .app-dashboard-title {
+    .instance-details-title {
       float: left;
       cursor: pointer;
       padding-left: 80px;
@@ -36,7 +37,7 @@
       }
     }
 
-    .app-dashboard-controls {
+    .instance-details-controls {
       float: right;
       padding-left: 30px;
       margin-top: 15px;
@@ -54,23 +55,22 @@
     height: 150px !important
   }
 
-  #app-dashboard-info {
+  #instance-details-info {
+    display: flex;
 
     .list-box {
       background: white;
       border-radius: 5px;
       box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-      padding: 5px 12px;
+      //padding: 5px 12px;
 
       table {
         width: 100%;
-        direction: ltr;
 
         td {
-          padding: 5px 15px 5px 0;
+          //padding: 5px 15px 5px 0;
           line-height: 20px;
           text-align: left;
-          width: 100%;
 
           a {
             font-size: 13px;
@@ -108,7 +108,7 @@
     }
   }
 
-  #app-dashboard-info-primary {
+  #instance-details-info-primary {
     display: flex;
     width: 100%;
     flex-flow: row nowrap;
@@ -258,47 +258,16 @@
     text-align: center
   }
 }
-#app-log {
+
+#instance-details-log {
   float: left;
   width: 100%;
 
-  .app-log-header {
-    float: left;
-    width: 100%;
-    margin-bottom: 20px;
-
-    .app-log-title {
-      float: left;
-      cursor: pointer;
-      padding-left: 80px;
-      position: relative;
-      margin-bottom: 20px;
-
-      img {
-        position: absolute;
-        height: 50px !important;
-        top: 50%;
-        left: 0;
-        margin-top: - 25 px
-      }
-      h1 {
-        color: #2d6191;
-        padding: 0;
-        float: left;
-        margin-bottom: 10px;
-        font-size: 25px
-      }
-      h3 {
-        float: left;
-        clear: left
-      }
-    }
-  }
-  .app-log-item {
+  .instance-details-log-item {
     float: left;
     width: 100%;
 
-    .app-log-containername {
+    .instance-details-log-containername {
       float: left;
       width: 100%;
       font-weight: bold;
@@ -306,7 +275,7 @@
       margin-bottom: 10px
     }
 
-    .app-log-command{
+    .instance-details-log-command{
       float: left;
       width: 100%;
       margin-bottom: 10px;
@@ -316,7 +285,7 @@
       border-radius: 3px
     }
 
-    .app-log-container{
+    .instance-details-log-container{
       float: left;
       width: 100%;
       background: white;
@@ -325,8 +294,11 @@
       overflow: auto;
       border-radius: 10px;
       border: solid 1px lightgray;
-      margin-bottom: 40px
+      margin-bottom: 40px;
 
+      .instance-details-log-container-entry {
+
+      }
     }
   }
 
@@ -340,8 +312,12 @@
   align-items: center;
 
   .description-form-field {
-    min-width: 80%;
-    min-height: 100px;
+    width: 100%;
+    flex: content;
+
+    textarea {
+      min-height: 80px;
+    }
   }
 }
 
