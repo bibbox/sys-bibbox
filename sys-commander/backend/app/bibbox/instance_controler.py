@@ -170,7 +170,6 @@ def installInstance (self, instanceDescr):
         file_handler.updateInstanceJsonState(instanceDescr['instancename'], "INSTALLING")
         file_handler.updateInstanceJsonProxy(instanceDescr['instancename'], instance_handler.getProxyInformation())
 
-
         # call docker-compose up
         print (compose_file_name)
         # process = subprocess.Popen(['ls', '-la', '/opt/bibbox/instances'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
@@ -261,7 +260,12 @@ def deleteInstance (self, instance_name):
 
     # get custom logger from logger service
     logger = logger_serv.getLogger()
-
+    
+    try:
+        fh.updateInstanceJsonState(instance_name, "DELETING")
+    except Exception as ex:
+        print(ex)
+    
     try:                
         try:       
             fh.removeAllFilesInDir(instance_path)
