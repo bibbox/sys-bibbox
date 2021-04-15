@@ -6,7 +6,7 @@
     </div>
     <span class="menu-spacer"></span>
     <div class="nav-buttons">
-      <button mat-button *ngFor="let item of navigation" [routerLink]="[item.link]" routerLinkActive="active">
+      <button mat-button *ngFor="let item of navigation" [routerLink]="item.link" routerLinkActive="active">
         {{item.label}}
       </button>
     </div>

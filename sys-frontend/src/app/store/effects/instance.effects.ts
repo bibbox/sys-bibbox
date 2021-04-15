@@ -29,7 +29,8 @@ export class InstanceEffects {
     this.actions$.pipe(
       ofType<AddInstanceAction>(InstanceActionTypes.ADD_INSTANCE),
       mergeMap(
-        () => this.instanceService.postInstance('instanceNameToAdd', JSON.parse('{InstancePOSTItem}')) // TODO: correct parameters
+        (action) =>
+          this.instanceService.postInstance(action.instanceName, action.payload) // TODO: correct parameters
           .pipe(
             map(data => new AddInstanceSuccessAction(data)),
             catchError(error => of(new AddInstanceFailureAction(error)))
@@ -41,7 +42,7 @@ export class InstanceEffects {
     this.actions$.pipe(
       ofType<DeleteInstanceAction>(InstanceActionTypes.DELETE_INSTANCE),
       mergeMap(
-        () => this.instanceService.deleteInstance('instanceToDelete') // TODO: correct parameters
+        (action) => this.instanceService.deleteInstance(action.instanceId) // TODO: correct parameters
           .pipe(
             map(data => new DeleteInstanceSuccessAction(data)),
             catchError(error => of(new DeleteInstanceFailureAction(error)))

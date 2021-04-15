@@ -2,12 +2,11 @@
   <div class="instance-details-header">
     <span class="instance-details-title">
       <img src="assets/img/b3africa.png" alt="404">
-      <h1>{{instanceItem.displayname}}</h1>
-      <h3 *ngIf="instanceItem.short_description">{{instanceItem.short_description}}</h3>
+      <h1>{{instanceItem.displayname_short}}</h1>
+      <h3>{{instanceItem.displayname_long}}</h3>
     </span>
     <span class="instance-details-controls" *ngIf="tabIndex == 0">
-      <ng-container>
-<!--        *ngIf="instanceItem.state === 'STOPPED'"-->
+      <ng-container> <!-- *ngIf="instanceItem.state === 'STOPPED'" -->
         <span class="status stopped"></span>
         <button (click)="startInstance()">
           <svg viewBox="0 0 1000 1000">
@@ -23,7 +22,7 @@
         </button>
       </ng-container>
 
-      <ng-container *ngIf="instanceItem.state === 'RUNNING'">
+      <ng-container> <!-- *ngIf="instanceItem.state === 'RUNNING'" -->
         <span class="status running"></span>
         <button>
           <svg viewBox="0 0 1000 1000">
@@ -39,52 +38,54 @@
         </button>
       </ng-container>
 
-      <ng-container *ngIf="instanceItem.state === 'INSTALLING'">
+      <ng-container> <!-- *ngIf="instanceItem.state === 'INSTALLING'" -->
         <span class="status in_operation"></span>
-        <button disabled>
+        <button disabled style="background: lightgray">
           <svg viewBox="0 0 1000 1000">
             <path d="M451.523,528.59V47.615c0-26.233,21.267-47.5,47.5-47.5s47.5,21.267,47.5,47.5V528.59c0,26.233-21.267,47.5-47.5,47.5S451.523,554.823,451.523,528.59z M711.563,158.396c-23.034-12.554-51.885-4.056-64.438,18.98s-4.055,51.885,18.98,64.438c113.472,61.835,183.962,180.438,183.962,309.526c0,94.084-36.639,182.536-103.165,249.063c-66.527,66.527-154.979,103.166-249.063,103.166s-182.537-36.639-249.064-103.166S145.609,645.424,145.609,551.34c0-129.281,70.646-247.969,184.369-309.747c23.052-12.522,31.587-41.361,19.065-64.413c-12.522-23.052-41.362-31.586-64.413-19.065C140.281,236.53,50.609,387.206,50.609,551.34c0,60.354,11.831,118.929,35.165,174.097c22.528,53.261,54.769,101.085,95.826,142.143c41.057,41.057,88.881,73.298,142.143,95.825c55.167,23.334,113.742,35.165,174.097,35.165s118.93-11.831,174.097-35.165c53.261-22.527,101.085-54.769,142.142-95.826c41.058-41.057,73.298-88.881,95.825-142.143c23.334-55.167,35.165-113.741,35.165-174.096C945.068,387.45,855.595,236.883,711.563,158.396z"></path>
           </svg>
           <span class="text"> Start </span>
         </button>
+
       </ng-container>
     </span>
   </div>
 
   <mat-tab-group animationDuration="0ms" mat-align-tabs="center" [(selectedIndex)]="tabIndex" id="tab-nav">
-    <mat-tab label="Dashboard" id="tab-nav-item">
-      <br><br><br>
-      <div id="instance-details-info-primary">
-        <table>
-          <tbody>
+    <mat-tab label="Dashboard">
+      <ng-template matTabContent>
+        <br><br><br>
+        <div class="instance-details-info-primary">
+          <table>
+            <tbody>
             <tr>
               <td class="label-short">ID:</td>
               <td>{{instanceItem.instancename}}</td>
             </tr>
-          </tbody>
-        </table>
-        <table>
-          <tbody>
+            </tbody>
+          </table>
+          <table>
+            <tbody>
             <tr>
               <td class="label-short">App:</td>
               <td>{{instanceItem.app.name}} {{instanceItem.app.version}}</td>
             </tr>
-          </tbody>
-        </table>
-        <table>
-          <tbody>
+            </tbody>
+          </table>
+          <table>
+            <tbody>
             <tr>
               <td class="label-short">Version:</td>
               <td>{{instanceItem.app.version}}</td>
             </tr>
-          </tbody>
-        </table>
-      </div>
-      <div id="instance-details-info" class="row">
-        <div class="col-2">
-          <div class="list-box">
-            <table>
-              <tbody>
+            </tbody>
+          </table>
+        </div>
+        <div class="instance-details-info row">
+          <div class="col-2">
+            <div class="list-box">
+              <table>
+                <tbody>
                 <tr *ngFor="let link of instanceLinks">
                   <td class="icon"><img src="assets/img/external_ref.png" alt="^"></td>
                   <td class="label-left">{{link.label}}</td>
@@ -94,18 +95,18 @@
                     </a>
                   </td>
                 </tr>
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <div class="col-2">
-          <div class="list-box">
-            <table>
-              <tbody>
+          <div class="col-2">
+            <div class="list-box">
+              <table>
+                <tbody>
                 <tr>
                   <td class="label-right">Containers:</td>
                   <td>
-                    <span *ngFor="let container of instanceContainerNames"> {{container}} </span>
+                    <span *ngFor="let container of instanceContainerNames"> {{container}} <br/></span>
                   </td>
                 </tr>
                 <tr>
@@ -116,48 +117,53 @@
                   <td class="label-right">Proxy:</td>
                   <td>/opt/bibbox/proxy/sites/005-{{instanceItem.instancename}}.conf</td>
                 </tr>
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-      <br><br><br><br>
-      <div class="row">
-        <div class="col-2">
-          <label>Short name</label><br>
-          <input type="text" class="right" value="{{instanceItem.app.name}} {{instanceItem.app.version}}">
+        <br><br><br><br>
+        <div class="row">
+          <div class="col-2">
+            <label>Short name</label><br>
+            <input type="text" class="right" [(ngModel)]="instanceItem && instanceItem.displayname_short">
+          </div>
+          <div class="col-2">
+            <label>Long name</label><br>
+            <input type="text" class="right" [(ngModel)]="instanceItem && instanceItem.displayname_long">
+          </div>
         </div>
-        <div class="col-2">
-          <label>Long name</label><br>
-          <input type="text" class="right" value="placeholder app_longname">
-        </div>
-      </div>
-      <br><br>
-      <form class="description-form">
-        <mat-form-field class="description-form-field">
-          <mat-label>Short Description</mat-label>
-          <textarea matInput value="" placeholder="-"></textarea>
-        </mat-form-field> <br/><br/>
-        <mat-form-field class="description-form-field">
-          <mat-label>Long Description</mat-label>
-          <textarea matInput value="" placeholder="-"></textarea>
-        </mat-form-field>
-      </form>
-      <button (click)="saveInstanceChanges()"> Save </button>
+        <br><br>
+        <form class="description-form">
+          <mat-form-field class="description-form-field">
+            <mat-label>Short Description</mat-label>
+            <textarea matInput value="" placeholder="-"></textarea>
+          </mat-form-field> <br/><br/>
+          <mat-form-field class="description-form-field">
+            <mat-label>Long Description</mat-label>
+            <textarea matInput value="" placeholder="-"></textarea>
+          </mat-form-field>
+        </form>
+        <button (click)="saveInstanceChanges()"> Save </button>
+      </ng-template>
     </mat-tab>
 
 
-    <mat-tab label="Logs" id="instance-details-log">
-      <br><br><br>
-
-      <!-- https://material.angular.io/components/table/examples#table-http -->
-      <ng-container *ngFor="let dockerContainerName of instanceContainerNames" class="instance-details-log-item">
-        <span class="instance-details-log-containername">{{dockerContainerName}}</span><br>
-        <span class="instance-details-log-command">placeholder</span><br>
-        <div class="instance-details-log-container">
-          <div *ngFor="let log_entry of instanceContainerLogs[dockerContainerName]" class="instance-details-log-container-entry">{{log_entry}}</div>
-        </div>
-      </ng-container>
+    <mat-tab label="Logs">
+      <ng-template matTabContent>
+        <br><br><br>
+        <!-- https://material.angular.io/components/table/examples#table-http -->
+        <ng-container *ngFor="let dockerContainerName of instanceContainerNames">
+          <div class="instance-details-log-item">
+            <span class="instance-details-log-containername">{{dockerContainerName}}</span><br>
+            <span class="instance-details-log-command">$ docker logs {{dockerContainerName}} --tail 200</span><br>
+            <div class="instance-details-log-container">
+              <div *ngFor="let log_entry of instanceContainerLogs[dockerContainerName]" class="instance-details-log-container-entry">{{log_entry}}</div>
+            </div>
+          </div>
+          <br><br><br>
+        </ng-container>
+      </ng-template>
     </mat-tab>
   </mat-tab-group>
 </div>

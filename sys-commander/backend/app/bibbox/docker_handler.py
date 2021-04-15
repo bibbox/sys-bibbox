@@ -1,5 +1,6 @@
 import docker
 import os
+import subprocess
 
 class DockerHandler():
 
@@ -38,10 +39,24 @@ class DockerHandler():
         else:
             print("No containers to remove.")
 
-    def docker_getContainerLogs(self, container_name, tail=200):
-        container = self.client.containers.list(filters={"label":["com.docker.compose.service={}".format(container_name)]})[0]
-        return container.logs(tail)
+    def docker_getContainerNames(self, instance_name):
+        return {'testname' : 'testlog'}
 
+    def docker_getContainerLogs(self, instance_name):
+        container_logs_dict = {}
+        containers = self.client.containers.list(filters={"label":["com.docker.compose.project={}".format(instance_name)]})
+        
+        for container in containers:
+            container_logs_dict[container.name] = str(container.logs(tail=200)).split('\\n')
+
+            ## subprocess implementation
+            # command = 'docker logs {} --tail 200'.format(container.name).split()
+            # process = subprocess.run(command, capture_output=True)
+            # logs_from_container = process.stderr
+
+            # container_logs_dict[container.name] = logs_from_container.split('\n')
+        
+        return container_logs_dict
 
     def docker_deleteStoppedContainers(self, instance_name):
         removed = self.client.containers.prune(filters={"label":["com.docker.compose.project={}".format(instance_name)]})

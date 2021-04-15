@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as InstanceSelector from '../../../store/selectors/instance.selector';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {InstanceService} from '../../../store/services/instance.service';
+import {DeleteInstanceAction} from '../../../store/actions/instance.actions';
 
 @Component({
   selector: 'app-instance-detail-page',
@@ -14,17 +15,17 @@ import {InstanceService} from '../../../store/services/instance.service';
   styleUrls: ['./instance-detail-page.component.scss']
 })
 export class InstanceDetailPageComponent implements OnInit {
-  tabIndex = 0;
+  tabIndex = 0; // 0: Dashboard, 1: Logs
   instance$: Observable<InstanceItem>;
   instanceItem: InstanceItem;
-  instanceName: string;
+  instanceNameFromUrl: string;
 
-  instanceLinks = [];
-  instanceContainerNames = [];
-  instanceContainerLogs = {}; // TODO
+  instanceLinks = []; // external Links to Github repo
+  instanceContainerNames = []; // container names of docker containers from instance
+  instanceContainerLogs = {}; // dictionary -> key: containerName, value: logs of container
 
-  instanceNameShort: string;
-  instanceNameLong: string;
+  instanceNameShort: string; // ? Not sure if we should keep this
+  instanceNameLong: string; // ? Not sure if we should keep this
   instanceDescriptionShort: string;
   instanceDescriptionLong: string;
 
@@ -44,15 +45,16 @@ export class InstanceDetailPageComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.instanceName = this.route.snapshot.paramMap.get('instance_name');
-    this.instance$ = this.store.pipe(select(InstanceSelector.selectCurrentInstance, this.instanceName));
+    this.instanceNameFromUrl = this.route.snapshot.paramMap.get('instance_name');
+    this.instance$ = this.store.pipe(select(InstanceSelector.selectCurrentInstance, this.instanceNameFromUrl));
     this.instance$.subscribe(
       (instanceItem) => {
         this.instanceItem = instanceItem;
         this.loadGithubLinks();
         this.loadContainerNames();
-        this.instanceNameLong = instanceItem.short_description;
-        this.instanceNameShort = instanceItem.displayname;
+        this.loadContainerLogs();
+        this.instanceNameShort = instanceItem.displayname_short;
+        this.instanceNameLong = instanceItem.displayname_long;
       });
   }
 
@@ -83,9 +85,10 @@ export class InstanceDetailPageComponent implements OnInit {
 
   deleteInstance(): void {
     console.log('delete instance:' + this.instanceItem.instancename);
-    this.instanceService.deleteInstance(this.instanceItem.instancename).subscribe(
-      (res: JSON) => console.log(res)
-    );
+    this.store.dispatch(new DeleteInstanceAction(this.instanceItem.instancename));
+    // this.instanceService.deleteInstance(this.instanceItem.instancename).subscribe(
+    //   (res: JSON) => console.log(res)
+    // );
     this.router.navigateByUrl('/instances').then();
   }
 
@@ -96,5 +99,11 @@ export class InstanceDetailPageComponent implements OnInit {
   saveInstanceChanges(): void {
     console.log('save instance changes');
     this.snackbar.open(JSON.stringify(this.instanceItem), 'OK', {horizontalPosition: 'center', verticalPosition: 'bottom'});
+  }
+
+  loadContainerLogs(): void {
+    this.instanceService.getInstanceContainerLogs(this.instanceItem.instancename).subscribe(
+      (res: JSON) => this.instanceContainerLogs = res
+    );
   }
 }

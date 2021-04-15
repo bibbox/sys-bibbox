@@ -7,6 +7,7 @@ from backend.app import app, db, restapi
 
 from backend.app.bibbox.instance_controler  import installInstance, stopInstance, deleteInstance, testProcessAsync
 from backend.app.bibbox.file_handler import FileHandler
+from backend.app.bibbox.docker_handler import DockerHandler
 
 api = Namespace('instances', description='Instance Ressources')
 restapi.add_namespace (api, '/instances')
@@ -58,7 +59,7 @@ class InstanceList(Resource):
         return result, 200
 
 
-@api.route('/<id>')
+@api.route('/<string:id>')
 @api.doc(params={'id': 'An ID'})
 class Instance(Resource):
     
@@ -139,3 +140,30 @@ class Instance(Resource):
         # #updateInstanceDescription.delay(instance_name, payload)
 
         # return message, 202
+
+
+@api.route('/logs/<string:id>')
+@api.doc(params={'id': 'An ID'})
+class Instance(Resource):
+    def get(self, id):
+        logs = {}
+
+        try:
+            # I'm getting an Error trying to instanciate the docker handler.
+            #   -> Error while fetching server API version: ('Connection aborted.', PermissionError(13, 'Permission denied'))
+            # dh = DockerHandler()
+            # logs = dh.docker_getContainerLogs(id)
+
+            logs = {
+                'wptest10-wordpress': ['log1', 'log2 testing linewrap ' + '#'*200, 'log3'],
+                'wptest10-wordpress-adminer': ['testing scrolling: {}'.format(x) for x in range(100)],
+                'wptest10-wordpress-db': ['log1', 'log2 plaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaceholder', 'log3']
+
+            }
+        
+        except Exception as ex:
+            print(ex)
+            logs = {}
+
+
+        return logs, 200

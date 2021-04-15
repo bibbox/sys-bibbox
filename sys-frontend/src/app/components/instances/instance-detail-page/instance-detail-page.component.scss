@@ -49,13 +49,14 @@
     }
   }
 
+  // unused
   .app-dashboard-chart {
     display: inline-block;
     width: 100%;
     height: 150px !important
   }
 
-  #instance-details-info {
+  .instance-details-info {
     display: flex;
 
     .list-box {
@@ -108,7 +109,7 @@
     }
   }
 
-  #instance-details-info-primary {
+  .instance-details-info-primary {
     display: flex;
     width: 100%;
     flex-flow: row nowrap;
@@ -134,7 +135,7 @@
   }
 
   .row {
-    display: flex;
+    display: inline-block;
     width: 100%;
 
     .col-2 {
@@ -257,15 +258,11 @@
     margin-top: 40px;
     text-align: center
   }
-}
-
-#instance-details-log {
-  float: left;
-  width: 100%;
 
   .instance-details-log-item {
     float: left;
     width: 100%;
+
 
     .instance-details-log-containername {
       float: left;
@@ -275,7 +272,7 @@
       margin-bottom: 10px
     }
 
-    .instance-details-log-command{
+    .instance-details-log-command {
       float: left;
       width: 100%;
       margin-bottom: 10px;
@@ -285,7 +282,7 @@
       border-radius: 3px
     }
 
-    .instance-details-log-container{
+    .instance-details-log-container {
       float: left;
       width: 100%;
       background: white;
@@ -302,17 +299,22 @@
     }
   }
 
+
+  // unused
   #app-log-navigation {
     float: left;
     width: 100%;
     text-align: center
   }
+
 }
+
+
 .description-form {
   align-items: center;
 
   .description-form-field {
-    width: 100%;
+    width: 90%;
     flex: content;
 
     textarea {
@@ -320,4 +322,7 @@
     }
   }
 }
+
+
+
 

@@ -80,11 +80,7 @@ export function InstanceReducer(
         loading: true
       };
     case InstanceActionTypes.DELETE_INSTANCE_SUCCESS:
-      return InstanceAdapter.removeOne(action.payload, {
-        ...state,
-        loading: false,
-        error: undefined
-      });
+      return InstanceAdapter.removeOne(action.payload, state);
     case InstanceActionTypes.DELETE_INSTANCE_FAILURE:
       return {
         ...state,

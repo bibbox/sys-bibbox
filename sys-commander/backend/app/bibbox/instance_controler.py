@@ -105,6 +105,9 @@ def installInstance (self, instanceDescr):
             path = INSTANCEPATH + instanceDescr['instancename'] + "/instance.json"
             with open(path, 'w') as f:       
                 instanceDescr['state'] = 'INSTALLING'
+                instanceDescr['displayname_long'] = ''
+                instanceDescr['description_short'] = ''
+                instanceDescr['description_long'] = ''
                 instanceDescrInTheFile =  copy.deepcopy(instanceDescr)
                 del instanceDescrInTheFile['parameters']
                 simplejson.dump (instanceDescrInTheFile, f)

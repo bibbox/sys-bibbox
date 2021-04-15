@@ -1,12 +1,12 @@
 <mat-card>
   <mat-card-title>
-    {{instance.displayname}}
+    {{instance.displayname_short}}
   </mat-card-title>
   <mat-card-subtitle>
     {{ instance.instancename}}
   </mat-card-subtitle>
   <mat-card-content>
-    <span *ngIf="instance.short_description">{{instance.short_description}}</span>
+    <span>{{instance.description_short}}</span>
     <!--         <img src="{{store}}" alt="404" class="application-icon">-->
     <!--          {{instance.state}}-->
     <!--          <span *ngFor="let entry of instance.proxy">-->

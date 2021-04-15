@@ -1,8 +1,10 @@
 export interface InstanceItem {
   instancename: string;
-  displayname: string;
-  short_description?: string;
-  long_description?: string;
+  displayname_short: string;
+  displayname_long: string;
+  description_short: string;
+  description_long: string;
+  container_names?: string[];
   state: string;
   app: IApp;
   proxy: IProxy[];

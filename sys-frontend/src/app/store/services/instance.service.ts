@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {API_INSTANCES_URL} from '../../commons';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {InstanceItem} from '../models/instance-item.model';
-import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -24,9 +23,9 @@ export class InstanceService {
   }
 
   postInstance(instanceName: string, payload: string): Observable<InstanceItem> {
-    const headers = new HttpHeaders();
-    headers.set('Content-Type', 'application/json; charset=utf-8');
-    return this.http.post<InstanceItem>(API_INSTANCES_URL + instanceName, payload, {headers});
+    const header = new HttpHeaders();
+    header.set('Content-Type', 'application/json'); // ; charset=utf-8
+    return this.http.post<InstanceItem>(API_INSTANCES_URL + instanceName, JSON.parse(payload), {headers: header});
   }
 
   deleteInstance(instanceName: string): Observable<any> {
@@ -35,5 +34,9 @@ export class InstanceService {
 
   updateInstanceDescription(instanceName: string, shortDescr: string, longDescr: string): Observable<InstanceItem> {
     return this.http.patch<InstanceItem>(API_INSTANCES_URL + instanceName, {short_description: shortDescr, long_description: longDescr});
+  }
+
+  getInstanceContainerLogs(instanceName: string): Observable<JSON> {
+    return this.http.get<JSON>(API_INSTANCES_URL + '/logs/' + instanceName);
   }
 }

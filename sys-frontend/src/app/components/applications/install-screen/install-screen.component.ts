@@ -4,6 +4,9 @@ import {ApplicationItem, EnvironmentParameters, IVersions} from '../../../store/
 import {ApplicationService} from '../../../store/services/application.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {InstanceService} from '../../../store/services/instance.service';
+import {AppState} from '../../../store/models/app-state.model';
+import {Store} from '@ngrx/store';
+import {AddInstanceAction} from '../../../store/actions/instance.actions';
 
 @Component({
   selector: 'app-install-screen',
@@ -20,6 +23,7 @@ export class InstallScreenComponent implements OnInit {
   envParamFormGroup: FormGroup;
 
   constructor(
+    private store: Store<AppState>,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private appService: ApplicationService,
@@ -81,32 +85,38 @@ export class InstallScreenComponent implements OnInit {
   }
 
   install(): void {
-    console.log('install');
-    console.log(this.envParamFormGroup.value);
+    if (this.installForm.valid) {
+      console.log('install');
+      console.log(this.envParamFormGroup.value);
+      const payload = {
+        displayname_short : this.installForm.value.instance_name,
+        app : {
+          organization : 'bibbox',
+          name         : this.installForm.value.app_name,
+          version      : this.installForm.value.version,
+        },
+        parameters  : this.envParamFormGroup.value
+      };
 
-    const payload = {
-      displayname : this.installForm.value.instance_name,
-      app : {
-        organization : 'bibbox',
-        name         : this.installForm.value.app_name,
-        version      : this.installForm.value.version,
-      },
-      parameters  : this.envParamFormGroup.value
-    };
-
-    console.log(payload);
-    this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
-      .toPromise()
-      .then(
-        res => console.log(res)
-      );
-    this.router.navigateByUrl('/instances').then();
+      console.log(payload);
+      this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
+      // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
+      //   .toPromise()
+      //   .then(
+      //     res => console.log(res)
+      //   );
+      this.router.navigateByUrl('/instances').then();
+    }
+    else {
+      console.log('form not valid');
+    }
   }
 
   test(value: string): void {
     value = this.installForm.value.instance_name;
     console.log(value);
   }
+
 
 }
 

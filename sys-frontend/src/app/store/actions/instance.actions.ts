@@ -32,7 +32,7 @@ export class LoadInstancesFailureAction implements Action {
 export class AddInstanceAction implements Action {
   readonly type = InstanceActionTypes.ADD_INSTANCE;
 
-  constructor(public payload: InstanceItem) {}
+  constructor(public instanceName: string, public payload: string) {}
 }
 
 export class AddInstanceSuccessAction implements Action {
@@ -50,7 +50,7 @@ export class AddInstanceFailureAction implements Action {
 export class DeleteInstanceAction implements Action {
   readonly type = InstanceActionTypes.DELETE_INSTANCE;
 
-  constructor(public payload: string) {}
+  constructor(public instanceId: string) {}
 }
 
 export class DeleteInstanceSuccessAction implements Action {
