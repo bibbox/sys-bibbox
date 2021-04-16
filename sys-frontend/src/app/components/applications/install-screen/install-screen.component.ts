@@ -85,7 +85,7 @@ export class InstallScreenComponent implements OnInit {
   }
 
   install(): void {
-    if (this.installForm.valid) {
+    if (this.installForm.valid) { //        || 1
       console.log('install');
       console.log(this.envParamFormGroup.value);
       const payload = {
@@ -98,7 +98,7 @@ export class InstallScreenComponent implements OnInit {
         parameters  : this.envParamFormGroup.value
       };
 
-      console.log(payload);
+      console.log(JSON.stringify(payload));
       this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
       // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
       //   .toPromise()

@@ -56,7 +56,7 @@ export class DeleteInstanceAction implements Action {
 export class DeleteInstanceSuccessAction implements Action {
   readonly type = InstanceActionTypes.DELETE_INSTANCE_SUCCESS;
 
-  constructor(public payload: string) {}
+  constructor(public instanceId: string) {}
 }
 
 export class DeleteInstanceFailureAction implements Action {

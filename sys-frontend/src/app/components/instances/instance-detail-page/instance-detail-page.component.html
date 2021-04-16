@@ -2,8 +2,8 @@
   <div class="instance-details-header">
     <span class="instance-details-title">
       <img src="assets/img/b3africa.png" alt="404">
-      <h1>{{instanceItem.displayname_short}}</h1>
-      <h3>{{instanceItem.displayname_long}}</h3>
+      <h1>{{instanceDetailForm.controls['displayname_short'].value}}</h1>
+      <h3>{{instanceDetailForm.controls['displayname_long'].value}}</h3>
     </span>
     <span class="instance-details-controls" *ngIf="tabIndex == 0">
       <ng-container> <!-- *ngIf="instanceItem.state === 'STOPPED'" -->
@@ -106,7 +106,7 @@
                 <tr>
                   <td class="label-right">Containers:</td>
                   <td>
-                    <span *ngFor="let container of instanceContainerNames"> {{container}} <br/></span>
+                    <span *ngFor="let container of this.instanceItem.container_names"> {{container}} <br/></span>
                   </td>
                 </tr>
                 <tr>
@@ -123,28 +123,38 @@
           </div>
         </div>
         <br><br><br><br>
+        <ng-container [formGroup]="instanceDetailForm">
         <div class="row">
           <div class="col-2">
             <label>Short name</label><br>
-            <input type="text" class="right" [(ngModel)]="instanceItem && instanceItem.displayname_short">
+            <input type="text" class="right" formControlName="displayname_short" [value]="instanceDetailForm.controls['displayname_short'].value">
           </div>
           <div class="col-2">
             <label>Long name</label><br>
-            <input type="text" class="right" [(ngModel)]="instanceItem && instanceItem.displayname_long">
+            <input type="text" class="right" formControlName="displayname_long" [value]="instanceDetailForm.controls['displayname_long'].value">
           </div>
         </div>
         <br><br>
-        <form class="description-form">
           <mat-form-field class="description-form-field">
             <mat-label>Short Description</mat-label>
-            <textarea matInput value="" placeholder="-"></textarea>
+            <textarea matInput
+                      formControlName="description_short"
+                      [value]="instanceDetailForm.controls['description_short'].value"
+                      placeholder="---">
+            </textarea>
           </mat-form-field> <br/><br/>
           <mat-form-field class="description-form-field">
             <mat-label>Long Description</mat-label>
-            <textarea matInput value="" placeholder="-"></textarea>
+            <textarea matInput
+                      formControlName="description_long"
+                      [value]="instanceDetailForm.controls['description_long'].value"
+                      placeholder="---">
+            </textarea>
           </mat-form-field>
-        </form>
-        <button (click)="saveInstanceChanges()"> Save </button>
+        </ng-container>
+        <div class="save-button">
+          <button (click)="saveInstanceChanges()"> Save </button>
+        </div>
       </ng-template>
     </mat-tab>
 
@@ -153,12 +163,12 @@
       <ng-template matTabContent>
         <br><br><br>
         <!-- https://material.angular.io/components/table/examples#table-http -->
-        <ng-container *ngFor="let dockerContainerName of instanceContainerNames">
+        <ng-container *ngFor="let container of this.instanceItem.container_names">
           <div class="instance-details-log-item">
-            <span class="instance-details-log-containername">{{dockerContainerName}}</span><br>
-            <span class="instance-details-log-command">$ docker logs {{dockerContainerName}} --tail 200</span><br>
+            <span class="instance-details-log-containername">{{container}}</span><br>
+            <span class="instance-details-log-command">$ docker logs {{container}} --tail 200</span><br>
             <div class="instance-details-log-container">
-              <div *ngFor="let log_entry of instanceContainerLogs[dockerContainerName]" class="instance-details-log-container-entry">{{log_entry}}</div>
+              <div *ngFor="let log_entry of instanceContainerLogs[container]" class="instance-details-log-container-entry">{{log_entry}}</div>
             </div>
           </div>
           <br><br><br>

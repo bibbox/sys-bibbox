@@ -56,7 +56,6 @@ import { TestComponent } from './components/test/test.component';
 import { CheckboxItemComponent } from './components/test/checkbox-item/checkbox-item.component';
 import {HttperrorInterceptor} from './httperror.interceptor';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-import { InstanceDetailsLogContainerComponent } from './components/instances/instance-detail-page/instance-details-log-container/instance-details-log-container.component';
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
 
@@ -83,7 +82,6 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     InstallScreenDialogComponent,
     TestComponent,
     CheckboxItemComponent,
-    InstanceDetailsLogContainerComponent,
   ],
   imports: [
     // angular

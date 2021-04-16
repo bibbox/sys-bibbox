@@ -3,6 +3,13 @@
   display: flex;
   max-width: 100%;
 
+
+  //flex-direction: column;
+  //display: flex;
+  //max-width: 100%;
+  //justify-content: center;
+  //align-items: center;
+
   .instance-details-header {
     float: left;
     width: 100%;
@@ -294,7 +301,7 @@
       margin-bottom: 40px;
 
       .instance-details-log-container-entry {
-
+        word-break: break-word;
       }
     }
   }
@@ -310,19 +317,21 @@
 }
 
 
-.description-form {
-  align-items: center;
+.description-form-field {
+  width: 90%;
+  flex: content;
+  flex-flow: row;
 
-  .description-form-field {
-    width: 90%;
-    flex: content;
-
-    textarea {
-      min-height: 80px;
-    }
+  textarea {
+    min-height: 80px;
   }
 }
 
-
+.save-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
 
 

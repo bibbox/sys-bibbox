@@ -32,11 +32,13 @@ export class InstanceService {
     return this.http.delete(API_INSTANCES_URL + instanceName);
   }
 
-  updateInstanceDescription(instanceName: string, shortDescr: string, longDescr: string): Observable<InstanceItem> {
-    return this.http.patch<InstanceItem>(API_INSTANCES_URL + instanceName, {short_description: shortDescr, long_description: longDescr});
+  updateInstanceDescription(instanceName: string, payload: string): Observable<JSON> {
+    const header = new HttpHeaders();
+    header.set('Content-Type', 'application/json'); // ; charset=utf-8
+    return this.http.patch<JSON>(API_INSTANCES_URL + instanceName, JSON.parse(payload), {headers: header});
   }
 
   getInstanceContainerLogs(instanceName: string): Observable<JSON> {
-    return this.http.get<JSON>(API_INSTANCES_URL + '/logs/' + instanceName);
+    return this.http.get<JSON>(API_INSTANCES_URL + 'logs/' + instanceName);
   }
 }

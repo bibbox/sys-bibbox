@@ -44,7 +44,7 @@ export class InstanceEffects {
       mergeMap(
         (action) => this.instanceService.deleteInstance(action.instanceId) // TODO: correct parameters
           .pipe(
-            map(data => new DeleteInstanceSuccessAction(data)),
+            map(data => new DeleteInstanceSuccessAction(action.instanceId)),
             catchError(error => of(new DeleteInstanceFailureAction(error)))
           )
       )
