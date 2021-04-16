@@ -5,7 +5,7 @@ from flask import Flask, request
 from flask_restplus import Namespace, Api, Resource, fields
 from backend.app import app, db, restapi
 
-from backend.app.bibbox.instance_controler  import installInstance, stopInstance, deleteInstance, testProcessAsync
+from backend.app.bibbox.instance_controler  import installInstance, stopInstance, deleteInstance, testProcessAsync, updateInstanceInfos
 from backend.app.bibbox.file_handler import FileHandler
 from backend.app.bibbox.docker_handler import DockerHandler
 
@@ -23,6 +23,7 @@ instancemodel = api.model('Model', {
 # thats the path inside the container !
 # this should only be used in the file_handler
 INSTANCEPATH = "/opt/bibbox/instances/"
+
 
 def instanceDesc ():
     path = INSTANCEPATH + instanceDescr['instancename'] + "/instance.json"
@@ -123,26 +124,29 @@ class Instance(Resource):
 
         return message, 202    
 
-    # def patch(self, id):
+
+    @api.doc("Patch instance.json values. Requires a dict of key-value pairs to update.")
+    def patch(self, id):
         
-        # instance_name = id
-        # payload = request.json
+        instance_name = id
+        payload = request.json
 
-        # jobID = 27
-        # jobURL = "api/v1/activities/27"
+        jobID = 27
+        jobURL = "api/v1/activities/27"
 
-        # instanceToBeUpdated = fh.getInstanceJSONContent(instance_name)
-        # message = {
-        #     "task": {
-        #         "href": jobURL,
-        #         "id": jobID
-        #         },
-        #     "instance" :  instanceToBeUpdated,
-        # }
+        fh = FileHandler()
+        instanceToBeUpdated = fh.getInstanceJSONContent(instance_name)
+        message = {
+            "task": {
+                "href": jobURL,
+                "id": jobID
+                },
+            "instance" :  instanceToBeUpdated,
+        }
 
-        # #updateInstanceDescription.delay(instance_name, payload)
+        updateInstanceInfos.delay(instance_name, payload)
 
-        # return message, 202
+        return message, 202
 
 
 @api.route('/logs/<string:id>')
@@ -154,6 +158,7 @@ class Instance(Resource):
         try:
             # I'm getting an Error trying to instanciate the docker handler.
             #   -> Error while fetching server API version: ('Connection aborted.', PermissionError(13, 'Permission denied'))
+            # Does not show up when DockerHandler is instanciated during celery task
             # dh = DockerHandler()
             # logs = dh.docker_getContainerLogs(id)
 

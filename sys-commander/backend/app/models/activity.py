@@ -30,7 +30,7 @@ class Activity (BaseModel, db.Model):
 
     id              = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name            = db.Column(db.String(128), nullable=False)
-    type_           = db.Column(db.String(20), nullable=False)
+    type_           = db.Column(db.String(128), nullable=False)
     start_time      = db.Column(db.DateTime, nullable=False)
     finished_time   = db.Column(db.DateTime, nullable=True)
     state           = db.Column(db.String, nullable=False)

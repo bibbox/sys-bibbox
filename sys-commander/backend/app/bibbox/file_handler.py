@@ -115,78 +115,50 @@ class FileHandler():
         return status
 
     def updateInstanceJsonState (self, instance_name, state_to_set):
-        # read content from file
-        content = self.__readJsonFile(self.INSTANCEPATH + instance_name + "/instance.json")
-
         # set state of instance
         # info: may soon be deprecated as we modify the instance / instanceDescription class
         if state_to_set not in InstanceDescription().states():
             raise Exception("Error occurred during update of instance.json: Trying to set unknown instance state.")
         else:
             content["state"] = state_to_set
-    
-        
-        # write updated content to instance.json file
-        try:     
-            with open(self.INSTANCEPATH + instance_name + '/instance.json', 'w+') as f:
-                f.truncate(0)
-                f.write (json.dumps(content))
-        except IOError as ex:
-            print(ex + " Error occurred while trying to update state in instance.json file.")
-
+            try:
+                self.updateInstanceJsonInfo(instance_name, {'state' : state_to_set})
+            except Exception as ex:
+                print(ex + " Error occurred while trying to update state in instance.json file.")
 
     def updateInstanceJsonProxy (self, instance_name, proxy_content):
-        # read content from files
-        contentInstance = self.__readJsonFile(self.INSTANCEPATH + instance_name + "/instance.json")
-        
         proxyInfos = []
         for containerInfo in proxy_content:
             proxyInfos.append(containerInfo)
 
-        if proxyInfos:
-            contentInstance["proxy"] = proxyInfos
-        else:
-            contentInstance["proxy"] = "none"
-        
-        # write updated content to instance.json file
         try:     
-            with open(self.INSTANCEPATH + instance_name + '/instance.json', 'w+') as f:
-                f.truncate(0)
-                f.write (json.dumps(contentInstance))
-        except IOError as ex:
+           if proxyInfos:
+               self.updateInstanceJsonInfo(instance_name, {'proxy': proxyInfos})
+        except Exception as ex:
             print(ex + " Error occurred while trying to update proxy infos in instance.json file.")
 
     def updateInstanceJsonContainerNames (self, instance_name, container_names):
-        # read content from files
-        contentInstance = self.__readJsonFile(self.INSTANCEPATH + instance_name + "/instance.json")
-
-        contentInstance['container_names'] = container_names
-        
         try:     
-            with open(self.INSTANCEPATH + instance_name + '/instance.json', 'w+') as f:
-                f.truncate(0)
-                f.write (json.dumps(contentInstance))
-        except IOError as ex:
+            if container_names:
+                self.updateInstanceJsonInfo(instance_name, {'container_names': container_names})
+        except Exception as ex:
             print(ex + " Error occurred while trying to update container_names in instance.json file.")
 
 
-
-    def updateInstanceJsonDescription (self, instance_name, short_description=None, long_description=None):
+    def updateInstanceJsonInfo (self, instance_name, update_dict):
         # read content from file
         content = self.__readJsonFile(self.INSTANCEPATH + instance_name + "/instance.json")
 
-        if short_description:
-           content['short_description'] = short_description
-        if long_description:
-            content['long_description'] = long_description
-    
+        for k, v in update_dict.items():
+            content[k] = v
+
         # write updated content to instance.json file
         try:     
             with open(self.INSTANCEPATH + instance_name + '/instance.json', 'w+') as f:
                 f.truncate(0)
                 f.write (json.dumps(content))
         except IOError as ex:
-            print(ex + " Error occurred while trying to update state in instance.json file.")
+            print(ex + " Error occurred while trying to update instance.json file.")
 
 
     def writeInstancesJsonFile (self):
