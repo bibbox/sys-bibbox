@@ -76,7 +76,10 @@ class Instance(Resource):
 
         instanceDescr = request.json
         instanceDescr['instancename'] = id
-        instanceDescr['state'] = 'JUSTBORN'    
+        instanceDescr['state'] = 'JUSTBORN'
+        instanceDescr['displayname_long'] = ''    # TODO remove later, as we put these key-value pairs into the payload sent from the frontend
+        instanceDescr['description_short'] = ''   # remove later
+        instanceDescr['description_long'] = ''    # remove later
 
         jobID = 27
         jobURL = "api/v1/activities/27"
@@ -155,9 +158,9 @@ class Instance(Resource):
             # logs = dh.docker_getContainerLogs(id)
 
             logs = {
-                'wptest10-wordpress': ['log1', 'log2 testing linewrap ' + '#'*200, 'log3'],
-                'wptest10-wordpress-adminer': ['testing scrolling: {}'.format(x) for x in range(100)],
-                'wptest10-wordpress-db': ['log1', 'log2 plaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaceholder', 'log3']
+                f'{id}-wordpress': ['log1', 'log2 testing linewrap ' + '#'*200, 'log3', 'log4', '', 'log6'], # testing empty log
+                f'{id}-wordpress-adminer': ['testing scrolling: {}'.format(x) for x in range(100)],
+                f'{id}-wordpress-db': ['log1'] # testing if container shows
 
             }
         

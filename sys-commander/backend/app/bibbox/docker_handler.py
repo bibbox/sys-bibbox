@@ -39,9 +39,6 @@ class DockerHandler():
         else:
             print("No containers to remove.")
 
-    def docker_getContainerNames(self, instance_name):
-        return {'testname' : 'testlog'}
-
     def docker_getContainerLogs(self, instance_name):
         container_logs_dict = {}
         containers = self.client.containers.list(filters={"label":["com.docker.compose.project={}".format(instance_name)]})

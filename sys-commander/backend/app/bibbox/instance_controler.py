@@ -105,9 +105,6 @@ def installInstance (self, instanceDescr):
             path = INSTANCEPATH + instanceDescr['instancename'] + "/instance.json"
             with open(path, 'w') as f:       
                 instanceDescr['state'] = 'INSTALLING'
-                instanceDescr['displayname_long'] = ''
-                instanceDescr['description_short'] = ''
-                instanceDescr['description_long'] = ''
                 instanceDescrInTheFile =  copy.deepcopy(instanceDescr)
                 del instanceDescrInTheFile['parameters']
                 simplejson.dump (instanceDescrInTheFile, f)
@@ -125,9 +122,23 @@ def installInstance (self, instanceDescr):
         # now we can generate an Instance object
         instance = Instance (instanceDescr['instancename'])
 
-
         compose_file_name = INSTANCEPATH + instanceDescr['instancename'] + "/docker-compose.yml"
         proxy_file_name   = PROXYPATH    + '005-' + instanceDescr['instancename'] + ".conf"
+
+        # add the container names to the instance.json file
+        try:
+            template_str = instance.composeTemplate()    
+            instance_handler =  InstanceHandler (template_str, instanceDescr)
+            container_names = instance_handler.getContainerNames()
+            file_handler.updateInstanceJsonContainerNames(instanceDescr['instancename'], container_names)
+
+        except Exception as ex:
+            logger.error("Updating {} instance.json file with container_names failed. Exception: {}".format(instanceDescr['instancename']), ex)
+            raise
+        else:
+            logger.info("Successfully updated the {} instance.json file with container_names.".format(instanceDescr['instancename']))
+
+
 
         # generate the docker-compose file
         try:

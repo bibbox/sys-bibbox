@@ -156,6 +156,21 @@ class FileHandler():
         except IOError as ex:
             print(ex + " Error occurred while trying to update proxy infos in instance.json file.")
 
+    def updateInstanceJsonContainerNames (self, instance_name, container_names):
+        # read content from files
+        contentInstance = self.__readJsonFile(self.INSTANCEPATH + instance_name + "/instance.json")
+
+        contentInstance['container_names'] = container_names
+        
+        try:     
+            with open(self.INSTANCEPATH + instance_name + '/instance.json', 'w+') as f:
+                f.truncate(0)
+                f.write (json.dumps(contentInstance))
+        except IOError as ex:
+            print(ex + " Error occurred while trying to update container_names in instance.json file.")
+
+
+
     def updateInstanceJsonDescription (self, instance_name, short_description=None, long_description=None):
         # read content from file
         content = self.__readJsonFile(self.INSTANCEPATH + instance_name + "/instance.json")
@@ -188,7 +203,7 @@ class FileHandler():
                 f.truncate(0)
                 f.write (json.dumps(content))
         except IOError as ex:
-            print(ex + " Error occurred while trying to write instances.json file.")
+            print(ex, " Error occurred while trying to write instances.json file.")
 
     # needs root permissions --> given as it runs inside docker container
     def removeAllFilesInDir(self, directory_path):
@@ -221,12 +236,14 @@ class FileHandler():
     def getInstancesJSONFile (self):
         try:
             self.writeInstancesJsonFile()
-        except:
-            pass
+        except Exception as ex:
+            
+            print(ex)
         
         filename =  self.INSTANCEPATH  + 'instances.json'
         with open(filename, 'r') as f:
            content = f.read ()
+
         return content 
 
     def getInstanceJSONContent(self, instance_name):
