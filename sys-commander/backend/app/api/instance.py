@@ -1,11 +1,12 @@
 import os
 import json
+import docker
 
 from flask import Flask, request
 from flask_restplus import Namespace, Api, Resource, fields
 from backend.app import app, db, restapi
 
-from backend.app.bibbox.instance_controler  import installInstance, stopInstance, deleteInstance, testProcessAsync, updateInstanceInfos
+from backend.app.bibbox.instance_controler  import installInstance, startInstance, stopInstance, restartInstance, deleteInstance, testProcessAsync, updateInstanceInfos
 from backend.app.bibbox.file_handler import FileHandler
 from backend.app.bibbox.docker_handler import DockerHandler
 
@@ -45,6 +46,36 @@ class Ping(Resource):
         testProcessAsync.delay()
         return {"reply":"PING"}
 
+
+@api.route('/stop/<string:id>')
+@api.doc("Stop all Instance Containers")
+class Ping(Resource):
+    def get(self, id):
+        
+        stopInstance.delay(id)
+
+        return {"stopping instance": id}, 200
+
+@api.route('/start/<string:id>')
+@api.doc("Start all Instance Containers")
+class Ping(Resource):
+    def get(self, id):
+        
+        startInstance.delay(id)
+
+        return {"starting instance": id}, 200
+
+@api.route('/restart/<string:id>')
+@api.doc("Restart all Instance Containers")
+class Ping(Resource):
+    def get(self, id):
+        
+        restartInstance.delay(id)
+
+        return {"restarting instance": id}, 200
+
+
+
 @api.route('/')
 class InstanceList(Resource):
     def get(self):
@@ -78,10 +109,10 @@ class Instance(Resource):
         instanceDescr = request.json
         instanceDescr['instancename'] = id
         instanceDescr['state'] = 'JUSTBORN'
-        instanceDescr['displayname_long'] = ''    # TODO remove later, as we put these key-value pairs into the payload sent from the frontend
-        instanceDescr['description_short'] = ''   # remove later
-        instanceDescr['description_long'] = ''    # remove later
-
+        instanceDescr['displayname_long'] = ''    
+        instanceDescr['description_short'] = ''   
+        instanceDescr['description_long'] = ''  
+        
         jobID = 27
         jobURL = "api/v1/activities/27"
 
@@ -156,22 +187,12 @@ class Instance(Resource):
         logs = {}
 
         try:
-            # I'm getting an Error trying to instanciate the docker handler.
-            #   -> Error while fetching server API version: ('Connection aborted.', PermissionError(13, 'Permission denied'))
-            # Does not show up when DockerHandler is instanciated during celery task
-            # dh = DockerHandler()
-            # logs = dh.docker_getContainerLogs(id)
+            dh = DockerHandler()
+            logs = dh.docker_getContainerLogs(id)
 
-            logs = {
-                f'{id}-wordpress': ['log1', 'log2 testing linewrap ' + '#'*200, 'log3', 'log4', '', 'log6'], # testing empty log
-                f'{id}-wordpress-adminer': ['testing scrolling: {}'.format(x) for x in range(100)],
-                f'{id}-wordpress-db': ['log1'] # testing if container shows
-
-            }
-        
         except Exception as ex:
             print(ex)
-            logs = {}
+            logs = {'error': ex}
 
 
         return logs, 200

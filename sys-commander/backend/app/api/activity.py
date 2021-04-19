@@ -16,15 +16,16 @@ activity_service = ActivityService()
 
 '''
 TODO
-I've implemented these wrong, only the scheduled api route seems ok.
+I've implemented these wrong - needs rework
  - Lukas
 '''
 
 @api.route("/")
 class ActivityListAll(Resource):
-    @api.doc("get all celery activities")
+    @api.doc("get all activities")
     def get(self):
         # task_service.all()
+
         print ("get all celery activities")
         i = app_celery.control.inspect()   
         activeTasks = i.active()
@@ -34,42 +35,40 @@ class ActivityListAll(Resource):
         return jsonify( activeTasks, scheduledTasks, finishedTasks )
 
 
+# @api.route("/active")
+# class ActivityListActive(Resource):
+#     @api.doc("get all active celery activities")
+#     def get(self):
+#         print ("get all active celery activities")
+#         i = app_celery.control.inspect()   
+#         activeTasks = i.active()
+    
+#         return jsonify( activeTasks )
+
+
+# @api.route("/scheduled")
+# class ActivityListScheduled(Resource):
+#     @api.doc("get all scheduled activities")
+#     def get(self):
+#         print ("get all scheduled celery activities")
+#         i = app_celery.control.inspect()
+#         scheduledTasks = i.reserved() 
+    
+#         return jsonify( scheduledTasks )
+
+
+# @api.route("/finished")
+# class ActivityListFinished(Resource):
+#     @api.doc("get all finished celery activities")
+#     def get(self):
+#         print ("get all scheduled celery activities")
+#         i = app_celery.control.inspect()
+#         doneTasks = "done placeholder"  #i.done() 
+    
+#         return jsonify( doneTasks )
+
 @api.route("/active")
-class ActivityListActive(Resource):
-    @api.doc("get all active celery activities")
-    def get(self):
-        print ("get all active celery activities")
-        i = app_celery.control.inspect()   
-        activeTasks = i.active()
-    
-        return jsonify( activeTasks )
-
-
-@api.route("/scheduled")
-class ActivityListScheduled(Resource):
-    @api.doc("get all scheduled activities")
-    def get(self):
-        print ("get all scheduled celery activities")
-        i = app_celery.control.inspect()
-        scheduledTasks = i.reserved() 
-    
-        return jsonify( scheduledTasks )
-
-
-@api.route("/finished")
-class ActivityListFinished(Resource):
-    @api.doc("get all finished celery activities")
-    def get(self):
-        print ("get all scheduled celery activities")
-        i = app_celery.control.inspect()
-        doneTasks = "done placeholder"  #i.done() 
-    
-        return jsonify( doneTasks )
-
-@api.route("/<id>")
-@api.doc(params={'id': 'Activity id'})
 class Activity(Resource):
-    @api.doc("get celery task by ID")
-    def get(self, id):
-        print("get task-info of activity: {}".format(id))
-        return jsonify({"status": 200, "msg":"Details for Celery Task %s are"%id } )
+    @api.doc("get active activities")
+    def get(self):
+        return jsonify({"status": 200, "msg":"Details for Activity"} )

@@ -31,37 +31,48 @@ PROXYPATH    = "/opt/bibbox/proxy/sites/"
 
 
 @app_celerey.task(bind=True,  name='instance.stopInstance')
-def stopInstance (self, instanceName):
-    dh = DockerHandler();
-    dh.docker_stopInstance(instanceName)
+def stopInstance (self, instance_name):
+    dh = DockerHandler()
+    dh.docker_stopInstance(instance_name)
 
 @app_celerey.task(bind=True, name='instance.startInstance')
-def startInstance (self, instanceName):
-    pass
+def startInstance (self, instance_name):
+    dh = DockerHandler()
+    dh.docker_startInstance(instance_name)
+
+@app_celerey.task(bind=True, name='instance.restartInstance')
+def restartInstance (self, instance_name):
+    dh = DockerHandler()
+    dh.docker_stopInstance(instance_name)
+    dh.docker_startInstance(instance_name)
 
 @app_celerey.task(bind=True,  name='instance.copyInstance')
 def copyInstance (self, instanceNameSrc, instanceNameDest):
     pass
 
 @app_celerey.task(bind=True,  name='instance.updateInstanceInfos')
-def updateInstanceInfos (self, instanceName, payload):
+def updateInstanceInfos (self, instance_name, payload):
+    fh = FileHandler()
 
      # activity service for db-stuff with activity entries
     activity_service = ActivityService()
     
+
     # create activity entry in db -> returns ID of created entry 
-    activity_id = activity_service.create(f"Update instance: {instanceName}", "UPDATE_INSTANCE_INFOS")
+    activity_id = activity_service.create(f"Update instance: {instance_name}", "UPDATE_INSTANCE")
 
     # logger service for creating custom logger
-    logger_serv = DBLoggerService(activity_id, f"[UPDATE INFOS] {instanceName}")
+    logger_serv = DBLoggerService(activity_id, f"[UPDATE INFOS] {instance_name}")
     logger = logger_serv.getLogger()
     fh = FileHandler()
     try:
-        fh.updateInstanceJsonInfo(instanceName, payload)
+        fh.updateInstanceJsonInfo(instance_name, payload)
     except Exception as ex:
-        logger.error(f"Updating instance.json file of instance {instanceName} failed. Exception: {ex}.")
+        logger.error(f"Updating instance.json file of instance {instance_name} failed. Exception: {ex}.")
+        activity_service.update(activity_id, "ERROR", "FAILURE")
     else:
-        logger.info(f"Successfully updated instance.json of instance {instanceName}.")
+        logger.info(f"Successfully updated instance.json of instance {instance_name}.")
+        activity_service.update(activity_id, "FINISHED", "SUCCESS")
 
 @app_celerey.task(bind=True,  name='instance.installInstance')
 def installInstance (self, instanceDescr):

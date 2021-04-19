@@ -20,7 +20,7 @@ from backend.app.bibbox.instance import InstanceDescription
 # which makes a local copy/cache of the github repository with the correct 
 # version. 
 # 
-# in offline mode, we couöd then just read from the local dir
+# in offline mode, we could then just read from the local dir
 #  => we need a global config saying, that we work in offline mode 
 #  => and a cache-all function downling all the reproes and builiding all images
 #  
@@ -117,10 +117,12 @@ class FileHandler():
     def updateInstanceJsonState (self, instance_name, state_to_set):
         # set state of instance
         # info: may soon be deprecated as we modify the instance / instanceDescription class
+        #content = self.__readJsonFile(self.INSTANCEPATH + instance_name + "/instance.json")
+
         if state_to_set not in InstanceDescription().states():
             raise Exception("Error occurred during update of instance.json: Trying to set unknown instance state.")
         else:
-            content["state"] = state_to_set
+            #content["state"] = state_to_set
             try:
                 self.updateInstanceJsonInfo(instance_name, {'state' : state_to_set})
             except Exception as ex:

@@ -6,45 +6,37 @@ class DockerHandler():
 
     def __init__(self):
         self.client = docker.from_env()
+        self.INSTANCEPATH = "/opt/bibbox/instances/"
 
 
-    # unused
-    def docker_stopAllApps(self):
-        app_containers = []
-        for container in self.client.containers.list():
-            if "bibbox-sys-commander" not in container.name:
-                app_containers.append(container)
-
-        self.__stopContainers(app_containers)
-
-
-    # TODO: docker-compose stop
     def docker_stopInstance(self, instance_name):
-        instance_containers = []
-        for container in self.client.containers.list():
-            if "{}-".format(instance_name) in container.name:
-                instance_containers.append(container)
+        try:
+            # TODO:
+            # shell=True is a security hazard, so we must sanitize the input
+            command = f"cd {self.INSTANCEPATH}{instance_name}; docker-compose stop"
+            subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8", shell=True)
             
-        self.__stopContainers(instance_containers)  
+        except Exception as ex:
+            print(ex)
 
+    def docker_startInstance(self, instance_name):
+        try:
+            # TODO:
+            # shell=True is a security hazard, so we must sanitize the input
+            command = f"cd {self.INSTANCEPATH}{instance_name}; docker-compose start"
+            subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8", shell=True)
+            
+        except Exception as ex:
+            print(ex)
 
-    # unused
-    def docker_deleteAllStoppedApps(self):
-        # TODO: exclude bibbox-sys-commander-* containers
-
-        print("Removing stopped containers...")
-        removed = self.client.containers.prune()
-        if removed['ContainersDeleted']:
-            print("Removed containers: {}".format([container_id for container_id in removed['ContainersDeleted']]))
-        else:
-            print("No containers to remove.")
+    
 
     def docker_getContainerLogs(self, instance_name):
         container_logs_dict = {}
         containers = self.client.containers.list(filters={"label":["com.docker.compose.project={}".format(instance_name)]})
         
         for container in containers:
-            container_logs_dict[container.name] = str(container.logs(tail=200)).split('\\n')
+            container_logs_dict[container.name] = str(container.logs(tail=200))[3:-1].split('\\n')
 
             ## subprocess implementation
             # command = 'docker logs {} --tail 200'.format(container.name).split()
