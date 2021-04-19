@@ -41,4 +41,11 @@ export class InstanceService {
   getInstanceContainerLogs(instanceName: string): Observable<JSON> {
     return this.http.get<JSON>(API_INSTANCES_URL + 'logs/' + instanceName);
   }
+
+  manageInstance(instanceName: string, operation: string): Observable<JSON> {
+    if (operation in ['start', 'stop', 'restart']) {
+      return this.http.get<JSON>(API_INSTANCES_URL + operation + '/' + instanceName);
+    }
+    return;
+  }
 }

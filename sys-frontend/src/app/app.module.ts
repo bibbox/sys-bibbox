@@ -56,6 +56,7 @@ import { TestComponent } from './components/test/test.component';
 import { CheckboxItemComponent } from './components/test/checkbox-item/checkbox-item.component';
 import {HttperrorInterceptor} from './httperror.interceptor';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
 
@@ -110,6 +111,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     MatCheckboxModule,
     MatTabsModule,
     MatOptionModule,
+    MatExpansionModule,
     ReactiveFormsModule,
     FontAwesomeModule,
     FlexLayoutModule,

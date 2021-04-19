@@ -9,6 +9,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {InstanceService} from '../../../store/services/instance.service';
 import {DeleteInstanceAction} from '../../../store/actions/instance.actions';
 import {FormBuilder, Validators} from '@angular/forms';
+import {SVG_PATHS} from '../../../commons';
 
 @Component({
   selector: 'app-instance-detail-page',
@@ -23,6 +24,8 @@ export class InstanceDetailPageComponent implements OnInit {
 
   instanceLinks = []; // external Links to Github repo
   instanceContainerLogs = {}; // dictionary -> key: containerName, value: logs of container
+
+  svgPaths = SVG_PATHS;
 
   // form fields for patch request
   instanceDetailForm = this.fb.group({
@@ -92,8 +95,8 @@ export class InstanceDetailPageComponent implements OnInit {
     this.router.navigateByUrl('/instances').then();
   }
 
-  startInstance(): void {
-    console.log('startInstance ' + this.instanceItem.instancename);
+  manageInstance(operation: string): void {
+    this.instanceService.manageInstance(this.instanceItem.instancename, operation).subscribe((res) => console.log(res));
   }
 
   saveInstanceChanges(): void {

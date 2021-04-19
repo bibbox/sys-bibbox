@@ -1,1 +1,36 @@
-<p>activities works!</p>
+<mat-accordion class="activity-list">
+  <mat-expansion-panel (opened)="1"
+                       (closed)="0"
+                       class="activity-item"
+                       *ngFor="let item of [1, 2, 3, 4, 5]"
+  >
+    <mat-expansion-panel-header class="activity-item-header">
+      <span class="activity-state">
+        <img [src]="activityStates.finished" alt="state">
+      </span>
+      <span class="activity-icon">
+        <svg viewBox="0 0 1000 1000">
+          <path [attr.d]="svgPaths.install"></path>
+        </svg>
+      </span>
+      <div>
+        <span class="activity-title">
+          INSTALLING ___ AS ____
+        </span> <br>
+          <span class="activity-start-date">
+          started: __.__.__ &nbsp; __:__:__
+        </span>
+          <span class="activity-end-date">
+          finished: __.__.__ &nbsp; __:__:__
+        </span>
+      </div>
+    </mat-expansion-panel-header>
+    <ng-template matExpansionPanelContent>
+      <div class="activity-item-log-container">
+        <div class="container-log-entry" *ngFor="let item of [].constructor(100); let i = index">
+          log: {{i}}
+        </div>
+      </div>
+    </ng-template>
+  </mat-expansion-panel>
+</mat-accordion>

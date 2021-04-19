@@ -11,11 +11,9 @@
     </div>
 
     <div class="docs-footer-navbar">
-      <div class="col-sm-auto">
-        <button class="nav-button m-2 aboutbutton" *ngFor="let item of bottomNavigation" [routerLink]="[item.link]" routerLinkActive="active">
-          {{item.label}}
-        </button>
-      </div>
+      <button class="" *ngFor="let item of bottomNavigation" [routerLink]="[item.link]" routerLinkActive="active">
+        {{item.label}}
+      </button>
     </div>
 
 

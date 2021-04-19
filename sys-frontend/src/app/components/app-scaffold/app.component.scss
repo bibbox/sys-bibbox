@@ -1,14 +1,18 @@
-#header {
-  margin-bottom: 50px;
-  max-width: 100%;
-  display: block;
-}
+.scaffold {
 
-#content {
-  box-sizing: content-box;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding-bottom: 150px;
-  padding-left: 15px;
-  padding-right: 15px;
+  #header {
+    margin-bottom: 50px;
+    max-width: 100%;
+    display: block;
+  }
+
+  #content {
+    box-sizing: content-box;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-bottom: 150px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
 }

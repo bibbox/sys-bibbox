@@ -85,7 +85,7 @@ export class InstallScreenComponent implements OnInit {
   }
 
   install(): void {
-    if (this.installForm.valid) { //        || 1
+    if (this.installForm.valid || 1) { //        || 1
       console.log('install');
       console.log(this.envParamFormGroup.value);
       const payload = {
