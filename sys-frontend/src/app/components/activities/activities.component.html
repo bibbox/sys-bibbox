@@ -2,26 +2,32 @@
   <mat-expansion-panel (opened)="1"
                        (closed)="0"
                        class="activity-item"
-                       *ngFor="let item of [1, 2, 3, 4, 5]"
+                       *ngFor="let activity of activityList"
   >
     <mat-expansion-panel-header class="activity-item-header">
       <span class="activity-state">
-        <img [src]="activityStates.finished" alt="state">
+        <img *ngIf="activity.state === 'FINISHED'" [src]="activityStates.finished" alt="state">
+        <img *ngIf="activity.state === 'ERROR'" [src]="activityStates.error" alt="state">
+<!--        <img *ngIf="activity.state === 'ONGOING'" [src]="activityStates.finished" alt="state">-->
       </span>
       <span class="activity-icon">
         <svg viewBox="0 0 1000 1000">
-          <path [attr.d]="svgPaths.install"></path>
+          <path *ngIf="activity.type === 'INSTALL_INSTANCE'" [attr.d]="svgPaths.install"></path>
+          <path *ngIf="activity.type === 'DELETE_INSTANCE'" [attr.d]="svgPaths.delete"></path>
+          <path *ngIf="activity.type === 'START_INSTANCE'" [attr.d]="svgPaths.start"></path>
+          <path *ngIf="activity.type === 'START_INSTANCE'" [attr.d]="svgPaths.stop"></path>
+          <path *ngIf="activity.type === 'START_INSTANCE'" [attr.d]="svgPaths.restart"></path>
         </svg>
       </span>
       <div>
         <span class="activity-title">
-          INSTALLING ___ AS ____
+          {{activity.name}}
         </span> <br>
-          <span class="activity-start-date">
-          started: __.__.__ &nbsp; __:__:__
+        <span class="activity-start-date">
+          started: {{activity.start_time}}
         </span>
-          <span class="activity-end-date">
-          finished: __.__.__ &nbsp; __:__:__
+        <span class="activity-end-date" *ngIf="activity.finished_time">
+          finished: {{activity.finished_time}}
         </span>
       </div>
     </mat-expansion-panel-header>

@@ -1,10 +1,17 @@
 export interface ActivityItem {
   id: number;
-  instance_uuid: string;
   name: string;
-  type_: string;
+  type: string;
   start_time: string;
-  finished_time: string[];
+  finished_time: string | undefined;
   state: string;
-  result: string;
+  result: string | undefined;
+}
+
+export interface LogItem {
+  id: number;
+  timestamp: string;
+  log_message: string;
+  type: string;
+  activity_id: number;
 }

@@ -52,16 +52,13 @@ export class InstallScreenComponent implements OnInit {
         envParams: new FormGroup({}),
       });
 
-    this.loadEnvParams().then();
+    this.loadEnvParams();
   }
 
-  async loadEnvParams(): Promise<void> {
-    console.warn(this.selectedVersion.environment_parameters);
-    await this.appService.getAppEnvParams(this.selectedVersion.environment_parameters)
-      .toPromise()
-      .then(
-        res => this.environmentParameters = res
-      );
+  loadEnvParams(): void {
+    this.appService.getAppEnvParams(this.selectedVersion.environment_parameters).subscribe(
+      (res) => this.environmentParameters = res
+    );
     this.initEnvParamFormFields();
   }
 

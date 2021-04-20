@@ -113,7 +113,9 @@ export class InstanceDetailPageComponent implements OnInit {
 
   loadContainerLogs(): void {
     this.instanceService.getInstanceContainerLogs(this.instanceItem.instancename).subscribe(
-      (res: JSON) => this.instanceContainerLogs = res
+      (res: JSON) => {
+        this.instanceContainerLogs = res;
+      }
     );
   }
 }
