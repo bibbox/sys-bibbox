@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {SVG_PATHS} from '../../commons';
 import {ActivityService} from '../../store/services/activity.service';
-import {ActivityItem} from '../../store/models/activity.model';
+import {ActivityItem, LogItem} from '../../store/models/activity.model';
 
 @Component({
   selector: 'app-activities',
@@ -17,16 +17,22 @@ export class ActivitiesComponent implements OnInit {
     ongoing: 'assets/img/lock.png'
   };
   activityList: ActivityItem[];
+  activityLogs: LogItem[];
   constructor(private activityService: ActivityService) { }
 
   ngOnInit(): void {
-    this.loadActivityLogs();
+    this.getActivities();
   }
 
-  loadActivityLogs(): void {
+  getActivities(): void {
     this.activityService.getActivities().subscribe(
       (res) => this.activityList = res
     );
   }
 
+  getLogsOfActivity(activityID: number): void {
+    this.activityService.getLogsOfActivity(activityID).subscribe(
+      (res) => this.activityLogs = res
+    );
+  }
 }

@@ -11,7 +11,7 @@ export interface ActivityItem {
 export interface LogItem {
   id: number;
   timestamp: string;
-  log_message: string;
+  message: string;
   type: string;
   activity_id: number;
 }

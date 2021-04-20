@@ -38,7 +38,7 @@
         </button>
       </ng-container>
 
-      <ng-container *ngIf="instanceItem.state === ('INSTALLING' || 'JUSTBORN' || 'RESTARTING' || 'STOPPING' || 'DELETING' || 'STARTING')"> <!--  -->
+      <ng-container *ngIf="instanceItem.state === ('RESTARTING' || 'STOPPING' || 'DELETING' || 'STARTING')"> <!--  -->
         <span class="status in_operation"></span>
         <button disabled style="background: lightgray" (click)="manageInstance('start')">
           <svg viewBox="0 0 1000 1000">
@@ -47,6 +47,9 @@
           <span class="text"> Start </span>
         </button>
 
+      </ng-container>
+      <ng-container *ngIf="instanceItem.state === ('JUSTBORN' || 'INSTALLING')"> <!--  -->
+        Currently installing...
       </ng-container>
     </span>
   </div>

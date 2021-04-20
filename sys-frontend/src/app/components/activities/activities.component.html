@@ -1,22 +1,23 @@
 <mat-accordion class="activity-list">
-  <mat-expansion-panel (opened)="1"
+  <mat-expansion-panel (opened)="getLogsOfActivity(activity.id)"
                        (closed)="0"
                        class="activity-item"
                        *ngFor="let activity of activityList"
+
   >
     <mat-expansion-panel-header class="activity-item-header">
       <span class="activity-state">
         <img *ngIf="activity.state === 'FINISHED'" [src]="activityStates.finished" alt="state">
         <img *ngIf="activity.state === 'ERROR'" [src]="activityStates.error" alt="state">
-<!--        <img *ngIf="activity.state === 'ONGOING'" [src]="activityStates.finished" alt="state">-->
+        <img *ngIf="activity.state === 'ONGOING'" [src]="activityStates.finished" alt="state">
       </span>
       <span class="activity-icon">
         <svg viewBox="0 0 1000 1000">
           <path *ngIf="activity.type === 'INSTALL_INSTANCE'" [attr.d]="svgPaths.install"></path>
           <path *ngIf="activity.type === 'DELETE_INSTANCE'" [attr.d]="svgPaths.delete"></path>
           <path *ngIf="activity.type === 'START_INSTANCE'" [attr.d]="svgPaths.start"></path>
-          <path *ngIf="activity.type === 'START_INSTANCE'" [attr.d]="svgPaths.stop"></path>
-          <path *ngIf="activity.type === 'START_INSTANCE'" [attr.d]="svgPaths.restart"></path>
+          <path *ngIf="activity.type === 'STOP_INSTANCE'" [attr.d]="svgPaths.stop"></path>
+          <path *ngIf="activity.type === 'RESTART_INSTANCE'" [attr.d]="svgPaths.restart"></path>
         </svg>
       </span>
       <div>
@@ -33,8 +34,8 @@
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
       <div class="activity-item-log-container">
-        <div class="container-log-entry" *ngFor="let item of [].constructor(100); let i = index">
-          log: {{i}}
+        <div class="container-log-entry" *ngFor="let item of activityLogs">
+          [{{item.timestamp}}] [{{item.type}}] {{item.message}}
         </div>
       </div>
     </ng-template>
