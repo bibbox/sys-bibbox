@@ -33,18 +33,30 @@ PROXYPATH    = "/opt/bibbox/proxy/sites/"
 @app_celerey.task(bind=True,  name='instance.stopInstance')
 def stopInstance (self, instance_name):
     dh = DockerHandler()
+    fh = FileHandler()
+
+    fh.updateInstanceJsonState(instance_name, 'STOPPING')
     dh.docker_stopInstance(instance_name)
+    fh.updateInstanceJsonState(instance_name, 'STOPPED')
 
 @app_celerey.task(bind=True, name='instance.startInstance')
 def startInstance (self, instance_name):
     dh = DockerHandler()
+    fh = FileHandler()
+
+
+    fh.updateInstanceJsonState(instance_name, 'STARTING')
     dh.docker_startInstance(instance_name)
+    fh.updateInstanceJsonState(instance_name, 'RUNNING')
 
 @app_celerey.task(bind=True, name='instance.restartInstance')
 def restartInstance (self, instance_name):
     dh = DockerHandler()
-    dh.docker_stopInstance(instance_name)
-    dh.docker_startInstance(instance_name)
+    fh = FileHandler()
+
+    fh.updateInstanceJsonState(instance_name, 'RESTARTING')
+    dh.docker_restartInstance(instance_name)
+    fh.updateInstanceJsonState(instance_name, 'RUNNING')
 
 @app_celerey.task(bind=True,  name='instance.copyInstance')
 def copyInstance (self, instanceNameSrc, instanceNameDest):
@@ -249,9 +261,11 @@ def installInstance (self, instanceDescr):
     except Exception as ex:
         print(ex)
         logger.error("Installing instance {} failed: {}.".format(instanceDescr['instancename'], ex))
+        file_handler.updateInstanceJsonState(instanceDescr['instancename'], "ERROR")
         activity_service.update(activity_id, "ERROR", "FAILURE")
     else:
         logger.info("Successfully installed instance {}.".format(instanceDescr['instancename']))
+        file_handler.updateInstanceJsonState(instanceDescr['instancename'], "RUNNING")
         activity_service.update(activity_id, "FINISHED", "SUCCESS")
 
 
@@ -314,7 +328,7 @@ def deleteInstance (self, instance_name):
 
 
         try:
-            dh.docker_deleteStoppedContainers(instance_name)
+            dh.docker_deleteStoppedInstance(instance_name)
         except OSError as ex:
             print ("Deletion of stopped {} containers failed. Exception: {}".format(instance_name, ex))
             logger.error("Deletion of stopped {} containers failed. Exception: {}".format(instance_name, ex))

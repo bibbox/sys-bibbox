@@ -56,3 +56,20 @@ class ActivityService(SQLAlchemyService):
         })
 
         db.session.commit()
+
+    def selectAll(self):
+        res = db.session.query(Activity)
+        activity_lst = list()
+        for activity in res:
+            activity_lst.append({
+                'id'            : activity.id,
+                'name'          : activity.name, 
+                'type'          : activity.type_, 
+                'start_time'    : str(activity.start_time),
+                'finished_time' : str(activity.finished_time),
+                'state'         : activity.state,
+                'result'        : activity.result
+            })
+
+        return activity_lst
+        

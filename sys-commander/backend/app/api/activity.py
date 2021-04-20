@@ -24,15 +24,21 @@ I've implemented these wrong - needs rework
 class ActivityListAll(Resource):
     @api.doc("get all activities")
     def get(self):
+
+
+        as_ = ActivityService()
+        reply = as_.selectAll()
+        return reply, 202
+
         # task_service.all()
 
-        print ("get all celery activities")
-        i = app_celery.control.inspect()   
-        activeTasks = i.active()
-        scheduledTasks = i.reserved() 
-        finishedTasks = "done placeholder" #i.done()
+        # print ("get all celery activities")
+        # i = app_celery.control.inspect()   
+        # activeTasks = i.active()
+        # scheduledTasks = i.reserved() 
+        # finishedTasks = "done placeholder" #i.done()
     
-        return jsonify( activeTasks, scheduledTasks, finishedTasks )
+        # return jsonify( activeTasks, scheduledTasks, finishedTasks )
 
 
 # @api.route("/active")

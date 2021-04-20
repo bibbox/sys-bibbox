@@ -117,17 +117,17 @@ class FileHandler():
     def updateInstanceJsonState (self, instance_name, state_to_set):
         # set state of instance
         # info: may soon be deprecated as we modify the instance / instanceDescription class
-        #content = self.__readJsonFile(self.INSTANCEPATH + instance_name + "/instance.json")
 
-        if state_to_set not in InstanceDescription().states():
-            raise Exception("Error occurred during update of instance.json: Trying to set unknown instance state.")
-        else:
-            #content["state"] = state_to_set
+        if state_to_set in InstanceDescription().states() or state_to_set in InstanceDescription().running_state():
             try:
                 self.updateInstanceJsonInfo(instance_name, {'state' : state_to_set})
             except Exception as ex:
                 print(ex + " Error occurred while trying to update state in instance.json file.")
 
+        else:            
+            raise Exception("Error occurred during update of instance.json: Trying to set unknown instance state.")
+
+            
     def updateInstanceJsonProxy (self, instance_name, proxy_content):
         proxyInfos = []
         for containerInfo in proxy_content:
