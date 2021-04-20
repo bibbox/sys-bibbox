@@ -18,16 +18,19 @@ class LogService(SQLAlchemyService):
         self.parentClassRef = super(LogService, self)
 
 
-    def select(self, aid, limit=None):
-        ## TODO:
-        # SELECT "id" FROM "Activities" WHERE "name" LIKE '%instance_name%' AND "name" NOT LIKE '%Delete%' ORDER BY "id" DESC LIMIT 1
-        # --> do we allow duplicate InstanceNames when original instance is deleted already?
-        # 
-        # SELECT * FROM "Logs" WHERE "activity_id" = 'activity_id'
-        
+    def selectLogsFromActivity(self, aid, limit=None):
         try:
-            for log in db.session.query(Log):
-                print(log.)
-            return ""
+            logs = list()
+            res = db.session.query(Log).filter(Log.activity_id == aid).limit(limit)
+            print(res)
+            for log in res:
+                logs.append({
+                    'id'          : log.id,
+                    'timestamp'   : log.timestamp,
+                    'message'     : log.log_message,
+                    'type'        : log.type_,
+                    'activity_id' : log.activity_id
+                })
+            return logs
         except Exception as ex:
             print(ex)

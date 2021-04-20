@@ -35,28 +35,62 @@ def stopInstance (self, instance_name):
     dh = DockerHandler()
     fh = FileHandler()
 
+     # activity service for db-stuff with activity entries
+    activity_service = ActivityService()
+    
+    # create activity entry in db -> returns ID of created entry 
+    activity_id = activity_service.create(f"Stop Instance: {instance_name}", "STOP_INSTANCE")
+    logger = DBLoggerService(activity_id, f"[STOP] {instance_name}").getLogger()
+    logger.info("stopping containers of {}.".format(instance_name))
     fh.updateInstanceJsonState(instance_name, 'STOPPING')
+    
     dh.docker_stopInstance(instance_name)
+
     fh.updateInstanceJsonState(instance_name, 'STOPPED')
+    logger.info("stopped containers of {}.".format(instance_name))
+    activity_service.update(activity_id, "FINISHED", "SUCCESS")
 
 @app_celerey.task(bind=True, name='instance.startInstance')
 def startInstance (self, instance_name):
     dh = DockerHandler()
     fh = FileHandler()
+    # activity service for db-stuff with activity entries
+    activity_service = ActivityService()
+    
+    # create activity entry in db -> returns ID of created entry 
+    activity_id = activity_service.create(f"Start Instance: {instance_name}", "START_INSTANCE")
+    logger = DBLoggerService(activity_id, f"[START] {instance_name}").getLogger()
 
+    logger.info("starting containers of {}.".format(instance_name))
 
     fh.updateInstanceJsonState(instance_name, 'STARTING')
     dh.docker_startInstance(instance_name)
     fh.updateInstanceJsonState(instance_name, 'RUNNING')
+    
+    logger.info("started containers of {}.".format(instance_name))
+    activity_service.update(activity_id, "FINISHED", "SUCCESS")
+
 
 @app_celerey.task(bind=True, name='instance.restartInstance')
 def restartInstance (self, instance_name):
     dh = DockerHandler()
     fh = FileHandler()
+    # activity service for db-stuff with activity entries
+    activity_service = ActivityService()
+    
+    # create activity entry in db -> returns ID of created entry 
+    activity_id = activity_service.create(f"Restart Instance: {instance_name}", "RESTART_INSTANCE")
+    logger = DBLoggerService(activity_id, f"[RESTART] {instance_name}").getLogger()
+
+    logger.info("restarting containers of {}.".format(instance_name))
+
 
     fh.updateInstanceJsonState(instance_name, 'RESTARTING')
     dh.docker_restartInstance(instance_name)
     fh.updateInstanceJsonState(instance_name, 'RUNNING')
+
+    logger.info("restarted containers of {}".format(instance_name))
+    activity_service.update(activity_id, "FINISHED", "SUCCESS")
 
 @app_celerey.task(bind=True,  name='instance.copyInstance')
 def copyInstance (self, instanceNameSrc, instanceNameDest):
@@ -66,25 +100,12 @@ def copyInstance (self, instanceNameSrc, instanceNameDest):
 def updateInstanceInfos (self, instance_name, payload):
     fh = FileHandler()
 
-     # activity service for db-stuff with activity entries
-    activity_service = ActivityService()
-    
-
-    # create activity entry in db -> returns ID of created entry 
-    activity_id = activity_service.create(f"Update instance: {instance_name}", "UPDATE_INSTANCE")
-
     # logger service for creating custom logger
-    logger_serv = DBLoggerService(activity_id, f"[UPDATE INFOS] {instance_name}")
-    logger = logger_serv.getLogger()
     fh = FileHandler()
     try:
         fh.updateInstanceJsonInfo(instance_name, payload)
     except Exception as ex:
-        logger.error(f"Updating instance.json file of instance {instance_name} failed. Exception: {ex}.")
-        activity_service.update(activity_id, "ERROR", "FAILURE")
-    else:
-        logger.info(f"Successfully updated instance.json of instance {instance_name}.")
-        activity_service.update(activity_id, "FINISHED", "SUCCESS")
+        print(ex)
 
 @app_celerey.task(bind=True,  name='instance.installInstance')
 def installInstance (self, instanceDescr):
@@ -102,7 +123,7 @@ def installInstance (self, instanceDescr):
     activity_service = ActivityService()
     
     # create activity entry in db -> returns ID of created entry 
-    activity_id = activity_service.create(f"Install instance: {instanceDescr['instancename']}", "INSTALL_INSTANCE")
+    activity_id = activity_service.create(f"Installing Instance: {instanceDescr['instancename']}", "INSTALL_INSTANCE")
 
     # logger service for creating custom logger
     logger_serv = DBLoggerService(activity_id, f"[INSTALL] {instanceDescr['instancename']}")
@@ -294,31 +315,11 @@ def deleteInstance (self, instance_name):
         print(ex)
     
     try:                
-        try:       
-            fh.removeAllFilesInDir(instance_path)
-        except OSError as ex:
-            print ("Deletion of the directory {} failed. Exception: {}".format(instance_name, ex))
-            logger.error("Deletion of the directory {} failed. Exception: {}".format(instance_name, ex))
-            raise
-        else:
-            print ("Successfully deleted the directory {}.".format(instance_name))
-            logger.info("Successfully deleted the directory {}.".format(instance_name))
-
-
-        try:
-            fh.removeProxyConfigFile(instance_name)
-        except OSError as ex:
-            print ("Deletion of the proxy file of {} failed. Exception: {}".format(instance_name, ex))
-            logger.error("Deletion of the proxy file of {} failed. Exception: {}".format(instance_name, ex))
-            raise
-        else:
-            print ("Successfully deleted the proxy file of {}.".format(instance_name))
-            logger.info("Successfully deleted the proxy file of {}.".format(instance_name))
 
 
         try:
             stopInstance(instance_name)
-        except OSError as ex:
+        except Exception as ex:
             print ("Stopping {} containers failed. Exception: {}".format(instance_name, ex))
             logger.error("Stopping {} containers failed. Exception: {}".format(instance_name, ex))
             raise
@@ -329,13 +330,37 @@ def deleteInstance (self, instance_name):
 
         try:
             dh.docker_deleteStoppedInstance(instance_name)
-        except OSError as ex:
+        except Exception as ex:
             print ("Deletion of stopped {} containers failed. Exception: {}".format(instance_name, ex))
             logger.error("Deletion of stopped {} containers failed. Exception: {}".format(instance_name, ex))
             raise
         else:
             print ("Successfully deleted the {} containers".format(instance_name))
             logger.info("Successfully deleted the {} containers".format(instance_name))
+
+
+        try:
+            fh.removeProxyConfigFile(instance_name)
+        except Exception as ex:
+            print ("Deletion of the proxy file of {} failed. Exception: {}".format(instance_name, ex))
+            logger.error("Deletion of the proxy file of {} failed. Exception: {}".format(instance_name, ex))
+            raise
+        else:
+            print ("Successfully deleted the proxy file of {}.".format(instance_name))
+            logger.info("Successfully deleted the proxy file of {}.".format(instance_name))
+
+        try:       
+            fh.removeAllFilesInDir(instance_path)
+        except Exception as ex:
+            print ("Deletion of the directory {} failed. Exception: {}".format(instance_name, ex))
+            logger.error("Deletion of the directory {} failed. Exception: {}".format(instance_name, ex))
+            raise
+        else:
+            print ("Successfully deleted the directory {}.".format(instance_name))
+            logger.info("Successfully deleted the directory {}.".format(instance_name))
+
+
+
 
 
     except Exception as ex:

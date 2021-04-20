@@ -46,7 +46,7 @@ class DockerHandler():
     def docker_deleteStoppedInstance(self, instance_name):
         # TODO:
         # shell=True is a security hazard, so we must sanitize the input
-        command = f"cd {self.INSTANCEPATH}{instance_name}; docker-compose rm"
+        command = f"cd {self.INSTANCEPATH}{instance_name}; docker-compose down"
         subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8", shell=True)
 
 

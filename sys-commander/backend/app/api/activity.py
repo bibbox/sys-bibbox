@@ -6,6 +6,7 @@ from flask_restplus import Namespace, Api, Resource, fields
 from backend.app import apiblueprint as api, app_celerey as app_celery, app, db, restapi
 
 from backend.app.services.activity_service import ActivityService
+from backend.app.services.log_service import LogService
 
 
 api = Namespace('activities', description='Activity Resources')
@@ -13,6 +14,7 @@ restapi.add_namespace (api, '/activities')
 
 
 activity_service = ActivityService()
+log_service = LogService()
 
 '''
 TODO
@@ -39,6 +41,14 @@ class ActivityListAll(Resource):
         # finishedTasks = "done placeholder" #i.done()
     
         # return jsonify( activeTasks, scheduledTasks, finishedTasks )
+
+@api.route("/logs/<int:id>")
+class ActivityListAll(Resource):
+    @api.doc("get all logs from one activity")
+    def get(self, id):
+        ls = LogService()
+        logs = ls.selectLogsFromActivity(id)
+        return logs, 202
 
 
 # @api.route("/active")

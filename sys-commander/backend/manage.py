@@ -77,14 +77,9 @@ def recreate_db():
 def seed_db():
     """Seed the user table in test_db database."""
     db.session.add(User(
-        username='v',
+        username='admin',
         email='v@bibbox.com',
         password_hash =  pwd_context.encrypt('vendetta')
-    ))
-    db.session.add(User(
-        username='mue',
-        email = 'heimo.mueller@mac.com',
-        password_hash = pwd_context.encrypt('vendetta')
     ))
     
     db.session.commit()
