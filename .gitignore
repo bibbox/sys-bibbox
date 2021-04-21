@@ -5,8 +5,9 @@ application-instance
 log
 sys-proxy
 
-sys-commander/data/
-sys-commander/sys-commander-local-env/
+data/
+sys-commander-local-env/
+.idea
 
 
 
