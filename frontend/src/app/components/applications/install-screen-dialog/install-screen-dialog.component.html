@@ -1,0 +1,65 @@
+<div id="overlay-wrapper">
+  <div id="overlay-inner">
+    <div id="overlay-close-wrapper">
+      <div id="overlay-close-body">
+        <img [mat-dialog-close]="false" src="../../../../assets/img/close.png" alt="X">
+      </div>
+    </div>
+    <div id="overlay-body">
+      <div id="overlay-content">
+        <button id="overlay-install" [mat-dialog-close]="true" (click)="openInstallScreen()"> Install </button>
+        <div id="app-detail">
+          <span class="app-detail-label"> Name </span><br/>
+          <span class="app-detail-value"> {{appInfo.name}} </span><br/><br/>
+
+          <span class="app-detail-label"> Shortname </span><br/>
+          <span class="app-detail-value"> {{appInfo.short_name}} </span><br/><br/>
+
+          <span class="app-detail-label"> Docker versions </span><br/>
+          <span class="app-detail-value">
+            <mat-form-field appearance="fill" class="docker-select-panel-class" [floatLabel]="'never'">
+              <mat-label></mat-label>
+              <mat-select [(value)]="selectedVersion" (selectionChange)="loadAppInfo()">
+                <mat-option *ngFor="let version of applicationItem.versions" [value]="version">
+                  {{version.docker_version}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </span><br/><br/>
+
+          <span class="app-detail-label"> Version </span><br/>
+          <span class="app-detail-value"> {{selectedVersion.version}} </span><br/><br/>
+
+          <span class="app-detail-label"> Github URL </span><br/>
+          <span class="app-detail-value">
+            <a href="{{appInfo.application_url}}" target="_blank" rel="noopener noreferrer">
+              {{appInfo.application_url}}
+            </a>
+          </span><br/><br/>
+
+          <span class="app-detail-label"> Catalogue URL </span><br/>
+          <span class="app-detail-value">
+            <a href="{{appInfo.catalog_url}}" target="_blank" rel="noopener noreferrer">
+              {{appInfo.catalog_url}}
+            </a>
+          </span><br/><br/>
+          <span class="app-detail-label"> Application URL </span><br/>
+          <span class="app-detail-value">
+            <a href="{{appInfo.application_documentation_url}}" target="_blank" rel="noopener noreferrer">
+              {{appInfo.application_documentation_url}}
+            </a>
+          </span><br/><br/>
+          <span class="app-detail-label"> Tags </span><br/>
+          <span class="app-detail-value">
+            <span class="tag" *ngFor="let tag of applicationItem.tags">
+              {{tag}}
+            </span>
+          </span><br/><br/>
+
+          <span class="app-detail-label"> Description </span><br/>
+          <span class="app-detail-value"> {{applicationItem.short_description}} </span><br/><br/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

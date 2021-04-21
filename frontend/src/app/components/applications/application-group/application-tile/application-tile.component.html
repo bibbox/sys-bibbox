@@ -1,0 +1,13 @@
+<div class="application-group-item" (click)="openInstallScreenDialog()">
+  <span *ngIf="application.decoration" class="decoration">
+    <img *ngIf="application.decoration == 'new'" src="assets/img/new.png" alt="new">
+    <img *ngIf="application.decoration == 'announced'" src="assets/img/announced.png" alt="announced">
+  </span>
+    <span class="icon">
+    <img src="{{application.icon_url}}" alt="404">
+    <span class="name"> {{application.app_display_name}} </span>
+  </span>
+    <span title="Example short description" class="description">
+    {{application.short_description}}
+  </span>
+</div>

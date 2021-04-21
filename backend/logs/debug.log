@@ -1,0 +1,1474 @@
+[INFO] 2021-03-25 14:49:57,990 - Successfully deleted the directory wptest02.
+[INFO] 2021-03-25 14:49:57,993 - Successfully deleted the proxy file of wptest02.
+[INFO] 2021-03-25 14:50:01,642 - Successfully stopped the wptest02 containers.
+[INFO] 2021-03-25 14:50:01,678 - Successfully deleted the wptest02 containers
+[INFO] 2021-03-25 14:50:01,681 - Sucessfully deleted instance wptest02.
+[ERROR] 2021-03-26 09:41:02,495 - Installing instance wptest03 failed: tuple index out of range.
+[INFO] 2021-03-26 09:41:39,608 - Successfully deleted the directory wptest03.
+[INFO] 2021-03-26 09:41:39,610 - Successfully deleted the proxy file of wptest03.
+[INFO] 2021-03-26 09:41:43,759 - Successfully stopped the wptest03 containers.
+[INFO] 2021-03-26 09:41:43,796 - Successfully deleted the wptest03 containers
+[INFO] 2021-03-26 09:41:43,800 - Sucessfully deleted instance wptest03.
+[INFO] 2021-03-26 13:15:37,996 - Successfully created the directory wptest09/instance.json.
+[INFO] 2021-03-26 13:15:37,999 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-03-26 13:15:38,376 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-03-26 13:15:38,728 - Copying file appinfo.json from GitHub.
+[INFO] 2021-03-26 13:15:39,059 - Creating directory: /opt/bibbox/instances/wptest09/database/mysql
+[INFO] 2021-03-26 13:15:39,065 - Creating directory: /opt/bibbox/instances/wptest09/assets
+[INFO] 2021-03-26 13:15:39,068 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-03-26 13:15:39,405 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-03-26 13:15:39,948 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-03-26 13:15:40,517 - Successfully created the wptest09/docker-compose.yml docker-compose file.
+[INFO] 2021-03-26 13:15:40,537 - Successfully created the 005-wptest09.conf proxy file.
+[INFO] 2021-03-26 13:15:40,540 - Successfully created the instances.json file.
+[INFO] 2021-03-26 13:15:40,555 - Running docker-compose up.
+[INFO] 2021-03-26 13:16:12,623 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-03-26 13:16:14,749 - Successfully installed instance wptest09.
+[INFO] 2021-03-26 13:51:49,780 - Successfully created the directory wptest03/instance.json.
+[INFO] 2021-03-26 13:51:49,783 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-03-26 13:51:50,060 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-03-26 13:51:50,286 - Copying file appinfo.json from GitHub.
+[INFO] 2021-03-26 13:51:50,523 - Creating directory: /opt/bibbox/instances/wptest03/database/mysql
+[INFO] 2021-03-26 13:51:50,529 - Creating directory: /opt/bibbox/instances/wptest03/assets
+[INFO] 2021-03-26 13:51:50,531 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-03-26 13:51:50,763 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-03-26 13:51:51,011 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-03-26 13:51:51,277 - Successfully created the wptest03/docker-compose.yml docker-compose file.
+[INFO] 2021-03-26 13:51:51,295 - Successfully created the 005-wptest03.conf proxy file.
+[INFO] 2021-03-26 13:51:51,297 - Successfully created the instances.json file.
+[INFO] 2021-03-26 13:51:51,307 - Running docker-compose up.
+[INFO] 2021-03-26 13:52:23,240 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-03-26 13:52:25,316 - Successfully installed instance wptest03.
+[INFO] 2021-03-29 13:24:18,308 - Successfully created the directory wptest08/instance.json.
+[INFO] 2021-03-29 13:24:18,311 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-03-29 13:24:18,691 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-03-29 13:24:19,322 - Copying file appinfo.json from GitHub.
+[INFO] 2021-03-29 13:24:19,649 - Creating directory: /opt/bibbox/instances/wptest08/database/mysql
+[INFO] 2021-03-29 13:24:19,655 - Creating directory: /opt/bibbox/instances/wptest08/assets
+[INFO] 2021-03-29 13:24:19,658 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-03-29 13:24:19,991 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-03-29 13:24:20,344 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-03-29 13:24:20,621 - Successfully created the wptest08/docker-compose.yml docker-compose file.
+[INFO] 2021-03-29 13:24:20,639 - Successfully created the 005-wptest08.conf proxy file.
+[ERROR] 2021-03-29 13:24:20,641 - Creation of the instances.json file failed. Exception: [Errno 2] No such file or directory: '/opt/bibbox/instances/wptest04/instance.json'
+[ERROR] 2021-03-29 13:24:20,643 - Installing instance wptest08 failed: [Errno 2] No such file or directory: '/opt/bibbox/instances/wptest04/instance.json'.
+[ERROR] 2021-03-29 13:36:29,082 - Installing instance wptest09 failed: tuple index out of range.
+[INFO] 2021-03-29 13:45:01,223 - Successfully created the directory wptest09/instance.json.
+[INFO] 2021-03-29 13:45:01,227 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-03-29 13:45:01,495 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-03-29 13:45:01,846 - Copying file appinfo.json from GitHub.
+[INFO] 2021-03-29 13:45:02,166 - Creating directory: /opt/bibbox/instances/wptest09/database/mysql
+[INFO] 2021-03-29 13:45:02,172 - Creating directory: /opt/bibbox/instances/wptest09/assets
+[INFO] 2021-03-29 13:45:02,174 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-03-29 13:45:02,502 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-03-29 13:45:02,774 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-03-29 13:45:03,043 - Successfully created the wptest09/docker-compose.yml docker-compose file.
+[INFO] 2021-03-29 13:45:03,057 - Successfully created the 005-wptest09.conf proxy file.
+[INFO] 2021-03-29 13:45:03,059 - Successfully created the instances.json file.
+[INFO] 2021-03-29 13:45:03,074 - Running docker-compose up.
+[INFO] 2021-03-29 13:45:03,535 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-03-29 13:45:05,716 - Successfully installed instance wptest09.
+[INFO] 2021-04-12 08:19:25,977 - Successfully created the directory wptest02/instance.json.
+[INFO] 2021-04-12 08:19:25,982 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-12 08:19:26,319 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-12 08:19:26,681 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-12 08:19:27,001 - Creating directory: /opt/bibbox/instances/wptest02/database/mysql
+[INFO] 2021-04-12 08:19:27,007 - Creating directory: /opt/bibbox/instances/wptest02/assets
+[INFO] 2021-04-12 08:19:27,010 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-12 08:19:27,371 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-12 08:19:27,764 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-12 08:19:28,039 - Successfully created the wptest02/docker-compose.yml docker-compose file.
+[INFO] 2021-04-12 08:19:28,060 - Successfully created the 005-wptest02.conf proxy file.
+[ERROR] 2021-04-12 08:19:28,063 - Creation of the instances.json file failed. Exception: [Errno 2] No such file or directory: '/opt/bibbox/instances/wptest04/instance.json'
+[ERROR] 2021-04-12 08:19:28,064 - Installing instance wptest02 failed: [Errno 2] No such file or directory: '/opt/bibbox/instances/wptest04/instance.json'.
+[INFO] 2021-04-12 08:27:00,561 - Successfully created the directory wptest03/instance.json.
+[INFO] 2021-04-12 08:27:00,564 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-12 08:27:00,796 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-12 08:27:01,031 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-12 08:27:01,270 - Creating directory: /opt/bibbox/instances/wptest03/database/mysql
+[INFO] 2021-04-12 08:27:01,276 - Creating directory: /opt/bibbox/instances/wptest03/assets
+[INFO] 2021-04-12 08:27:01,278 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-12 08:27:01,512 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-12 08:27:01,772 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-12 08:27:02,024 - Successfully created the wptest03/docker-compose.yml docker-compose file.
+[INFO] 2021-04-12 08:27:02,039 - Successfully created the 005-wptest03.conf proxy file.
+[INFO] 2021-04-12 08:27:02,041 - Successfully created the instances.json file.
+[INFO] 2021-04-12 08:27:02,052 - Running docker-compose up.
+[INFO] 2021-04-12 08:27:07,361 - Successfully created the directory wptest04/instance.json.
+[INFO] 2021-04-12 08:27:07,365 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-12 08:27:07,425 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-12 08:27:07,476 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-12 08:27:07,532 - Creating directory: /opt/bibbox/instances/wptest04/database/mysql
+[INFO] 2021-04-12 08:27:07,534 - Creating directory: /opt/bibbox/instances/wptest04/assets
+[INFO] 2021-04-12 08:27:07,537 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-12 08:27:07,595 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-12 08:27:07,660 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-12 08:27:07,742 - Successfully created the wptest04/docker-compose.yml docker-compose file.
+[INFO] 2021-04-12 08:27:07,759 - Successfully created the 005-wptest04.conf proxy file.
+[INFO] 2021-04-12 08:27:07,762 - Successfully created the instances.json file.
+[INFO] 2021-04-12 08:27:07,775 - Running docker-compose up.
+[INFO] 2021-04-12 08:27:33,942 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-12 08:27:36,061 - Successfully installed instance wptest03.
+[INFO] 2021-04-12 08:27:39,872 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-12 08:27:41,972 - Successfully installed instance wptest04.
+[INFO] 2021-04-12 10:03:03,756 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-12 10:03:03,761 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-12 10:03:04,087 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-12 10:03:04,410 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-12 10:03:04,560 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-12 10:03:04,565 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-12 10:03:04,568 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-12 10:03:04,917 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-12 10:03:05,474 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-12 10:03:05,745 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-12 10:03:05,762 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-12 10:03:05,765 - Successfully created the instances.json file.
+[INFO] 2021-04-12 10:03:05,775 - Running docker-compose up.
+[INFO] 2021-04-12 10:03:37,774 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-12 10:03:39,849 - Successfully installed instance wptest10.
+[INFO] 2021-04-14 08:07:15,877 - Successfully created the directory wptest05/instance.json.
+[ERROR] 2021-04-14 08:07:15,877 - Installing instance wptest05 failed: __init__() got an unexpected keyword argument 'timestamp'.
+[INFO] 2021-04-14 08:10:16,193 - Successfully deleted the directory wptest03.
+[INFO] 2021-04-14 08:10:16,195 - Successfully deleted the proxy file of wptest03.
+[INFO] 2021-04-14 08:10:20,295 - Successfully stopped the wptest03 containers.
+[INFO] 2021-04-14 08:10:20,330 - Successfully deleted the wptest03 containers
+[INFO] 2021-04-14 08:10:20,333 - Sucessfully deleted instance wptest03.
+[INFO] 2021-04-14 08:10:22,773 - Successfully deleted the directory wptest04.
+[INFO] 2021-04-14 08:10:22,776 - Successfully deleted the proxy file of wptest04.
+[INFO] 2021-04-14 08:10:26,370 - Successfully stopped the wptest04 containers.
+[INFO] 2021-04-14 08:10:26,407 - Successfully deleted the wptest04 containers
+[INFO] 2021-04-14 08:10:26,410 - Sucessfully deleted instance wptest04.
+[INFO] 2021-04-14 08:10:26,561 - Successfully deleted the directory wptest10.
+[INFO] 2021-04-14 08:10:26,564 - Successfully deleted the proxy file of wptest10.
+[INFO] 2021-04-14 08:10:30,276 - Successfully stopped the wptest10 containers.
+[INFO] 2021-04-14 08:10:30,310 - Successfully deleted the wptest10 containers
+[INFO] 2021-04-14 08:10:30,313 - Sucessfully deleted instance wptest10.
+[INFO] 2021-04-14 08:35:08,098 - Successfully created the directory wptest01/instance.json.
+[INFO] 2021-04-14 08:35:08,102 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 08:35:08,457 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 08:35:08,823 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 08:35:09,151 - Creating directory: /opt/bibbox/instances/wptest01/database/mysql
+[INFO] 2021-04-14 08:35:09,157 - Creating directory: /opt/bibbox/instances/wptest01/assets
+[INFO] 2021-04-14 08:35:09,160 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 08:35:09,519 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 08:35:09,856 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 08:35:10,365 - Successfully created the wptest01/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 08:35:10,382 - Successfully created the 005-wptest01.conf proxy file.
+[INFO] 2021-04-14 08:35:10,385 - Successfully created the instances.json file.
+[INFO] 2021-04-14 08:35:10,399 - Running docker-compose up.
+[INFO] 2021-04-14 08:35:42,445 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 08:35:44,601 - Successfully installed instance wptest01.
+[INFO] 2021-04-14 09:42:03,324 - Successfully created the directory wptest03/instance.json.
+[INFO] 2021-04-14 09:42:03,328 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 09:42:03,640 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 09:42:03,963 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 09:42:04,291 - Creating directory: /opt/bibbox/instances/wptest03/database/mysql
+[INFO] 2021-04-14 09:42:04,297 - Creating directory: /opt/bibbox/instances/wptest03/assets
+[INFO] 2021-04-14 09:42:04,300 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 09:42:04,631 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 09:42:04,992 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 09:42:05,287 - Successfully created the wptest03/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 09:42:05,306 - Successfully created the 005-wptest03.conf proxy file.
+[INFO] 2021-04-14 09:42:05,309 - Successfully created the instances.json file.
+[INFO] 2021-04-14 09:42:05,319 - Running docker-compose up.
+[INFO] 2021-04-14 09:42:22,278 - Successfully created the directory wptest05/instance.json.
+[INFO] 2021-04-14 09:42:22,281 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 09:42:22,332 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 09:42:22,383 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 09:42:22,442 - Creating directory: /opt/bibbox/instances/wptest05/database/mysql
+[INFO] 2021-04-14 09:42:22,445 - Creating directory: /opt/bibbox/instances/wptest05/assets
+[INFO] 2021-04-14 09:42:22,448 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 09:42:22,527 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 09:42:22,593 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 09:42:22,684 - Successfully created the wptest05/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 09:42:22,697 - Successfully created the 005-wptest05.conf proxy file.
+[INFO] 2021-04-14 09:42:22,700 - Successfully created the instances.json file.
+[INFO] 2021-04-14 09:42:22,715 - Running docker-compose up.
+[INFO] 2021-04-14 09:42:37,401 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 09:42:39,592 - Successfully installed instance wptest03.
+[INFO] 2021-04-14 09:42:54,669 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 09:42:56,764 - Successfully installed instance wptest05.
+[INFO] 2021-04-14 09:44:12,412 - Successfully deleted the directory wptest05.
+[INFO] 2021-04-14 09:44:12,416 - Successfully deleted the proxy file of wptest05.
+[INFO] 2021-04-14 09:44:15,349 - Successfully deleted the directory wptest03.
+[INFO] 2021-04-14 09:44:15,352 - Successfully deleted the proxy file of wptest03.
+[INFO] 2021-04-14 09:44:17,188 - Successfully stopped the wptest05 containers.
+[INFO] 2021-04-14 09:44:17,225 - Successfully deleted the wptest05 containers
+[INFO] 2021-04-14 09:44:17,228 - Sucessfully deleted instance wptest05.
+[INFO] 2021-04-14 09:44:19,789 - Successfully stopped the wptest03 containers.
+[INFO] 2021-04-14 09:44:19,822 - Successfully deleted the wptest03 containers
+[INFO] 2021-04-14 09:44:19,825 - Sucessfully deleted instance wptest03.
+[INFO] 2021-04-14 09:44:30,697 - Successfully created the directory wptest03/instance.json.
+[INFO] 2021-04-14 09:44:30,700 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 09:44:30,770 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 09:44:30,823 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 09:44:30,892 - Creating directory: /opt/bibbox/instances/wptest03/database/mysql
+[INFO] 2021-04-14 09:44:30,895 - Creating directory: /opt/bibbox/instances/wptest03/assets
+[INFO] 2021-04-14 09:44:30,898 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 09:44:30,957 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 09:44:31,032 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 09:44:31,125 - Successfully created the wptest03/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 09:44:31,142 - Successfully created the 005-wptest03.conf proxy file.
+[INFO] 2021-04-14 09:44:31,145 - Successfully created the instances.json file.
+[INFO] 2021-04-14 09:44:31,154 - Running docker-compose up.
+[INFO] 2021-04-14 09:44:47,799 - Successfully created the directory wptest05/instance.json.
+[INFO] 2021-04-14 09:44:47,803 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 09:44:47,861 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 09:44:47,928 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 09:44:47,988 - Creating directory: /opt/bibbox/instances/wptest05/database/mysql
+[INFO] 2021-04-14 09:44:47,990 - Creating directory: /opt/bibbox/instances/wptest05/assets
+[INFO] 2021-04-14 09:44:47,993 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 09:44:48,056 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 09:44:48,131 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 09:44:48,213 - Successfully created the wptest05/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 09:44:48,233 - Successfully created the 005-wptest05.conf proxy file.
+[INFO] 2021-04-14 09:44:48,235 - Successfully created the instances.json file.
+[INFO] 2021-04-14 09:44:48,253 - Running docker-compose up.
+[INFO] 2021-04-14 09:45:03,108 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 09:45:05,243 - Successfully installed instance wptest03.
+[INFO] 2021-04-14 09:45:20,260 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 09:45:22,358 - Successfully installed instance wptest05.
+[INFO] 2021-04-14 09:46:13,348 - Successfully deleted the directory wptest05.
+[INFO] 2021-04-14 09:46:13,352 - Successfully deleted the proxy file of wptest05.
+[INFO] 2021-04-14 09:46:17,038 - Successfully deleted the directory wptest03.
+[INFO] 2021-04-14 09:46:17,041 - Successfully deleted the proxy file of wptest03.
+[INFO] 2021-04-14 09:46:17,675 - Successfully stopped the wptest05 containers.
+[INFO] 2021-04-14 09:46:17,712 - Successfully deleted the wptest05 containers
+[INFO] 2021-04-14 09:46:17,715 - Sucessfully deleted instance wptest05.
+[INFO] 2021-04-14 09:46:21,449 - Successfully stopped the wptest03 containers.
+[INFO] 2021-04-14 09:46:21,484 - Successfully deleted the wptest03 containers
+[INFO] 2021-04-14 09:46:21,487 - Sucessfully deleted instance wptest03.
+[INFO] 2021-04-14 09:49:49,492 - Successfully created the directory wptest05/instance.json.
+[INFO] 2021-04-14 09:49:49,496 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 09:49:49,714 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 09:49:49,931 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 09:49:50,150 - Creating directory: /opt/bibbox/instances/wptest05/database/mysql
+[INFO] 2021-04-14 09:49:50,155 - Creating directory: /opt/bibbox/instances/wptest05/assets
+[INFO] 2021-04-14 09:49:50,158 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 09:49:50,393 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 09:49:50,621 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 09:49:50,886 - Successfully created the wptest05/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 09:49:50,906 - Successfully created the 005-wptest05.conf proxy file.
+[INFO] 2021-04-14 09:49:50,909 - Successfully created the instances.json file.
+[INFO] 2021-04-14 09:49:50,924 - Running docker-compose up.
+[INFO] 2021-04-14 09:50:23,039 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 09:50:25,144 - Successfully installed instance wptest05.
+[INFO] 2021-04-14 11:16:45,852 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-14 11:16:45,855 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 11:16:46,193 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 11:16:46,640 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 11:16:46,797 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-14 11:16:46,803 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-14 11:16:46,806 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 11:16:47,136 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 11:16:47,487 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 11:16:47,749 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 11:16:47,765 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-14 11:16:47,767 - Successfully created the instances.json file.
+[INFO] 2021-04-14 11:16:47,777 - Running docker-compose up.
+[INFO] 2021-04-14 11:17:19,752 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 11:17:21,948 - Successfully installed instance wptest10.
+[INFO] 2021-04-14 11:45:37,756 - Successfully deleted the directory wptest10.
+[INFO] 2021-04-14 11:45:37,760 - Successfully deleted the proxy file of wptest10.
+[INFO] 2021-04-14 11:45:41,614 - Successfully stopped the wptest10 containers.
+[INFO] 2021-04-14 11:45:41,647 - Successfully deleted the wptest10 containers
+[INFO] 2021-04-14 11:45:41,650 - Sucessfully deleted instance wptest10.
+[INFO] 2021-04-14 11:46:30,712 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-14 11:46:30,715 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 11:46:30,961 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 11:46:31,161 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 11:46:31,381 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-14 11:46:31,387 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-14 11:46:31,390 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 11:46:31,638 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 11:46:31,897 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 11:46:32,153 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 11:46:32,172 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-14 11:46:32,175 - Successfully created the instances.json file.
+[INFO] 2021-04-14 11:46:32,185 - Running docker-compose up.
+[INFO] 2021-04-14 11:47:04,099 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 11:47:06,109 - Successfully installed instance wptest10.
+[INFO] 2021-04-14 11:53:19,619 - Successfully deleted the directory wptest05.
+[INFO] 2021-04-14 11:53:19,623 - Successfully deleted the proxy file of wptest05.
+[INFO] 2021-04-14 11:53:23,549 - Successfully stopped the wptest05 containers.
+[INFO] 2021-04-14 11:53:23,581 - Successfully deleted the wptest05 containers
+[INFO] 2021-04-14 11:53:23,584 - Sucessfully deleted instance wptest05.
+[INFO] 2021-04-14 11:59:43,402 - Successfully deleted the directory wptest01.
+[INFO] 2021-04-14 11:59:43,406 - Successfully deleted the proxy file of wptest01.
+[INFO] 2021-04-14 11:59:47,775 - Successfully stopped the wptest01 containers.
+[INFO] 2021-04-14 11:59:47,808 - Successfully deleted the wptest01 containers
+[INFO] 2021-04-14 11:59:47,811 - Sucessfully deleted instance wptest01.
+[ERROR] 2021-04-14 12:02:38,122 - Installing instance wptest10 failed: tuple index out of range.
+[INFO] 2021-04-14 12:02:42,859 - Successfully created the directory wptest11/instance.json.
+[INFO] 2021-04-14 12:02:42,862 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 12:02:43,093 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 12:02:43,301 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 12:02:43,356 - Creating directory: /opt/bibbox/instances/wptest11/database/mysql
+[INFO] 2021-04-14 12:02:43,359 - Creating directory: /opt/bibbox/instances/wptest11/assets
+[INFO] 2021-04-14 12:02:43,362 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 12:02:43,575 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 12:02:43,825 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 12:02:44,110 - Successfully created the wptest11/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 12:02:44,132 - Successfully created the 005-wptest11.conf proxy file.
+[INFO] 2021-04-14 12:02:44,134 - Successfully created the instances.json file.
+[INFO] 2021-04-14 12:02:44,144 - Running docker-compose up.
+[INFO] 2021-04-14 12:03:15,213 - Successfully deleted the directory wptest11.
+[INFO] 2021-04-14 12:03:15,217 - Successfully deleted the proxy file of wptest11.
+[INFO] 2021-04-14 12:03:16,146 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 12:03:18,316 - Successfully installed instance wptest11.
+[INFO] 2021-04-14 12:03:18,444 - Successfully stopped the wptest11 containers.
+[INFO] 2021-04-14 12:03:18,468 - Successfully deleted the wptest11 containers
+[INFO] 2021-04-14 12:03:18,471 - Sucessfully deleted instance wptest11.
+[INFO] 2021-04-14 12:03:38,784 - Successfully deleted the directory wptest10.
+[INFO] 2021-04-14 12:03:38,787 - Successfully deleted the proxy file of wptest10.
+[INFO] 2021-04-14 12:03:43,398 - Successfully stopped the wptest10 containers.
+[INFO] 2021-04-14 12:03:43,430 - Successfully deleted the wptest10 containers
+[INFO] 2021-04-14 12:03:43,433 - Sucessfully deleted instance wptest10.
+[INFO] 2021-04-14 12:15:40,335 - Successfully created the directory wptest11/instance.json.
+[INFO] 2021-04-14 12:15:40,339 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 12:15:40,601 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 12:15:40,849 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 12:15:41,060 - Creating directory: /opt/bibbox/instances/wptest11/database/mysql
+[INFO] 2021-04-14 12:15:41,063 - Creating directory: /opt/bibbox/instances/wptest11/assets
+[INFO] 2021-04-14 12:15:41,066 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 12:15:41,328 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 12:15:41,566 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 12:15:41,864 - Successfully created the wptest11/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 12:15:41,885 - Successfully created the 005-wptest11.conf proxy file.
+[INFO] 2021-04-14 12:15:41,887 - Successfully created the instances.json file.
+[INFO] 2021-04-14 12:15:41,902 - Running docker-compose up.
+[INFO] 2021-04-14 12:15:43,960 - Successfully created the directory wptest12/instance.json.
+[INFO] 2021-04-14 12:15:43,965 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 12:15:44,024 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 12:15:44,075 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 12:15:44,139 - Creating directory: /opt/bibbox/instances/wptest12/database/mysql
+[INFO] 2021-04-14 12:15:44,142 - Creating directory: /opt/bibbox/instances/wptest12/assets
+[INFO] 2021-04-14 12:15:44,144 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 12:15:44,206 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 12:15:44,272 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 12:15:44,355 - Successfully created the wptest12/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 12:15:44,365 - Successfully created the 005-wptest12.conf proxy file.
+[INFO] 2021-04-14 12:15:44,367 - Successfully created the instances.json file.
+[INFO] 2021-04-14 12:15:44,378 - Running docker-compose up.
+[INFO] 2021-04-14 12:16:15,148 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 12:16:16,415 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 12:16:17,250 - Successfully installed instance wptest11.
+[INFO] 2021-04-14 12:16:17,250 - Successfully installed instance wptest12.
+[INFO] 2021-04-14 12:16:26,504 - Successfully deleted the directory wptest11.
+[INFO] 2021-04-14 12:16:26,507 - Successfully deleted the proxy file of wptest11.
+[INFO] 2021-04-14 12:16:31,130 - Successfully stopped the wptest11 containers.
+[INFO] 2021-04-14 12:16:31,160 - Successfully deleted the wptest11 containers
+[INFO] 2021-04-14 12:16:31,162 - Sucessfully deleted instance wptest11.
+[INFO] 2021-04-14 12:23:38,877 - Successfully deleted the directory wptest12.
+[INFO] 2021-04-14 12:23:38,880 - Successfully deleted the proxy file of wptest12.
+[INFO] 2021-04-14 12:23:43,051 - Successfully stopped the wptest12 containers.
+[INFO] 2021-04-14 12:23:43,083 - Successfully deleted the wptest12 containers
+[INFO] 2021-04-14 12:23:43,086 - Sucessfully deleted instance wptest12.
+[INFO] 2021-04-14 12:26:47,693 - Successfully created the directory wptest12/instance.json.
+[INFO] 2021-04-14 12:26:47,699 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 12:26:48,037 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 12:26:48,377 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 12:26:48,718 - Creating directory: /opt/bibbox/instances/wptest12/database/mysql
+[INFO] 2021-04-14 12:26:48,725 - Creating directory: /opt/bibbox/instances/wptest12/assets
+[INFO] 2021-04-14 12:26:48,728 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 12:26:49,070 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 12:26:49,391 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 12:26:49,656 - Successfully created the wptest12/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 12:26:49,678 - Successfully created the 005-wptest12.conf proxy file.
+[INFO] 2021-04-14 12:26:49,680 - Successfully created the instances.json file.
+[INFO] 2021-04-14 12:26:49,690 - Running docker-compose up.
+[INFO] 2021-04-14 12:27:21,557 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 12:27:23,735 - Successfully installed instance wptest12.
+[INFO] 2021-04-14 13:04:40,943 - Successfully deleted the directory wptest12.
+[INFO] 2021-04-14 13:04:40,946 - Successfully deleted the proxy file of wptest12.
+[INFO] 2021-04-14 13:04:45,203 - Successfully stopped the wptest12 containers.
+[INFO] 2021-04-14 13:04:45,235 - Successfully deleted the wptest12 containers
+[INFO] 2021-04-14 13:04:45,238 - Sucessfully deleted instance wptest12.
+[INFO] 2021-04-14 13:05:20,521 - Successfully created the directory wptest12/instance.json.
+[INFO] 2021-04-14 13:05:20,524 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 13:05:20,765 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 13:05:20,984 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 13:05:21,210 - Creating directory: /opt/bibbox/instances/wptest12/database/mysql
+[INFO] 2021-04-14 13:05:21,216 - Creating directory: /opt/bibbox/instances/wptest12/assets
+[INFO] 2021-04-14 13:05:21,219 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 13:05:21,451 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 13:05:21,724 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 13:05:21,997 - Successfully created the wptest12/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 13:05:22,014 - Successfully created the 005-wptest12.conf proxy file.
+[INFO] 2021-04-14 13:05:22,016 - Successfully created the instances.json file.
+[INFO] 2021-04-14 13:05:22,032 - Running docker-compose up.
+[INFO] 2021-04-14 13:05:31,091 - Successfully created the directory wptest14/instance.json.
+[INFO] 2021-04-14 13:05:31,094 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 13:05:31,148 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 13:05:31,237 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 13:05:31,308 - Creating directory: /opt/bibbox/instances/wptest14/database/mysql
+[INFO] 2021-04-14 13:05:31,311 - Creating directory: /opt/bibbox/instances/wptest14/assets
+[INFO] 2021-04-14 13:05:31,313 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 13:05:31,381 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 13:05:31,448 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 13:05:31,526 - Successfully created the wptest14/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 13:05:31,544 - Successfully created the 005-wptest14.conf proxy file.
+[INFO] 2021-04-14 13:05:31,546 - Successfully created the instances.json file.
+[INFO] 2021-04-14 13:05:31,559 - Running docker-compose up.
+[INFO] 2021-04-14 13:05:37,955 - Successfully created the directory wptest05/instance.json.
+[INFO] 2021-04-14 13:05:37,957 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 13:05:38,017 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 13:05:38,100 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 13:05:38,171 - Creating directory: /opt/bibbox/instances/wptest05/database/mysql
+[INFO] 2021-04-14 13:05:38,175 - Creating directory: /opt/bibbox/instances/wptest05/assets
+[INFO] 2021-04-14 13:05:38,177 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 13:05:38,245 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 13:05:38,337 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 13:05:38,423 - Successfully created the wptest05/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 13:05:38,445 - Successfully created the 005-wptest05.conf proxy file.
+[INFO] 2021-04-14 13:05:38,447 - Successfully created the instances.json file.
+[INFO] 2021-04-14 13:05:38,457 - Running docker-compose up.
+[INFO] 2021-04-14 13:05:54,020 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 13:05:56,034 - Successfully installed instance wptest12.
+[INFO] 2021-04-14 13:06:03,518 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 13:06:05,492 - Successfully installed instance wptest14.
+[INFO] 2021-04-14 13:06:10,447 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 13:06:12,497 - Successfully installed instance wptest05.
+[INFO] 2021-04-14 13:07:14,801 - Successfully deleted the directory wptest05.
+[INFO] 2021-04-14 13:07:14,804 - Successfully deleted the proxy file of wptest05.
+[INFO] 2021-04-14 13:07:18,687 - Successfully stopped the wptest05 containers.
+[INFO] 2021-04-14 13:07:18,721 - Successfully deleted the wptest05 containers
+[INFO] 2021-04-14 13:07:18,724 - Sucessfully deleted instance wptest05.
+[INFO] 2021-04-14 13:09:48,204 - Successfully deleted the directory wptest12.
+[INFO] 2021-04-14 13:09:48,208 - Successfully deleted the proxy file of wptest12.
+[INFO] 2021-04-14 13:09:52,496 - Successfully stopped the wptest12 containers.
+[INFO] 2021-04-14 13:09:52,528 - Successfully deleted the wptest12 containers
+[INFO] 2021-04-14 13:09:52,531 - Sucessfully deleted instance wptest12.
+[INFO] 2021-04-14 13:10:57,110 - Successfully deleted the directory wptest14.
+[INFO] 2021-04-14 13:10:57,114 - Successfully deleted the proxy file of wptest14.
+[INFO] 2021-04-14 13:11:01,109 - Successfully stopped the wptest14 containers.
+[INFO] 2021-04-14 13:11:01,142 - Successfully deleted the wptest14 containers
+[INFO] 2021-04-14 13:11:01,145 - Sucessfully deleted instance wptest14.
+[INFO] 2021-04-14 13:11:56,178 - Successfully created the directory wptest02/instance.json.
+[INFO] 2021-04-14 13:11:56,182 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 13:11:56,401 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 13:11:56,621 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 13:11:56,852 - Creating directory: /opt/bibbox/instances/wptest02/database/mysql
+[INFO] 2021-04-14 13:11:56,859 - Creating directory: /opt/bibbox/instances/wptest02/assets
+[INFO] 2021-04-14 13:11:56,861 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 13:11:57,086 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 13:11:57,328 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 13:11:57,576 - Successfully created the wptest02/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 13:11:57,590 - Successfully created the 005-wptest02.conf proxy file.
+[INFO] 2021-04-14 13:11:57,593 - Successfully created the instances.json file.
+[INFO] 2021-04-14 13:11:57,608 - Running docker-compose up.
+[INFO] 2021-04-14 13:12:00,235 - Successfully created the directory wptest01/instance.json.
+[INFO] 2021-04-14 13:12:00,239 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 13:12:00,302 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 13:12:00,378 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 13:12:00,428 - Creating directory: /opt/bibbox/instances/wptest01/database/mysql
+[INFO] 2021-04-14 13:12:00,432 - Creating directory: /opt/bibbox/instances/wptest01/assets
+[INFO] 2021-04-14 13:12:00,435 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 13:12:00,541 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 13:12:00,634 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 13:12:00,729 - Successfully created the wptest01/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 13:12:00,747 - Successfully created the 005-wptest01.conf proxy file.
+[INFO] 2021-04-14 13:12:00,750 - Successfully created the instances.json file.
+[INFO] 2021-04-14 13:12:00,763 - Running docker-compose up.
+[INFO] 2021-04-14 13:12:03,965 - Successfully created the directory wptest03/instance.json.
+[INFO] 2021-04-14 13:12:03,972 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 13:12:04,037 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 13:12:04,092 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 13:12:04,144 - Creating directory: /opt/bibbox/instances/wptest03/database/mysql
+[INFO] 2021-04-14 13:12:04,147 - Creating directory: /opt/bibbox/instances/wptest03/assets
+[INFO] 2021-04-14 13:12:04,149 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 13:12:04,220 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 13:12:04,283 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 13:12:04,403 - Successfully created the wptest03/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 13:12:04,419 - Successfully created the 005-wptest03.conf proxy file.
+[INFO] 2021-04-14 13:12:04,422 - Successfully created the instances.json file.
+[INFO] 2021-04-14 13:12:04,432 - Running docker-compose up.
+[INFO] 2021-04-14 13:12:07,207 - Successfully created the directory wptest04/instance.json.
+[INFO] 2021-04-14 13:12:07,209 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 13:12:07,266 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 13:12:07,327 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 13:12:07,388 - Creating directory: /opt/bibbox/instances/wptest04/database/mysql
+[INFO] 2021-04-14 13:12:07,391 - Creating directory: /opt/bibbox/instances/wptest04/assets
+[INFO] 2021-04-14 13:12:07,394 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 13:12:07,452 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 13:12:07,515 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 13:12:07,598 - Successfully created the wptest04/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 13:12:07,617 - Successfully created the 005-wptest04.conf proxy file.
+[INFO] 2021-04-14 13:12:07,620 - Successfully created the instances.json file.
+[INFO] 2021-04-14 13:12:07,633 - Running docker-compose up.
+[INFO] 2021-04-14 13:12:29,671 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 13:12:31,755 - Successfully installed instance wptest02.
+[INFO] 2021-04-14 13:12:32,743 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 13:12:34,812 - Successfully installed instance wptest01.
+[INFO] 2021-04-14 13:12:36,403 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 13:12:38,503 - Successfully installed instance wptest03.
+[INFO] 2021-04-14 13:12:39,598 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 13:12:41,630 - Successfully installed instance wptest04.
+[INFO] 2021-04-14 13:14:10,916 - Successfully deleted the directory wptest01.
+[INFO] 2021-04-14 13:14:10,924 - Successfully deleted the proxy file of wptest01.
+[INFO] 2021-04-14 13:14:15,170 - Successfully stopped the wptest01 containers.
+[INFO] 2021-04-14 13:14:15,206 - Successfully deleted the wptest01 containers
+[INFO] 2021-04-14 13:14:15,209 - Sucessfully deleted instance wptest01.
+[INFO] 2021-04-14 14:18:13,808 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-14 14:18:13,811 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-14 14:18:14,128 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-14 14:18:14,435 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-14 14:18:14,764 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-14 14:18:14,771 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-14 14:18:14,773 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-14 14:18:15,090 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-14 14:18:15,538 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-14 14:18:15,803 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-14 14:18:15,823 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-14 14:18:15,826 - Successfully created the instances.json file.
+[INFO] 2021-04-14 14:18:15,836 - Running docker-compose up.
+[INFO] 2021-04-14 14:18:47,867 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-14 14:18:49,982 - Successfully installed instance wptest10.
+[INFO] 2021-04-15 09:35:01,301 - Successfully created the directory wptest11/instance.json.
+[INFO] 2021-04-15 09:35:01,304 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 09:35:01,628 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 09:35:01,969 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 09:35:02,405 - Creating directory: /opt/bibbox/instances/wptest11/database/mysql
+[INFO] 2021-04-15 09:35:02,411 - Creating directory: /opt/bibbox/instances/wptest11/assets
+[INFO] 2021-04-15 09:35:02,413 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 09:35:02,742 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 09:35:03,071 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 09:35:03,369 - Successfully created the wptest11/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 09:35:03,384 - Successfully created the 005-wptest11.conf proxy file.
+[INFO] 2021-04-15 09:35:03,386 - Successfully created the instances.json file.
+[INFO] 2021-04-15 09:35:03,397 - Running docker-compose up.
+[INFO] 2021-04-15 09:35:35,381 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 09:35:37,493 - Successfully installed instance wptest11.
+[INFO] 2021-04-15 09:44:17,120 - Successfully created the directory wptest14/instance.json.
+[INFO] 2021-04-15 09:44:17,123 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 09:44:17,350 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 09:44:17,565 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 09:44:17,634 - Creating directory: /opt/bibbox/instances/wptest14/database/mysql
+[INFO] 2021-04-15 09:44:17,637 - Creating directory: /opt/bibbox/instances/wptest14/assets
+[INFO] 2021-04-15 09:44:17,640 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 09:44:17,879 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 09:44:18,102 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 09:44:18,347 - Successfully created the wptest14/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 09:44:18,366 - Successfully created the 005-wptest14.conf proxy file.
+[INFO] 2021-04-15 09:44:18,369 - Successfully created the instances.json file.
+[INFO] 2021-04-15 09:44:18,379 - Running docker-compose up.
+[INFO] 2021-04-15 09:44:50,402 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 09:44:52,310 - Successfully deleted the directory wptest14.
+[INFO] 2021-04-15 09:44:52,314 - Successfully deleted the proxy file of wptest14.
+[INFO] 2021-04-15 09:44:52,591 - Successfully installed instance wptest14.
+[INFO] 2021-04-15 09:44:56,675 - Successfully stopped the wptest14 containers.
+[INFO] 2021-04-15 09:44:56,708 - Successfully deleted the wptest14 containers
+[INFO] 2021-04-15 09:44:56,711 - Sucessfully deleted instance wptest14.
+[INFO] 2021-04-15 09:44:59,170 - Successfully deleted the directory wptest11.
+[INFO] 2021-04-15 09:44:59,173 - Successfully deleted the proxy file of wptest11.
+[INFO] 2021-04-15 09:45:02,837 - Successfully deleted the directory wptest02.
+[INFO] 2021-04-15 09:45:02,840 - Successfully deleted the proxy file of wptest02.
+[INFO] 2021-04-15 09:45:03,165 - Successfully stopped the wptest11 containers.
+[INFO] 2021-04-15 09:45:03,199 - Successfully deleted the wptest11 containers
+[INFO] 2021-04-15 09:45:03,202 - Sucessfully deleted instance wptest11.
+[ERROR] 2021-04-15 09:45:05,892 - Deletion of the directory wptest02 failed. Exception: [Errno 2] No such file or directory: '/opt/bibbox/instances/wptest02'
+[ERROR] 2021-04-15 09:45:05,895 - Deleting instance wptest02 failed: [Errno 2] No such file or directory: '/opt/bibbox/instances/wptest02'.
+[INFO] 2021-04-15 09:45:06,472 - Successfully stopped the wptest02 containers.
+[INFO] 2021-04-15 09:45:06,509 - Successfully deleted the wptest02 containers
+[INFO] 2021-04-15 09:45:06,513 - Sucessfully deleted instance wptest02.
+[INFO] 2021-04-15 09:45:20,693 - Successfully deleted the directory wptest03.
+[INFO] 2021-04-15 09:45:20,696 - Successfully deleted the proxy file of wptest03.
+[INFO] 2021-04-15 09:45:24,200 - Successfully stopped the wptest03 containers.
+[INFO] 2021-04-15 09:45:24,233 - Successfully deleted the wptest03 containers
+[INFO] 2021-04-15 09:45:24,236 - Sucessfully deleted instance wptest03.
+[INFO] 2021-04-15 09:45:38,486 - Successfully created the directory wptest05/instance.json.
+[INFO] 2021-04-15 09:45:38,490 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 09:45:38,580 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 09:45:38,627 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 09:45:38,675 - Creating directory: /opt/bibbox/instances/wptest05/database/mysql
+[INFO] 2021-04-15 09:45:38,678 - Creating directory: /opt/bibbox/instances/wptest05/assets
+[INFO] 2021-04-15 09:45:38,680 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 09:45:38,734 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 09:45:38,810 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 09:45:38,894 - Successfully created the wptest05/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 09:45:38,911 - Successfully created the 005-wptest05.conf proxy file.
+[INFO] 2021-04-15 09:45:38,914 - Successfully created the instances.json file.
+[INFO] 2021-04-15 09:45:38,924 - Running docker-compose up.
+[INFO] 2021-04-15 09:46:10,825 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 09:46:12,987 - Successfully installed instance wptest05.
+[INFO] 2021-04-15 10:03:08,975 - Successfully created the directory wptest06/instance.json.
+[INFO] 2021-04-15 10:03:08,977 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 10:03:09,221 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 10:03:09,439 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 10:03:09,503 - Creating directory: /opt/bibbox/instances/wptest06/database/mysql
+[INFO] 2021-04-15 10:03:09,506 - Creating directory: /opt/bibbox/instances/wptest06/assets
+[INFO] 2021-04-15 10:03:09,509 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 10:03:09,729 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 10:03:09,961 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 10:03:10,223 - Successfully created the wptest06/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 10:03:10,242 - Successfully created the 005-wptest06.conf proxy file.
+[INFO] 2021-04-15 10:03:10,244 - Successfully created the instances.json file.
+[INFO] 2021-04-15 10:03:10,254 - Running docker-compose up.
+[INFO] 2021-04-15 10:03:42,228 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 10:03:44,418 - Successfully installed instance wptest06.
+[INFO] 2021-04-15 10:04:57,322 - Successfully deleted the directory wptest04.
+[INFO] 2021-04-15 10:04:57,325 - Successfully deleted the proxy file of wptest04.
+[INFO] 2021-04-15 10:05:01,749 - Successfully stopped the wptest04 containers.
+[INFO] 2021-04-15 10:05:01,783 - Successfully deleted the wptest04 containers
+[INFO] 2021-04-15 10:05:01,786 - Sucessfully deleted instance wptest04.
+[INFO] 2021-04-15 11:39:26,434 - Successfully deleted the directory wptest05.
+[INFO] 2021-04-15 11:39:26,437 - Successfully deleted the proxy file of wptest05.
+[INFO] 2021-04-15 11:39:29,395 - Successfully deleted the directory wptest06.
+[INFO] 2021-04-15 11:39:29,399 - Successfully deleted the proxy file of wptest06.
+[INFO] 2021-04-15 11:39:31,007 - Successfully stopped the wptest05 containers.
+[INFO] 2021-04-15 11:39:31,075 - Successfully deleted the wptest05 containers
+[INFO] 2021-04-15 11:39:31,079 - Sucessfully deleted instance wptest05.
+[INFO] 2021-04-15 11:39:31,725 - Successfully deleted the directory wptest10.
+[INFO] 2021-04-15 11:39:31,728 - Successfully deleted the proxy file of wptest10.
+[INFO] 2021-04-15 11:39:33,342 - Successfully stopped the wptest06 containers.
+[INFO] 2021-04-15 11:39:33,431 - Successfully deleted the wptest06 containers
+[INFO] 2021-04-15 11:39:33,434 - Sucessfully deleted instance wptest06.
+[INFO] 2021-04-15 11:39:35,649 - Successfully stopped the wptest10 containers.
+[INFO] 2021-04-15 11:39:35,683 - Successfully deleted the wptest10 containers
+[INFO] 2021-04-15 11:39:35,686 - Sucessfully deleted instance wptest10.
+[INFO] 2021-04-15 11:59:42,434 - Successfully created the directory wptest12/instance.json.
+[INFO] 2021-04-15 11:59:42,437 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 11:59:42,762 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 11:59:43,096 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 11:59:43,408 - Creating directory: /opt/bibbox/instances/wptest12/database/mysql
+[INFO] 2021-04-15 11:59:43,418 - Creating directory: /opt/bibbox/instances/wptest12/assets
+[INFO] 2021-04-15 11:59:43,420 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 11:59:43,732 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 11:59:44,079 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 11:59:44,333 - Successfully created the wptest12/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 11:59:44,352 - Successfully created the 005-wptest12.conf proxy file.
+[INFO] 2021-04-15 11:59:44,355 - Successfully created the instances.json file.
+[INFO] 2021-04-15 11:59:44,369 - Running docker-compose up.
+[INFO] 2021-04-15 11:59:46,971 - Successfully created the directory wptest11/instance.json.
+[INFO] 2021-04-15 11:59:46,974 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 11:59:47,028 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 11:59:47,089 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 11:59:47,139 - Creating directory: /opt/bibbox/instances/wptest11/database/mysql
+[INFO] 2021-04-15 11:59:47,143 - Creating directory: /opt/bibbox/instances/wptest11/assets
+[INFO] 2021-04-15 11:59:47,145 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 11:59:47,199 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 11:59:47,273 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 11:59:47,356 - Successfully created the wptest11/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 11:59:47,377 - Successfully created the 005-wptest11.conf proxy file.
+[INFO] 2021-04-15 11:59:47,380 - Successfully created the instances.json file.
+[INFO] 2021-04-15 11:59:47,393 - Running docker-compose up.
+[INFO] 2021-04-15 11:59:51,007 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-15 11:59:51,010 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 11:59:51,072 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 11:59:51,122 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 11:59:51,173 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-15 11:59:51,176 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-15 11:59:51,179 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 11:59:51,237 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 11:59:51,297 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 11:59:51,395 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 11:59:51,410 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-15 11:59:51,413 - Successfully created the instances.json file.
+[INFO] 2021-04-15 11:59:51,423 - Running docker-compose up.
+[INFO] 2021-04-15 12:00:16,323 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 12:00:18,400 - Successfully installed instance wptest12.
+[INFO] 2021-04-15 12:00:19,335 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 12:00:21,497 - Successfully installed instance wptest11.
+[INFO] 2021-04-15 12:00:23,449 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 12:00:25,527 - Successfully installed instance wptest10.
+[INFO] 2021-04-15 14:25:17,490 - Successfully created the directory wptest13/instance.json.
+[INFO] 2021-04-15 14:25:17,494 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 14:25:17,870 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 14:25:18,227 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 14:25:18,593 - Creating directory: /opt/bibbox/instances/wptest13/database/mysql
+[INFO] 2021-04-15 14:25:18,600 - Creating directory: /opt/bibbox/instances/wptest13/assets
+[INFO] 2021-04-15 14:25:18,602 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 14:25:18,951 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 14:25:19,410 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 14:25:19,691 - Successfully created the wptest13/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 14:25:19,713 - Successfully created the 005-wptest13.conf proxy file.
+[INFO] 2021-04-15 14:25:19,715 - Successfully created the instances.json file.
+[INFO] 2021-04-15 14:25:19,726 - Running docker-compose up.
+[INFO] 2021-04-15 14:25:51,689 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 14:25:53,899 - Successfully installed instance wptest13.
+[INFO] 2021-04-15 14:26:49,643 - Successfully created the directory wptest14/instance.json.
+[INFO] 2021-04-15 14:26:49,648 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 14:26:49,714 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 14:26:49,765 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 14:26:49,815 - Creating directory: /opt/bibbox/instances/wptest14/database/mysql
+[INFO] 2021-04-15 14:26:49,818 - Creating directory: /opt/bibbox/instances/wptest14/assets
+[INFO] 2021-04-15 14:26:49,821 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 14:26:49,877 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 14:26:49,948 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 14:26:50,026 - Successfully created the wptest14/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 14:26:50,046 - Successfully created the 005-wptest14.conf proxy file.
+[INFO] 2021-04-15 14:26:50,048 - Successfully created the instances.json file.
+[INFO] 2021-04-15 14:26:50,058 - Running docker-compose up.
+[INFO] 2021-04-15 14:27:21,959 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 14:27:24,082 - Successfully installed instance wptest14.
+[INFO] 2021-04-15 14:55:56,888 - Successfully deleted the directory wptest10.
+[INFO] 2021-04-15 14:55:56,892 - Successfully deleted the proxy file of wptest10.
+[INFO] 2021-04-15 14:55:59,412 - Successfully deleted the directory wptest11.
+[INFO] 2021-04-15 14:55:59,415 - Successfully deleted the proxy file of wptest11.
+[INFO] 2021-04-15 14:56:01,015 - Successfully stopped the wptest10 containers.
+[INFO] 2021-04-15 14:56:01,084 - Successfully deleted the wptest10 containers
+[INFO] 2021-04-15 14:56:01,089 - Sucessfully deleted instance wptest10.
+[INFO] 2021-04-15 14:56:03,492 - Successfully deleted the directory wptest12.
+[INFO] 2021-04-15 14:56:03,495 - Successfully deleted the proxy file of wptest12.
+[INFO] 2021-04-15 14:56:03,814 - Successfully stopped the wptest11 containers.
+[INFO] 2021-04-15 14:56:03,849 - Successfully deleted the wptest11 containers
+[INFO] 2021-04-15 14:56:03,852 - Sucessfully deleted instance wptest11.
+[INFO] 2021-04-15 14:56:07,966 - Successfully stopped the wptest12 containers.
+[INFO] 2021-04-15 14:56:07,999 - Successfully deleted the wptest12 containers
+[INFO] 2021-04-15 14:56:08,003 - Sucessfully deleted instance wptest12.
+[INFO] 2021-04-15 14:56:09,263 - Successfully deleted the directory wptest13.
+[INFO] 2021-04-15 14:56:09,267 - Successfully deleted the proxy file of wptest13.
+[INFO] 2021-04-15 14:56:13,206 - Successfully deleted the directory wptest14.
+[INFO] 2021-04-15 14:56:13,209 - Successfully deleted the proxy file of wptest14.
+[INFO] 2021-04-15 14:56:13,679 - Successfully stopped the wptest13 containers.
+[INFO] 2021-04-15 14:56:13,712 - Successfully deleted the wptest13 containers
+[INFO] 2021-04-15 14:56:13,715 - Sucessfully deleted instance wptest13.
+[INFO] 2021-04-15 14:56:16,918 - Successfully stopped the wptest14 containers.
+[INFO] 2021-04-15 14:56:16,950 - Successfully deleted the wptest14 containers
+[INFO] 2021-04-15 14:56:16,953 - Sucessfully deleted instance wptest14.
+[INFO] 2021-04-15 15:00:59,654 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-15 15:00:59,657 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 15:00:59,932 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 15:01:00,144 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 15:01:00,197 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-15 15:01:00,200 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-15 15:01:00,203 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 15:01:00,441 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 15:01:00,708 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 15:01:01,053 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 15:01:01,068 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-15 15:01:01,070 - Successfully created the instances.json file.
+[INFO] 2021-04-15 15:01:01,081 - Running docker-compose up.
+[INFO] 2021-04-15 15:01:33,085 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 15:01:35,180 - Successfully installed instance wptest10.
+[INFO] 2021-04-15 15:05:13,403 - Successfully deleted the directory wptest10.
+[INFO] 2021-04-15 15:05:13,406 - Successfully deleted the proxy file of wptest10.
+[INFO] 2021-04-15 15:05:19,599 - Successfully stopped the wptest10 containers.
+[INFO] 2021-04-15 15:05:19,634 - Successfully deleted the wptest10 containers
+[INFO] 2021-04-15 15:05:19,637 - Sucessfully deleted instance wptest10.
+[INFO] 2021-04-15 15:07:48,791 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-15 15:07:48,795 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 15:07:49,024 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 15:07:49,246 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 15:07:49,482 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-15 15:07:49,488 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-15 15:07:49,490 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 15:07:49,721 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 15:07:49,979 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 15:07:50,257 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 15:07:50,278 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-15 15:07:50,280 - Successfully created the instances.json file.
+[INFO] 2021-04-15 15:07:50,293 - Running docker-compose up.
+[INFO] 2021-04-15 15:07:54,009 - Successfully created the directory wptest11/instance.json.
+[INFO] 2021-04-15 15:07:54,012 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 15:07:54,076 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 15:07:54,134 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 15:07:54,215 - Creating directory: /opt/bibbox/instances/wptest11/database/mysql
+[INFO] 2021-04-15 15:07:54,221 - Creating directory: /opt/bibbox/instances/wptest11/assets
+[INFO] 2021-04-15 15:07:54,223 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 15:07:54,307 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 15:07:54,383 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 15:07:54,484 - Successfully created the wptest11/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 15:07:54,501 - Successfully created the 005-wptest11.conf proxy file.
+[INFO] 2021-04-15 15:07:54,503 - Successfully created the instances.json file.
+[INFO] 2021-04-15 15:07:54,518 - Running docker-compose up.
+[INFO] 2021-04-15 15:07:58,528 - Successfully created the directory wptest12/instance.json.
+[INFO] 2021-04-15 15:07:58,534 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-15 15:07:58,586 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-15 15:07:58,642 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-15 15:07:58,694 - Creating directory: /opt/bibbox/instances/wptest12/database/mysql
+[INFO] 2021-04-15 15:07:58,697 - Creating directory: /opt/bibbox/instances/wptest12/assets
+[INFO] 2021-04-15 15:07:58,699 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-15 15:07:58,763 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-15 15:07:58,825 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-15 15:07:58,911 - Successfully created the wptest12/docker-compose.yml docker-compose file.
+[INFO] 2021-04-15 15:07:58,929 - Successfully created the 005-wptest12.conf proxy file.
+[INFO] 2021-04-15 15:07:58,931 - Successfully created the instances.json file.
+[INFO] 2021-04-15 15:07:58,943 - Running docker-compose up.
+[INFO] 2021-04-15 15:08:22,350 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 15:08:24,492 - Successfully installed instance wptest10.
+[INFO] 2021-04-15 15:08:26,520 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 15:08:28,571 - Successfully installed instance wptest11.
+[INFO] 2021-04-15 15:08:31,021 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-15 15:08:33,037 - Successfully installed instance wptest12.
+[INFO] 2021-04-16 07:36:26,363 - Successfully deleted the directory wptest12.
+[INFO] 2021-04-16 07:36:26,367 - Successfully deleted the proxy file of wptest12.
+[INFO] 2021-04-16 07:36:30,259 - Successfully stopped the wptest12 containers.
+[INFO] 2021-04-16 07:36:30,296 - Successfully deleted the wptest12 containers
+[INFO] 2021-04-16 07:36:30,299 - Sucessfully deleted instance wptest12.
+[INFO] 2021-04-16 07:46:09,707 - Successfully deleted the directory wptest11.
+[INFO] 2021-04-16 07:46:09,711 - Successfully deleted the proxy file of wptest11.
+[INFO] 2021-04-16 07:46:13,435 - Successfully stopped the wptest11 containers.
+[INFO] 2021-04-16 07:46:13,474 - Successfully deleted the wptest11 containers
+[INFO] 2021-04-16 07:46:13,477 - Sucessfully deleted instance wptest11.
+[INFO] 2021-04-16 09:33:29,583 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-16 09:33:29,586 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 09:33:29,921 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 09:33:30,258 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 09:33:30,576 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-16 09:33:30,582 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-16 09:33:30,584 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 09:33:30,922 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 09:33:31,301 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[ERROR] 2021-04-16 09:33:31,558 - Installing instance wptest10 failed: tuple index out of range.
+[INFO] 2021-04-16 09:33:33,008 - Successfully created the directory wptest11/instance.json.
+[INFO] 2021-04-16 09:33:33,012 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 09:33:33,064 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 09:33:33,120 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 09:33:33,169 - Creating directory: /opt/bibbox/instances/wptest11/database/mysql
+[INFO] 2021-04-16 09:33:33,171 - Creating directory: /opt/bibbox/instances/wptest11/assets
+[INFO] 2021-04-16 09:33:33,174 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 09:33:33,231 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 09:33:33,303 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[ERROR] 2021-04-16 09:33:33,391 - Installing instance wptest11 failed: tuple index out of range.
+[INFO] 2021-04-16 09:33:37,568 - Successfully created the directory wptest12/instance.json.
+[INFO] 2021-04-16 09:33:37,571 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 09:33:37,623 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 09:33:37,672 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 09:33:37,721 - Creating directory: /opt/bibbox/instances/wptest12/database/mysql
+[INFO] 2021-04-16 09:33:37,724 - Creating directory: /opt/bibbox/instances/wptest12/assets
+[INFO] 2021-04-16 09:33:37,727 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 09:33:37,788 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 09:33:37,860 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[ERROR] 2021-04-16 09:33:37,933 - Installing instance wptest12 failed: tuple index out of range.
+[INFO] 2021-04-16 09:41:56,346 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-16 09:41:56,349 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 09:41:56,566 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 09:41:56,797 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 09:41:57,025 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-16 09:41:57,031 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-16 09:41:57,033 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 09:41:57,267 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 09:41:57,512 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[ERROR] 2021-04-16 09:41:57,814 - Installing instance wptest10 failed: tuple index out of range.
+[INFO] 2021-04-16 09:48:17,487 - Successfully created the directory wptest13/instance.json.
+[INFO] 2021-04-16 09:48:17,490 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 09:48:17,718 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 09:48:17,927 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 09:48:18,174 - Creating directory: /opt/bibbox/instances/wptest13/database/mysql
+[INFO] 2021-04-16 09:48:18,181 - Creating directory: /opt/bibbox/instances/wptest13/assets
+[INFO] 2021-04-16 09:48:18,183 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 09:48:18,421 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 09:48:18,657 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[ERROR] 2021-04-16 09:48:18,894 - Installing instance wptest13 failed: tuple index out of range.
+[INFO] 2021-04-16 10:06:21,882 - Successfully created the directory wptest13/instance.json.
+[INFO] 2021-04-16 10:06:21,885 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 10:06:22,103 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 10:06:22,324 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 10:06:22,571 - Creating directory: /opt/bibbox/instances/wptest13/database/mysql
+[INFO] 2021-04-16 10:06:22,577 - Creating directory: /opt/bibbox/instances/wptest13/assets
+[INFO] 2021-04-16 10:06:22,580 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 10:06:22,806 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 10:06:23,105 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[ERROR] 2021-04-16 10:06:23,361 - Installing instance wptest13 failed: tuple index out of range.
+[INFO] 2021-04-16 11:02:42,647 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-16 11:02:42,651 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 11:02:43,004 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 11:02:43,333 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 11:02:43,651 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-16 11:02:43,658 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-16 11:02:43,660 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 11:02:43,991 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 11:02:44,613 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[ERROR] 2021-04-16 11:02:44,852 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:05:15,569 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:05:30,163 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:07:50,681 - Installing instance wptest10 failed: tuple index out of range.
+[INFO] 2021-04-16 11:21:17,105 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-16 11:21:17,109 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 11:21:17,370 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 11:21:17,593 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 11:21:17,800 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-16 11:21:17,806 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-16 11:21:17,808 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 11:21:18,017 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 11:21:18,278 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[ERROR] 2021-04-16 11:21:18,522 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:22:32,704 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:23:20,707 - Installing instance wptest10 failed: tuple index out of range.
+[INFO] 2021-04-16 11:25:44,480 - Successfully created the directory wptest11/instance.json.
+[INFO] 2021-04-16 11:25:44,483 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 11:25:44,540 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 11:25:44,607 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 11:25:44,704 - Creating directory: /opt/bibbox/instances/wptest11/database/mysql
+[INFO] 2021-04-16 11:25:44,710 - Creating directory: /opt/bibbox/instances/wptest11/assets
+[INFO] 2021-04-16 11:25:44,713 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 11:25:44,773 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 11:25:45,028 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[ERROR] 2021-04-16 11:25:45,292 - Installing instance wptest11 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:26:30,203 - Installing instance wptest11 failed: tuple index out of range.
+[INFO] 2021-04-16 11:26:38,027 - Successfully created the directory wptest12/instance.json.
+[INFO] 2021-04-16 11:26:38,030 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 11:26:38,332 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 11:26:38,543 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 11:26:38,748 - Creating directory: /opt/bibbox/instances/wptest12/database/mysql
+[INFO] 2021-04-16 11:26:38,754 - Creating directory: /opt/bibbox/instances/wptest12/assets
+[INFO] 2021-04-16 11:26:38,756 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 11:26:38,995 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 11:26:39,060 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-16 11:26:39,176 - got here
+[ERROR] 2021-04-16 11:26:39,196 - Installing instance wptest12 failed: tuple index out of range.
+[INFO] 2021-04-16 11:27:42,861 - Successfully created the directory wptest13/instance.json.
+[INFO] 2021-04-16 11:27:42,865 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 11:27:42,925 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 11:27:42,976 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 11:27:43,034 - Creating directory: /opt/bibbox/instances/wptest13/database/mysql
+[INFO] 2021-04-16 11:27:43,037 - Creating directory: /opt/bibbox/instances/wptest13/assets
+[INFO] 2021-04-16 11:27:43,040 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 11:27:43,113 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 11:27:43,182 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-16 11:27:43,290 - got here
+[INFO] 2021-04-16 11:27:43,296 - got to instanciate instance obj
+[ERROR] 2021-04-16 11:27:43,312 - Installing instance wptest13 failed: tuple index out of range.
+[INFO] 2021-04-16 11:29:10,724 - Successfully created the directory wptest14/instance.json.
+[INFO] 2021-04-16 11:29:10,727 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 11:29:10,783 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 11:29:10,831 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 11:29:10,893 - Creating directory: /opt/bibbox/instances/wptest14/database/mysql
+[INFO] 2021-04-16 11:29:10,897 - Creating directory: /opt/bibbox/instances/wptest14/assets
+[INFO] 2021-04-16 11:29:10,899 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 11:29:10,952 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 11:29:11,012 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-16 11:29:11,077 - got to instanciate instance obj
+[INFO] 2021-04-16 11:29:11,080 - got to start of container names
+[ERROR] 2021-04-16 11:29:11,095 - Installing instance wptest14 failed: tuple index out of range.
+[INFO] 2021-04-16 11:37:32,159 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-16 11:37:32,163 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 11:37:32,426 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 11:37:32,629 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 11:37:32,879 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-16 11:37:32,886 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-16 11:37:32,889 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 11:37:33,114 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 11:37:33,348 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-16 11:37:33,591 - Successfully updated the wptest10 instance.json file.
+[INFO] 2021-04-16 11:37:33,612 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-16 11:37:33,623 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-16 11:37:33,626 - Successfully created the instances.json file.
+[INFO] 2021-04-16 11:37:33,636 - Running docker-compose up.
+[INFO] 2021-04-16 11:38:05,563 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-16 11:38:07,761 - Successfully installed instance wptest10.
+[INFO] 2021-04-16 11:43:22,088 - Successfully created the directory wptest11/instance.json.
+[INFO] 2021-04-16 11:43:22,094 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 11:43:22,301 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 11:43:22,550 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 11:43:22,775 - Creating directory: /opt/bibbox/instances/wptest11/database/mysql
+[INFO] 2021-04-16 11:43:22,778 - Creating directory: /opt/bibbox/instances/wptest11/assets
+[INFO] 2021-04-16 11:43:22,781 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 11:43:23,002 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 11:43:23,248 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-16 11:43:23,556 - Successfully updated the wptest11 instance.json file with container_names.
+[INFO] 2021-04-16 11:43:23,578 - Successfully created the wptest11/docker-compose.yml docker-compose file.
+[INFO] 2021-04-16 11:43:23,588 - Successfully created the 005-wptest11.conf proxy file.
+[INFO] 2021-04-16 11:43:23,590 - Successfully created the instances.json file.
+[INFO] 2021-04-16 11:43:23,600 - Running docker-compose up.
+[INFO] 2021-04-16 11:43:55,572 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-16 11:43:57,722 - Successfully installed instance wptest11.
+[INFO] 2021-04-16 11:55:22,471 - Successfully created the directory wptest12/instance.json.
+[INFO] 2021-04-16 11:55:22,474 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 11:55:22,708 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 11:55:22,925 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 11:55:23,164 - Creating directory: /opt/bibbox/instances/wptest12/database/mysql
+[INFO] 2021-04-16 11:55:23,170 - Creating directory: /opt/bibbox/instances/wptest12/assets
+[INFO] 2021-04-16 11:55:23,172 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 11:55:23,423 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 11:55:23,748 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-16 11:55:24,024 - Successfully updated the wptest12 instance.json file with container_names.
+[INFO] 2021-04-16 11:55:24,044 - Successfully created the wptest12/docker-compose.yml docker-compose file.
+[INFO] 2021-04-16 11:55:24,054 - Successfully created the 005-wptest12.conf proxy file.
+[INFO] 2021-04-16 11:55:24,056 - Successfully created the instances.json file.
+[INFO] 2021-04-16 11:55:24,069 - Running docker-compose up.
+[INFO] 2021-04-16 11:55:56,126 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-16 11:55:58,235 - Successfully installed instance wptest12.
+[INFO] 2021-04-16 11:56:26,246 - Successfully created the directory wptest13/instance.json.
+[INFO] 2021-04-16 11:56:26,249 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 11:56:26,314 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 11:56:26,364 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 11:56:26,410 - Creating directory: /opt/bibbox/instances/wptest13/database/mysql
+[INFO] 2021-04-16 11:56:26,413 - Creating directory: /opt/bibbox/instances/wptest13/assets
+[INFO] 2021-04-16 11:56:26,416 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 11:56:26,494 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 11:56:26,558 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-16 11:56:26,640 - Successfully updated the wptest13 instance.json file with container_names.
+[INFO] 2021-04-16 11:56:26,662 - Successfully created the wptest13/docker-compose.yml docker-compose file.
+[INFO] 2021-04-16 11:56:26,672 - Successfully created the 005-wptest13.conf proxy file.
+[INFO] 2021-04-16 11:56:26,675 - Successfully created the instances.json file.
+[INFO] 2021-04-16 11:56:26,689 - Running docker-compose up.
+[INFO] 2021-04-16 11:56:58,655 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-16 11:57:00,787 - Successfully installed instance wptest13.
+[INFO] 2021-04-16 12:18:09,657 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-16 12:18:09,661 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 12:18:10,061 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 12:18:10,396 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 12:18:10,777 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-16 12:18:10,783 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-16 12:18:10,786 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 12:18:11,116 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 12:18:11,859 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-16 12:18:12,205 - Successfully updated the wptest10 instance.json file with container_names.
+[INFO] 2021-04-16 12:18:12,226 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-16 12:18:12,236 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-16 12:18:12,238 - Successfully created the instances.json file.
+[INFO] 2021-04-16 12:18:12,248 - Running docker-compose up.
+[INFO] 2021-04-16 12:18:44,195 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-16 12:18:46,316 - Successfully installed instance wptest10.
+[ERROR] 2021-04-16 12:26:02,368 - Installing instance wptest10 failed: tuple index out of range.
+[INFO] 2021-04-16 12:26:24,990 - Successfully created the directory wptest11/instance.json.
+[INFO] 2021-04-16 12:26:24,993 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-16 12:26:25,239 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-16 12:26:25,455 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-16 12:26:25,685 - Creating directory: /opt/bibbox/instances/wptest11/database/mysql
+[INFO] 2021-04-16 12:26:25,691 - Creating directory: /opt/bibbox/instances/wptest11/assets
+[INFO] 2021-04-16 12:26:25,694 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-16 12:26:25,921 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-16 12:26:26,169 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-16 12:26:26,560 - Successfully updated the wptest11 instance.json file with container_names.
+[INFO] 2021-04-16 12:26:26,579 - Successfully created the wptest11/docker-compose.yml docker-compose file.
+[INFO] 2021-04-16 12:26:26,590 - Successfully created the 005-wptest11.conf proxy file.
+[INFO] 2021-04-16 12:26:26,592 - Successfully created the instances.json file.
+[INFO] 2021-04-16 12:26:26,602 - Running docker-compose up.
+[INFO] 2021-04-16 12:26:58,604 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-16 12:27:00,772 - Successfully installed instance wptest11.
+[ERROR] 2021-04-16 13:11:45,724 - Updating instance.json file of instance wptest11 failed. Exception: 'NoneType' object is not iterable.
+[ERROR] 2021-04-16 13:25:14,721 - Updating instance.json file of instance wptest11 failed. Exception: 'NoneType' object is not iterable.
+[ERROR] 2021-04-16 13:26:24,779 - Updating instance.json file of instance wptest11 failed. Exception: 'NoneType' object is not iterable.
+[ERROR] 2021-04-16 13:28:39,158 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[ERROR] 2021-04-16 13:29:22,588 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[ERROR] 2021-04-16 13:30:25,926 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[ERROR] 2021-04-16 13:31:10,845 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[INFO] 2021-04-16 13:33:53,699 - {'description_short': 'test'}
+[INFO] 2021-04-16 13:34:25,408 - {'description_short': 'test'}
+[INFO] 2021-04-16 13:35:23,059 - {'description_short': 'test', 'description_long': 'test2'}
+[ERROR] 2021-04-16 13:35:23,063 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[INFO] 2021-04-16 13:36:20,050 - {'description_short': 'test', 'description_long': 'test2'}
+[ERROR] 2021-04-16 13:36:20,053 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[INFO] 2021-04-16 13:37:00,404 - {'description_short': 'test', 'description_long': 'test2'}
+[ERROR] 2021-04-16 13:37:00,407 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[INFO] 2021-04-16 13:38:55,208 - {'description_short': 'test', 'description_long': 'test2'}
+[INFO] 2021-04-16 13:39:12,867 - {'description_short': 'test', 'description_long': 'test2'}
+[INFO] 2021-04-16 13:39:43,189 - {'description_short': 'test', 'description_long': 'test2'}
+[INFO] 2021-04-16 13:39:43,192 - <class 'dict'>
+[ERROR] 2021-04-16 13:39:43,195 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[INFO] 2021-04-16 13:42:01,878 - Successfully updated instance.json of instance wptest10.
+[INFO] 2021-04-16 13:42:55,643 - Successfully updated instance.json of instance wptest10.
+[INFO] 2021-04-16 13:44:06,660 - Successfully updated instance.json of instance wptest10.
+[INFO] 2021-04-16 14:57:35,343 - Successfully updated instance.json of instance wptest10.
+[INFO] 2021-04-16 15:03:53,645 - Successfully updated instance.json of instance wptest10.
+[INFO] 2021-04-19 09:34:53,852 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-19 09:34:53,855 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-19 09:34:54,205 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-19 09:34:54,539 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-19 09:34:54,874 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-19 09:34:54,880 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-19 09:34:54,883 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-19 09:34:55,312 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-19 09:34:55,697 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-19 09:34:55,946 - Successfully updated the wptest10 instance.json file with container_names.
+[INFO] 2021-04-19 09:34:55,969 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-19 09:34:55,979 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-19 09:34:55,981 - Successfully created the instances.json file.
+[ERROR] 2021-04-19 09:34:55,983 - Installing instance wptest10 failed: name 'content' is not defined.
+[INFO] 2021-04-19 12:04:04,606 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-19 12:04:04,610 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-19 12:04:04,992 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-19 12:04:05,323 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-19 12:04:05,648 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-19 12:04:05,654 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-19 12:04:05,657 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-19 12:04:06,007 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-19 12:04:06,374 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-19 12:04:06,637 - Successfully updated the wptest10 instance.json file with container_names.
+[INFO] 2021-04-19 12:04:06,656 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-19 12:04:06,666 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-19 12:04:06,668 - Successfully created the instances.json file.
+[ERROR] 2021-04-19 12:04:06,670 - Installing instance wptest10 failed: name 'content' is not defined.
+[INFO] 2021-04-19 12:10:44,343 - Successfully created the directory wptest14/instance.json.
+[INFO] 2021-04-19 12:10:44,346 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-19 12:10:44,561 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-19 12:10:44,785 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-19 12:10:44,838 - Creating directory: /opt/bibbox/instances/wptest14/database/mysql
+[INFO] 2021-04-19 12:10:44,842 - Creating directory: /opt/bibbox/instances/wptest14/assets
+[INFO] 2021-04-19 12:10:44,844 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-19 12:10:45,181 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-19 12:10:45,402 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-19 12:10:45,689 - Successfully updated the wptest14 instance.json file with container_names.
+[INFO] 2021-04-19 12:10:45,712 - Successfully created the wptest14/docker-compose.yml docker-compose file.
+[INFO] 2021-04-19 12:10:45,723 - Successfully created the 005-wptest14.conf proxy file.
+[INFO] 2021-04-19 12:10:45,725 - Successfully created the instances.json file.
+[ERROR] 2021-04-19 12:10:45,726 - Installing instance wptest14 failed: name 'content' is not defined.
+[ERROR] 2021-04-19 12:12:00,235 - Installing instance wptest10 failed: tuple index out of range.
+[INFO] 2021-04-19 12:12:08,196 - Successfully created the directory wptest11/instance.json.
+[INFO] 2021-04-19 12:12:08,200 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-19 12:12:08,257 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-19 12:12:08,325 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-19 12:12:08,381 - Creating directory: /opt/bibbox/instances/wptest11/database/mysql
+[INFO] 2021-04-19 12:12:08,384 - Creating directory: /opt/bibbox/instances/wptest11/assets
+[INFO] 2021-04-19 12:12:08,386 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-19 12:12:08,470 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-19 12:12:08,540 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-19 12:12:08,647 - Successfully updated the wptest11 instance.json file with container_names.
+[INFO] 2021-04-19 12:12:08,664 - Successfully created the wptest11/docker-compose.yml docker-compose file.
+[INFO] 2021-04-19 12:12:08,674 - Successfully created the 005-wptest11.conf proxy file.
+[INFO] 2021-04-19 12:12:08,676 - Successfully created the instances.json file.
+[ERROR] 2021-04-19 12:12:08,678 - Installing instance wptest11 failed: name 'content' is not defined.
+[INFO] 2021-04-19 12:14:48,075 - Successfully created the directory wptest12/instance.json.
+[INFO] 2021-04-19 12:14:48,078 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-19 12:14:48,169 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-19 12:14:48,229 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-19 12:14:48,282 - Creating directory: /opt/bibbox/instances/wptest12/database/mysql
+[INFO] 2021-04-19 12:14:48,285 - Creating directory: /opt/bibbox/instances/wptest12/assets
+[INFO] 2021-04-19 12:14:48,287 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-19 12:14:48,356 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-19 12:14:48,428 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-19 12:14:48,512 - Successfully updated the wptest12 instance.json file with container_names.
+[INFO] 2021-04-19 12:14:48,536 - Successfully created the wptest12/docker-compose.yml docker-compose file.
+[INFO] 2021-04-19 12:14:48,546 - Successfully created the 005-wptest12.conf proxy file.
+[INFO] 2021-04-19 12:14:48,548 - Successfully created the instances.json file.
+[INFO] 2021-04-19 12:14:48,559 - Running docker-compose up.
+[INFO] 2021-04-19 12:15:20,586 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-19 12:15:22,751 - Successfully installed instance wptest12.
+[INFO] 2021-04-19 12:15:52,985 - Successfully created the directory wptest13/instance.json.
+[INFO] 2021-04-19 12:15:52,988 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-19 12:15:53,203 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-19 12:15:53,431 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-19 12:15:53,652 - Creating directory: /opt/bibbox/instances/wptest13/database/mysql
+[INFO] 2021-04-19 12:15:53,658 - Creating directory: /opt/bibbox/instances/wptest13/assets
+[INFO] 2021-04-19 12:15:53,660 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-19 12:15:53,890 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-19 12:15:54,150 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-19 12:15:54,388 - Successfully updated the wptest13 instance.json file with container_names.
+[INFO] 2021-04-19 12:15:54,403 - Successfully created the wptest13/docker-compose.yml docker-compose file.
+[INFO] 2021-04-19 12:15:54,414 - Successfully created the 005-wptest13.conf proxy file.
+[INFO] 2021-04-19 12:15:54,416 - Successfully created the instances.json file.
+[INFO] 2021-04-19 12:15:54,426 - Running docker-compose up.
+[INFO] 2021-04-19 12:16:26,261 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-19 12:16:28,346 - Successfully installed instance wptest13.
+[INFO] 2021-04-19 14:52:54,200 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-19 14:52:54,203 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-19 14:52:54,559 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-19 14:52:54,895 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-19 14:52:55,039 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-19 14:52:55,044 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-19 14:52:55,047 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-19 14:52:55,473 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-19 14:52:55,889 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-19 14:52:56,136 - Successfully updated the wptest10 instance.json file with container_names.
+[INFO] 2021-04-19 14:52:56,156 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-19 14:52:56,166 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-19 14:52:56,167 - Successfully created the instances.json file.
+[INFO] 2021-04-19 14:52:56,178 - Running docker-compose up.
+[INFO] 2021-04-19 14:53:28,130 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-19 14:53:30,273 - Successfully installed instance wptest10.
+[INFO] 2021-04-19 14:56:17,998 - Successfully updated instance.json of instance wptest10.
+[INFO] 2021-04-19 15:06:35,968 - Successfully created the directory wptest14/instance.json.
+[INFO] 2021-04-19 15:06:35,971 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-19 15:06:36,200 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-19 15:06:36,424 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-19 15:06:36,482 - Creating directory: /opt/bibbox/instances/wptest14/database/mysql
+[INFO] 2021-04-19 15:06:36,485 - Creating directory: /opt/bibbox/instances/wptest14/assets
+[INFO] 2021-04-19 15:06:36,488 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-19 15:06:36,771 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-19 15:06:37,561 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-19 15:06:37,837 - Successfully updated the wptest14 instance.json file with container_names.
+[INFO] 2021-04-19 15:06:37,856 - Successfully created the wptest14/docker-compose.yml docker-compose file.
+[INFO] 2021-04-19 15:06:37,867 - Successfully created the 005-wptest14.conf proxy file.
+[INFO] 2021-04-19 15:06:37,869 - Successfully created the instances.json file.
+[INFO] 2021-04-19 15:06:37,880 - Running docker-compose up.
+[INFO] 2021-04-19 15:07:09,820 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-19 15:07:11,881 - Successfully installed instance wptest14.
+[INFO] 2021-04-20 07:05:58,517 - Successfully created the directory wptest11/instance.json.
+[INFO] 2021-04-20 07:05:58,521 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 07:05:58,879 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 07:05:59,224 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 07:05:59,569 - Creating directory: /opt/bibbox/instances/wptest11/database/mysql
+[INFO] 2021-04-20 07:05:59,576 - Creating directory: /opt/bibbox/instances/wptest11/assets
+[INFO] 2021-04-20 07:05:59,578 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 07:05:59,920 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 07:06:00,336 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 07:06:00,668 - Successfully updated the wptest11 instance.json file with container_names.
+[INFO] 2021-04-20 07:06:00,690 - Successfully created the wptest11/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 07:06:00,700 - Successfully created the 005-wptest11.conf proxy file.
+[INFO] 2021-04-20 07:06:00,702 - Successfully created the instances.json file.
+[INFO] 2021-04-20 07:06:00,713 - Running docker-compose up.
+[INFO] 2021-04-20 07:06:32,636 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 07:06:34,711 - Successfully installed instance wptest11.
+[INFO] 2021-04-20 07:45:06,545 - Successfully created the directory wptest05/instance.json.
+[INFO] 2021-04-20 07:45:06,548 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 07:45:06,778 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 07:45:07,010 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 07:45:07,077 - Creating directory: /opt/bibbox/instances/wptest05/database/mysql
+[INFO] 2021-04-20 07:45:07,080 - Creating directory: /opt/bibbox/instances/wptest05/assets
+[INFO] 2021-04-20 07:45:07,082 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 07:45:07,296 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 07:45:07,568 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 07:45:07,847 - Successfully updated the wptest05 instance.json file with container_names.
+[INFO] 2021-04-20 07:45:07,870 - Successfully created the wptest05/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 07:45:07,887 - Successfully created the 005-wptest05.conf proxy file.
+[INFO] 2021-04-20 07:45:07,890 - Successfully created the instances.json file.
+[INFO] 2021-04-20 07:45:07,903 - Running docker-compose up.
+[INFO] 2021-04-20 07:45:39,903 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 07:45:41,972 - Successfully installed instance wptest05.
+[INFO] 2021-04-20 07:55:10,217 - Successfully created the directory wptest06/instance.json.
+[INFO] 2021-04-20 07:55:10,221 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 07:55:11,090 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 07:55:11,349 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 07:55:11,407 - Creating directory: /opt/bibbox/instances/wptest06/database/mysql
+[INFO] 2021-04-20 07:55:11,410 - Creating directory: /opt/bibbox/instances/wptest06/assets
+[INFO] 2021-04-20 07:55:11,412 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 07:55:11,629 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 07:55:11,857 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 07:55:12,148 - Successfully updated the wptest06 instance.json file with container_names.
+[INFO] 2021-04-20 07:55:12,167 - Successfully created the wptest06/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 07:55:12,177 - Successfully created the 005-wptest06.conf proxy file.
+[INFO] 2021-04-20 07:55:12,179 - Successfully created the instances.json file.
+[INFO] 2021-04-20 07:55:12,189 - Running docker-compose up.
+[INFO] 2021-04-20 07:55:44,143 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 07:55:46,303 - Successfully installed instance wptest06.
+[INFO] 2021-04-20 08:03:31,850 - Successfully created the directory wptest05/instance.json.
+[INFO] 2021-04-20 08:03:31,853 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 08:03:32,074 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 08:03:32,282 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 08:03:32,335 - Creating directory: /opt/bibbox/instances/wptest05/database/mysql
+[INFO] 2021-04-20 08:03:32,338 - Creating directory: /opt/bibbox/instances/wptest05/assets
+[INFO] 2021-04-20 08:03:32,340 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 08:03:32,585 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 08:03:32,827 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 08:03:33,070 - Successfully updated the wptest05 instance.json file with container_names.
+[INFO] 2021-04-20 08:03:33,093 - Successfully created the wptest05/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 08:03:33,103 - Successfully created the 005-wptest05.conf proxy file.
+[INFO] 2021-04-20 08:03:33,105 - Successfully created the instances.json file.
+[INFO] 2021-04-20 08:03:33,115 - Running docker-compose up.
+[INFO] 2021-04-20 08:04:05,096 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 08:04:07,110 - Successfully installed instance wptest05.
+[INFO] 2021-04-20 09:00:26,108 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-20 09:00:26,111 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 09:00:26,439 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 09:00:26,765 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 09:00:26,908 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-20 09:00:26,914 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-20 09:00:26,917 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 09:00:27,292 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 09:00:27,631 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 09:00:27,897 - Successfully updated the wptest10 instance.json file with container_names.
+[INFO] 2021-04-20 09:00:27,915 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 09:00:27,925 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-20 09:00:27,927 - Successfully created the instances.json file.
+[INFO] 2021-04-20 09:00:27,937 - Running docker-compose up.
+[INFO] 2021-04-20 09:00:59,906 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 09:01:02,006 - Successfully installed instance wptest10.
+[INFO] 2021-04-20 11:24:09,368 - Successfully created the directory wptest12/instance.json.
+[INFO] 2021-04-20 11:24:09,372 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 11:24:09,676 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 11:24:10,037 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 11:24:10,181 - Creating directory: /opt/bibbox/instances/wptest12/database/mysql
+[INFO] 2021-04-20 11:24:10,187 - Creating directory: /opt/bibbox/instances/wptest12/assets
+[INFO] 2021-04-20 11:24:10,189 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 11:24:10,553 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 11:24:10,886 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 11:24:11,144 - Successfully updated the wptest12 instance.json file with container_names.
+[INFO] 2021-04-20 11:24:11,168 - Successfully created the wptest12/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 11:24:11,181 - Successfully created the 005-wptest12.conf proxy file.
+[INFO] 2021-04-20 11:24:11,182 - Successfully created the instances.json file.
+[INFO] 2021-04-20 11:24:11,196 - Running docker-compose up.
+[INFO] 2021-04-20 11:24:43,143 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 11:24:45,178 - Successfully installed instance wptest12.
+[INFO] 2021-04-20 11:28:57,941 - Successfully created the directory wptest13/instance.json.
+[INFO] 2021-04-20 11:28:57,944 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 11:28:58,002 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 11:28:58,052 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 11:28:58,099 - Creating directory: /opt/bibbox/instances/wptest13/database/mysql
+[INFO] 2021-04-20 11:28:58,102 - Creating directory: /opt/bibbox/instances/wptest13/assets
+[INFO] 2021-04-20 11:28:58,105 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 11:28:58,160 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 11:28:58,226 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 11:28:58,352 - Successfully updated the wptest13 instance.json file with container_names.
+[INFO] 2021-04-20 11:28:58,376 - Successfully created the wptest13/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 11:28:58,386 - Successfully created the 005-wptest13.conf proxy file.
+[INFO] 2021-04-20 11:28:58,388 - Successfully created the instances.json file.
+[INFO] 2021-04-20 11:28:58,398 - Running docker-compose up.
+[INFO] 2021-04-20 11:29:30,436 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 11:29:32,496 - Successfully installed instance wptest13.
+[INFO] 2021-04-20 11:30:55,463 - Successfully updated instance.json of instance wptest13.
+[INFO] 2021-04-20 12:19:06,776 - Successfully deleted the directory wptest05.
+[INFO] 2021-04-20 12:19:06,779 - Successfully deleted the proxy file of wptest05.
+[ERROR] 2021-04-20 12:19:06,791 - Deleting instance wptest05 failed: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'.
+[INFO] 2021-04-20 12:19:08,946 - Successfully deleted the directory wptest10.
+[INFO] 2021-04-20 12:19:08,949 - Successfully deleted the proxy file of wptest10.
+[ERROR] 2021-04-20 12:19:08,962 - Deleting instance wptest10 failed: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'.
+[INFO] 2021-04-20 12:19:10,961 - Successfully deleted the directory wptest12.
+[INFO] 2021-04-20 12:19:10,964 - Successfully deleted the proxy file of wptest12.
+[ERROR] 2021-04-20 12:19:10,977 - Deleting instance wptest12 failed: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'.
+[INFO] 2021-04-20 12:19:13,060 - Successfully deleted the directory wptest13.
+[INFO] 2021-04-20 12:19:13,063 - Successfully deleted the proxy file of wptest13.
+[ERROR] 2021-04-20 12:19:13,075 - Deleting instance wptest13 failed: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'.
+[INFO] 2021-04-20 12:20:44,141 - Successfully created the directory wp03/instance.json.
+[INFO] 2021-04-20 12:20:44,144 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 12:20:44,363 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 12:20:44,591 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 12:20:44,645 - Creating directory: /opt/bibbox/instances/wp03/database/mysql
+[INFO] 2021-04-20 12:20:44,648 - Creating directory: /opt/bibbox/instances/wp03/assets
+[INFO] 2021-04-20 12:20:44,651 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 12:20:44,901 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 12:20:45,170 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 12:20:45,459 - Successfully updated the wp03 instance.json file with container_names.
+[INFO] 2021-04-20 12:20:45,478 - Successfully created the wp03/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 12:20:45,488 - Successfully created the 005-wp03.conf proxy file.
+[INFO] 2021-04-20 12:20:45,490 - Successfully created the instances.json file.
+[INFO] 2021-04-20 12:20:45,500 - Running docker-compose up.
+[INFO] 2021-04-20 12:21:17,515 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 12:21:19,672 - Successfully installed instance wp03.
+[INFO] 2021-04-20 12:28:32,566 - Successfully created the directory wp77/instance.json.
+[INFO] 2021-04-20 12:28:32,570 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 12:28:32,914 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 12:28:33,218 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 12:28:33,367 - Creating directory: /opt/bibbox/instances/wp77/database/mysql
+[INFO] 2021-04-20 12:28:33,373 - Creating directory: /opt/bibbox/instances/wp77/assets
+[INFO] 2021-04-20 12:28:33,375 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 12:28:33,685 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 12:28:34,038 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 12:28:34,301 - Successfully updated the wp77 instance.json file with container_names.
+[INFO] 2021-04-20 12:28:34,321 - Successfully created the wp77/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 12:28:34,331 - Successfully created the 005-wp77.conf proxy file.
+[INFO] 2021-04-20 12:28:34,333 - Successfully created the instances.json file.
+[INFO] 2021-04-20 12:28:34,343 - Running docker-compose up.
+[INFO] 2021-04-20 12:29:06,298 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 12:29:08,491 - Successfully installed instance wp77.
+[INFO] 2021-04-20 12:33:47,522 - Successfully deleted the directory wp77.
+[INFO] 2021-04-20 12:33:47,525 - Successfully deleted the proxy file of wp77.
+[ERROR] 2021-04-20 12:33:47,537 - Deleting instance wp77 failed: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'.
+[INFO] 2021-04-20 13:35:04,834 - Successfully deleted the directory wp03.
+[INFO] 2021-04-20 13:35:04,837 - Successfully deleted the proxy file of wp03.
+[ERROR] 2021-04-20 13:35:04,847 - Stopping wp03 containers failed. Exception: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'
+[ERROR] 2021-04-20 13:35:04,851 - Deleting instance wp03 failed: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'.
+[INFO] 2021-04-20 13:50:50,273 - Successfully created the directory wptest10/instance.json.
+[INFO] 2021-04-20 13:50:50,276 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 13:50:50,589 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 13:50:50,919 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 13:50:51,075 - Creating directory: /opt/bibbox/instances/wptest10/database/mysql
+[INFO] 2021-04-20 13:50:51,081 - Creating directory: /opt/bibbox/instances/wptest10/assets
+[INFO] 2021-04-20 13:50:51,083 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 13:50:51,417 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 13:50:51,748 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 13:50:52,003 - Successfully updated the wptest10 instance.json file with container_names.
+[INFO] 2021-04-20 13:50:52,022 - Successfully created the wptest10/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 13:50:52,032 - Successfully created the 005-wptest10.conf proxy file.
+[INFO] 2021-04-20 13:50:52,034 - Successfully created the instances.json file.
+[INFO] 2021-04-20 13:50:52,044 - Running docker-compose up.
+[INFO] 2021-04-20 13:51:24,078 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 13:51:26,223 - Successfully installed instance wptest10.
+[INFO] 2021-04-20 13:52:23,494 - stopping containers of wptest10.
+[INFO] 2021-04-20 13:52:23,503 - stopped containers of wptest10.
+[INFO] 2021-04-20 13:52:47,970 - starting containers of wptest10.
+[INFO] 2021-04-20 13:52:47,979 - started containers of wptest10.
+[INFO] 2021-04-20 13:54:15,577 - stopping containers of wptest10.
+[INFO] 2021-04-20 13:54:15,586 - stopped containers of wptest10.
+[INFO] 2021-04-20 13:54:27,919 - stopping containers of wptest10.
+[INFO] 2021-04-20 13:54:27,929 - stopped containers of wptest10.
+[INFO] 2021-04-20 13:54:27,932 - Successfully stopped the wptest10 containers.
+[INFO] 2021-04-20 13:54:27,939 - Successfully deleted the wptest10 containers
+[INFO] 2021-04-20 13:54:27,942 - Successfully deleted the proxy file of wptest10.
+[INFO] 2021-04-20 13:54:27,956 - Successfully deleted the directory wptest10.
+[INFO] 2021-04-20 13:54:27,958 - Sucessfully deleted instance wptest10.
+[INFO] 2021-04-20 13:56:44,210 - Successfully created the directory wptest12/instance.json.
+[INFO] 2021-04-20 13:56:44,213 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 13:56:44,429 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 13:56:44,638 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 13:56:44,698 - Creating directory: /opt/bibbox/instances/wptest12/database/mysql
+[INFO] 2021-04-20 13:56:44,702 - Creating directory: /opt/bibbox/instances/wptest12/assets
+[INFO] 2021-04-20 13:56:44,704 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 13:56:44,909 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 13:56:45,156 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 13:56:45,405 - Successfully updated the wptest12 instance.json file with container_names.
+[INFO] 2021-04-20 13:56:45,429 - Successfully created the wptest12/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 13:56:45,441 - Successfully created the 005-wptest12.conf proxy file.
+[INFO] 2021-04-20 13:56:45,443 - Successfully created the instances.json file.
+[INFO] 2021-04-20 13:56:45,454 - Running docker-compose up.
+[INFO] 2021-04-20 13:57:17,552 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 13:57:19,625 - Successfully installed instance wptest12.
+[INFO] 2021-04-20 13:57:49,648 - stopping containers of wptest12.
+[INFO] 2021-04-20 13:57:49,658 - stopped containers of wptest12.
+[INFO] 2021-04-20 14:00:39,938 - stopping containers of wptest12.
+[INFO] 2021-04-20 14:00:39,946 - stopped containers of wptest12.
+[INFO] 2021-04-20 14:00:39,952 - Successfully stopped the wptest12 containers.
+[INFO] 2021-04-20 14:00:39,960 - Successfully deleted the wptest12 containers
+[INFO] 2021-04-20 14:00:39,963 - Successfully deleted the proxy file of wptest12.
+[INFO] 2021-04-20 14:00:39,979 - Successfully deleted the directory wptest12.
+[INFO] 2021-04-20 14:00:39,981 - Sucessfully deleted instance wptest12.
+[INFO] 2021-04-20 15:04:13,148 - Successfully created the directory wptest06/instance.json.
+[INFO] 2021-04-20 15:04:13,151 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 15:04:13,570 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 15:04:13,893 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 15:04:14,043 - Creating directory: /opt/bibbox/instances/wptest06/database/mysql
+[INFO] 2021-04-20 15:04:14,048 - Creating directory: /opt/bibbox/instances/wptest06/assets
+[INFO] 2021-04-20 15:04:14,051 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 15:04:14,390 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 15:04:14,747 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 15:04:15,169 - Successfully updated the wptest06 instance.json file with container_names.
+[INFO] 2021-04-20 15:04:15,191 - Successfully created the wptest06/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 15:04:15,202 - Successfully created the 005-wptest06.conf proxy file.
+[INFO] 2021-04-20 15:04:15,204 - Successfully created the instances.json file.
+[INFO] 2021-04-20 15:04:15,217 - Running docker-compose up.
+[INFO] 2021-04-20 15:04:47,190 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 15:04:49,279 - Successfully installed instance wptest06.
+[INFO] 2021-04-20 15:05:53,522 - Successfully created the directory wptest07/instance.json.
+[INFO] 2021-04-20 15:05:53,525 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-20 15:05:53,584 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-20 15:05:53,670 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-20 15:05:53,721 - Creating directory: /opt/bibbox/instances/wptest07/database/mysql
+[INFO] 2021-04-20 15:05:53,724 - Creating directory: /opt/bibbox/instances/wptest07/assets
+[INFO] 2021-04-20 15:05:53,726 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-20 15:05:53,788 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-20 15:05:53,850 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-20 15:05:53,948 - Successfully updated the wptest07 instance.json file with container_names.
+[INFO] 2021-04-20 15:05:53,963 - Successfully created the wptest07/docker-compose.yml docker-compose file.
+[INFO] 2021-04-20 15:05:53,973 - Successfully created the 005-wptest07.conf proxy file.
+[INFO] 2021-04-20 15:05:53,975 - Successfully created the instances.json file.
+[INFO] 2021-04-20 15:05:53,985 - Running docker-compose up.
+[INFO] 2021-04-20 15:06:02,291 - restarting containers of wptest06.
+[INFO] 2021-04-20 15:06:02,300 - restarted containers of wptest06
+[INFO] 2021-04-20 15:06:13,398 - stopping containers of wptest06.
+[INFO] 2021-04-20 15:06:13,407 - stopped containers of wptest06.
+[INFO] 2021-04-20 15:06:25,569 - starting containers of wptest06.
+[INFO] 2021-04-20 15:06:25,578 - started containers of wptest06.
+[INFO] 2021-04-20 15:06:25,979 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-20 15:06:28,240 - Successfully installed instance wptest07.
+[INFO] 2021-04-21 07:31:54,696 - stopping containers of wptest06.
+[INFO] 2021-04-21 07:31:54,704 - stopped containers of wptest06.
+[INFO] 2021-04-21 07:32:00,862 - stopping containers of wptest07.
+[INFO] 2021-04-21 07:32:00,870 - stopped containers of wptest07.
+[INFO] 2021-04-21 07:32:04,831 - stopping containers of wptest06.
+[INFO] 2021-04-21 07:32:04,839 - stopped containers of wptest06.
+[INFO] 2021-04-21 07:32:04,845 - Successfully stopped the wptest06 containers.
+[INFO] 2021-04-21 07:32:04,852 - Successfully deleted the wptest06 containers
+[INFO] 2021-04-21 07:32:04,854 - Successfully deleted the proxy file of wptest06.
+[INFO] 2021-04-21 07:32:04,861 - Successfully deleted the directory wptest06.
+[INFO] 2021-04-21 07:32:04,863 - Sucessfully deleted instance wptest06.
+[INFO] 2021-04-21 07:32:09,545 - stopping containers of wptest07.
+[INFO] 2021-04-21 07:32:09,553 - stopped containers of wptest07.
+[INFO] 2021-04-21 07:32:09,558 - Successfully stopped the wptest07 containers.
+[INFO] 2021-04-21 07:32:09,565 - Successfully deleted the wptest07 containers
+[INFO] 2021-04-21 07:32:09,568 - Successfully deleted the proxy file of wptest07.
+[INFO] 2021-04-21 07:32:09,573 - Successfully deleted the directory wptest07.
+[INFO] 2021-04-21 07:32:09,575 - Sucessfully deleted instance wptest07.
+[INFO] 2021-04-21 07:36:57,244 - Successfully created the directory wptest14/instance.json.
+[INFO] 2021-04-21 07:36:57,247 - Copying file docker-compose-template.yml from GitHub.
+[INFO] 2021-04-21 07:36:57,618 - Copying file fileinfo.json from GitHub.
+[INFO] 2021-04-21 07:36:57,918 - Copying file appinfo.json from GitHub.
+[INFO] 2021-04-21 07:36:58,084 - Creating directory: /opt/bibbox/instances/wptest14/database/mysql
+[INFO] 2021-04-21 07:36:58,089 - Creating directory: /opt/bibbox/instances/wptest14/assets
+[INFO] 2021-04-21 07:36:58,092 - Copying file from assets/install-screen-01.png to assets/install-screen-01.png.
+[INFO] 2021-04-21 07:36:58,446 - Copying file from assets/install-screen-02.png to assets/install-screen-02.png.
+[INFO] 2021-04-21 07:36:58,786 - Copying file from https://raw.githubusercontent.com/bibbox/app-wordpress/V4/assets/install-screen-03.png to assets/install-screen-03.png.
+[INFO] 2021-04-21 07:36:59,048 - Successfully updated the wptest14 instance.json file with container_names.
+[INFO] 2021-04-21 07:36:59,075 - Successfully created the wptest14/docker-compose.yml docker-compose file.
+[INFO] 2021-04-21 07:36:59,086 - Successfully created the 005-wptest14.conf proxy file.
+[INFO] 2021-04-21 07:36:59,088 - Successfully created the instances.json file.
+[INFO] 2021-04-21 07:36:59,098 - Running docker-compose up.
+[INFO] 2021-04-21 07:37:31,112 - Restarting bibbox-sys-commander-apacheproxy...
+[INFO] 2021-04-21 07:37:33,329 - Successfully installed instance wptest14.
+[INFO] 2021-04-21 07:47:10,054 - stopping containers of wptest14.
+[INFO] 2021-04-21 07:47:10,063 - stopped containers of wptest14.
+[INFO] 2021-04-21 07:50:40,107 - starting containers of wptest14.
+[INFO] 2021-04-21 07:50:40,116 - started containers of wptest14.
+[INFO] 2021-04-21 07:50:47,749 - stopping containers of wptest14.
+[INFO] 2021-04-21 07:50:52,130 - stopped containers of wptest14.

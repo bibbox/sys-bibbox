@@ -1,0 +1,25 @@
+	
+# setup a local environment
+# the first time 
+python3 -m venv sys-commander-local-env
+
+# activate
+source sys-commander-local-env/bin/activate
+
+# install packages, also only the first time or when we add something
+pip3 install -r backend/requirements.txt 
+
+# freeze the packages
+pip3 list --format=freeze  > backend/requirements.txt
+
+
+# PYTHONPATH is necessarv for the local dev env
+export PYTHONPATH=.
+code .
+
+
+docker exec -it bibbox-sys-commander-backend  /bin/bash
+ps aux | grep uwsgi
+kill - SIGHUP
+
+ 

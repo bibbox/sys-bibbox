@@ -1,0 +1,29 @@
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+// @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body { min-height: 100%; background-color: aliceblue}
+body {font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+button {
+  padding: 7px 15px;
+  border-radius: 5px;
+  background: white;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+  border: 0;
+  color: #555;
+  cursor: pointer;
+  margin: 0 10px;
+  min-width: 80px;
+  transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out
+}
+
+button:hover {
+  color: white;
+  background: #6496b4;
+}
+
+

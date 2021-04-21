@@ -1,0 +1,52 @@
+[ERROR] 2021-03-26 09:41:02,495 - Installing instance wptest03 failed: tuple index out of range.
+[ERROR] 2021-03-29 13:24:20,641 - Creation of the instances.json file failed. Exception: [Errno 2] No such file or directory: '/opt/bibbox/instances/wptest04/instance.json'
+[ERROR] 2021-03-29 13:24:20,643 - Installing instance wptest08 failed: [Errno 2] No such file or directory: '/opt/bibbox/instances/wptest04/instance.json'.
+[ERROR] 2021-03-29 13:36:29,082 - Installing instance wptest09 failed: tuple index out of range.
+[ERROR] 2021-04-12 08:19:28,063 - Creation of the instances.json file failed. Exception: [Errno 2] No such file or directory: '/opt/bibbox/instances/wptest04/instance.json'
+[ERROR] 2021-04-12 08:19:28,064 - Installing instance wptest02 failed: [Errno 2] No such file or directory: '/opt/bibbox/instances/wptest04/instance.json'.
+[ERROR] 2021-04-14 08:07:15,877 - Installing instance wptest05 failed: __init__() got an unexpected keyword argument 'timestamp'.
+[ERROR] 2021-04-14 12:02:38,122 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-15 09:45:05,892 - Deletion of the directory wptest02 failed. Exception: [Errno 2] No such file or directory: '/opt/bibbox/instances/wptest02'
+[ERROR] 2021-04-15 09:45:05,895 - Deleting instance wptest02 failed: [Errno 2] No such file or directory: '/opt/bibbox/instances/wptest02'.
+[ERROR] 2021-04-16 09:33:31,558 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 09:33:33,391 - Installing instance wptest11 failed: tuple index out of range.
+[ERROR] 2021-04-16 09:33:37,933 - Installing instance wptest12 failed: tuple index out of range.
+[ERROR] 2021-04-16 09:41:57,814 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 09:48:18,894 - Installing instance wptest13 failed: tuple index out of range.
+[ERROR] 2021-04-16 10:06:23,361 - Installing instance wptest13 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:02:44,852 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:05:15,569 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:05:30,163 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:07:50,681 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:21:18,522 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:22:32,704 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:23:20,707 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:25:45,292 - Installing instance wptest11 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:26:30,203 - Installing instance wptest11 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:26:39,196 - Installing instance wptest12 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:27:43,312 - Installing instance wptest13 failed: tuple index out of range.
+[ERROR] 2021-04-16 11:29:11,095 - Installing instance wptest14 failed: tuple index out of range.
+[ERROR] 2021-04-16 12:26:02,368 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-16 13:11:45,724 - Updating instance.json file of instance wptest11 failed. Exception: 'NoneType' object is not iterable.
+[ERROR] 2021-04-16 13:25:14,721 - Updating instance.json file of instance wptest11 failed. Exception: 'NoneType' object is not iterable.
+[ERROR] 2021-04-16 13:26:24,779 - Updating instance.json file of instance wptest11 failed. Exception: 'NoneType' object is not iterable.
+[ERROR] 2021-04-16 13:28:39,158 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[ERROR] 2021-04-16 13:29:22,588 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[ERROR] 2021-04-16 13:30:25,926 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[ERROR] 2021-04-16 13:31:10,845 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[ERROR] 2021-04-16 13:35:23,063 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[ERROR] 2021-04-16 13:36:20,053 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[ERROR] 2021-04-16 13:37:00,407 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[ERROR] 2021-04-16 13:39:43,195 - Updating instance.json file of instance wptest10 failed. Exception: too many values to unpack (expected 2).
+[ERROR] 2021-04-19 09:34:55,983 - Installing instance wptest10 failed: name 'content' is not defined.
+[ERROR] 2021-04-19 12:04:06,670 - Installing instance wptest10 failed: name 'content' is not defined.
+[ERROR] 2021-04-19 12:10:45,726 - Installing instance wptest14 failed: name 'content' is not defined.
+[ERROR] 2021-04-19 12:12:00,235 - Installing instance wptest10 failed: tuple index out of range.
+[ERROR] 2021-04-19 12:12:08,678 - Installing instance wptest11 failed: name 'content' is not defined.
+[ERROR] 2021-04-20 12:19:06,791 - Deleting instance wptest05 failed: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'.
+[ERROR] 2021-04-20 12:19:08,962 - Deleting instance wptest10 failed: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'.
+[ERROR] 2021-04-20 12:19:10,977 - Deleting instance wptest12 failed: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'.
+[ERROR] 2021-04-20 12:19:13,075 - Deleting instance wptest13 failed: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'.
+[ERROR] 2021-04-20 12:33:47,537 - Deleting instance wp77 failed: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'.
+[ERROR] 2021-04-20 13:35:04,847 - Stopping wp03 containers failed. Exception: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'
+[ERROR] 2021-04-20 13:35:04,851 - Deleting instance wp03 failed: unsupported operand type(s) for +: 'FileNotFoundError' and 'str'.

@@ -1,0 +1,103 @@
+#app-install {
+  display: block;
+  width: 100%;
+
+  #loading {
+    display: block;
+    text-align: center;
+
+    img {
+      width: 50px;
+      margin-bottom: 30px
+    }
+
+    span {
+      width: 100%;
+      float: left
+    }
+  }
+
+
+
+  form {
+    display: flex;
+    flex-flow: row wrap;
+
+    .app-install-text{
+      width: 100%;
+      display: inline-block;
+      margin-bottom: 20px;
+      text-align: center
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 25px;
+      color: #2d6191;
+      margin-bottom: 25px
+    }
+
+    .full-width {
+      width: 100%;
+      display: inline-block;
+      text-align: center
+    }
+
+    .field-group {
+      display: flex;
+      flex-flow: row wrap;
+      width: 100%
+    }
+
+    label {
+      display: inline-block;
+      width: 20%;
+      max-width: 100%;
+      margin-bottom: 5px;
+      padding-right: 30px;
+      font-weight: bold;
+      color: #2d6191;
+      text-align: right;
+      height: 33px;
+      line-height: 33px
+    }
+
+    input, textarea{
+      display: inline-block;
+      width: 60%;
+      max-width: 100%;
+      padding: 5px 10px;
+      margin-bottom: 5px;
+      border-radius: 3px;
+      border: solid 1px lightgray;
+      background: white;
+      text-align: left;
+
+      .wrong {
+        border-color: rgb(222, 65, 65);
+        background-color: rgb(242, 225, 225)
+      }
+
+      .right {
+        border-color: #26b726;
+        background-color: #e4ede4
+      }
+    }
+
+    .field-description, .install-submit {
+      width: 100%;
+      margin-left: 20%;
+      margin-right: 20%;
+      padding: 0 5px;
+      margin-bottom: 20px
+    }
+
+    .install-submit {
+      text-align: center
+    }
+
+    .app-install-submit {
+      margin-top: 20px
+    }
+  }
+}

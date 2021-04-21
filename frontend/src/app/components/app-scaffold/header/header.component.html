@@ -1,0 +1,14 @@
+<mat-toolbar class="toolbar">
+  <mat-toolbar-row>
+    <div class="branding">
+      <img src="../../../../assets/img/silicolab_logo.png" alt="../../../../assets/img/silicolab_logo.svg" class="navbar-icon"/>
+      <span> | {{title}}</span>
+    </div>
+    <span class="menu-spacer"></span>
+    <div class="nav-buttons">
+      <button mat-button *ngFor="let item of navigation" [routerLink]="item.link" routerLinkActive="active">
+        {{item.label}}
+      </button>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
