@@ -5,9 +5,9 @@ application-instance
 log
 sys-proxy
 
-sys-commander/data/
-sys-commander/sys-commander-local-env/
-
+data/
+sys-commander-local-env/
+.idea
 
 
 **/__pycache__
@@ -15,7 +15,7 @@ sys-commander/sys-commander-local-env/
 
 log/system.log
 sys-backend/activities
-sys-commander/data/postgresql/data/pg_stat_tmp/db_0.stat
-sys-commander/backend/mist.py
-sys-commander/backend/mist.txt
-sys-commander/backend/app/celerytasks/_test-read-app-params.py
+data/postgresql/data/pg_stat_tmp/db_0.stat
+backend/mist.py
+backend/mist.txt
+backend/app/celerytasks/_test-read-app-params.py
