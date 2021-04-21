@@ -28,6 +28,7 @@ export class ActivitiesComponent implements OnInit {
     this.activityService.getActivities().subscribe(
       (res) => this.activityList = res
     );
+    // this.activityList.sort((a, b) => (a.id < b.id) ? 1 : -1);
   }
 
   getLogsOfActivity(activityID: number): void {
