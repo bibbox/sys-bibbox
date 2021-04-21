@@ -21,5 +21,5 @@ backend/mist.txt
 backend/app/celerytasks/_test-read-app-params.py
 
 
-backend/app/static
 backend/app/templates
+backend/logs
