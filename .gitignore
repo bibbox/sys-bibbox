@@ -19,3 +19,7 @@ data/postgresql/data/pg_stat_tmp/db_0.stat
 backend/mist.py
 backend/mist.txt
 backend/app/celerytasks/_test-read-app-params.py
+
+
+backend/app/static
+backend/app/templates

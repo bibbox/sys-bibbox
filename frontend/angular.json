@@ -18,7 +18,8 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "../backend/app/static/",
-            "deployUrl": "/",
+            "baseHref": "/static/",
+            "buildOptimizer": true,
             "resourcesOutputPath": "resources",
             "index": "src/index.html",
             "main": "src/main.ts",
