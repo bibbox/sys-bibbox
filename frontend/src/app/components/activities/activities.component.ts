@@ -12,9 +12,9 @@ export class ActivitiesComponent implements OnInit {
 
   svgPaths = SVG_PATHS;
   activityStates = {
-    finished : 'assets/img/done.png',
-    error: 'assets/img/error.png',
-    ongoing: 'assets/img/lock.png'
+    finished : 'assets/done.png',
+    error: 'assets/error.png',
+    ongoing: 'assets/lock.png'
   };
   activityList: ActivityItem[];
   activityLogs: LogItem[];

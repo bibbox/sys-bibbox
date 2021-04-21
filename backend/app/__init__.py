@@ -85,8 +85,8 @@ def create_app(config_name):
    
     @app.route("/")
     def main():
-        return app.send_static_file('main.html')
-        #return render_template('index.html')
+        return app.send_static_file('index.html')
+        # return render_template('index.html')
 
     import backend.app.api
     app.register_blueprint(apiblueprint,  url_prefix='/api/v1')

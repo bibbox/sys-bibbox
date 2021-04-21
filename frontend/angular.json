@@ -17,7 +17,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/sys-bibbox-client",
+            "outputPath": "../backend/app/static/",
+            "deployUrl": "/",
             "resourcesOutputPath": "resources",
             "index": "src/index.html",
             "main": "src/main.ts",

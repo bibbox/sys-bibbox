@@ -1,7 +1,7 @@
 <div id="instance-details" *ngIf="instance$ | async">
   <div class="instance-details-header">
     <span class="instance-details-title">
-      <img src="assets/img/b3africa.png" alt="404">
+      <img src="assets/b3africa.png" alt="404">
       <h1>{{instanceDetailForm.controls['displayname_short'].value}}</h1>
       <h3>{{instanceDetailForm.controls['displayname_long'].value}}</h3>
     </span>
@@ -90,7 +90,7 @@
               <table>
                 <tbody>
                 <tr *ngFor="let link of instanceLinks">
-                  <td class="icon"><img src="assets/img/external_ref.png" alt="^"></td>
+                  <td class="icon"><img src="assets/external_ref.png" alt="^"></td>
                   <td class="label-left">{{link.label}}</td>
                   <td>
                     <a href="{{link.url}}" target="_blank" rel="noopener noreferrer">

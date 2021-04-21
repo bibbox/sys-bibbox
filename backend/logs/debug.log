@@ -1472,3 +1472,13 @@
 [INFO] 2021-04-21 07:50:40,116 - started containers of wptest14.
 [INFO] 2021-04-21 07:50:47,749 - stopping containers of wptest14.
 [INFO] 2021-04-21 07:50:52,130 - stopped containers of wptest14.
+[INFO] 2021-04-21 08:47:25,904 - stopping containers of wptest14.
+[INFO] 2021-04-21 08:47:26,301 - stopped containers of wptest14.
+[INFO] 2021-04-21 08:47:26,309 - Successfully stopped the wptest14 containers.
+[INFO] 2021-04-21 08:52:28,941 - stopping containers of wptest14.
+[INFO] 2021-04-21 08:52:29,325 - stopped containers of wptest14.
+[INFO] 2021-04-21 08:52:29,332 - Successfully stopped the wptest14 containers.
+[INFO] 2021-04-21 08:52:29,766 - Successfully deleted the wptest14 containers
+[INFO] 2021-04-21 08:52:29,770 - Successfully deleted the proxy file of wptest14.
+[INFO] 2021-04-21 08:52:29,789 - Successfully deleted the directory wptest14.
+[INFO] 2021-04-21 08:52:29,791 - Sucessfully deleted instance wptest14.
