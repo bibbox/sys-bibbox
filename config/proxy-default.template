@@ -1,8 +1,0 @@
-<VirtualHost *:80>
-        ServerName §§INSTANCEID.§§BASEURL
-        ProxyRequests           Off
-        ProxyPreserveHost       On
-
-        ProxyPass               /       http://§§CONTAINERNAME/
-        ProxyPassReverse        /       http://§§CONTAINERNAME/
-</VirtualHost>
