@@ -7,7 +7,8 @@ COPY httpd.conf /usr/local/apache2/conf/httpd.conf
 RUN mkdir -p /usr/local/apache2/conf/sites/
 RUN mkdir -p /var/www/html/
 
-COPY index.html /var/www/html/index.html
+# COPY index.html /var/www/html/index.html
+
 
 EXPOSE 80
 

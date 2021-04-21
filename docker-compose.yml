@@ -14,7 +14,8 @@ services:
       context:    ./apacheproxy
       dockerfile: Dockerfile
     volumes:
-      - /opt/bibbox/proxy/sites:/usr/local/apache2/conf/sites 
+      - /opt/bibbox/proxy/sites:/usr/local/apache2/conf/sites
+      - /opt/bibbox/sys-bibbox/frontend/dist/sys-bibbox-client:/var/www/html
     ports:
       - "80:80"
 
