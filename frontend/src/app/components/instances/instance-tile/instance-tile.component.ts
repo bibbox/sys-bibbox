@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {InstanceItem} from '../../../store/models/instance-item.model';
-import {LOCAL_TLD} from '../../../commons';
+import {BASEURL} from '../../../../app.config';
 
 @Component({
   selector: 'app-instance-tile',
@@ -21,7 +21,7 @@ export class InstanceTileComponent implements OnInit {
   getInstanceUrl(): void {
     for (const proxy of this.instance.proxy) {
       if (proxy.TYPE === 'PRIMARY') {
-        this.instanceUrl = 'http://' + this.instance.instancename + LOCAL_TLD;
+        this.instanceUrl = 'http://' + this.instance.instancename + BASEURL;
       }
     }
   }

@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
     { link: 'applications', label: 'Applications' },
     { link: 'instances', label: 'Instances' },
     { link: 'activities', label: 'Activities' },
-    { link: 'profile', label: 'Profile' }
+    // { link: 'profile', label: 'Profile' }
   ];
 
   ngOnInit(): void {

@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'instances/:instance_name', component: InstanceDetailPageComponent, pathMatch: 'full'},
   { path: 'instances', component: InstancesComponent, pathMatch: 'full'},
   { path: 'activities', component: ActivitiesComponent, pathMatch: 'full'},
-  { path: 'profile', component: ProfileComponent, pathMatch: 'full'},
+  // { path: 'profile', component: ProfileComponent, pathMatch: 'full'},
 
   // bottom nav
   { path: 'contact', component: ContactComponent, pathMatch: 'full'},
@@ -30,7 +30,7 @@ const routes: Routes = [
 
 
   // test
-  { path: 'test', component: TestComponent, pathMatch: 'full'},
+  // { path: 'test', component: TestComponent, pathMatch: 'full'},
 
   // auth
   { path: 'login', component: LoginComponent, pathMatch: 'full'},
@@ -41,7 +41,9 @@ const routes: Routes = [
   declarations: [],
   imports: [
     CommonModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes,
+//      {useHash: true}
+    ),
   ],
   exports: [RouterModule]
 })

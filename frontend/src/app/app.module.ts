@@ -57,6 +57,7 @@ import { CheckboxItemComponent } from './components/test/checkbox-item/checkbox-
 import {HttperrorInterceptor} from './httperror.interceptor';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
+import {RouterModule} from '@angular/router';
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
 
@@ -126,7 +127,6 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     }, {metaReducers}),
     EffectsModule.forRoot([InstanceEffects, ApplicationsEffects]),
     StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
-
   ],
   bootstrap: [AppComponent],
   providers: [

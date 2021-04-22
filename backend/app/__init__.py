@@ -48,7 +48,7 @@ def create_app(config_name):
     print ("CREATE APP IN ", config_name, " MODE")
     
     app.config.from_object(config[config_name])
-
+    
     bootstrap.init_app(app)
     db.init_app(app)
     db.app = app
