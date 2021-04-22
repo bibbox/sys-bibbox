@@ -6,8 +6,10 @@ COPY httpd.conf /usr/local/apache2/conf/httpd.conf
 
 RUN mkdir -p /usr/local/apache2/conf/sites/
 RUN mkdir -p /var/www/html/sys-bibbox-client/
+RUN mkdir -p /var/www/html/error/
 
-COPY index.html /usr/local/apache2/htdocs/index.html
+
+COPY index.html /ver/www/html/error/index.html
 # COPY htaccess.conf /var/www/html/sys-bibbox-client/.htaccess
 
 EXPOSE 80
