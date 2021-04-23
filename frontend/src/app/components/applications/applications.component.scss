@@ -6,6 +6,11 @@
   display: flex;
   flex-flow: row wrap;
 
+  .tag-sidenav {
+    display: flex;
+    flex-direction: column;
+  }
+
   #applications-results {
     display: flex;
     flex-flow: row wrap;

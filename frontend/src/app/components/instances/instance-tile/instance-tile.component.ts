@@ -21,7 +21,7 @@ export class InstanceTileComponent implements OnInit {
   getInstanceUrl(): void {
     for (const proxy of this.instance.proxy) {
       if (proxy.TYPE === 'PRIMARY') {
-        this.instanceUrl = 'http://' + this.instance.instancename + BASEURL;
+        this.instanceUrl = 'http://' + this.instance.instancename + '.' + BASEURL;
       }
     }
   }

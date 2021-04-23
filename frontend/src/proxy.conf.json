@@ -1,6 +1,6 @@
 {
   "/api/*": {
-    "target": "silicolabv4.bibboxlocal",
+    "target": "http://silicolabv4.bibboxlocal",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
