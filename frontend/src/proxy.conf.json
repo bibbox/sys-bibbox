@@ -1,6 +1,6 @@
 {
   "/api/*": {
-    "target": "http://localhost:5010",
+    "target": "silicolabv4.bibboxlocal",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
