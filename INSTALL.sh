@@ -1,15 +1,23 @@
 #!/bin/bash
+: '
+TODO before running this script:
+cd /opt
+sudo mkdir bibbox
+
+git clone https://github.com/bibbox/sys-bibbox.git
+cd sys-bibbox
 
 
+'
 sudo apt-get update
-
 sudo apt-get install docker.io -y
 sudo apt install nodejs npm -y
 sudo apt install git -y
 sudo apt install python3-pip -y
 sudo apt-get install python3-venv -y
-
 sudo npm i -g @angular/cli -n
+ng analytics off
+
 python3 -m pip install virtualenv
 
 sudo groupadd docker
@@ -17,26 +25,19 @@ sudo docker network create bibbox-default-network
 sudo usermod -aG docker $USER
 newgrp docker
 
-cd /opt
-sudo mkdir bibbox
-sudo chmod -R 777 bibbox/
-cd bibbox
+sudo chmod -R 777 /opt/bibbox/
+cd /opt/bibbox
 mkdir instances
 mkdir -p proxy/sites
 mkdir config
 
-git clone https://github.com/bibbox/sys-bibbox.git
-cd sys-bibbox
-
 python3 -m venv bibbox-venv
 source bibbox-venv/bin/activate
-cd backend
+cd /opt/bibbox/sys-bibbox/backend
 pip3 install -r requirements.txt
 pip3 install docker-compose
 
-cd ../frontend
-
-ng analytics off
+cd /opt/bibbox/sys-bibbox/frontend
 sudo npm i
 
 cp /opt/bibbox/sys-bibbox/config-templates/100-error.conf /opt/bibbox/proxy/sites/100-error.conf
