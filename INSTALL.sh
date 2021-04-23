@@ -6,19 +6,17 @@ sudo mkdir bibbox
 sudo apt install git -y
 cd bibbox
 sudo git clone https://github.com/bibbox/sys-bibbox.git
-cd sys-bibbox
-
-
 '
+
 sudo apt-get update
 sudo apt-get install docker.io -y
+sudo apt install docker-compose -y
 sudo apt install nodejs npm -y
 sudo apt install python3-pip -y
-sudo apt-get install python3-venv -y
-sudo npm i -g @angular/cli -n
-export NG_CLI_ANALYTICS="false"
+#sudo apt-get install python3-venv -y
+printf 'n\n' | sudo npm i -g @angular/cli
 
-python3 -m pip install virtualenv
+#python3 -m pip install virtualenv
 
 sudo docker network create bibbox-default-network
 sudo usermod -aG docker $USER
@@ -26,15 +24,13 @@ newgrp docker
 
 sudo chmod -R 777 /opt/bibbox/
 cd /opt/bibbox
-mkdir instances
-mkdir -p proxy/sites
-mkdir config
+mkdir -p {instances,proxy/sites,config}
 
-python3 -m venv bibbox-venv
-source bibbox-venv/bin/activate
+#python3 -m venv bibbox-venv
+#source bibbox-venv/bin/activate
 cd /opt/bibbox/sys-bibbox/backend
 pip3 install -r requirements.txt
-pip3 install docker-compose
+#pip3 install docker-compose
 
 cd /opt/bibbox/sys-bibbox/frontend
 
@@ -46,11 +42,11 @@ cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/si
 cp /opt/bibbox/sys-bibbox/config-templates/bibbox.config /opt/bibbox/config/bibbox.config
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-default.template /opt/bibbox/config/proxy-default.template
 
-sudo `which docker-compose` build
-sudo `which docker-compose` up --no-start
+sudo docker-compose build
+sudo docker-compose up
 
-docker start bibbox-sys-commander-backend bibbox-sys-commander-postgres
-docker exec -it bibbox-sys-commander-backend python manage.py recreate_db
+#docker start bibbox-sys-commander-backend bibbox-sys-commander-postgres
+#docker exec -it bibbox-sys-commander-backend python manage.py recreate_db
 
-sudo `which docker-compose` stop
-sudo `which docker-compose` up
+#sudo `which docker-compose` stop
+#sudo `which docker-compose` up
