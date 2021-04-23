@@ -4,8 +4,8 @@ TODO before running this script:
 cd /opt
 sudo mkdir bibbox
 sudo apt install git -y
-
-git clone https://github.com/bibbox/sys-bibbox.git
+cd bibbox
+sudo git clone https://github.com/bibbox/sys-bibbox.git
 cd sys-bibbox
 
 
@@ -13,7 +13,6 @@ cd sys-bibbox
 sudo apt-get update
 sudo apt-get install docker.io -y
 sudo apt install nodejs npm -y
-sudo apt install git -y
 sudo apt install python3-pip -y
 sudo apt-get install python3-venv -y
 sudo npm i -g @angular/cli -n
@@ -21,7 +20,6 @@ export NG_CLI_ANALYTICS="false"
 
 python3 -m pip install virtualenv
 
-sudo groupadd docker
 sudo docker network create bibbox-default-network
 sudo usermod -aG docker $USER
 newgrp docker
@@ -34,13 +32,12 @@ mkdir config
 
 python3 -m venv bibbox-venv
 source bibbox-venv/bin/activate
-cd backend
+cd /opt/bibbox/sys-bibbox/backend
 pip3 install -r requirements.txt
 pip3 install docker-compose
 
-cd ../frontend
+cd /opt/bibbox/sys-bibbox/frontend
 
-ng analytics off
 sudo npm i
 sudo ng build --prod
 
@@ -51,6 +48,7 @@ cp /opt/bibbox/sys-bibbox/config-templates/proxy-default.template /opt/bibbox/co
 
 sudo `which docker-compose` build
 sudo `which docker-compose` up --no-start
+
 docker start bibbox-sys-commander-backend bibbox-sys-commander-postgres
 docker exec -it bibbox-sys-commander-backend python manage.py recreate_db
 
