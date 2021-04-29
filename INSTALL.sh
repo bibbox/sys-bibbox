@@ -62,5 +62,10 @@ cp /opt/bibbox/sys-bibbox/config-templates/proxy-default.template /opt/bibbox/co
 
 
 sudo docker-compose up --build -d
+
+: '
+If an error occurs, run the following commands:
+
 sudo docker exec -it bibbox-sys-commander-backend python manage.py recreate_db
 sudo docker-compose up --build
+'
