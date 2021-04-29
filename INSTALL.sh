@@ -61,11 +61,5 @@ cp /opt/bibbox/sys-bibbox/config-templates/proxy-default.template /opt/bibbox/co
 
 
 sudo docker-compose up --build -d
-
-: '
-TODO after running the install Script
 sudo docker exec -it bibbox-sys-commander-backend python manage.py recreate_db
 sudo docker-compose up --build
-
-wait for the db to be built/filled
-'
