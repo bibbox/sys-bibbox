@@ -17,6 +17,7 @@ sudo git clone https://github.com/bibbox/sys-bibbox.git
 INFO: if you want to manually change the URLs later on:
     change api-url in /opt/bibbox/sys-bibbox/frontend/src/proxy.conf.json --> "target" : "NEW_API_URL" (e.g. "http://api.silicolabv4.bibbox.org)
     change baseurl in /opt/bibbox/sys-bibbox/config-templates/bibbox.config
+    change urls in /opt/bibbox/sys-bibbox/config-templates/  *.conf files
 
 '
 read -p "Specify domainname + TLD (e.g. silicolabv4.bibbox.org): " DOMAINNAME
