@@ -40,11 +40,6 @@ mkdir -p {instances,proxy/sites,config}
 cd /opt/bibbox/sys-bibbox/backend
 pip3 install -r requirements.txt
 
-cd /opt/bibbox/sys-bibbox/frontend
-
-printf 'n\n' | sudo npm i
-sudo ng build --prod
-
 
 cd /opt/bibbox/sys-bibbox/config-templates
 sed -i -e "s/bibboxlocal/$DOMAINNAME/g" bibbox.config
@@ -55,13 +50,20 @@ cd /opt/bibbox/sys-bibbox/frontend/src
 sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" proxy.conf.json
 sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" app.config.ts
 
+
+cd /opt/bibbox/sys-bibbox/frontend
+
+printf 'n\n' | sudo npm i
+sudo ng build --prod
+
+
 cp /opt/bibbox/sys-bibbox/config-templates/100-error.conf /opt/bibbox/proxy/sites/100-error.conf
 cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/sites/000-default.conf
 cp /opt/bibbox/sys-bibbox/config-templates/bibbox.config /opt/bibbox/config/bibbox.config
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-default.template /opt/bibbox/config/proxy-default.template
 
 
-sudo docker-compose up --build -d
+sudo docker-compose up --build
 
 : '
 If an error occurs, run the following commands:
