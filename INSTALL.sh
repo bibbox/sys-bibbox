@@ -46,6 +46,9 @@ sed -i -e "s/bibboxlocal/$DOMAINNAME/g" bibbox.config
 sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" 000-default.conf
 sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" 100-error.conf
 
+cd /opt/bibbox/sys-bibbox/apacheproxy
+sed -i -e "s/§§SERVERNAME/$DOMAINNAME/g" httpd.conf
+
 cd /opt/bibbox/sys-bibbox/frontend/src
 sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" proxy.conf.json
 sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" app.config.ts

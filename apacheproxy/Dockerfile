@@ -9,7 +9,7 @@ RUN mkdir -p /var/www/html/sys-bibbox-client/
 RUN mkdir -p /var/www/html/error/
 
 
-COPY index.html /ver/www/html/error/index.html
+COPY index.html /var/www/html/error/index.html
 # COPY htaccess.conf /var/www/html/sys-bibbox-client/.htaccess
 
 EXPOSE 80
