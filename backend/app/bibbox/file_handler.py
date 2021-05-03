@@ -224,6 +224,16 @@ class FileHandler():
         for instance_dir_name in os.listdir(self.INSTANCEPATH):
             if instance_dir_name == instance_name and os.path.isdir(self.INSTANCEPATH + instance_dir_name):
                 return self.__readJsonFile(self.INSTANCEPATH + instance_dir_name + '/instance.json')
+    
+
+    def getInstanceNames (self):
+        instance_names = []
+
+        for instance in self.__readJsonFile(self.INSTANCEPATH + 'instances.json'):
+            print(instance)
+            instance_names.append(instance['instancename'])
+
+        return instance_names
 
     def __getBaseUrlRaw (self, organization, repository, version):
         burl = ''

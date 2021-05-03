@@ -104,7 +104,6 @@ class InstanceHandler ():
         return container_names
 
 
-
     def __removeKeysFromNestedDict (self, compose_dict, keys_to_remove):
         dict_temp = compose_dict.copy()
 

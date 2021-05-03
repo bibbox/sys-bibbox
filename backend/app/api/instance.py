@@ -10,6 +10,7 @@ from backend.app.bibbox.instance_controler  import installInstance, startInstanc
 from backend.app.bibbox.file_handler import FileHandler
 from backend.app.bibbox.docker_handler import DockerHandler
 
+
 api = Namespace('instances', description='Instance Ressources')
 restapi.add_namespace (api, '/instances')
 
@@ -196,3 +197,20 @@ class Instance(Resource):
 
 
         return logs, 200
+
+@api.route('/names/<string:name_to_check>')
+@api.doc(params={'name_to_check': 'Instancename to check'})
+class Instance(Resource):
+    def get(self, name_to_check):
+        fh = FileHandler()
+        res = 'false'
+        try:
+            names = fh.getInstanceNames()
+            if name_to_check in names:
+                res = 'true'
+        except Exception as ex:
+            print(ex)
+            res = [str(ex)]
+
+
+        return res, 200
