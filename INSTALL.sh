@@ -38,7 +38,7 @@ sudo apt install nodejs npm -y
 sudo apt install python3-pip -y
 printf 'n\n' | sudo npm i -g @angular/cli
 
-sudo chmod -R 777 /opt/bibbox/
+#sudo chmod -R 777 /opt/bibbox/
 cd /opt/bibbox
 mkdir -p {instances,proxy/sites,config}
 
