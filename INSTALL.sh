@@ -1,24 +1,33 @@
 #!/bin/bash
 : '
-TODO before running this script:
+---------------------------------------------------------------------------------------------------
+TODO: before running this script, run the following commands:
 
-sudo apt install git -y
-sudo apt-get install docker.io -y
-sudo docker network create bibbox-default-network
-sudo usermod -aG docker $USER
-newgrp docker
+    sudo apt install git -y
+    sudo apt-get install docker.io -y
+    sudo docker network create bibbox-default-network
+    sudo usermod -aG docker $USER
+    newgrp docker
 
-cd /opt
-sudo mkdir bibbox
-cd bibbox
-sudo git clone https://github.com/bibbox/sys-bibbox.git
+    cd /opt
+    sudo mkdir bibbox
+    cd bibbox
+    sudo git clone https://github.com/bibbox/sys-bibbox.git
+    cd sys-bibbox
+    bash INSTALL.sh
 
 
-INFO: if you want to manually change the URLs later on:
+
+INFO: if you want to manually change the URLs after installing:
     change api-url in /opt/bibbox/sys-bibbox/frontend/src/proxy.conf.json --> "target" : "NEW_API_URL" (e.g. "http://api.silicolabv4.bibbox.org)
     change baseurl in /opt/bibbox/sys-bibbox/config-templates/bibbox.config
     change urls in /opt/bibbox/sys-bibbox/config-templates/  *.conf files
+    change urls in /opt/bibbox/proxy/sites *.conf files
 
+INFO: The first time loading the applications tab of the website shows no applications, as then all appinfos and envparams get inserted into the db.
+
+
+---------------------------------------------------------------------------------------------------
 '
 read -p "Specify domainname + TLD (e.g. silicolabv4.bibbox.org): " DOMAINNAME
 
@@ -66,11 +75,14 @@ cp /opt/bibbox/sys-bibbox/config-templates/bibbox.config /opt/bibbox/config/bibb
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-default.template /opt/bibbox/config/proxy-default.template
 
 
-sudo docker-compose up --build
+sudo docker-compose up --build -d
+echo 'INSTALLATION COMPLETE'
 
 : '
-If an error occurs, run the following commands:
+If an error occurs after installing, run the following commands:
 
 sudo docker exec -it bibbox-sys-commander-backend python manage.py recreate_db
+sudo docker exec -it bibbox-sys-commander-backend python manage.py seed_db
+sudo docker-compose stop
 sudo docker-compose up --build
 '
