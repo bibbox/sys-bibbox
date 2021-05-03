@@ -1,12 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApplicationItem, EnvironmentParameters, IVersions} from '../../../store/models/application-group-item.model';
 import {ApplicationService} from '../../../store/services/application.service';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators
+} from '@angular/forms';
 import {InstanceService} from '../../../store/services/instance.service';
 import {AppState} from '../../../store/models/app-state.model';
 import {Store} from '@ngrx/store';
-import {AddInstanceAction} from '../../../store/actions/instance.actions';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-install-screen',
@@ -14,13 +22,6 @@ import {AddInstanceAction} from '../../../store/actions/instance.actions';
   styleUrls: ['./install-screen.component.scss']
 })
 export class InstallScreenComponent implements OnInit {
-
-  appItem: ApplicationItem;
-  selectedVersion: IVersions;
-  environmentParameters: EnvironmentParameters[];
-
-  installForm: FormGroup;
-  envParamFormGroup: FormGroup;
 
   constructor(
     private store: Store<AppState>,
@@ -33,47 +34,59 @@ export class InstallScreenComponent implements OnInit {
 
     // TODO: Find better Workaround
     // this prevents opening this view from somewhere other than the install screen dialog, as we get no state passed then
-    if (this.router.getCurrentNavigation().extras.state === undefined){
+    if (this.router.getCurrentNavigation().extras.state === undefined) {
       this.router.navigateByUrl('/applications').then();
     }
   }
 
+  appItem: ApplicationItem;
+  selectedVersion: IVersions;
+  environmentParameters: EnvironmentParameters[] = [];
+  installForm: FormGroup;
+  envParamForm: FormGroup;
 
   ngOnInit(): void {
     this.appItem = history.state[0];
     this.selectedVersion = history.state[1];
+    this.loadEnvParams();
 
     this.installForm = this.formBuilder.group(
       {
         app_name: this.appItem.app_name,
         version: this.selectedVersion.docker_version,
-        instance_id: ['', Validators.required],
+        instance_id: ['',
+          [
+            Validators.required,
+            this.noWhitespaceValidator,
+          ],
+          [
+            this.asyncInstanceNameValidator()
+          ]
+        ],
         instance_name: ['', Validators.required],
-        envParams: new FormGroup({}),
       });
-
-    this.loadEnvParams();
+    this.envParamForm = this.formBuilder.group({});
   }
 
   loadEnvParams(): void {
-    this.appService.getAppEnvParams(this.selectedVersion.environment_parameters).subscribe(
-      (res) => this.environmentParameters = res
-    );
-    this.initEnvParamFormFields();
+    this.appService.getAppEnvParams(this.selectedVersion.environment_parameters).subscribe({
+    next: (res) => { this.environmentParameters = res; },
+    complete: () => {this.initEnvParamFormFields(); }
+  });
   }
 
 
   initEnvParamFormFields(): void {
-    this.envParamFormGroup = this.installForm.get('envParams') as FormGroup;
     for (const envParam of this.environmentParameters) {
-      this.envParamFormGroup.addControl(
+      console.log(envParam.default_value.valueOf());
+      this.envParamForm.addControl(
         envParam.id.valueOf(),
-        new FormControl(
-          envParam.default_value.valueOf(), [
-            Validators.required,
-            Validators.minLength(Number(envParam.min_length)),
-            Validators.minLength(Number(envParam.max_length)),
-          ]));
+        this.formBuilder.control('', [
+          Validators.required,
+          Validators.minLength(Number(envParam.min_length)),
+          Validators.maxLength(Number(envParam.max_length))]
+        )
+      );
     }
   }
 
@@ -82,9 +95,8 @@ export class InstallScreenComponent implements OnInit {
   }
 
   install(): void {
-    if (this.installForm.valid || 1) { //        || 1
+    if (this.installForm.valid && this.envParamForm.valid) {
       console.log('install');
-      console.log(this.envParamFormGroup.value);
       const payload = {
         displayname_short : this.installForm.value.instance_name,
         app : {
@@ -92,21 +104,39 @@ export class InstallScreenComponent implements OnInit {
           name         : this.installForm.value.app_name,
           version      : this.installForm.value.version,
         },
-        parameters  : this.envParamFormGroup.value
+        parameters  : this.envParamForm.value
       };
 
       console.log(JSON.stringify(payload));
-      this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
-      // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
-      //   .toPromise()
-      //   .then(
-      //     res => console.log(res)
-      //   );
-      this.router.navigateByUrl('/instances').then();
+      // this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
+      // // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
+      // //   .toPromise()
+      // //   .then(
+      // //     res => console.log(res)
+      // //   );
+      // this.router.navigateByUrl('/instances').then();
     }
     else {
-      console.log('form not valid');
+      this.getFormValidationErrors(this.installForm);
+      this.getFormValidationErrors(this.envParamForm);
     }
+  }
+
+  getFormValidationErrors(form: FormGroup): void {
+
+    let totalErrors = 0;
+
+    Object.keys(form.controls).forEach(key => {
+      const controlErrors: ValidationErrors = form.get(key).errors;
+      if (controlErrors != null) {
+        totalErrors++;
+        Object.keys(controlErrors).forEach(keyError => {
+          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+        });
+      }
+    });
+
+    console.warn('Number of errors: ' , totalErrors);
   }
 
   test(value: string): void {
@@ -114,6 +144,30 @@ export class InstallScreenComponent implements OnInit {
     console.log(value);
   }
 
+  // Custom Validators -----------------------------------------------------
+  noWhitespaceValidator(control: AbstractControl): {[key: string]: any} | null {
+    const isSpace = (control.value || '').match(/\s/g);
+    return isSpace ? {whitespace: true} : null;
+  }
+
+  asyncInstanceNameValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return this.instanceService.checkIfInstanceExists(this.installForm.controls.instance_id.value)
+        .pipe(
+          map((res: string) => {
+              if (res === 'true') {
+                return {
+                  nameAlreadyExists: true
+                };
+              }
+              else {
+                return null;
+              }
+            }
+          )
+        );
+    };
+  }
 
 }
 

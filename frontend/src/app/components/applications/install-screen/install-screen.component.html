@@ -9,13 +9,18 @@
 
     <label for="instance_id"> Application ID</label>
     <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id">
+<!--    <span *ngIf="installForm.controls.instance_id.hasError('nameAlreadyExists')">-->
+<!--      <mat-error >-->
+<!--        Instance Name already exists.-->
+<!--      </mat-error>-->
+<!--    </span>-->
     <span class="field-description"> Subdomain of your application URL. <b>The application ID can not be changed after the installation.</b></span>
 
     <label for="instance_name"> Application Name</label>
-    <input type="text" value="" name="instance_name" required id="instance_name" formControlName="instance_name" (ngModelChange)="test('a')">
+    <input type="text" value="" name="instance_name" required id="instance_name" formControlName="instance_name" > <!-- (ngModelChange)="test('a')" -->
     <span class="field-description">Full name of your application, can be changed later on.</span>
 
-    <ng-container formArrayName="envParams" *ngFor="let envparam of environmentParameters; let i = index">
+    <ng-container [formGroup]="envParamForm" *ngFor="let envparam of environmentParameters; let i = index">
       <label> {{envparam.display_name}} </label>
       <input type="{{envparam.type}}" name="{{envparam.id}}" formControlName="{{envparam.id}}" placeholder="{{envparam.default_value}}">
       <span class="field-description">{{envparam.description}}</span>

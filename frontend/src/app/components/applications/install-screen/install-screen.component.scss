@@ -73,15 +73,15 @@
       background: white;
       text-align: left;
 
-      .wrong {
-        border-color: rgb(222, 65, 65);
-        background-color: rgb(242, 225, 225)
-      }
-
-      .right {
-        border-color: #26b726;
-        background-color: #e4ede4
-      }
+      //.ng-invalid:not(form) {
+      //  border-color: rgb(222, 65, 65);
+      //  background: rgb(242, 225, 225)
+      //}
+      //
+      //.ng-valid[required], .ng-valid {
+      //  border-color: #26b726;
+      //  background: #e4ede4
+      //}
     }
 
     .field-description, .install-submit {
@@ -100,4 +100,14 @@
       margin-top: 20px
     }
   }
+}
+
+input.ng-dirty.ng-invalid {
+  border-color: rgb(222, 65, 65);
+  background: rgb(242, 225, 225)
+}
+
+input.ng-valid[required], input.ng-valid {
+  border-color: #26b726;
+  background: #e4ede4
 }

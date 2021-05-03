@@ -3,7 +3,6 @@ import {API_INSTANCES_URL} from '../../commons';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {InstanceItem} from '../models/instance-item.model';
 import {Observable} from 'rxjs';
-import {ERROR} from '@angular/compiler-cli/src/ngtsc/logging/src/console_logger';
 import {map} from 'rxjs/operators';
 
 @Injectable({
@@ -43,6 +42,10 @@ export class InstanceService {
 
   getInstanceContainerLogs(instanceName: string): Observable<JSON> {
     return this.http.get<JSON>(API_INSTANCES_URL + 'logs/' + instanceName);
+  }
+
+  checkIfInstanceExists(instanceName: string): Observable<string> {
+    return this.http.get<string>(API_INSTANCES_URL + 'names/' + instanceName);
   }
 
   manageInstance(instanceName: string, operation: string): Observable<any> {
