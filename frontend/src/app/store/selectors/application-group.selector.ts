@@ -8,6 +8,11 @@ export const loadApplications = createSelector(
   ApplicationGroupAdapter.getSelectors().selectAll
 );
 
+export const getApplications = createSelector(
+  getApplicationGroupFeatureState,
+  (state: ApplicationGroupState) => state.entities
+);
+
 export const getApplicationGroupsLoading = createSelector(
   getApplicationGroupFeatureState,
   (state: ApplicationGroupState) => state.loading

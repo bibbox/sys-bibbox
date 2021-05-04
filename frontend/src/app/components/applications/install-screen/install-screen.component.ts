@@ -15,6 +15,7 @@ import {AppState} from '../../../store/models/app-state.model';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {AddInstanceAction} from '../../../store/actions/instance.actions';
 
 @Component({
   selector: 'app-install-screen',
@@ -58,6 +59,7 @@ export class InstallScreenComponent implements OnInit {
           [
             Validators.required,
             this.noWhitespaceValidator,
+            Validators.pattern(/^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$/)
           ],
           [
             this.asyncInstanceNameValidator()
@@ -78,7 +80,6 @@ export class InstallScreenComponent implements OnInit {
 
   initEnvParamFormFields(): void {
     for (const envParam of this.environmentParameters) {
-      console.log(envParam.default_value.valueOf());
       this.envParamForm.addControl(
         envParam.id.valueOf(),
         this.formBuilder.control('', [
@@ -107,7 +108,7 @@ export class InstallScreenComponent implements OnInit {
         parameters  : this.envParamForm.value
       };
 
-      console.log(JSON.stringify(payload));
+      console.log(this.installForm.value.instance_id, JSON.stringify(payload));
       // this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
       // // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
       // //   .toPromise()
