@@ -4,7 +4,10 @@
 
 #applications {
   display: flex;
-  flex-flow: row wrap;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
 
   .tag-sidenav {
     display: flex;
@@ -17,6 +20,10 @@
     padding: 0 10px;
     border-left: solid 1px #CCC
   }
+}
+
+.tag-item {
+  margin: 0 10px;
 }
 
 

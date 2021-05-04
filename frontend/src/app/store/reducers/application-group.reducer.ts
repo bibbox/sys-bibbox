@@ -3,7 +3,6 @@ import {ApplicationGroupsAction, ApplicationGroupsActionTypes} from '../actions/
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
 
 export interface ApplicationGroupState extends EntityState<ApplicationGroupItem>{
-  selectedEntityID: number | null;
   loading: boolean;
   error: Error;
 }
@@ -15,7 +14,6 @@ export const ApplicationGroupAdapter: EntityAdapter<ApplicationGroupItem> = crea
 const defaultState: ApplicationGroupState = {
   ids: [],
   entities: {},
-  selectedEntityID: null,
   loading: false,
   error: undefined
 };

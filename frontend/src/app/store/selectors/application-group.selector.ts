@@ -23,13 +23,13 @@ export const getApplicationGroupsError = createSelector(
   (state: ApplicationGroupState) => state.error
 );
 
-export const getCurrentApplicationGroupID = createSelector(
-  getApplicationGroupFeatureState,
-  (state: ApplicationGroupState) => state.selectedEntityID
-);
-
-export const getCurrentApplicationGroup = createSelector(
-  getApplicationGroupFeatureState,
-  getCurrentApplicationGroupID,
-  state => state.entities[state.selectedEntityID]
-);
+// export const getCurrentApplicationGroupID = createSelector(
+//   getApplicationGroupFeatureState,
+//   (state: ApplicationGroupState) => state.selectedEntityID
+// );
+//
+// export const getCurrentApplicationGroup = createSelector(
+//   getApplicationGroupFeatureState,
+//   getCurrentApplicationGroupID,
+//   state => state.entities[state.selectedEntityID]
+// );
