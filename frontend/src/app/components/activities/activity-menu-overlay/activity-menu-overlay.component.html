@@ -6,10 +6,27 @@
       <label>{{activeActivities}}</label>
     </ng-container>
   </button>
-  <mat-menu #activityMenuOverlay="matMenu">
+  <mat-menu #activityMenuOverlay="matMenu" class="activity-menu-overlay-menu">
     <span mat-menu-item *ngFor="let activity of activityList.reverse() | slice:0:10" (click)="openReferredActivity(activity.id)">
-      {{activity.id}} {{activity.name}} {{activity.state}}
+<!--      <span class="activity-menu-item-state" [ngSwitch]="activity.state">-->
+<!--        <img *ngSwitchCase="'FINISHED'" [src]="activityStates.finished" alt="state">-->
+<!--        <img *ngSwitchCase="'ERROR'" [src]="activityStates.error" alt="state">-->
+<!--        <img *ngSwitchDefault [src]="activityStates.ongoing" alt="state">-->
+<!--      </span>-->
+<!--      <span class="activity-icon">-->
+<!--        <svg viewBox="0 0 1000 1000" [ngSwitch]="activity.type">-->
+<!--          <path *ngSwitchCase="'INSTALL_INSTANCE'" [attr.d]="svgPaths.install"></path>-->
+<!--          <path *ngSwitchCase="'DELETE_INSTANCE'" [attr.d]="svgPaths.delete"></path>-->
+<!--          <path *ngSwitchCase="'START_INSTANCE'" [attr.d]="svgPaths.start"></path>-->
+<!--          <path *ngSwitchCase="'STOP_INSTANCE'" [attr.d]="svgPaths.stop"></path>-->
+<!--          <path *ngSwitchCase="'RESTART_INSTANCE'" [attr.d]="svgPaths.restart"></path>-->
+<!--        </svg>-->
+<!--      </span>-->
+      <span> {{activity.state}} - {{activity.name}} - {{activity.type}} </span>
+      <span> {{activity.start_time}} - {{activity.finished_time}} </span>
+
     </span>
+
     <!--  <button mat-menu-item>-->
     <!--    <mat-icon>dialpad</mat-icon>-->
     <!--    <span>Redial</span>-->

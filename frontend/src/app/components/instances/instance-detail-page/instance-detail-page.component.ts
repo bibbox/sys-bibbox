@@ -48,6 +48,11 @@ export class InstanceDetailPageComponent implements OnInit {
       this.router.navigateByUrl('/instances').then();
     }
     this.tabIndex = this.router.getCurrentNavigation().extras.state.index;
+
+    // TODO: use like this, get instanceName from route
+    // if (this.router.getCurrentNavigation().extras.state !== undefined){
+    //   this.tabIndex = this.router.getCurrentNavigation().extras.state.index;
+    // }
   }
 
   ngOnInit(): void {
