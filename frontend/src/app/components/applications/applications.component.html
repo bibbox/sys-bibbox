@@ -3,18 +3,15 @@
 
   </div>
   <div class= "tag-sidenav">
-    <div id = "facet-container">
-      <div id = "facet-search">
-        <!-- MAT CHIPS etc. -->
-      </div>
-      <ul>
-        <li *ngFor="let tag of tagsArray" class="tag-item">
-          <mat-checkbox [(ngModel)]="tag.checked" color="primary" (ngModelChange)="doNothing()">
-            {{tag.name}}
-          </mat-checkbox>
-        </li>
-      </ul>
-
+    <div id = "facet-search">
+      <!-- MAT CHIPS etc. -->
+    </div>
+    <h2 class="tags-title">Tags</h2>
+    <div class="facet-container">
+      <mat-checkbox *ngFor="let tag of tagsArray" class="tag-item" [(ngModel)]="tag.checked" color="primary" (ngModelChange)="doNothing()">
+        {{tag.name}}
+        <span class="tag-item-background"></span>
+      </mat-checkbox>
     </div>
   </div>
   <div id="applications-results">

@@ -12,6 +12,29 @@
   .tag-sidenav {
     display: flex;
     flex-direction: column;
+
+    .facet-container {
+      display: flex;
+      flex-flow: column;
+    }
+
+    .tags-title {
+      text-align: left;
+      padding: 0 10px;
+      margin-bottom: 15px;
+      font-size: 20px;
+      color: #2d6191
+    }
+
+    .tag-item {
+      margin: 2px;
+      padding: 2px;
+
+      .tag-item-background{
+        background: rgba(100, 150, 180, 0.2);
+        width: 22%;
+      }
+    }
   }
 
   #applications-results {

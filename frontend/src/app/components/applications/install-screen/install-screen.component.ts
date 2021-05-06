@@ -109,13 +109,13 @@ export class InstallScreenComponent implements OnInit {
       };
 
       console.log(this.installForm.value.instance_id, JSON.stringify(payload));
-      // this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
-      // // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
-      // //   .toPromise()
-      // //   .then(
-      // //     res => console.log(res)
-      // //   );
-      // this.router.navigateByUrl('/instances').then();
+      this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
+      // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
+      //   .toPromise()
+      //   .then(
+      //     res => console.log(res)
+      //   );
+      this.router.navigateByUrl('/instances').then();
     }
     else {
       this.getFormValidationErrors(this.installForm);

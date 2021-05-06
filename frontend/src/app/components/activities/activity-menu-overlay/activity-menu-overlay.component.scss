@@ -1,0 +1,52 @@
+.activity-menu-overlay {
+  box-shadow: #555555;
+  .activity-menu-overlay-button {
+    width: 34px;
+
+  }
+  .activity-state {
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+    float: left;
+    width: 20px;
+    height: 20px;
+    left: 15px;
+    img {
+      float: left;
+      width: 20px;
+      height: 20px
+    }
+  }
+  .activity-icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+    float: left;
+    width: 20px;
+    height: 20px;
+    left: 50px;
+
+    svg {
+      float: left;
+      width: 20px;
+      height: 20px
+    }
+  }
+
+  .activity-title {
+    width: 100%;
+    font-size: 16px;
+    color: #2d6191
+  }
+
+  .activity-start-date, .activity-end-date {
+    margin-right: 20px;
+    color: #555;
+    font-size: 15px
+  }
+}
+::ng-deep .mat-menu-panel {
+  padding: 0 10px!important;
+  width: fit-content !important;
+}

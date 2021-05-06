@@ -30,7 +30,7 @@ const routes: Routes = [
 
 
   // test
-  // { path: 'test', component: TestComponent, pathMatch: 'full'},
+  { path: 'test', component: TestComponent, pathMatch: 'full'},
 
   // auth
   { path: 'login', component: LoginComponent, pathMatch: 'full'},

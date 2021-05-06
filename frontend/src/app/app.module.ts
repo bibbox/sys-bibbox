@@ -56,8 +56,9 @@ import { TestComponent } from './components/test/test.component';
 import { CheckboxItemComponent } from './components/test/checkbox-item/checkbox-item.component';
 import {HttperrorInterceptor} from './httperror.interceptor';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
-import {RouterModule} from '@angular/router';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatMenuModule} from '@angular/material/menu';
+import { ActivityMenuOverlayComponent } from './components/activities/activity-menu-overlay/activity-menu-overlay.component';
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
 
@@ -84,6 +85,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     InstallScreenDialogComponent,
     TestComponent,
     CheckboxItemComponent,
+    ActivityMenuOverlayComponent,
   ],
   imports: [
     // angular
@@ -99,6 +101,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     MatButtonModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatMenuModule,
     MatIconModule,
     MatCardModule,
     MatTabsModule,

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SVG_PATHS} from '../../commons';
 import {ActivityService} from '../../store/services/activity.service';
 import {ActivityItem, LogItem} from '../../store/models/activity.model';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-activities',
@@ -10,15 +11,24 @@ import {ActivityItem, LogItem} from '../../store/models/activity.model';
 })
 export class ActivitiesComponent implements OnInit {
 
+  focussedActivityID: number = this.route.snapshot.params?.activityID || 0;
+
   svgPaths = SVG_PATHS;
   activityStates = {
     finished : 'assets/done.png',
     error: 'assets/error.png',
-    ongoing: 'assets/lock.png'
+    ongoing: 'assets/loading.gif'
   };
-  activityList: ActivityItem[];
-  activityLogs: LogItem[];
-  constructor(private activityService: ActivityService) { }
+  activityList: ActivityItem[] = [];
+  activityLogs: LogItem[] = [];
+  constructor(
+    private activityService: ActivityService,
+    private route: ActivatedRoute) {
+    console.log(this.route.snapshot.params?.activityID || 0);
+
+    this.focussedActivityID = this.route.snapshot.params?.activityID || 0;
+
+  }
 
   ngOnInit(): void {
     this.getActivities();

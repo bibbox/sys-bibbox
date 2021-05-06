@@ -1,0 +1,26 @@
+<ng-container class="activity-menu-overlay">
+  <button [matMenuTriggerFor]="activityMenuOverlay" class="mat-button activity-menu-overlay-button"> <!-- *ngSwitchCase="activeActivities" -->
+    <img *ngIf="!activeActivities" src="assets/done.png" alt="activity status" style="width: 30px; height: 30px; align-self: center">
+    <ng-container *ngIf="activeActivities">
+      <img *ngIf="activeActivities" src="assets/loading.gif" alt="activity status" style="width: 30px; height: 30px; align-self: center">
+      <label>{{activeActivities}}</label>
+    </ng-container>
+  </button>
+  <mat-menu #activityMenuOverlay="matMenu">
+    <span mat-menu-item *ngFor="let activity of activityList.reverse() | slice:0:10" (click)="openReferredActivity(activity.id)">
+      {{activity.id}} {{activity.name}} {{activity.state}}
+    </span>
+    <!--  <button mat-menu-item>-->
+    <!--    <mat-icon>dialpad</mat-icon>-->
+    <!--    <span>Redial</span>-->
+    <!--  </button>-->
+    <!--  <button mat-menu-item>-->
+    <!--    <mat-icon>voicemail</mat-icon>-->
+    <!--    <span>Check voice mail</span>-->
+    <!--  </button>-->
+    <!--  <button mat-menu-item>-->
+    <!--    <mat-icon>notifications_off</mat-icon>-->
+    <!--    <span>Disable alerts</span>-->
+    <!--  </button>-->
+  </mat-menu>
+</ng-container>

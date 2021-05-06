@@ -11,8 +11,13 @@
 
 .instances_results {
   display: flex;
-  flex-flow: row wrap;
-  padding: 0 10px;
+  width: available;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: stretch;
+
 }
 
 
