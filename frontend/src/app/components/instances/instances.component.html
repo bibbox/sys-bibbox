@@ -1,10 +1,10 @@
 <div class="instances">
 <!--search chips-->
   <div class="instances_results">
-    <div *ngIf="(instanceItems$ | async)">
+    <ng-container *ngIf="(instanceItems$ | async)">
       <div *ngFor="let instance of instanceItems$ | async">
         <app-instance-tile [instance]="instance"></app-instance-tile>
       </div>
-    </div>
+    </ng-container>
   </div>
 </div>

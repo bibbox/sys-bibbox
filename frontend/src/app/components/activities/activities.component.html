@@ -4,7 +4,7 @@
                        #mep="matExpansionPanel"
                        class="activity-item"
                        *ngFor="let activity of activityList.reverse() | slice:0:50"
-                       [(expanded)]="activity.id == focussedActivityID"
+                       [expanded]="activity.id == focussedActivityID"
   >
     <mat-expansion-panel-header class="activity-item-header">
       <span class="activity-state" [ngSwitch]="activity.state">

@@ -1,39 +1,63 @@
-<mat-card>
-  <mat-card-title>
-    {{instance.displayname_short}}
-  </mat-card-title>
-  <mat-card-subtitle>
-    {{ instance.instancename}}
-  </mat-card-subtitle>
-  <mat-card-content>
-    <span>{{instance.description_short}}</span>
-    <!--         <img src="{{store}}" alt="404" class="application-icon">-->
-    <!--          {{instance.state}}-->
-    <!--          <span *ngFor="let entry of instance.proxy">-->
-    <!--            <br/> new proxy entry:-->
-    <!--            {{entry.DISPLAYNAME}}-->
-    <!--            {{entry.TYPE}}-->
-    <!--            {{entry.TEMPLATE}}-->
-    <!--          </span>-->
-  </mat-card-content>
-  <mat-card-actions class="mat-card-action-buttons">
-    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 0}">
-      <button matTooltip="Dashboard">
-        <span class="fas fa-cog"></span>
-      </button>
+<!--<mat-card>-->
+<!--  <mat-card-header>-->
+<!--    <div mat-card-avatar class="mat-card-header-avatar"></div>-->
+<!--    <mat-card-title> {{instance.displayname_short}} </mat-card-title>-->
+<!--    <mat-card-subtitle> {{instance.instancename}} </mat-card-subtitle>-->
+<!--  </mat-card-header>-->
+<!--  <mat-card-content>-->
+<!--    <span>{{instance.description_short}}</span>-->
+<!--    &lt;!&ndash;         <img src="{{store}}" alt="404" class="application-icon">&ndash;&gt;-->
+<!--    &lt;!&ndash;          {{instance.state}}&ndash;&gt;-->
+<!--    &lt;!&ndash;          <span *ngFor="let entry of instance.proxy">&ndash;&gt;-->
+<!--    &lt;!&ndash;            <br/> new proxy entry:&ndash;&gt;-->
+<!--    &lt;!&ndash;            {{entry.DISPLAYNAME}}&ndash;&gt;-->
+<!--    &lt;!&ndash;            {{entry.TYPE}}&ndash;&gt;-->
+<!--    &lt;!&ndash;            {{entry.TEMPLATE}}&ndash;&gt;-->
+<!--    &lt;!&ndash;          </span>&ndash;&gt;-->
+<!--  </mat-card-content>-->
+<!--  <mat-card-actions class="mat-card-action-buttons">-->
+<!--    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 0}">-->
+<!--      <button matTooltip="Dashboard">-->
+<!--        <span class="fas fa-cog"></span>-->
+<!--      </button>-->
+<!--    </a>-->
+<!--    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 1}">-->
+<!--      <button matTooltip="Logs">-->
+<!--        <span class="fas fa-book"></span>-->
+<!--      </button>-->
+<!--    </a>-->
+<!--    <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer">-->
+<!--      <button matTooltip="Open">-->
+<!--        <span class="fas fa-power-off"></span>-->
+<!--      </button>-->
+<!--    </a>-->
+<!--  </mat-card-actions>-->
+<!--</mat-card>-->
+<div class="instance-tile">
+  <div class="instance-tile-header">
+    <img class="instance-tile-header-image" src="assets/b3africa.png" alt="404">
+    <ng-container class="instance-tile-header-titles">
+      <span class="instance-tile-header-title">{{instance.displayname_short}}</span>
+      <span class="instance-tile-header-subtitle">{{instance.displayname_long}}</span>
+    </ng-container>
+  </div>
+  <div class="instance-tile-body">
+    <div class="instance-tile-body-description">{{instance.description_short}}</div>
+  </div>
+  <div class="instance-tile-footer">
+    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 0}" matTooltip="Dashboard">
+      <span class="fas fa-cog link-icons"></span>
     </a>
-    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 1}">
-      <button matTooltip="Logs">
-        <span class="fas fa-book"></span>
-      </button>
+    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 1}" matTooltip="Logs">
+      <span class="fas fa-book link-icons"></span>
     </a>
-<!--    <button mat-button matTooltip="Info">-->
-<!--      <span class="fas fa-info"></span>-->
-<!--    </button>-->
-    <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer">
-      <button matTooltip="Open">
-        <span class="fas fa-power-off"></span>
-      </button>
+    <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">
+      <span class="fas fa-power-off link-icons"></span>
     </a>
-  </mat-card-actions>
-</mat-card>
+    <span [ngSwitch]="instance.state" class="instance-tile-footer-state">
+      <i *ngSwitchCase="('STOPPED' || 'ERROR')" class="fas fa-circle stopped"></i>
+      <i *ngSwitchCase="'RUNNING'" class="fas fa-circle running"></i>
+      <i *ngSwitchDefault class="fas fa-circle ongoing"></i>
+    </span>
+  </div>
+</div>

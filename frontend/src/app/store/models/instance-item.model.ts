@@ -5,6 +5,7 @@ export interface InstanceItem {
   description_short: string;
   description_long: string;
   container_names: string[];
+  icon_url?: string;
   state: string;
   app: IApp;
   proxy: IProxy[];

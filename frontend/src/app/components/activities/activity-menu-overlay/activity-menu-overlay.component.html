@@ -1,5 +1,5 @@
 <ng-container class="activity-overlay">
-  <button [matMenuTriggerFor]="activityMenuOverlay" class="mat-button activity-overlay-button"> <!-- *ngSwitchCase="activeActivities" -->
+  <button [matMenuTriggerFor]="activityMenuOverlay" class="mat-button activity-overlay-button" (click)="getActivities()"> <!-- *ngSwitchCase="activeActivities" -->
     <img *ngIf="!activeActivities" src="assets/done.png" alt="activity status" style="width: 30px; height: 30px; align-self: center">
     <ng-container *ngIf="activeActivities">
       <img *ngIf="activeActivities" src="assets/loading.gif" alt="activity status" style="width: 30px; height: 30px; align-self: center">

@@ -3,6 +3,7 @@ import {SVG_PATHS} from '../../commons';
 import {ActivityService} from '../../store/services/activity.service';
 import {ActivityItem, LogItem} from '../../store/models/activity.model';
 import {ActivatedRoute} from '@angular/router';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-activities',
@@ -11,7 +12,7 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class ActivitiesComponent implements OnInit {
 
-  focussedActivityID: number = this.route.snapshot.params?.activityID || 0;
+  focussedActivityID: Subject<number> = this.route.snapshot.params?.activityID || 0;
 
   svgPaths = SVG_PATHS;
   activityStates = {

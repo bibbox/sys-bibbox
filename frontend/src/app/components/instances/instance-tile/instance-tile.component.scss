@@ -1,36 +1,130 @@
-@import '../../../../styles-variables';
+//@import '../../../../styles-variables';
+//
+//mat-card {
+//  height: 300px;
+//  width: 300px;
+//  margin: 20px 20px 20px 20px;
+//  align-self: auto;
+//
+//  mat-card-header {
+//    .mat-card-header-avatar {
+//      background-size: cover;
+//    }
+//
+//    mat-card-title {
+//      position: relative;
+//    }
+//    mat-card-subtitle {
+//      min-height: 60px;
+//    }
+//
+//    @media (max-width: map-get($grid-breakpoints, sm)) {
+//      mat-card-subtitle {
+//        min-height: auto;
+//      }
+//    }
+//  }
+//
+//
+//  a[mat-icon-button] {
+//    position: center;
+//  }
+//
+//  .application-icon {
+//    position: relative;
+//    bottom: 2px;
+//    font-size: 16px;
+//    margin: 6px;
+//    max-height: 40px;
+//  }
+//  .mat-card-action-buttons {
+//    display: flex;
+//    justify-content: space-between;
+//  }
+//}
 
-mat-card {
-  margin: 0 0 20px 0;
-  align-self: auto;
+.instance-tile {
+  background: #e9eaee;
+  height: 300px;
+  width: 300px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
 
-  mat-card-title {
-    position: relative;
-  }
-  mat-card-subtitle {
-    min-height: 60px;
-  }
+  .instance-tile-header {
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    .instance-tile-header-image {
+      height: inherit;
+    }
+    .instance-tile-header-titles {
+      display: flex block;
+      flex-direction: column;
+      .instance-tile-header-title {
+        flex: 1 1;
 
-  @media (max-width: map-get($grid-breakpoints, sm)) {
-    mat-card-subtitle {
-      min-height: auto;
+      }
+      .instance-tile-header-subtitle {
+        flex: 1 1;
+      }
     }
   }
-
-
-  a[mat-icon-button] {
-    position: center;
-  }
-
-  .application-icon {
-    position: relative;
-    bottom: 2px;
-    font-size: 16px;
-    margin: 6px;
-    max-height: 40px;
-  }
-  .mat-card-action-buttons {
+  .instance-tile-body {
+    height: 200px;
+    background-color: #e8eaed;
+    padding: 20px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+
+    .instance-tile-body-description {
+      background-color: #CCCCCC;
+      border: 5px #666666;
+      align-self: stretch;
+    }
+
+  }
+  .instance-tile-footer {
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: space-around;
+    border-top: solid #d7dadd 2px;
+
+    a {
+      flex: 1 1;
+      height: inherit;
+      border-right: solid #d7dadd 2px;
+
+      .link-icons{
+        color: #939597;
+      }
+    }
+
+    a:hover {
+      flex: 1 1;
+      height: inherit;
+
+      .link-icons{
+        color: inherit;
+      }
+    }
+
+    .instance-tile-footer-state{
+      flex: 1 1 auto;
+      height: inherit;
+      .running {
+        color: green;
+      }
+      .ongoing {
+        color: yellow;
+      }
+      .stopped {
+        color: red;
+      }
+    }
   }
 }
+
