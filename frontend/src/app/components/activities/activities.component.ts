@@ -23,14 +23,10 @@ export class ActivitiesComponent implements OnInit {
   activityLogs: LogItem[] = [];
   constructor(
     private activityService: ActivityService,
-    private route: ActivatedRoute) {
-    console.log(this.route.snapshot.params?.activityID || 0);
-
-    this.focussedActivityID = this.route.snapshot.params?.activityID || 0;
-
-  }
+    private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    console.log('focussed activity: ', this.focussedActivityID);
     this.getActivities();
   }
 

@@ -1,43 +1,51 @@
-.activity-menu-overlay {
+.activity-overlay {
   box-shadow: #555555;
-  .activity-menu-overlay-button {
+  .activity-overlay-button {
     width: 34px;
 
   }
-  .activity-menu-item-state {
-    background: red;
-    img {
-      float: left;
-      width: 20px;
-      height: 20px
+  .activity-overlay-menu {
+    .activity-overlay-menu-item {
+      .item-state {
+        background: red;
+        img {
+          float: left;
+          width: 20px;
+          height: 20px
+        }
+      }
+
+      .item-icon {
+        position: absolute;
+        top: 50%;
+        margin-top: -10px;
+        float: left;
+        width: 20px;
+        height: 20px;
+        left: 50px;
+
+        svg {
+          float: left;
+          width: 20px;
+          height: 20px
+        }
+      }
+
+      .item-title {
+        width: 100%;
+        font-size: 16px;
+        color: #2d6191
+      }
+
+      .item-start-date, .item-end-date {
+        margin-right: 20px;
+        color: #555;
+        font-size: 15px
+      }
     }
-  }
-  .activity-icon {
-    position: absolute;
-    top: 50%;
-    margin-top: -10px;
-    float: left;
-    width: 20px;
-    height: 20px;
-    left: 50px;
+    .activity-overlay-menu-item-last {
 
-    svg {
-      float: left;
-      width: 20px;
-      height: 20px
     }
-  }
-
-  .activity-title {
-    width: 100%;
-    font-size: 16px;
-    color: #2d6191
-  }
-
-  .activity-start-date, .activity-end-date {
-    margin-right: 20px;
-    color: #555;
-    font-size: 15px
   }
 }
 ::ng-deep .mat-menu-panel {

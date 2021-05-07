@@ -1,13 +1,17 @@
-<ng-container class="activity-menu-overlay">
-  <button [matMenuTriggerFor]="activityMenuOverlay" class="mat-button activity-menu-overlay-button"> <!-- *ngSwitchCase="activeActivities" -->
+<ng-container class="activity-overlay">
+  <button [matMenuTriggerFor]="activityMenuOverlay" class="mat-button activity-overlay-button"> <!-- *ngSwitchCase="activeActivities" -->
     <img *ngIf="!activeActivities" src="assets/done.png" alt="activity status" style="width: 30px; height: 30px; align-self: center">
     <ng-container *ngIf="activeActivities">
       <img *ngIf="activeActivities" src="assets/loading.gif" alt="activity status" style="width: 30px; height: 30px; align-self: center">
       <label>{{activeActivities}}</label>
     </ng-container>
   </button>
-  <mat-menu #activityMenuOverlay="matMenu" class="activity-menu-overlay-menu">
-    <span mat-menu-item *ngFor="let activity of activityList.reverse() | slice:0:10" (click)="openReferredActivity(activity.id)">
+  <mat-menu #activityMenuOverlay="matMenu" class="activity-overlay-menu">
+    <span mat-menu-item
+          *ngFor="let activity of activityList.reverse() | slice:0:10"
+          (click)="openReferredActivity(activity.id)"
+          class="activity-overlay-menu-item"
+    >
 <!--      <span class="activity-menu-item-state" [ngSwitch]="activity.state">-->
 <!--        <img *ngSwitchCase="'FINISHED'" [src]="activityStates.finished" alt="state">-->
 <!--        <img *ngSwitchCase="'ERROR'" [src]="activityStates.error" alt="state">-->
@@ -26,6 +30,7 @@
       <span> {{activity.start_time}} - {{activity.finished_time}} </span>
 
     </span>
+    <span mat-menu-item (click)="openReferredActivity()" class="activity-overlay-menu-item-last"> Show history </span>
 
     <!--  <button mat-menu-item>-->
     <!--    <mat-icon>dialpad</mat-icon>-->
