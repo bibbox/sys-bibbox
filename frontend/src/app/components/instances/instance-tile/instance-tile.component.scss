@@ -94,12 +94,10 @@
   }
   .instance-tile-body {
     height: 200px;
-    background-color: #e8eaed;
     display: flex;
     flex-direction: column;
 
     .instance-tile-body-description {
-      background-color: #e8eaed;
       border: 5px #666666;
       height: 100%;
       white-space: pre-wrap;
@@ -156,13 +154,13 @@
       width: 100%;
 
       .running {
-        color: green;
+        color: #00d569;
       }
       .ongoing {
-        color: yellow;
+        color: #ffee00;
       }
       .stopped {
-        color: red;
+        color: #de5700;
       }
     }
   }

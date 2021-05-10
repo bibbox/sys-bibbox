@@ -46,7 +46,7 @@ export function InstanceReducer(
         loading: true
       };
     case InstanceActionTypes.LOAD_INSTANCES_SUCCESS:
-      return InstanceAdapter.addMany(action.payload, {
+      return InstanceAdapter.upsertMany(action.payload, {
         ...state,
         loading: false,
         error: undefined

@@ -106,7 +106,7 @@ export class InstanceDetailPageComponent implements OnInit {
 
   saveInstanceChanges(): void {
     console.log('save instance changes');
-    this.snackbar.open(JSON.stringify(this.instanceDetailForm.value) + this.instanceDetailForm.valid, 'OK');
+    this.snackbar.open(JSON.stringify(this.instanceDetailForm.value) + this.instanceDetailForm.valid, 'OK', {duration: 4000});
 
     if (this.instanceDetailForm.valid) {
       this.instanceService.updateInstanceDescription(this.instanceItem.instancename, JSON.stringify(this.instanceDetailForm.value))

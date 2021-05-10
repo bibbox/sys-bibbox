@@ -1,17 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SVG_PATHS} from '../../commons';
 import {ActivityService} from '../../store/services/activity.service';
 import {ActivityItem, LogItem} from '../../store/models/activity.model';
 import {ActivatedRoute} from '@angular/router';
 import {interval, Subject, Subscription} from 'rxjs';
 import {map, startWith, switchMap} from 'rxjs/operators';
+import {NONE_TYPE} from '@angular/compiler';
 
 @Component({
   selector: 'app-activities',
   templateUrl: './activities.component.html',
   styleUrls: ['./activities.component.scss']
 })
-export class ActivitiesComponent implements OnInit {
+export class ActivitiesComponent implements OnInit, OnDestroy {
 
   focussedActivityID: number = this.route.snapshot.params?.activityID || 0;
 
@@ -23,7 +24,7 @@ export class ActivitiesComponent implements OnInit {
   };
   activityList: ActivityItem[] = [];
   activityLogs: LogItem[] = [];
-  timeInterval: Subscription;
+  timeInterval: Subscription = interval(1000).subscribe();
 
   constructor(
     private activityService: ActivityService,
@@ -32,6 +33,10 @@ export class ActivitiesComponent implements OnInit {
   ngOnInit(): void {
     console.log('focussed activity: ', this.focussedActivityID);
     this.getActivities();
+  }
+
+  ngOnDestroy(): void {
+    this.timeInterval.unsubscribe();
   }
 
   getActivities(): void {

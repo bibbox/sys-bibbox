@@ -59,6 +59,7 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import { ActivityMenuOverlayComponent } from './components/activities/activity-menu-overlay/activity-menu-overlay.component';
+import {MatProgressSpinnerModule, MatSpinner} from '@angular/material/progress-spinner';
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
 
@@ -116,6 +117,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     MatTabsModule,
     MatOptionModule,
     MatExpansionModule,
+    MatProgressSpinnerModule,
     ReactiveFormsModule,
     FontAwesomeModule,
     FlexLayoutModule,

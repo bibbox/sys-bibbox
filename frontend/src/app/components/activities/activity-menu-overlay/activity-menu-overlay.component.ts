@@ -3,6 +3,7 @@ import {SVG_PATHS} from '../../../commons';
 import {ActivityItem} from '../../../store/models/activity.model';
 import {ActivityService} from '../../../store/services/activity.service';
 import {Router} from '@angular/router';
+import {interval, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-activity-menu-overlay',
@@ -19,6 +20,8 @@ export class ActivityMenuOverlayComponent implements OnInit {
   };
   activityList: ActivityItem[] = [];
   activeActivities: number;
+  timeInterval: Subscription = interval(1000).subscribe();
+
   constructor(
     private activityService: ActivityService,
     private router: Router) { }
