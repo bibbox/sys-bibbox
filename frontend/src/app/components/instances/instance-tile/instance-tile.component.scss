@@ -50,62 +50,99 @@
   margin: 20px;
   display: flex;
   flex-direction: column;
+  border: solid #d7dadd 2px;
+  border-radius: 10px;
+
+
+  -moz-box-shadow:    1px 1px 10px 2px #C7C7C7;
+  -webkit-box-shadow: 1px 1px 10px 2px #C7C7C7;
+  box-shadow: 1px 1px 10px 2px #C7C7C7;
 
   .instance-tile-header {
     height: 60px;
     display: flex;
     flex-direction: row;
+    border-bottom: solid #d7dadd 2px;
+
+
     .instance-tile-header-image {
-      height: inherit;
+      border-right: solid #d7dadd 2px;
+      height: available;
+      padding: 8px;
     }
+
     .instance-tile-header-titles {
-      display: flex block;
+      display: flex;
       flex-direction: column;
       .instance-tile-header-title {
         flex: 1 1;
-
+        width: 100%;
+        text-align: left;
+        //color: #6496b4;
+        padding: 7px 10px;
+        margin-bottom: 0;
+        font-weight: bold;
       }
       .instance-tile-header-subtitle {
         flex: 1 1;
+        width: 100%;
+        padding: 0 10px 5px 10px;
+        margin-bottom: 0;
+        font-size: 14px;
       }
     }
   }
   .instance-tile-body {
     height: 200px;
     background-color: #e8eaed;
-    padding: 20px;
     display: flex;
     flex-direction: column;
 
     .instance-tile-body-description {
-      background-color: #CCCCCC;
+      background-color: #e8eaed;
       border: 5px #666666;
-      align-self: stretch;
+      height: 100%;
+      white-space: pre-wrap;
+      margin: 20px;
+      padding: 5px;
+      flex-wrap: wrap;
+      overflow: auto;
+
+      -moz-box-shadow:    inset 0 0 10px #C7C7C7;
+      -webkit-box-shadow: inset 0 0 10px #C7C7C7;
+      box-shadow:         inset 0 0 10px #C7C7C7;
+
     }
 
   }
   .instance-tile-footer {
-    height: 50px;
     display: flex;
+    flex: 1 1;
     flex-direction: row;
-    align-content: center;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
     border-top: solid #d7dadd 2px;
+    width: 100%;
 
     a {
+      display: flex;
       flex: 1 1;
       height: inherit;
       border-right: solid #d7dadd 2px;
+      justify-content: center;
+      align-items: center;
 
       .link-icons{
         color: #939597;
+        size: inherit;
       }
     }
 
     a:hover {
       flex: 1 1;
       height: inherit;
+      text-decoration: none;
+
 
       .link-icons{
         color: inherit;
@@ -113,8 +150,11 @@
     }
 
     .instance-tile-footer-state{
-      flex: 1 1 auto;
-      height: inherit;
+      flex: 1 1;
+      justify-content: center;
+      display: flex;
+      width: 100%;
+
       .running {
         color: green;
       }
