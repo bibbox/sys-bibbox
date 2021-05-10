@@ -1,6 +1,6 @@
 <mat-accordion class="activity-list">
   <mat-expansion-panel (opened)="getLogsOfActivity(activity.id)"
-                       (closed)="0"
+                       (closed)="unsubscribeFromLogs()"
                        #mep="matExpansionPanel"
                        class="activity-item"
                        *ngFor="let activity of activityList.reverse() | slice:0:50"

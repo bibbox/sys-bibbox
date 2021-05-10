@@ -3,7 +3,8 @@ import {SVG_PATHS} from '../../commons';
 import {ActivityService} from '../../store/services/activity.service';
 import {ActivityItem, LogItem} from '../../store/models/activity.model';
 import {ActivatedRoute} from '@angular/router';
-import {Subject} from 'rxjs';
+import {interval, Subject, Subscription} from 'rxjs';
+import {map, startWith, switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-activities',
@@ -12,7 +13,7 @@ import {Subject} from 'rxjs';
 })
 export class ActivitiesComponent implements OnInit {
 
-  focussedActivityID: Subject<number> = this.route.snapshot.params?.activityID || 0;
+  focussedActivityID: number = this.route.snapshot.params?.activityID || 0;
 
   svgPaths = SVG_PATHS;
   activityStates = {
@@ -22,6 +23,8 @@ export class ActivitiesComponent implements OnInit {
   };
   activityList: ActivityItem[] = [];
   activityLogs: LogItem[] = [];
+  timeInterval: Subscription;
+
   constructor(
     private activityService: ActivityService,
     private route: ActivatedRoute) {}
@@ -39,8 +42,13 @@ export class ActivitiesComponent implements OnInit {
   }
 
   getLogsOfActivity(activityID: number): void {
-    this.activityService.getLogsOfActivity(activityID).subscribe(
-      (res) => this.activityLogs = res
-    );
+    this.timeInterval = interval(3000)
+      .pipe(
+        startWith(0),
+        switchMap(() => this.activityService.getLogsOfActivity(activityID))
+      ).subscribe((res: LogItem[]) => this.activityLogs = res);
+  }
+  unsubscribeFromLogs(): void {
+    this.timeInterval.unsubscribe();
   }
 }
