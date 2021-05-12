@@ -10,7 +10,7 @@ export class HeaderComponent implements OnInit {
   title = APP_TITLE_LONG;
 
   navigation = [
-    { link: 'applications', label: 'Applications' },
+    { link: 'applications', label: 'Store' },
     { link: 'instances', label: 'Instances' },
     { link: 'activities', label: 'Activities' },
     // { link: 'profile', label: 'Profile' }

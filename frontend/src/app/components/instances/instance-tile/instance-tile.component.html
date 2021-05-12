@@ -45,9 +45,16 @@
     <div class="instance-tile-body-description">{{instance.description_short}}</div>
   </div>
   <div class="instance-tile-footer">
-    <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">
-      <span class="fas fa-power-off fa-2x link-icons"></span>
-    </a>
+    <ng-container *ngIf="instance.state == 'RUNNING'; else elseBlock">
+      <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">
+        <span class="fas fa-power-off fa-2x link-icons"></span>
+      </a>
+    </ng-container>
+    <ng-template #elseBlock>
+      <a matTooltip="Open" class="disabled">
+        <span class="fas fa-power-off fa-2x link-icons"></span>
+      </a>
+    </ng-template>
     <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 0}" matTooltip="Dashboard">
       <span class="fas fa-cog fa-2x link-icons"></span>
     </a>

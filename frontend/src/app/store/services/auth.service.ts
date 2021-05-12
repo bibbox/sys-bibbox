@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import {User} from '../models/user.model';
 import {HttpClient} from '@angular/common/http';
 import {Store} from '@ngrx/store';
-import {User} from '../models/user.model';
-import {API_AUTH_URL} from '../../commons';
 import {Observable} from 'rxjs';
+import {API_AUTH_URL} from '../../commons';
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +20,4 @@ export class AuthService {
     return this.http.get<User>(API_AUTH_URL + 'token');
     // TODO
   }
-
 }
