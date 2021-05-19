@@ -1,5 +1,6 @@
 import flask
-from app import socketio, app as application
+from api import app as application, socketio
 
 if __name__ == '__main__':
-    application.run()
+    # uwsgi does not come here
+    socketio.run(application)

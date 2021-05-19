@@ -1,2 +1,2 @@
 #!/bin/sh
-uwsgi --ini /usr/src/flask/uwsgi.ini
+uwsgi --ini /srv/api/uwsgi.ini
