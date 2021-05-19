@@ -7,7 +7,7 @@
   },
 
   "/socket.io": {
-    "target": "http://silicolabv4.bibboxlocal/socket.io",
+    "target": "http://localhost:5000",
     "secure": false,
     "changeOrigin": false,
     "logLevel": "debug"

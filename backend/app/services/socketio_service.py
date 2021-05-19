@@ -13,9 +13,10 @@ class SocketIOService():
         emit('my response', {'data': 'Connected'})
 
     @socketio.on('disconnect', namespace='/socket.io')
-    def disconnected(message):
+    def disconnected():
         print('disconnected')
 
     @socketio.event
     def emitInstanceRefresh():
         socketio.emit('new instance data', broadcast=True)
+

@@ -39,7 +39,6 @@ export class ApplicationsComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new applicationGroupActions.LoadApplicationGroupsAction());
     this.store.pipe(select(applicationGroupSelector.getApplications)).subscribe({
         next: res => {
           this.appGroups = res;

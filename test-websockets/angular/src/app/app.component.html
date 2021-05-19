@@ -1,0 +1,18 @@
+<h1>Socket Demo</h1>
+
+<div class="messages">
+  <app-message-list [data]="clientMessages" [title]="'client messages:'"> </app-message-list>
+  <app-message-list [data]="broadcastMessages" [title]="'broadcast messages:'"></app-message-list>
+</div>
+
+<div class="example-container">
+  <mat-form-field appearance="fill" color="accent" style="background: lightgray; border: black 3px;">
+    <input matInput placeholder="client" [formControl]="client">
+  </mat-form-field>
+  <button mat-raised-button (click)="sendMessage()"> Send Client </button>
+  <br>
+  <mat-form-field appearance="fill" color="accent" style="background: lightgray; border: black 3px;">
+    <input matInput placeholder="broadcast" [formControl]="broadcast">
+  </mat-form-field>
+  <button mat-raised-button (click)="sendBroadcastMessage()"> Send Broadcast </button>
+</div>
