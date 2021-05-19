@@ -19,6 +19,7 @@ export class AppComponent implements OnInit{
     try {
       this.socketService.setupSocketConnection();
       this.socketService.getInstanceUpdates();
+      this.socketService.testSockets();
     }
     catch (e: any) {
       console.log(e);

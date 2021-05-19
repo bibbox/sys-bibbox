@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  SOCKET_ENDPOINT: 'http://0.0.0.0:5000'
+  SOCKET_ENDPOINT: '/socket.io' // 'http://0.0.0.0:5000'
 };
 
 /*

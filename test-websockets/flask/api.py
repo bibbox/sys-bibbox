@@ -26,9 +26,9 @@ def connection_success(data):
 def test_disconnect():
     print('Client disconnected')
 
-@socketio.on('custom event')
+@socketio.on('custom event', namespace="/socket.io")
 def test_message(message):
-    print('received event' + message)
+    print('received event. message:' + message)
     #counter_client += 1
     
     global counter_client
@@ -38,11 +38,11 @@ def test_message(message):
         'type'      : 'client',
         'counter'   : counter_client
     }
-    emit('response', data, broadcast=False, callback=message_received)
+    emit('response', data, broadcast=False, callback=message_received, namespace="/socket.io")
 
-@socketio.on('custom broadcast event')
+@socketio.on('custom broadcast event', namespace="/socket.io")
 def test_message(message):
-    print('received event' + message)
+    print('received event. message:' + message)
     #counter_client += 1
     
     global counter_broadcast
@@ -52,7 +52,7 @@ def test_message(message):
         'type'      : 'client',
         'counter'   : counter_broadcast
     }
-    socketio.emit('response', data, broadcast=True, callback=message_received)
+    socketio.emit('response', data, broadcast=True, callback=message_received, namespace="/socket.io")
 
 def message_received(methods=['GET', 'POST']):
     print('message was received')

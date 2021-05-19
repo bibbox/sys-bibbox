@@ -3,8 +3,8 @@
 """
 
 # socketio related
-from gevent import monkey
-monkey.patch_all()
+# from gevent import monkey
+# monkey.patch_all()
 
 import logging
 from re import A
@@ -35,7 +35,7 @@ from flask_socketio import SocketIO
 bootstrap = Bootstrap()
 app = Flask(__name__)
 
-socketio = SocketIO(app, logger=True, engineio_logger=True, cors_allowed_origins="*", message_queue='redis://redis:6379')
+socketio = SocketIO(app, logger=True, engineio_logger=True, cors_allowed_origins="*")
 
 db = SQLAlchemy()
 
@@ -93,6 +93,7 @@ def create_app(config_name):
 
     import backend.app.api
     app.register_blueprint(apiblueprint,  url_prefix='/api/v1')
+
 
 
     return app

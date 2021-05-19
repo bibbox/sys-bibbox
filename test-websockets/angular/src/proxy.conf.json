@@ -1,8 +1,9 @@
 {
-  "/api/*": {
-    "target": "http://0.0.0.0:5000/socket.io",
+  "/socket.io": {
+    "target": "http://0.0.0.0:5000",
     "secure": false,
     "changeOrigin": true,
+    "ws": true,
     "logLevel": "debug"
   }
 }

@@ -18,14 +18,19 @@ export class SocketioService {
 
   setupSocketConnection(): void {
     this.socket = io(SOCKET_IO_URL, {
-      // transports: ['websocket']
+      transports: ['websocket']
     });
   }
 
-  getInstanceUpdates(): Observable<string> {
-    return this.socket.on('new instance data', (data) => {
-      console.log('new instance data');
+  getInstanceUpdates(): Observable<any> {
+    return this.socket.on('refresh_instances', (data) => {
+      console.log('new instance data', data);
       this.store.dispatch(new LoadInstancesAction());
+    });
+  }
+  testSockets(): Observable<string> {
+    return this.socket.on('my response', (data) => {
+      console.log(data);
     });
   }
 }
