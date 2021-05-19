@@ -2,6 +2,7 @@ import os
 import re
 import time
 import copy
+from flask_socketio import SocketIO
 import yaml
 import random
 import logging
@@ -15,6 +16,7 @@ from backend.app import app_celerey
 from backend.app import db
 
 from backend.app.services.activity_service import ActivityService
+from backend.app.services.socketio_service import SocketIOService
 from backend.app.services.db_logger_service import DBLoggerService
 
 from backend.app.bibbox.instance_handler import InstanceHandler
@@ -49,6 +51,7 @@ def stopInstance (self, instance_name):
     fh.updateInstanceJsonState(instance_name, 'STOPPED')
     logger.info("stopped containers of {}.".format(instance_name))
     activity_service.update(activity_id, "FINISHED", "SUCCESS")
+    #SocketIOService.emitInstanceRefresh()
 
 @app_celerey.task(bind=True, name='instance.startInstance')
 def startInstance (self, instance_name):
@@ -64,12 +67,13 @@ def startInstance (self, instance_name):
     logger.info("starting containers of {}.".format(instance_name))
 
     fh.updateInstanceJsonState(instance_name, 'STARTING')
+    #SocketIOService.emitInstanceRefresh()
     dh.docker_startInstance(instance_name)
     fh.updateInstanceJsonState(instance_name, 'RUNNING')
     
     logger.info("started containers of {}.".format(instance_name))
     activity_service.update(activity_id, "FINISHED", "SUCCESS")
-
+    #SocketIOService.emitInstanceRefresh()
 
 @app_celerey.task(bind=True, name='instance.restartInstance')
 def restartInstance (self, instance_name):
@@ -86,11 +90,13 @@ def restartInstance (self, instance_name):
 
 
     fh.updateInstanceJsonState(instance_name, 'RESTARTING')
+    #SocketIOService.emitInstanceRefresh()
     dh.docker_restartInstance(instance_name)
     fh.updateInstanceJsonState(instance_name, 'RUNNING')
 
     logger.info("restarted containers of {}".format(instance_name))
     activity_service.update(activity_id, "FINISHED", "SUCCESS")
+    #SocketIOService.emitInstanceRefresh()
 
 @app_celerey.task(bind=True,  name='instance.copyInstance')
 def copyInstance (self, instanceNameSrc, instanceNameDest):
@@ -104,6 +110,7 @@ def updateInstanceInfos (self, instance_name, payload):
     fh = FileHandler()
     try:
         fh.updateInstanceJsonInfo(instance_name, payload)
+        #SocketIOService.emitInstanceRefresh()
     except Exception as ex:
         print(ex)
 
@@ -284,10 +291,12 @@ def installInstance (self, instanceDescr):
         logger.error("Installing instance {} failed: {}.".format(instanceDescr['instancename'], ex))
         file_handler.updateInstanceJsonState(instanceDescr['instancename'], "ERROR")
         activity_service.update(activity_id, "ERROR", "FAILURE")
+        #SocketIOService.emitInstanceRefresh()
     else:
         logger.info("Successfully installed instance {}.".format(instanceDescr['instancename']))
         file_handler.updateInstanceJsonState(instanceDescr['instancename'], "RUNNING")
         activity_service.update(activity_id, "FINISHED", "SUCCESS")
+        #SocketIOService.emitInstanceRefresh()
 
 
 @app_celerey.task(bind=True,  name='instance.deleteInstance')
@@ -311,6 +320,7 @@ def deleteInstance (self, instance_name):
     
     try:
         fh.updateInstanceJsonState(instance_name, "DELETING")
+        #SocketIOService.emitInstanceRefresh()
     except Exception as ex:
         print(ex)
     
@@ -370,7 +380,10 @@ def deleteInstance (self, instance_name):
     else:
         logger.info("Sucessfully deleted instance {}.".format(instance_name))
         activity_service.update(activity_id, "FINISHED", "SUCCESS")
-        
+    
+    finally:
+        pass
+        #SocketIOService.emitInstanceRefresh()
     
 
 # TODO

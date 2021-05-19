@@ -31,7 +31,7 @@ export function ApplicationGroupReducer(
         loading: true
       };
     case ApplicationGroupsActionTypes.LOAD_APPLICATION_GROUPS_SUCCESS:
-      return ApplicationGroupAdapter.addMany(action.payload, {
+      return ApplicationGroupAdapter.upsertMany(action.payload, {
           ...state,
           loading: false,
           error: undefined

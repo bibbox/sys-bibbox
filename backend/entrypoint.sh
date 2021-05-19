@@ -29,8 +29,8 @@ if [ ! -f  DBINIT.DONE ]; then
 fi
 
 
-uwsgi --py-autoreload 1 --ini /etc/uwsgi.ini
+uwsgi --ini /etc/uwsgi.ini
 
 
 # THIS is the websockets try
-#python runflask.py
+# python runflask.py

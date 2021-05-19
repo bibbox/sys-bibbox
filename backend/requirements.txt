@@ -11,7 +11,6 @@ flask-sqlacodegen==1.1.6.1
 flask-bootstrap==3.3.7.1
 flask-sse==0.2.1
 Flask-Migrate==2.1.1
-flask-socketio
 flask-restplus==0.13.0
 flask-swagger==0.2.14
 flask-swagger-ui==3.36.0
@@ -38,3 +37,6 @@ passlib
 itsdangerous
 docker
 docker-compose
+
+flask-socketio
+python-engineio

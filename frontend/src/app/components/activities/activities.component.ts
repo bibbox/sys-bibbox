@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {SVG_PATHS} from '../../commons';
 import {ActivityService} from '../../store/services/activity.service';
 import {ActivityItem, LogItem} from '../../store/models/activity.model';
@@ -33,6 +33,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('focussed activity: ', this.focussedActivityID);
     this.getActivities();
+    this.getLogsOfActivity(this.focussedActivityID);
   }
 
   ngOnDestroy(): void {
@@ -55,5 +56,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }
   unsubscribeFromLogs(): void {
     this.timeInterval.unsubscribe();
+  }
+  clearLogs(): void {
+    this.activityLogs = [];
   }
 }

@@ -60,6 +60,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import { ActivityMenuOverlayComponent } from './components/activities/activity-menu-overlay/activity-menu-overlay.component';
 import {MatProgressSpinnerModule, MatSpinner} from '@angular/material/progress-spinner';
+import {SocketioService} from './store/services/socketio.service';
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
 
@@ -140,7 +141,8 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
       useClass: HttperrorInterceptor,
       multi: true,
       deps: [MatSnackBar]
-    }
+    },
+    SocketioService
   ]
 })
 export class AppModule {}

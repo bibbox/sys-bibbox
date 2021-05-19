@@ -5,9 +5,10 @@
 import unittest
 import os
 from coverage import coverage
-from flask_script import Manager
+from flask_script import Manager, Server as _Server
+from flask_socketio import SocketIO
 
-from backend.app import db, create_app
+from backend.app import db, create_app # , socketio
 from backend.app.models.user  import User
 from backend.app.models.app  import BibboxApp
 
@@ -41,6 +42,7 @@ manager = Manager(app)
 print ("=========== MANAGE.PY ENVIRONMENT ============")
 print ("FLASK_CONFIG = ", os.environ["FLASK_CONFIG"])
 print ("SQLSTRING= ", app.config["DB_SERVICE"])
+
 
 @manager.command
 def test():
@@ -83,6 +85,34 @@ def seed_db():
     ))
     
     db.session.commit()
+
+
+
+
+# --------------------------------TEST SocketIO Implementation ------------------------------------
+
+# class Server(_Server):
+#     help = description = 'Runs the Socket.IO web server'
+
+#     def __call__(self, app, host, port, use_debugger, use_reloader):
+#         # override the default runserver command to start a Socket.IO server
+#         if use_debugger is None:
+#             use_debugger = app.debug
+#             if use_debugger is None:
+#                 use_debugger = True
+#         if use_reloader is None:
+#             use_reloader = app.debug
+#         socketio.run(app,
+#                      host=host,
+#                      port=port,
+#                      debug=use_debugger,
+#                      use_reloader=use_reloader,
+#                      **self.server_options)
+
+# manager.add_command("runserver", Server())
+
+#  -----------------------------------------------------------------------------------------------
+
 
 if __name__ == '__main__':
     manager.run()

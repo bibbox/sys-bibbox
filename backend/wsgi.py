@@ -3,7 +3,10 @@
 
 import os
 import sys
+
+from flask_socketio import SocketIO
 print(sys.path)
+
 
 from backend.app import create_app
 

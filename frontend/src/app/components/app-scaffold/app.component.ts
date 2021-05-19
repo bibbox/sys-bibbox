@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {SocketioService} from '../../store/services/socketio.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,16 @@ import {Component, OnInit} from '@angular/core';
 })
 export class AppComponent implements OnInit{
 
-  constructor() { }
+  constructor(private socketService: SocketioService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    try {
+      this.socketService.setupSocketConnection();
+      this.socketService.getInstanceUpdates();
+    }
+    catch (e: any) {
+      console.log(e);
+    }
+  }
+
 }

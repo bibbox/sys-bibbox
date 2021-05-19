@@ -2,8 +2,13 @@
 """Angular-Flask-Docker-Skeleton Main application package
 """
 
+# socketio related
+from gevent import monkey
+monkey.patch_all()
 
 import logging
+from re import A
+import engineio
 
 from flask import Flask, Blueprint, url_for, render_template
 from flask_restplus import Resource, Api
@@ -22,17 +27,18 @@ from celery.signals import after_setup_logger
 from backend.settings import config, Config
 
 from flask_cors import CORS
-
-#from flask_socketio import SocketIO
-
-
+from flask_socketio import SocketIO
 # review and restructer tha Application Context
 # https://flask.palletsprojects.com/en/1.1.x/patterns/appfactories/ 
 
 
 bootstrap = Bootstrap()
 app = Flask(__name__)
+
+socketio = SocketIO(app, logger=True, engineio_logger=True, cors_allowed_origins="*", message_queue='redis://redis:6379')
+
 db = SQLAlchemy()
+
 
 apiblueprint = Blueprint('api', __name__)
 restapi = Api (apiblueprint)
@@ -40,15 +46,13 @@ restapi = Api (apiblueprint)
 
 app_celerey = Celery(__name__, broker=Config.CELERY_BROKER_URL)
 
-
 def create_app(config_name):
     
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
-
     print ("CREATE APP IN ", config_name, " MODE")
     
     app.config.from_object(config[config_name])
-    
+    # SocketIO.init_app(app=app, cors_allowed_origins="*", logger=True, engineio_logger=True)
     bootstrap.init_app(app)
     db.init_app(app)
     db.app = app
@@ -89,5 +93,6 @@ def create_app(config_name):
 
     import backend.app.api
     app.register_blueprint(apiblueprint,  url_prefix='/api/v1')
+
 
     return app

@@ -4,5 +4,12 @@
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
+  },
+
+  "/socket.io": {
+    "target": "http://silicolabv4.bibboxlocal/socket.io",
+    "secure": false,
+    "changeOrigin": false,
+    "logLevel": "debug"
   }
 }

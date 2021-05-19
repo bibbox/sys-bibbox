@@ -67,7 +67,8 @@
 
     .instance-tile-header-image {
       border-right: solid #d7dadd 2px;
-      height: available;
+      height: inherit;
+      width: inherit;
       padding: 8px;
     }
 

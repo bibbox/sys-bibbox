@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {InstanceItem} from '../../store/models/instance-item.model';
 import {select, Store} from '@ngrx/store';
@@ -17,16 +17,13 @@ export class InstancesComponent implements OnInit {
   error$: Observable<Error>;
 
   constructor(private store: Store<AppState>) {
-    this.store.dispatch(new LoadInstancesAction());
+    this.store.dispatch(new LoadInstancesAction()); // rm after websockets work
   }
 
   ngOnInit(): void {
-    this.getFromStore();
-  }
-
-  getFromStore(): void {
     this.instanceItems$ = this.store.pipe(select(instanceSelector.selectAllInstances));
     this.loading$ = this.store.select(store => store.instances.loading);
     this.error$ = this.store.select(store => store.instances.error);
   }
+
 }
