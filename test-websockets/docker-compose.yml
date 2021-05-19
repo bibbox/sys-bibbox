@@ -10,8 +10,8 @@ services:
       - ./flask:/srv/api
       - /var/run/docker.sock:/var/run/docker.sock
     # when working with uwsgi, comment out environment and command (below)
-    environment:
-      FLASK_APP: api.py
-    command: ["flask", "run", "--host=0.0.0.0"]
+    #environment:
+    #  FLASK_APP: api.py
+    #command: ["flask", "run", "--host=0.0.0.0"]
     ports:
       - 5000:5000

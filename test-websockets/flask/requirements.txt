@@ -1,9 +1,10 @@
 docker==3.5.0
 flask==1.0.2
-#python-dotenv
-#uwsgi
+python-dotenv
+uwsgi
+
+gevent
+gevent-websocket
 
 flask-socketio
 flask-cors
-#gevent
-#gevent-websocket
