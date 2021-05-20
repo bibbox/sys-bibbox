@@ -17,7 +17,7 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     this.store.dispatch(new applicationGroupActions.LoadApplicationGroupsAction());
     try {
-      this.socketService.setupSocketConnection();
+      // this.socketService.setupSocketConnection();
       this.socketService.getInstanceUpdates();
       this.socketService.testSockets();
     }

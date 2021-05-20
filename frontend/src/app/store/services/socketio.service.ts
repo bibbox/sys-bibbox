@@ -14,23 +14,35 @@ export class SocketioService {
 
   private socket;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) {
+    this.socket = io(
+      // SOCKET_IO_URL,
+      'http://localhost:4200',
+      {
+        transports: ['websocket']
+      }
+    );
+  }
 
   setupSocketConnection(): void {
-    this.socket = io(SOCKET_IO_URL, {
-      transports: ['websocket']
-    });
+    this.socket = io(
+      // SOCKET_IO_URL,
+      'http://localhost:4200',
+      {
+        transports: ['websocket']
+      }
+      );
   }
 
   getInstanceUpdates(): Observable<any> {
-    return this.socket.on('refresh_instances', (data) => {
-      console.log('new instance data', data);
+    return this.socket.on('new_instance_data', (data) => {
+      console.log('new_instance_data', data);
       this.store.dispatch(new LoadInstancesAction());
     });
   }
-  testSockets(): Observable<string> {
-    return this.socket.on('my response', (data) => {
-      console.log(data);
+  testSockets(): Observable<any> {
+    return this.socket.on('connected', (data) => {
+      console.log('from ws event: ', data);
     });
   }
 }
