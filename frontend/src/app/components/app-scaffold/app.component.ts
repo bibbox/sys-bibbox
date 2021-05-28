@@ -16,14 +16,15 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     this.store.dispatch(new applicationGroupActions.LoadApplicationGroupsAction());
-    try {
-      // this.socketService.setupSocketConnection();
-      this.socketService.getInstanceUpdates();
-      this.socketService.testSockets();
-    }
-    catch (e: any) {
-      console.log(e);
-    }
+    // try {
+    //   // this.socketService.setupSocketConnection();
+    //   // this.socketService.getInstanceUpdates();
+    //   // this.socketService.testSockets();
+    //   console.log('');
+    // }
+    // catch (e: any) {
+    //   console.log(e);
+    // }
   }
 
 }
