@@ -211,7 +211,6 @@ class FileHandler():
         try:
             self.writeInstancesJsonFile()
         except Exception as ex:
-            
             print(ex)
         
         filename =  self.INSTANCEPATH  + 'instances.json'
@@ -229,6 +228,7 @@ class FileHandler():
     def getInstanceNames (self):
         instance_names = []
 
+        self.writeInstancesJsonFile()
         for instance in self.__readJsonFile(self.INSTANCEPATH + 'instances.json'):
             print(instance)
             instance_names.append(instance['instancename'])

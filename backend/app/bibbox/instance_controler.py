@@ -2,7 +2,7 @@ import os
 import re
 import time
 import copy
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 import yaml
 import random
 import logging
@@ -12,11 +12,11 @@ import subprocess
 
 
 from flask import current_app, render_template
-from backend.app import app_celerey
-from backend.app import db
+from backend.app import app_celerey, app
+from backend.app import db, socketio
 
 from backend.app.services.activity_service import ActivityService
-from backend.app.services.socketio_service import SocketIOService, emitInstanceRefresh
+from backend.app.services.socketio_service import SocketIOService, emitInstanceDeleted, emitInstanceRefresh
 from backend.app.services.db_logger_service import DBLoggerService
 
 from backend.app.bibbox.instance_handler import InstanceHandler
@@ -51,6 +51,7 @@ def stopInstance (self, instance_name):
     fh.updateInstanceJsonState(instance_name, 'STOPPED')
     logger.info("stopped containers of {}.".format(instance_name))
     activity_service.update(activity_id, "FINISHED", "SUCCESS")
+    
     emitInstanceRefresh()
 
 @app_celerey.task(bind=True, name='instance.startInstance')
@@ -68,11 +69,14 @@ def startInstance (self, instance_name):
 
     fh.updateInstanceJsonState(instance_name, 'STARTING')
     emitInstanceRefresh()
+    
     dh.docker_startInstance(instance_name)
     fh.updateInstanceJsonState(instance_name, 'RUNNING')
     
     logger.info("started containers of {}.".format(instance_name))
     activity_service.update(activity_id, "FINISHED", "SUCCESS")
+    
+
     emitInstanceRefresh()
 
 @app_celerey.task(bind=True, name='instance.restartInstance')
@@ -90,12 +94,16 @@ def restartInstance (self, instance_name):
 
 
     fh.updateInstanceJsonState(instance_name, 'RESTARTING')
+
+    
     emitInstanceRefresh()
+    
     dh.docker_restartInstance(instance_name)
     fh.updateInstanceJsonState(instance_name, 'RUNNING')
 
     logger.info("restarted containers of {}".format(instance_name))
     activity_service.update(activity_id, "FINISHED", "SUCCESS")
+    
     emitInstanceRefresh()
 
 @app_celerey.task(bind=True,  name='instance.copyInstance')
@@ -326,7 +334,6 @@ def deleteInstance (self, instance_name):
     
     try:                
 
-
         try:
             stopInstance(instance_name)
         except Exception as ex:
@@ -378,13 +385,13 @@ def deleteInstance (self, instance_name):
         activity_service.update(activity_id, "ERROR", "FAILURE")
     
     else:
-        logger.info("Sucessfully deleted instance {}.".format(instance_name))
+        logger.info("Successfully deleted instance {}.".format(instance_name))
         activity_service.update(activity_id, "FINISHED", "SUCCESS")
+        #emitInstanceDeleted(instance_name)
     
     finally:
-        #pass
         emitInstanceRefresh()
-    
+
 
 # TODO
 # make this a helper function, with the stripping 
