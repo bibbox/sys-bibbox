@@ -10,7 +10,8 @@ export enum InstanceActionTypes {
   ADD_INSTANCE_FAILURE = '[INSTANCE] Add Instance Failure',
   DELETE_INSTANCE = '[INSTANCE] Delete Instance',
   DELETE_INSTANCE_SUCCESS = '[INSTANCE] Delete Instance Success',
-  DELETE_INSTANCE_FAILURE = '[INSTANCE] Delete Instance Failure'
+  DELETE_INSTANCE_FAILURE = '[INSTANCE] Delete Instance Failure',
+  DELETE_ALL_INSTANCES = '[INSTANCE] Delete all Instances'
 }
 
 export class LoadInstancesAction implements Action {
@@ -65,6 +66,10 @@ export class DeleteInstanceFailureAction implements Action {
   constructor(public payload: Error) {}
 }
 
+export class DeleteAllInstancesAction implements Action {
+  readonly type = InstanceActionTypes.DELETE_ALL_INSTANCES;
+  constructor() {}
+}
 
 
 export type InstanceAction =
@@ -76,4 +81,5 @@ export type InstanceAction =
   | AddInstanceFailureAction
   | DeleteInstanceAction
   | DeleteInstanceSuccessAction
-  | DeleteInstanceFailureAction;
+  | DeleteInstanceFailureAction
+  | DeleteAllInstancesAction;

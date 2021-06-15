@@ -4,7 +4,7 @@ import {
   InstanceActionTypes,
   AddInstanceAction, AddInstanceFailureAction, AddInstanceSuccessAction,
   LoadInstancesAction, LoadInstancesFailureAction, LoadInstancesSuccessAction,
-  DeleteInstanceAction, DeleteInstanceFailureAction, DeleteInstanceSuccessAction
+  DeleteInstanceAction, DeleteInstanceFailureAction, DeleteInstanceSuccessAction,
 } from '../actions/instance.actions';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import {InstanceService} from '../services/instance.service';

@@ -1,9 +1,14 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {SOCKET_IO_URL} from '../../commons';
 import {io, Socket} from 'socket.io-client';
 import {Observable} from 'rxjs';
 import {BASEURL} from '../../../app.config';
-import {LoadInstancesAction} from '../actions/instance.actions';
+import {
+  DeleteAllInstancesAction,
+  DeleteInstanceAction,
+  DeleteInstanceSuccessAction,
+  LoadInstancesAction
+} from '../actions/instance.actions';
 import {Store} from '@ngrx/store';
 import {AppState} from '../models/app-state.model';
 import {timeout} from 'rxjs/operators';
@@ -13,40 +18,40 @@ import {timeout} from 'rxjs/operators';
 })
 export class SocketioService {
 
-  private socket: any;
-
+  private socket: Socket;
   constructor(private store: Store<AppState>) {
-    this.socket = io(
-      // SOCKET_IO_URL,
-      'http://localhost:4200',
-      {
-        transports: ['websocket']
-      }
-    );
-    // this.socket = io();
-    this.getInstanceUpdates();
-    this.testSockets();
+    this.connect();
+    // this.checkConnected();
+    this.addInstanceUpdatesListener();
   }
 
-  setupSocketConnection(): void {
+  connect(): void {
     this.socket = io(
       // SOCKET_IO_URL,
-      'http://localhost:4200',
+      'http://localhost:4200/socket.io',
       {
-        transports: ['websocket']
+        reconnectionDelayMax: 10000,
+      //   transports: ['websocket']
       }
       );
   }
 
-  getInstanceUpdates(): Observable<any> {
-    return this.socket.on('new_instance_data', (data) => {
+  addInstanceUpdatesListener(): void {
+    this.socket.on('new_instance_data', (data) => {
       console.log(data);
+      this.store.dispatch(new DeleteAllInstancesAction());
       this.store.dispatch(new LoadInstancesAction());
     });
+    // this.socket.on('instance_deleted', (response) => {
+    //   console.log('deleted instance ' + JSON.stringify(response.id));
+    //   this.store.dispatch(new DeleteInstanceSuccessAction(JSON.stringify(response.id)));
+    // });
   }
-  testSockets(): Observable<any> {
-    return this.socket.on('event from loop', (data) => {
-      console.log('from ws event: ', data);
+
+  checkConnected(): void {
+    this.socket.on('connected', (data) => {
+      console.log('new ws connection: ', data.data);
+      console.log(this.socket.id);
     });
   }
 }

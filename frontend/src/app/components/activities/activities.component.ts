@@ -3,7 +3,7 @@ import {SVG_PATHS} from '../../commons';
 import {ActivityService} from '../../store/services/activity.service';
 import {ActivityItem, LogItem} from '../../store/models/activity.model';
 import {ActivatedRoute} from '@angular/router';
-import {interval, Subject, Subscription} from 'rxjs';
+import {interval, Observable, Subject, Subscription} from 'rxjs';
 import {map, startWith, switchMap} from 'rxjs/operators';
 import {NONE_TYPE} from '@angular/compiler';
 
@@ -13,8 +13,7 @@ import {NONE_TYPE} from '@angular/compiler';
   styleUrls: ['./activities.component.scss']
 })
 export class ActivitiesComponent implements OnInit, OnDestroy {
-
-  focussedActivityID: number = this.route.snapshot.params?.activityID || 0;
+  focussedActivityID: number = this.route.snapshot.params?.activityID || NONE_TYPE;
 
   svgPaths = SVG_PATHS;
   activityStates = {
@@ -25,15 +24,18 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   activityList: ActivityItem[] = [];
   activityLogs: LogItem[] = [];
   timeInterval: Subscription = interval(1000).subscribe();
+  data$: Observable<LogItem[]>;
 
   constructor(
     private activityService: ActivityService,
     private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    console.log('focussed activity: ', this.focussedActivityID);
     this.getActivities();
-    this.getLogsOfActivity(this.focussedActivityID);
+    if (this.route.snapshot.params?.activityID) {
+      console.log('focussed activity: ', this.focussedActivityID);
+      this.getLogsOfActivity(this.focussedActivityID);
+    }
   }
 
   ngOnDestroy(): void {
@@ -48,7 +50,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }
 
   getLogsOfActivity(activityID: number): void {
-    this.timeInterval = interval(3000)
+    this.timeInterval = interval(1000)
       .pipe(
         startWith(0),
         switchMap(() => this.activityService.getLogsOfActivity(activityID))
@@ -57,6 +59,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   unsubscribeFromLogs(): void {
     this.timeInterval.unsubscribe();
   }
+
   clearLogs(): void {
     this.activityLogs = [];
   }
