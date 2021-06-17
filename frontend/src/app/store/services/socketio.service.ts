@@ -12,6 +12,7 @@ import {
 import {Store} from '@ngrx/store';
 import {AppState} from '../models/app-state.model';
 import {timeout} from 'rxjs/operators';
+import {InstanceService} from './instance.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ import {timeout} from 'rxjs/operators';
 export class SocketioService {
 
   private socket: Socket;
-  constructor(private store: Store<AppState>) {
+  constructor(private iservice: InstanceService, private store: Store<AppState>) {
     this.connect();
     // this.checkConnected();
     this.addInstanceUpdatesListener();
@@ -30,7 +31,7 @@ export class SocketioService {
       // SOCKET_IO_URL,
       'http://localhost:4200/socket.io',
       {
-        reconnectionDelayMax: 10000,
+      //  reconnectionDelayMax: 10000,
       //   transports: ['websocket']
       }
       );
@@ -38,14 +39,13 @@ export class SocketioService {
 
   addInstanceUpdatesListener(): void {
     this.socket.on('new_instance_data', (data) => {
-      console.log(data);
-      this.store.dispatch(new DeleteAllInstancesAction());
-      this.store.dispatch(new LoadInstancesAction());
+      console.log('new instance data');
+      this.iservice.refreshStoreInstances();
     });
-    // this.socket.on('instance_deleted', (response) => {
-    //   console.log('deleted instance ' + JSON.stringify(response.id));
-    //   this.store.dispatch(new DeleteInstanceSuccessAction(JSON.stringify(response.id)));
-    // });
+    this.socket.on('instance_deleted', (response) => {
+      console.log('deleted instance ' + response.id);
+      this.store.dispatch(new DeleteInstanceSuccessAction(response.id));
+    });
   }
 
   checkConnected(): void {

@@ -17,7 +17,7 @@ export class InstancesComponent implements OnInit {
   error$: Observable<Error>;
 
   constructor(private store: Store<AppState>) {
-    this.store.dispatch(new LoadInstancesAction()); // rm after websockets work
+    // this.store.dispatch(new LoadInstancesAction()); // rm after websockets work
   }
 
   ngOnInit(): void {

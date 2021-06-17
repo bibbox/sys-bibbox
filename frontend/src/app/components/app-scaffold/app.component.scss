@@ -1,22 +1,18 @@
-.scaffold {
+#header {
+  flex-grow: 0;
+  margin-bottom: 50px;
+  max-width: 100%;
+  display: block;
+}
 
-  #header {
-    margin-bottom: 50px;
-    max-width: 100%;
-    display: block;
-  }
+#content {
+  flex-grow: 1;
+  box-sizing: content-box;
+  width: 1400px;
+  align-self: center;
+  padding-bottom: 100px;
+}
 
-  #content {
-    box-sizing: content-box;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding-bottom: 150px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
-  #footer {
-
-  }
-
+#footer {
+  flex-grow: 0;
 }

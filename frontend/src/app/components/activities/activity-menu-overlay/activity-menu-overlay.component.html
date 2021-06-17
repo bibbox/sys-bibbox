@@ -8,7 +8,7 @@
   </button>
   <mat-menu #activityMenuOverlay="matMenu" class="activity-overlay-menu">
     <span mat-menu-item
-          *ngFor="let activity of activityList.reverse() | slice:0:10"
+          *ngFor="let activity of activityList | slice:0:10"
           (click)="openReferredActivity(activity.id)"
           class="activity-overlay-menu-item"
     >

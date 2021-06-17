@@ -3,8 +3,9 @@
 """
 
 # socketio related --> redis needs monkeypatched app, redis is needed for emitting out of context events
-from gevent import monkey
-monkey.patch_all()
+# from gevent import monkey
+# monkey.patch_all()
+# note: monkey patched in uwsgi.ini already
 
 import logging
 from re import A
@@ -35,7 +36,7 @@ from flask_socketio import SocketIO
 bootstrap = Bootstrap()
 app = Flask(__name__)
 
-socketio = SocketIO(app, logger=True, engineio_logger=True, cors_allowed_origins="*", namespace='/', message_queue='redis://redis:6379/0') #, )
+socketio = SocketIO(app, logger=True, engineio_logger=True, cors_allowed_origins="*", namespace='/', message_queue='redis://redis:6379') #, )
 
 db = SQLAlchemy()
 

@@ -6,6 +6,7 @@ ActivityService class - This class holds the method related to Activity manipula
 """
 import time
 from datetime import datetime
+from sqlalchemy import desc
 
 from backend.app.models.activity import Activity
 from backend.app.services import SQLAlchemyService
@@ -58,7 +59,7 @@ class ActivityService(SQLAlchemyService):
         db.session.commit()
 
     def selectAll(self):
-        res = db.session.query(Activity)
+        res = db.session.query(Activity).order_by(desc(Activity.id))
         activity_lst = list()
         for activity in res:
             activity_lst.append({

@@ -230,7 +230,6 @@ class FileHandler():
 
         self.writeInstancesJsonFile()
         for instance in self.__readJsonFile(self.INSTANCEPATH + 'instances.json'):
-            print(instance)
             instance_names.append(instance['instancename'])
 
         return instance_names

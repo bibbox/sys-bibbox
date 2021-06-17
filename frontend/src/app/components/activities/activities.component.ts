@@ -2,7 +2,7 @@ import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/c
 import {SVG_PATHS} from '../../commons';
 import {ActivityService} from '../../store/services/activity.service';
 import {ActivityItem, LogItem} from '../../store/models/activity.model';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {interval, Observable, Subject, Subscription} from 'rxjs';
 import {map, startWith, switchMap} from 'rxjs/operators';
 import {NONE_TYPE} from '@angular/compiler';
@@ -26,9 +26,17 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   timeInterval: Subscription = interval(1000).subscribe();
   data$: Observable<LogItem[]>;
 
+  // rm route, data$ ...
+
   constructor(
     private activityService: ActivityService,
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute,
+    private router: Router) {
+
+    if (this.router.getCurrentNavigation().extras.state !== undefined){
+      // open activity
+    }
+  }
 
   ngOnInit(): void {
     this.getActivities();

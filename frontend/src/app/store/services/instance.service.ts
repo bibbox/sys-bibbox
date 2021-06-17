@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 import {API_INSTANCES_URL} from '../../commons';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {InstanceItem} from '../models/instance-item.model';
-import {Observable} from 'rxjs';
+import {observable, Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {DeleteAllInstancesAction, LoadInstancesAction} from '../actions/instance.actions';
+import {Store} from '@ngrx/store';
+import {AppState} from '../models/app-state.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,7 @@ export class InstanceService {
 
   instanceItems: InstanceItem[];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private store: Store<AppState>) {
   }
 
   getInstances(): Observable<InstanceItem[]>{
@@ -49,7 +52,17 @@ export class InstanceService {
   }
 
   manageInstance(instanceName: string, operation: string): Observable<any> {
-    // TODO: check if operation in ['start', 'stop', 'restart' ...]
-    return this.http.get<JSON>(API_INSTANCES_URL + operation + '/' + instanceName);
+    if (['start', 'stop', 'restart'].includes(operation)) {
+      return this.http.get<JSON>(API_INSTANCES_URL + operation + '/' + instanceName);
+    }
+    else {
+      console.log('operation not supported');
+      return of('operation not supported');
+    }
+  }
+
+  refreshStoreInstances(): void {
+    // this.store.dispatch(new DeleteAllInstancesAction());
+    this.store.dispatch(new LoadInstancesAction());
   }
 }

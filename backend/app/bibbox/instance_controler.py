@@ -16,7 +16,7 @@ from backend.app import app_celerey, app
 from backend.app import db, socketio
 
 from backend.app.services.activity_service import ActivityService
-from backend.app.services.socketio_service import SocketIOService, emitInstanceDeleted, emitInstanceRefresh
+from backend.app.services.socketio_service import emitInstanceDeleted, emitInstanceRefresh
 from backend.app.services.db_logger_service import DBLoggerService
 
 from backend.app.bibbox.instance_handler import InstanceHandler
@@ -144,6 +144,7 @@ def installInstance (self, instanceDescr):
     logger_serv = DBLoggerService(activity_id, f"[INSTALL] {instanceDescr['instancename']}")
     logger = logger_serv.getLogger()
 
+    
 
     # generate the instance directory    
     try:
@@ -162,6 +163,7 @@ def installInstance (self, instanceDescr):
         else:
             #print ("Successfully created the directory %s " % path)
             logger.info("Successfully created the directory {}.".format(instanceDescr['instancename'] + "/instance.json"))
+            emitInstanceRefresh()
     
         # copy all file from the APP repository to the instance Directory
         file_handler.copyAllFilesToInstanceDirectory (instanceDescr, logger)
@@ -184,7 +186,7 @@ def installInstance (self, instanceDescr):
             raise
         else:
             logger.info("Successfully updated the {} instance.json file with container_names.".format(instanceDescr['instancename']))
-
+            emitInstanceRefresh()
 
 
         # generate the docker-compose file
@@ -214,6 +216,7 @@ def installInstance (self, instanceDescr):
         else:
             #print ("Successfully created the proxy file" )
             logger.info("Successfully created the {} proxy file.".format('005-' + instanceDescr['instancename'] + ".conf"))
+            emitInstanceRefresh()
 
         # write the instances.json file
         try:
@@ -230,6 +233,8 @@ def installInstance (self, instanceDescr):
         # testing to update instance json 
         file_handler.updateInstanceJsonState(instanceDescr['instancename'], "INSTALLING")
         file_handler.updateInstanceJsonProxy(instanceDescr['instancename'], instance_handler.getProxyInformation())
+
+        emitInstanceRefresh()
 
         # call docker-compose up
         print (compose_file_name)
@@ -275,9 +280,8 @@ def installInstance (self, instanceDescr):
                 print (lineerror.rstrip())
 
         # restart apache
-        # TODO make a reload instead a restart
-        logger.info("Restarting bibbox-sys-commander-apacheproxy...")
-        process = subprocess.Popen(['docker', 'restart', 'bibbox-sys-commander-apacheproxy'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+        logger.info("Reloading bibbox-sys-commander-apacheproxy...")
+        process = subprocess.Popen(['docker', 'exec', '-it', 'bibbox-sys-commander-apacheproxy', '/usr/local/apache2/bin/httpd', '-k', 'graceful'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
         while True:
             line = process.stdout.readline()
             lineerror = process.stderr.readline()
@@ -286,7 +290,7 @@ def installInstance (self, instanceDescr):
             #the real code does filtering here
             if line:
                 # look what we have to strip 
-                # if there are some escape code, that the öine is overwritten, the last line in the log should be replaced
+                # if there are some escape code, that the line is overwritten, the last line in the log should be replaced
                 result = ansi_escape.sub('', line).rstrip()
                 print (line.rstrip())
                 print (result)
@@ -299,13 +303,14 @@ def installInstance (self, instanceDescr):
         logger.error("Installing instance {} failed: {}.".format(instanceDescr['instancename'], ex))
         file_handler.updateInstanceJsonState(instanceDescr['instancename'], "ERROR")
         activity_service.update(activity_id, "ERROR", "FAILURE")
-        emitInstanceRefresh()
+
     else:
         logger.info("Successfully installed instance {}.".format(instanceDescr['instancename']))
         file_handler.updateInstanceJsonState(instanceDescr['instancename'], "RUNNING")
         activity_service.update(activity_id, "FINISHED", "SUCCESS")
-        emitInstanceRefresh()
 
+    finally:
+        emitInstanceRefresh()
 
 @app_celerey.task(bind=True,  name='instance.deleteInstance')
 def deleteInstance (self, instance_name):
@@ -328,7 +333,6 @@ def deleteInstance (self, instance_name):
     
     try:
         fh.updateInstanceJsonState(instance_name, "DELETING")
-        emitInstanceRefresh()
     except Exception as ex:
         print(ex)
     
@@ -343,6 +347,8 @@ def deleteInstance (self, instance_name):
         else:
             print ("Successfully stopped the {} containers".format(instance_name))
             logger.info("Successfully stopped the {} containers.".format(instance_name))
+        finally:
+            fh.updateInstanceJsonState(instance_name, "DELETING")
 
 
         try:
@@ -376,6 +382,16 @@ def deleteInstance (self, instance_name):
             print ("Successfully deleted the directory {}.".format(instance_name))
             logger.info("Successfully deleted the directory {}.".format(instance_name))
 
+        # write the instances.json file
+        try:
+            fh.writeInstancesJsonFile()
+        except Exception as ex:
+            #print (" ERROR in the generation of the instances.json File")
+            logger.error("Updating the instances.json file failed. Exception: {}".format(ex))
+            raise
+        else:
+            #print ("Successfully created the instances.json File")
+            logger.info("Successfully updated the instances.json file.")
 
 
 
@@ -387,7 +403,7 @@ def deleteInstance (self, instance_name):
     else:
         logger.info("Successfully deleted instance {}.".format(instance_name))
         activity_service.update(activity_id, "FINISHED", "SUCCESS")
-        #emitInstanceDeleted(instance_name)
+        emitInstanceDeleted(instance_name)
     
     finally:
         emitInstanceRefresh()
