@@ -50,8 +50,10 @@ cd /opt/bibbox/sys-bibbox/backend
 pip3 install -r requirements.txt
 
 
+
+# change domainname
 cd /opt/bibbox/sys-bibbox/config-templates
-sed -i -e "s/bibboxlocal/$DOMAINNAME/g" bibbox.config
+sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" bibbox.config
 sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" 000-default.conf
 sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" 100-error.conf
 
@@ -63,12 +65,15 @@ sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" proxy.conf.json
 sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" app.config.ts
 
 
+
+# compile frontend code
 cd /opt/bibbox/sys-bibbox/frontend
 
 printf 'n\n' | sudo npm i
 sudo ng build --prod
 
 
+# copy config templates to the actual destination
 cp /opt/bibbox/sys-bibbox/config-templates/100-error.conf /opt/bibbox/proxy/sites/100-error.conf
 cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/sites/000-default.conf
 cp /opt/bibbox/sys-bibbox/config-templates/bibbox.config /opt/bibbox/config/bibbox.config

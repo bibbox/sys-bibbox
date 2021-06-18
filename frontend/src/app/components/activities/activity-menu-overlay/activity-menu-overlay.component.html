@@ -9,7 +9,7 @@
   <mat-menu #activityMenuOverlay="matMenu" class="activity-overlay-menu">
     <span mat-menu-item
           *ngFor="let activity of activityList | slice:0:10"
-          (click)="openReferredActivity(activity.id)"
+          [routerLink]="['/activities/']" [state]="{index: activity.id}"
           class="activity-overlay-menu-item"
     >
 <!--      <span class="activity-menu-item-state" [ngSwitch]="activity.state">-->
@@ -30,7 +30,7 @@
       <span> {{activity.start_time}} - {{activity.finished_time}} </span>
 
     </span>
-    <span mat-menu-item (click)="openReferredActivity()" class="activity-overlay-menu-item-last"> Show history </span>
+    <span mat-menu-item [routerLink]="['/activities/']" class="activity-overlay-menu-item-last"> Show history </span>
 
     <!--  <button mat-menu-item>-->
     <!--    <mat-icon>dialpad</mat-icon>-->

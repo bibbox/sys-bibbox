@@ -61,6 +61,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { ActivityMenuOverlayComponent } from './components/activities/activity-menu-overlay/activity-menu-overlay.component';
 import {MatProgressSpinnerModule, MatSpinner} from '@angular/material/progress-spinner';
 import {SocketioService} from './store/services/socketio.service';
+import {RouterModule} from '@angular/router';
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
 

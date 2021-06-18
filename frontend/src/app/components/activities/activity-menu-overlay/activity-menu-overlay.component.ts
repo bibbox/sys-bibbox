@@ -20,7 +20,7 @@ export class ActivityMenuOverlayComponent implements OnInit {
   };
   activityList: ActivityItem[] = [];
   activeActivities: number;
-  timeInterval: Subscription = interval(1000).subscribe();
+  timeInterval: Subscription = interval(3000).subscribe();
 
   constructor(
     private activityService: ActivityService,
@@ -49,12 +49,12 @@ export class ActivityMenuOverlayComponent implements OnInit {
     console.log('active activities: ', this.activeActivities);
   }
 
-  openReferredActivity(activityID?: number): void {
-    if (activityID) {
-      this.router.navigate(['activities', {activityID}]).then();
-      console.log('clicked activity: ', activityID);
-    } else {
-      this.router.navigate(['activities']).then();
-    }
-  }
+  // openReferredActivity(activityID?: number): void {
+  //   if (activityID) {
+  //     this.router.navigate(['activities', {activityID}]).then();
+  //     console.log('clicked activity: ', activityID);
+  //   } else {
+  //     this.router.navigate(['activities']).then();
+  //   }
+  // }
 }
