@@ -1,27 +1,11 @@
 #app-install {
-  display: block;
+  display: flex;
   width: 100%;
 
-  #loading {
-    display: block;
-    text-align: center;
-
-    img {
-      width: 50px;
-      margin-bottom: 30px
-    }
-
-    span {
-      width: 100%;
-      float: left
-    }
-  }
-
-
-
-  form {
+  .install-form {
+    align-items: center;
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column wrap;
 
     .app-install-text{
       width: 100%;
@@ -37,13 +21,13 @@
       margin-bottom: 25px
     }
 
-    .full-width {
-      width: 100%;
-      display: inline-block;
-      text-align: center
-    }
+    //.full-width {
+    //  width: 100%;
+    //  display: inline-block;
+    //  text-align: center
+    //}
 
-    .field-group {
+    .install-form-item {
       display: flex;
       flex-flow: row wrap;
       width: 100%
@@ -99,6 +83,11 @@
     .app-install-submit {
       margin-top: 20px
     }
+
+    .app-install-submit:invalid {
+      background: #F5F5F5;
+      color : #C3C3C3;
+    }
   }
 }
 
@@ -111,3 +100,7 @@ input.ng-valid[required], input.ng-valid {
   border-color: #26b726;
   background: #e4ede4
 }
+
+//.ng-invalid  {
+//  border-left: 5px solid #a94442; /* red */
+//}

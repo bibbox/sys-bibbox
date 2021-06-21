@@ -59,7 +59,9 @@ export class InstallScreenComponent implements OnInit {
           [
             Validators.required,
             this.noWhitespaceValidator,
-            Validators.pattern(/^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$/)
+            Validators.pattern(/^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$/),
+            Validators.minLength(4),
+            Validators.maxLength(64)
           ],
           [
             this.asyncInstanceNameValidator()
@@ -85,7 +87,8 @@ export class InstallScreenComponent implements OnInit {
         this.formBuilder.control('', [
           Validators.required,
           Validators.minLength(Number(envParam.min_length)),
-          Validators.maxLength(Number(envParam.max_length))]
+          Validators.maxLength(Number(envParam.max_length)),
+          this.noWhitespaceValidator]
         )
       );
     }
@@ -109,13 +112,18 @@ export class InstallScreenComponent implements OnInit {
       };
 
       console.log(this.installForm.value.instance_id, JSON.stringify(payload));
-      this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
-      // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
-      //   .toPromise()
-      //   .then(
-      //     res => console.log(res)
-      //   );
-      this.router.navigateByUrl('/instances').then();
+
+      // this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
+      // // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
+      // //   .toPromise()
+      // //   .then(
+      // //     res => console.log(res)
+      // //   );
+      // this.router.navigateByUrl('/instances').then();
+
+
+      this.getFormValidationErrors(this.installForm);
+      this.getFormValidationErrors(this.envParamForm);
     }
     else {
       this.getFormValidationErrors(this.installForm);

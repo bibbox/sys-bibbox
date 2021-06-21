@@ -1,19 +1,20 @@
-<mat-accordion class="activity-list">
-  <mat-expansion-panel (opened)="getLogsOfActivity(activity.id)"
-                       (afterCollapse)="unsubscribeFromLogs(); clearLogs()"
-                       (destroyed)="unsubscribeFromLogs(); clearLogs()"
-                       #mep="matExpansionPanel"
-                       class="activity-item"
-                       *ngFor="let activity of activityList | slice:0:50"
-                       [expanded]="activity.id == focussedActivityID"
-  >
-    <mat-expansion-panel-header class="activity-item-header">
+<div class="activities">
+  <mat-accordion class="activity-list">
+    <mat-expansion-panel (opened)="getLogsOfActivity(activity.id)"
+                         (afterCollapse)="unsubscribeFromLogs(); clearLogs()"
+                         (destroyed)="unsubscribeFromLogs(); clearLogs()"
+                         #mep="matExpansionPanel"
+                         class="activity-item"
+                         *ngFor="let activity of activityList | slice:0:50"
+                         [expanded]="activity.id == focussedActivityID"
+    >
+      <mat-expansion-panel-header class="activity-item-header">
       <span class="activity-state" [ngSwitch]="activity.state">
         <img *ngSwitchCase="'FINISHED'" [src]="activityStates.finished" alt="state">
         <img *ngSwitchCase="'ERROR'" [src]="activityStates.error" alt="state">
         <img *ngSwitchDefault [src]="activityStates.ongoing" alt="state">
       </span>
-      <span class="activity-icon">
+        <span class="activity-icon">
         <svg viewBox="0 0 1000 1000" [ngSwitch]="activity.type">
           <path *ngSwitchCase="'INSTALL_INSTANCE'" [attr.d]="svgPaths.install"></path>
           <path *ngSwitchCase="'DELETE_INSTANCE'" [attr.d]="svgPaths.delete"></path>
@@ -22,24 +23,25 @@
           <path *ngSwitchCase="'RESTART_INSTANCE'" [attr.d]="svgPaths.restart"></path>
         </svg>
       </span>
-      <div>
+        <div>
         <span class="activity-title">
           {{activity.name}}
         </span> <br>
-        <span class="activity-start-date">
+          <span class="activity-start-date">
           started: {{activity.start_time}}
         </span>
-        <span class="activity-end-date" *ngIf="activity.finished_time !== 'None'">
+          <span class="activity-end-date" *ngIf="activity.finished_time !== 'None'">
           finished: {{activity.finished_time}}
         </span>
-      </div>
-    </mat-expansion-panel-header>
-    <ng-template matExpansionPanelContent>
-      <div class="activity-item-log-container">
-        <div class="container-log-entry" *ngFor="let item of activityLogs">
-          [{{item.timestamp}}] [{{item.type}}] {{item.message}}
         </div>
-      </div>
-    </ng-template>
-  </mat-expansion-panel>
-</mat-accordion>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <div class="activity-item-log-container">
+          <div class="container-log-entry" *ngFor="let item of activityLogs">
+            [{{item.timestamp}}] [{{item.type}}] {{item.message}}
+          </div>
+        </div>
+      </ng-template>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

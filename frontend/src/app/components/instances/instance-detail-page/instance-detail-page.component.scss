@@ -223,12 +223,11 @@
 
 .description-form-field {
   width: 90%;
-  flex: content;
-  flex-flow: row;
+  display: flex;
 
   textarea {
     min-height: 80px;
-    height: fit-content;
+    overflow-y: auto;
   }
 }
 
@@ -254,10 +253,6 @@
     .label-short {
       padding: 10px 10px;
       width: 90px;
-    }
-    .value {
-      font-weight: bold;
-      color: #6496b4
     }
   }
 }
@@ -307,4 +302,43 @@
       flex-flow: column nowrap;
     }
   }
+}
+
+.instance-names {
+  display: flex;
+  flex-flow: row nowrap;
+
+  .instance-names-item {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+
+    .instance-names-item-input {
+      flex-grow: 1;
+    }
+
+  }
+}
+
+.descriptions {
+  display: flex;
+  flex-flow: column nowrap;
+
+  .description-form-field {
+    flex-flow: column nowrap;
+    display: flex;
+    flex-grow: 1;
+
+    textarea {
+      flex-grow: 1;
+      min-height: 80px;
+    }
+  }
+}
+
+
+.value {
+  font-weight: bold;
+  color: #6496b4
 }

@@ -6,6 +6,15 @@
       <h3>{{instanceDetailForm.controls['displayname_long'].value}}</h3>
     </div>
     <span class="instance-details-controls" *ngIf="tabIndex == 0">
+      <ng-container *ngIf="instanceItem.state === 'ERROR'"> <!--  -->
+        <span class="status in_operation"></span>
+        <button (click)="deleteInstance()">
+          <svg viewBox="0 0 1000 1000">
+            <path [attr.d]="svgPaths.delete"></path>
+          </svg>
+          <span class="text"> Delete </span>
+        </button>
+      </ng-container>
       <ng-container *ngIf="instanceItem.state === 'STOPPED'"> <!--  -->
         <span class="status stopped"></span>
         <button (click)="manageInstance('start')">
@@ -95,33 +104,35 @@
 
         <br><br><br><br>
         <ng-container [formGroup]="instanceDetailForm">
-        <div class="row">
-          <div class="col-2">
-            <label>Short name</label><br>
-            <input type="text" class="right" formControlName="displayname_short" [value]="instanceDetailForm.controls['displayname_short'].value">
+        <div class="instance-names">
+          <div class="instance-names-item">
+            <label class="value">Short name</label>
+            <input type="text" class="instance-names-item-input right" formControlName="displayname_short" [value]="instanceDetailForm.controls['displayname_short'].value">
           </div>
-          <div class="col-2">
-            <label>Long name</label><br>
-            <input type="text" class="right" formControlName="displayname_long" [value]="instanceDetailForm.controls['displayname_long'].value">
+          <div class="instance-names-item">
+            <label class="value">Long name</label>
+            <input type="text" class="instance-names-item-input right" formControlName="displayname_long" [value]="instanceDetailForm.controls['displayname_long'].value">
           </div>
         </div>
         <br><br>
-          <mat-form-field class="description-form-field">
-            <mat-label>Short Description</mat-label>
-            <textarea matInput
+        <div class="descriptions">
+          <div class="description-form-field">
+            <label class="value">Short Description</label>
+            <textarea matInput matTextareaAutosize
                       formControlName="description_short"
                       [value]="instanceDetailForm.controls['description_short'].value"
-                      placeholder="---">
+                      placeholder="">
             </textarea>
-          </mat-form-field> <br/><br/>
-          <mat-form-field class="description-form-field">
-            <mat-label>Long Description</mat-label>
-            <textarea matInput
+          </div> <br/><br/>
+          <div class="description-form-field">
+            <label class="value">Long Description</label>
+            <textarea matInput matTextareaAutosize
                       formControlName="description_long"
                       [value]="instanceDetailForm.controls['description_long'].value"
-                      placeholder="---">
+                      placeholder="">
             </textarea>
-          </mat-form-field>
+          </div>
+        </div>
         </ng-container>
         <div class="save-button">
           <button (click)="saveInstanceChanges()"> Save </button>

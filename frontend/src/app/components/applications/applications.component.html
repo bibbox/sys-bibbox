@@ -1,11 +1,5 @@
 <div id="applications">
-  <div class = "tagger">
-
-  </div>
   <div class= "tag-sidenav">
-    <div id = "facet-search">
-      <!-- MAT CHIPS etc. -->
-    </div>
     <h2 class="tags-title">Tags</h2>
     <div class="facet-container">
       <mat-checkbox *ngFor="let tag of tagsArray" class="tag-item" [(ngModel)]="tag.checked" color="primary" (ngModelChange)="doNothing()">

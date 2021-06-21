@@ -1,8 +1,10 @@
 .activity-overlay {
   box-shadow: #555555;
+  background: inherit;
+
   .activity-overlay-button {
     width: 34px;
-
+    background: inherit;
   }
   .activity-overlay-menu {
     .activity-overlay-menu-item {

@@ -1,15 +1,12 @@
-<mat-toolbar class="toolbar">
-  <mat-toolbar-row>
-    <div class="branding">
-      <img src="assets/silicolab_logo.png" alt="silicolab_logo.svg" class="navbar-icon"/>
-      <span> | {{title}}</span>
-    </div>
-    <span class="menu-spacer"></span>
-    <div class="nav-buttons">
-      <button mat-button *ngFor="let item of navigation" [routerLink]="item.link" routerLinkActive="active">
-        {{item.label}}
-      </button>
-    </div>
-    <app-activity-menu-overlay></app-activity-menu-overlay>
-  </mat-toolbar-row>
-</mat-toolbar>
+<div class="toolbar">
+  <div class="branding">
+    <img src="assets/silicolab_logo.png" alt="silicolab_logo.svg" class="navbar-icon"/>
+    <span> | {{title}}</span>
+  </div>
+  <div class="nav-buttons">
+    <button class="nav-button" *ngFor="let item of navigation" [routerLink]="item.link" routerLinkActive="active">
+      {{item.label}}
+    </button>
+  </div>
+  <app-activity-menu-overlay></app-activity-menu-overlay>
+</div>

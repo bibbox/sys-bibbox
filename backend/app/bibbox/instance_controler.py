@@ -33,24 +33,27 @@ PROXYPATH    = "/opt/bibbox/proxy/sites/"
 
 
 @app_celerey.task(bind=True,  name='instance.stopInstance')
-def stopInstance (self, instance_name):
+def stopInstance (self, instance_name, called_from_deleteInstance=False):
     dh = DockerHandler()
     fh = FileHandler()
 
      # activity service for db-stuff with activity entries
-    activity_service = ActivityService()
+    if called_from_deleteInstance:
+        activity_service = ActivityService()
     
-    # create activity entry in db -> returns ID of created entry 
-    activity_id = activity_service.create(f"Stop Instance: {instance_name}", "STOP_INSTANCE")
-    logger = DBLoggerService(activity_id, f"[STOP] {instance_name}").getLogger()
-    logger.info("stopping containers of {}.".format(instance_name))
+        # create activity entry in db -> returns ID of created entry 
+        activity_id = activity_service.create(f"Stop Instance: {instance_name}", "STOP_INSTANCE")
+        logger = DBLoggerService(activity_id, f"[STOP] {instance_name}").getLogger()
+        logger.info("stopping containers of {}.".format(instance_name))
     fh.updateInstanceJsonState(instance_name, 'STOPPING')
     emitInstanceRefresh()
     dh.docker_stopInstance(instance_name)
 
     fh.updateInstanceJsonState(instance_name, 'STOPPED')
-    logger.info("stopped containers of {}.".format(instance_name))
-    activity_service.update(activity_id, "FINISHED", "SUCCESS")
+    
+    if called_from_deleteInstance:
+        logger.info("stopped containers of {}.".format(instance_name))
+        activity_service.update(activity_id, "FINISHED", "SUCCESS")
     
     emitInstanceRefresh()
 
@@ -165,11 +168,23 @@ def installInstance (self, instanceDescr):
             logger.info("Successfully created the directory {}.".format(instanceDescr['instancename'] + "/instance.json"))
             emitInstanceRefresh()
     
-        # copy all file from the APP repository to the instance Directory
-        file_handler.copyAllFilesToInstanceDirectory (instanceDescr, logger)
+        try:
+            # copy all file from the APP repository to the instance Directory
+            file_handler.copyAllFilesToInstanceDirectory (instanceDescr, logger)
+        except Exception as ex:
+            logger.error(f"Copying files from app-repository to instance directory failed: {ex}")
+            raise
+        else:
+            logger.info("Successfully copied files from app-repository to instance directory.")
 
-        # now we can generate an Instance object
-        instance = Instance (instanceDescr['instancename'])
+
+        instance = None
+        try:
+            # now we can generate an Instance object
+            instance = Instance (instanceDescr['instancename'])
+        except Exception as ex:
+            logger.error(f"Generating instance object failed: {ex}")
+            raise
 
         compose_file_name = INSTANCEPATH + instanceDescr['instancename'] + "/docker-compose.yml"
         proxy_file_name   = PROXYPATH    + '005-' + instanceDescr['instancename'] + ".conf"
@@ -339,7 +354,7 @@ def deleteInstance (self, instance_name):
     try:                
 
         try:
-            stopInstance(instance_name)
+            stopInstance(instance_name, called_from_deleteInstance=True)
         except Exception as ex:
             print ("Stopping {} containers failed. Exception: {}".format(instance_name, ex))
             logger.error("Stopping {} containers failed. Exception: {}".format(instance_name, ex))

@@ -1,34 +1,59 @@
 <div id="app-install">
-  <form [formGroup]="installForm">
+  <form [formGroup]="installForm" class="install-form">
     <div class="app-install-text">
       <h2>{{appItem.app_display_name}}</h2>
       <span> Please fill out the form to install the application. </span>
     </div>
 <!--    <input type="hidden" name="app_name" value="{{appItem.app_name}}" readonly="">-->
 <!--    <input type="hidden" name="version" value="{{selectedVersion.docker_version}}" readonly=""><br/>-->
+    <div class="install-form-item">
+      <div class="error-messages">
+        <div *ngIf="installForm.controls.instance_id.hasError('nameAlreadyExists')">
+          <mat-error>
+            Instance Name already exists.
+          </mat-error>
+        </div>
+        <div *ngIf="installForm.controls.instance_id.hasError('minlength')">
+          <mat-error>
+            ApplicationID too short!
+          </mat-error>
+        </div>
+        <div *ngIf="installForm.controls.instance_id.hasError('maxlength')">
+          <mat-error>
+            ApplicationID too long!
+          </mat-error>
+        </div>
+        <div *ngIf="installForm.controls.instance_id.hasError('required') && installForm.controls.instance_id.dirty">
+          <mat-error>
+            ApplicationID cannot be empty!
+          </mat-error>
+        </div>
+        <div *ngIf="installForm.controls.instance_id.hasError('pattern')">
+          <mat-error>
+            ApplicationID does not match RegEx constraints!
+          </mat-error>
+        </div>
+      </div>
+      <label for="instance_id"> Application ID</label>
+      <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id">
+      <span class="field-description"> Subdomain of your application URL. <b>The application ID can not be changed after the installation.</b></span>
+    </div>
 
-    <label for="instance_id"> Application ID</label>
-    <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id">
-<!--    <span *ngIf="installForm.controls.instance_id.hasError('nameAlreadyExists')">-->
-<!--      <mat-error >-->
-<!--        Instance Name already exists.-->
-<!--      </mat-error>-->
-<!--    </span>-->
-    <span class="field-description"> Subdomain of your application URL. <b>The application ID can not be changed after the installation.</b></span>
+    <div class="install-form-item">
+      <label for="instance_name"> Application Name</label>
+      <input type="text" value="" name="instance_name" required id="instance_name" formControlName="instance_name" > <!-- (ngModelChange)="test('a')" -->
+      <span class="field-description">Full name of your application, can be changed later on.</span>
+    </div>
 
-    <label for="instance_name"> Application Name</label>
-    <input type="text" value="" name="instance_name" required id="instance_name" formControlName="instance_name" > <!-- (ngModelChange)="test('a')" -->
-    <span class="field-description">Full name of your application, can be changed later on.</span>
-
-    <ng-container [formGroup]="envParamForm" *ngFor="let envparam of environmentParameters; let i = index">
+    <div class="install-form-item" [formGroup]="envParamForm" *ngFor="let envparam of environmentParameters; let i = index">
       <label> {{envparam.display_name}} </label>
       <input type="{{envparam.type}}" name="{{envparam.id}}" formControlName="{{envparam.id}}" placeholder="{{envparam.default_value}}">
       <span class="field-description">{{envparam.description}}</span>
-    </ng-container>
+    </div>
 
     <span class="install-submit">
       <button class="app-install-cancel" type="button" (click)="cancel()">Cancel</button>
-      <button class="app-install-submit" type="submit" (click)="install()">Install</button> <!-- [disabled]="!installForm.valid" -->
+      <button class="app-install-submit" type="submit" (click)="install()" [disabled]="!installForm.valid">Install</button>
     </span>
   </form>
 </div>

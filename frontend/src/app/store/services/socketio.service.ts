@@ -29,7 +29,7 @@ export class SocketioService {
   connect(): void {
     this.socket = io(
       // SOCKET_IO_URL,
-      'http://localhost:4200/socket.io',
+      'http://silicolabv4.bibbox.org/socket.io',
       {
       //  reconnectionDelayMax: 10000,
       //   transports: ['websocket']

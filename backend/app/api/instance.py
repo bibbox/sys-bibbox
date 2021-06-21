@@ -85,6 +85,7 @@ class InstanceList(Resource):
         # TODO - error if file does not exist
 
         try: 
+            fh.writeInstancesJsonFile()
             result = json.loads(fh.getInstancesJSONFile())
         except:
             result = []
