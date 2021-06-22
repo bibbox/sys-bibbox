@@ -1,13 +1,13 @@
 {
   "/api/*": {
-    "target": "http://silicolabv4.bibboxlocal",
+    "target": "http://silicolabv4.bibbox.org",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
 
   "/socket.io": {
-    "target": "http://silicolabv4.bibboxlocal/socket.io",
+    "target": "http://silicolabv4.bibbox.org/socket.io",
     "secure": false,
     "changeOrigin": true,
     "ws": true,
