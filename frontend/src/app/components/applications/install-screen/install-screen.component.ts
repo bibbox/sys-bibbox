@@ -120,12 +120,9 @@ export class InstallScreenComponent implements OnInit {
       //     res => console.log(res)
       //   );
       this.router.navigateByUrl('/instances').then();
-
-
-      this.getFormValidationErrors(this.installForm);
-      this.getFormValidationErrors(this.envParamForm);
     }
     else {
+      console.log('errors occurred')
       this.getFormValidationErrors(this.installForm);
       this.getFormValidationErrors(this.envParamForm);
     }
