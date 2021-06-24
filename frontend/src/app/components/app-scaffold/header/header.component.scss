@@ -2,13 +2,23 @@
   background: inherit;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
 }
+
+
+.branding {
+  flex-grow: 0;
+
+  .navbar-icon {
+    max-height: 50px;
+    height: 50px;
+  }
+}
+
 
 .nav-buttons{
   flex-grow: 1;
-  align-items: stretch;
-  justify-content: space-between;
+  display: flex;
+  justify-content: center;
 
   .nav-button {
     border-radius: 25px 25px 25px 25px;
@@ -28,11 +38,8 @@
   }
 }
 
-.branding {
-  flex-grow: 1;
 
-  .navbar-icon {
-    max-height: 50px;
-    height: 50px;
-  }
+.activity-menu-overlay {
+  flex-grow: 0;
+  justify-content: end;
 }

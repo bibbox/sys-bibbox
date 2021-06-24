@@ -23,3 +23,5 @@ backend/app/celerytasks/_test-read-app-params.py
 
 backend/app/templates
 backend/logs
+
+CLIFunctions.sh
