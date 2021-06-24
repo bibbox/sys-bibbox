@@ -30,7 +30,7 @@
         </div>
         <div *ngIf="installForm.controls.instance_id.hasError('pattern')">
           <mat-error>
-            ApplicationID does not match RegEx constraints!
+            ApplicationID does not match RegEx constraints! Can only contain lowercase alphanumeric chars. 
           </mat-error>
         </div>
       </div>
