@@ -203,6 +203,7 @@ class Instance(Resource):
 @api.doc(params={'name_to_check': 'Instancename to check'})
 class Instance(Resource):
     def get(self, name_to_check):
+        name_to_check = str(name_to_check).lower()
         fh = FileHandler()
         res = 'false'
         try:

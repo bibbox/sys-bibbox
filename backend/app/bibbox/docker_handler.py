@@ -22,6 +22,7 @@ class DockerHandler():
     
 
     def docker_getContainerLogs(self, instance_name):
+        instance_name = str(instance_name).lower()
         container_logs_dict = {}
         containers = self.client.containers.list(filters={"label":["com.docker.compose.project={}".format(instance_name)]}, all=True)
         
