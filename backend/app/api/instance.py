@@ -33,23 +33,23 @@ def instanceDesc ():
         idescr = json.load(f)
     return idescr
 
-@api.route('/ping')
-@api.doc(params={'murks': 'test'})
-@api.doc("Just to test if the Instance API is alive")
-class Ping(Resource):
-    def get(self):
-        return {"reply":"PONG"}
+# @api.route('/ping')
+# @api.doc(params={'murks': 'test'})
+# @api.doc("Just to test if the Instance API is alive")
+# class Ping(Resource):
+#     def get(self):
+#         return {"reply":"PONG"}
 
-@api.route('/pong')
-@api.doc("Test a async Process through the Instance API")
-class Ping(Resource):
-    def get(self):
-        testProcessAsync.delay()
-        return {"reply":"PING"}
+# @api.route('/pong')
+# @api.doc("Test a async Process through the Instance API")
+# class Ping(Resource):
+#     def get(self):
+#         testProcessAsync.delay()
+#         return {"reply":"PING"}
 
 
 @api.route('/stop/<string:id>')
-@api.doc("Stop all Instance Containers")
+@api.doc("Stop all Instance Containers of specified instance")
 class Ping(Resource):
     def get(self, id):
         
@@ -58,7 +58,7 @@ class Ping(Resource):
         return {"stopping instance": id}, 200
 
 @api.route('/start/<string:id>')
-@api.doc("Start all Instance Containers")
+@api.doc("Start all Instance Containers of specified instance")
 class Ping(Resource):
     def get(self, id):
         
@@ -67,7 +67,7 @@ class Ping(Resource):
         return {"starting instance": id}, 200
 
 @api.route('/restart/<string:id>')
-@api.doc("Restart all Instance Containers")
+@api.doc("Restart all Instance Containers of specified instance")
 class Ping(Resource):
     def get(self, id):
         
@@ -78,6 +78,7 @@ class Ping(Resource):
 
 
 @api.route('/')
+@api.doc("Get a list of all Instances")
 class InstanceList(Resource):
     def get(self):
         # should we put in an own class ?, maybe yes ...
@@ -95,6 +96,7 @@ class InstanceList(Resource):
 
 @api.route('/<string:id>')
 @api.doc(params={'id': 'An ID'})
+@api.doc("Get info about specified instance.")
 class Instance(Resource):
     
     def get(self, id):

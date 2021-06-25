@@ -22,14 +22,14 @@ export class SocketioService {
   private socket: Socket;
   constructor(private iservice: InstanceService, private store: Store<AppState>) {
     this.connect();
-    // this.checkConnected();
+    this.checkConnected();
     this.addInstanceUpdatesListener();
   }
 
   connect(): void {
     this.socket = io(
-      SOCKET_IO_URL,
-      // 'http://localhost:4200/socket.io',
+      // SOCKET_IO_URL,
+      'http://localhost:4200/socket.io',
       {
       //  reconnectionDelayMax: 10000,
       //   transports: ['websocket']

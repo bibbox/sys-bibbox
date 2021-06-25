@@ -1,7 +1,6 @@
 <div class="activities">
   <mat-accordion class="activity-list">
     <mat-expansion-panel (opened)="getLogsOfActivity(activity.id)"
-                         (afterCollapse)="unsubscribeFromLogs(); clearLogs()"
                          (destroyed)="unsubscribeFromLogs(); clearLogs()"
                          #mep="matExpansionPanel"
                          class="activity-item"

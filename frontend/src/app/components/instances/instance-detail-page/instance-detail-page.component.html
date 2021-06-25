@@ -104,35 +104,35 @@
 
         <br><br><br><br>
         <ng-container [formGroup]="instanceDetailForm">
-        <div class="instance-names">
-          <div class="instance-names-item">
-            <label class="value">Short name</label>
-            <input type="text" class="instance-names-item-input right" formControlName="displayname_short" [value]="instanceDetailForm.controls['displayname_short'].value">
+          <div class="instance-names">
+            <div class="instance-names-item">
+              <label class="value">Short name</label>
+              <input type="text" class="instance-names-item-input right" formControlName="displayname_short" [value]="instanceDetailForm.controls['displayname_short'].value">
+            </div>
+            <div class="instance-names-item">
+              <label class="value">Long name</label>
+              <input type="text" class="instance-names-item-input right" formControlName="displayname_long" [value]="instanceDetailForm.controls['displayname_long'].value">
+            </div>
           </div>
-          <div class="instance-names-item">
-            <label class="value">Long name</label>
-            <input type="text" class="instance-names-item-input right" formControlName="displayname_long" [value]="instanceDetailForm.controls['displayname_long'].value">
+          <br><br>
+          <div class="descriptions">
+            <div class="description-form-field">
+              <label class="value">Short Description</label>
+              <textarea matInput matTextareaAutosize
+                        formControlName="description_short"
+                        [value]="instanceDetailForm.controls['description_short'].value"
+                        class="description-form-field-input">
+              </textarea>
+            </div> <br/><br/>
+            <div class="description-form-field">
+              <label class="value">Long Description</label>
+              <textarea matInput matTextareaAutosize
+                        formControlName="description_long"
+                        [value]="instanceDetailForm.controls['description_long'].value"
+                        class="description-form-field-input">
+              </textarea>
+            </div>
           </div>
-        </div>
-        <br><br>
-        <div class="descriptions">
-          <div class="description-form-field">
-            <label class="value">Short Description</label>
-            <textarea matInput matTextareaAutosize
-                      formControlName="description_short"
-                      [value]="instanceDetailForm.controls['description_short'].value"
-                      placeholder="">
-            </textarea>
-          </div> <br/><br/>
-          <div class="description-form-field">
-            <label class="value">Long Description</label>
-            <textarea matInput matTextareaAutosize
-                      formControlName="description_long"
-                      [value]="instanceDetailForm.controls['description_long'].value"
-                      placeholder="">
-            </textarea>
-          </div>
-        </div>
         </ng-container>
         <div class="save-button">
           <button (click)="saveInstanceChanges()"> Save </button>

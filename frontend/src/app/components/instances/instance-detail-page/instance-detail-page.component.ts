@@ -120,6 +120,8 @@ export class InstanceDetailPageComponent implements OnInit {
     this.instanceService.getInstanceContainerLogs(this.instanceItem.instancename).subscribe(
       (res: JSON) => {
         this.instanceContainerLogs = res;
+        console.log('received instance container logs');
+        console.log(this.instanceContainerLogs);
       }
     );
   }

@@ -83,8 +83,8 @@ class ActivityListAll(Resource):
     
 #         return jsonify( doneTasks )
 
-@api.route("/active")
-class Activity(Resource):
-    @api.doc("get active activities")
-    def get(self):
-        return jsonify({"status": 200, "msg":"Details for Activity"} )
+# @api.route("/active")
+# class Activity(Resource):
+#     @api.doc("get active activities")
+#     def get(self):
+#         return jsonify({"status": 200, "msg":"Details for Activity"} )

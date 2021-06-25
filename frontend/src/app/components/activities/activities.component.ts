@@ -52,13 +52,13 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }
 
   getLogsOfActivity(activityID: number): void {
-    // this.timeInterval.unsubscribe();
-    // this.timeInterval = interval(5000)
-    //   .pipe(
-    //     startWith(0),
-    //     switchMap(() => this.activityService.getLogsOfActivity(activityID))
-    //   ).subscribe((res: LogItem[]) => this.activityLogs = res);
-    this.activityService.getLogsOfActivity(activityID).subscribe((res) => this.activityLogs = res);
+    this.timeInterval.unsubscribe();
+    this.timeInterval = interval(5000)
+      .pipe(
+        startWith(0),
+        switchMap(() => this.activityService.getLogsOfActivity(activityID))
+      ).subscribe((res: LogItem[]) => this.activityLogs = res);
+    // this.activityService.getLogsOfActivity(activityID).subscribe((res) => this.activityLogs = res);
   }
 
   unsubscribeFromLogs(): void {

@@ -296,7 +296,7 @@ def installInstance (self, instanceDescr):
 
         # restart apache
         logger.info("Reloading bibbox-sys-commander-apacheproxy...")
-        process = subprocess.Popen(['docker', 'exec', '-it', 'bibbox-sys-commander-apacheproxy', '/usr/local/apache2/bin/httpd', '-k', 'graceful'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+        process = subprocess.Popen(['docker', 'exec', '-it', 'bibbox-sys-commander-apacheproxy', 'apachectl', '-k', 'graceful'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
         while True:
             line = process.stdout.readline()
             lineerror = process.stderr.readline()

@@ -16,6 +16,7 @@ import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {AddInstanceAction} from '../../../store/actions/instance.actions';
+import {ValidatorService} from '../../../store/services/validator.service';
 
 @Component({
   selector: 'app-install-screen',
@@ -30,7 +31,8 @@ export class InstallScreenComponent implements OnInit {
     private router: Router,
     private appService: ApplicationService,
     private instanceService: InstanceService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private validatorService: ValidatorService
   ) {
 
     // TODO: Find better Workaround
@@ -58,7 +60,7 @@ export class InstallScreenComponent implements OnInit {
         instance_id: ['',
           [
             Validators.required,
-            this.noWhitespaceValidator,
+            this.validatorService.noWhitespaceValidator,
             Validators.pattern(/^[a-z0-9]+([-_][a-z0-9]+)*$/),
             Validators.minLength(4),
             Validators.maxLength(64)
@@ -67,7 +69,13 @@ export class InstallScreenComponent implements OnInit {
             this.asyncInstanceNameValidator()
           ]
         ],
-        instance_name: ['', Validators.required],
+        instance_name: ['',
+          [
+            Validators.required,
+            Validators.minLength(4),
+            Validators.maxLength(64)
+          ]
+        ],
       });
     this.envParamForm = this.formBuilder.group({});
   }
@@ -88,7 +96,7 @@ export class InstallScreenComponent implements OnInit {
           Validators.required,
           Validators.minLength(Number(envParam.min_length)),
           Validators.maxLength(Number(envParam.max_length)),
-          this.noWhitespaceValidator]
+          this.validatorService.noWhitespaceValidator]
         )
       );
     }
@@ -122,39 +130,12 @@ export class InstallScreenComponent implements OnInit {
       this.router.navigateByUrl('/instances').then();
     }
     else {
-      console.log('errors occurred')
-      this.getFormValidationErrors(this.installForm);
-      this.getFormValidationErrors(this.envParamForm);
+      console.log('errors occurred');
+      this.validatorService.getFormValidationErrors(this.installForm);
+      this.validatorService.getFormValidationErrors(this.envParamForm);
     }
   }
 
-  getFormValidationErrors(form: FormGroup): void {
-
-    let totalErrors = 0;
-
-    Object.keys(form.controls).forEach(key => {
-      const controlErrors: ValidationErrors = form.get(key).errors;
-      if (controlErrors != null) {
-        totalErrors++;
-        Object.keys(controlErrors).forEach(keyError => {
-          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
-        });
-      }
-    });
-
-    console.warn('Number of errors: ' , totalErrors);
-  }
-
-  test(value: string): void {
-    value = this.installForm.value.instance_name;
-    console.log(value);
-  }
-
-  // Custom Validators -----------------------------------------------------
-  noWhitespaceValidator(control: AbstractControl): {[key: string]: any} | null {
-    const isSpace = (control.value || '').match(/\s/g);
-    return isSpace ? {whitespace: true} : null;
-  }
 
   asyncInstanceNameValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {

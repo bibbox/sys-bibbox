@@ -29,44 +29,55 @@
 
     .install-form-item {
       display: flex;
-      flex-flow: row wrap;
-      width: 100%
+      flex-flow: column wrap;
+      width: 100%;
+
+      .error-messages {
+        flex-grow: 1;
+      }
+
+
+      .install-item-body {
+        display: flex;
+        flex-flow: row wrap;
+        width: 100%;
+
+        label {
+          display: inline-block;
+          width: 20%;
+          max-width: 100%;
+          margin-bottom: 5px;
+          padding-right: 30px;
+          font-weight: bold;
+          color: #2d6191;
+          text-align: right;
+          height: 33px;
+          line-height: 33px
+        }
+
+        input {
+          display: inline-block;
+          width: 60%;
+          max-width: 100%;
+          padding: 5px 10px;
+          margin-bottom: 5px;
+          border-radius: 3px;
+          border: solid 1px lightgray;
+          text-align: left;
+
+          //.ng-invalid:not(form) {
+          //  border-color: rgb(222, 65, 65);
+          //  background: rgb(242, 225, 225)
+          //}
+          //
+          //.ng-valid[required], .ng-valid {
+          //  border-color: #26b726;
+          //  background: #e4ede4
+          //}
+        }
+      }
     }
 
-    label {
-      display: inline-block;
-      width: 20%;
-      max-width: 100%;
-      margin-bottom: 5px;
-      padding-right: 30px;
-      font-weight: bold;
-      color: #2d6191;
-      text-align: right;
-      height: 33px;
-      line-height: 33px
-    }
-
-    input, textarea{
-      display: inline-block;
-      width: 60%;
-      max-width: 100%;
-      padding: 5px 10px;
-      margin-bottom: 5px;
-      border-radius: 3px;
-      border: solid 1px lightgray;
-      background: white;
-      text-align: left;
-
-      //.ng-invalid:not(form) {
-      //  border-color: rgb(222, 65, 65);
-      //  background: rgb(242, 225, 225)
-      //}
-      //
-      //.ng-valid[required], .ng-valid {
-      //  border-color: #26b726;
-      //  background: #e4ede4
-      //}
-    }
 
     .field-description, .install-submit {
       width: 100%;

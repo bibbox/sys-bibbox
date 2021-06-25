@@ -74,7 +74,7 @@ class Users(Resource):
 @api.doc(params={'id': 'user id'})
 class User(Resource):
 
-    def get (self):
+    def get (self, id):
         print ("looking for user with id = ", id)
         user = user_service.get(id)
         return jsonify (user.as_dict())
