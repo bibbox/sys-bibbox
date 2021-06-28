@@ -6,8 +6,8 @@
     "logLevel": "debug"
   },
 
-  "/socket.io": {
-    "target": "http://silicolabv4.bibboxlocal/socket.io",
+  "/socketio": {
+    "target": "http://silicolabv4.bibboxlocal/socketio",
     "secure": false,
     "changeOrigin": true,
     "ws": true,
