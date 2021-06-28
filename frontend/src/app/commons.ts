@@ -10,7 +10,7 @@ export const API_APPLICATIONS_URL = '/api/v1/apps/';
 export const API_ACTIVITY_URL = '/api/v1/activities/';
 export const API_AUTH_URL = '/api/v1/users/';
 
-export const SOCKET_IO_URL = '/socketio';
+export const SOCKET_IO_URL = '/socket.io';
 
 
 export const  SVG_PATHS = {

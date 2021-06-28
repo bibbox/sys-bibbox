@@ -14,7 +14,7 @@ import time
 #        pass
 #        #self.socketio = socketio = SocketIO(app, logger=True, engineio_logger=True, cors_allowed_origins="*")
 
-@socketio.on('connect', namespace='/socketio') # namespace='/socket.io')
+@socketio.on('connect', namespace='/socket.io') # namespace='/socket.io')
 def ws_connect():
     print('#'*50, ' connected websocket: ', '#'*50)
     emit('connected', {'data': 'Connected'}, broadcast=False)#, namespace="/socket.io") # this should only emit event to connected client
@@ -22,16 +22,16 @@ def ws_connect():
     emitInstanceRefresh() # load instances when first connecting
     socketio.sleep(0)
 
-@socketio.on('disconnect', namespace='/socketio')#, namespace='/socket.io')
+@socketio.on('disconnect', namespace='/socket.io')#, namespace='/socket.io')
 def disconnected():
     print('disconnected')
 
 def emitInstanceRefresh():
     print('emitting instance refresh info')
-    socketio.emit('new_instance_data', {'data': 'New Instance Data in Backend'}, broadcast=True, namespace='/socketio') #, namespace="/socket.io")
+    socketio.emit('new_instance_data', {'data': 'New Instance Data in Backend'}, broadcast=True, namespace='/socket.io') #, namespace="/socket.io")
     socketio.sleep(0)
 
 def emitInstanceDeleted(instance_name):
     print('emitting instance delete info')
-    socketio.emit('instance_deleted', {'id': instance_name}, broadcast=True, namespace='/socketio') #, namespace="/socket.io")
+    socketio.emit('instance_deleted', {'id': instance_name}, broadcast=True, namespace='/socket.io') #, namespace="/socket.io")
     socketio.sleep(0)
