@@ -14,7 +14,7 @@ TODO: before running this script, run the following commands:
     cd bibbox
     sudo git clone https://github.com/bibbox/sys-bibbox.git
     cd sys-bibbox
-    bash INSTALL.sh
+    sudo bash INSTALL.sh
 
 
 
@@ -31,12 +31,12 @@ INFO: The first time loading the applications tab of the website shows no applic
 '
 read -p "Specify domainname + TLD (e.g. silicolabv4.bibbox.org): " DOMAINNAME
 
-sudo apt-get update
-#sudo apt-get install docker.io -y
-sudo apt install docker-compose -y
-sudo apt install nodejs npm -y
-sudo apt install python3-pip -y
-printf 'n\n' | sudo npm i -g @angular/cli
+apt-get update
+#apt-get install docker.io -y
+apt install docker-compose -y
+apt install nodejs npm -y
+apt install python3-pip -y
+printf 'n\n' | npm i -g @angular/cli
 
 #sudo chmod -R 777 /opt/bibbox/
 cd /opt/bibbox
@@ -69,8 +69,10 @@ sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" app.config.ts
 # compile frontend code
 cd /opt/bibbox/sys-bibbox/frontend
 
-printf 'n\n' | sudo npm i
-sudo ng build --prod
+printf 'n\n' | npm i
+printf 'n\n' | npm update
+
+ng build --prod
 
 
 # copy config templates to the actual destination
