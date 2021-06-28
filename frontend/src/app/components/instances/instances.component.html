@@ -1,7 +1,7 @@
 <div class="instances">
 <!--search chips-->
   <div class="instances_results">
-   <div *ngFor="let instance of instanceItems$ | async">
+   <div *ngFor="let instance of instanceItems">
      <app-instance-tile [instance]="instance"></app-instance-tile>
    </div>
   </div>

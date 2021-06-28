@@ -62,8 +62,7 @@ export class InstallScreenComponent implements OnInit {
             Validators.required,
             this.validatorService.noWhitespaceValidator,
             Validators.pattern(/^[a-z0-9]+([-_][a-z0-9]+)*$/),
-            Validators.minLength(4),
-            Validators.maxLength(64)
+            Validators.maxLength(48)
           ],
           [
             this.asyncInstanceNameValidator()
@@ -72,8 +71,7 @@ export class InstallScreenComponent implements OnInit {
         instance_name: ['',
           [
             Validators.required,
-            Validators.minLength(4),
-            Validators.maxLength(64)
+            Validators.maxLength(48)
           ]
         ],
       });

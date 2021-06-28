@@ -1,0 +1,445 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Bibbox"
+basePath: "/bibbox/api/v1"
+tags:
+  - name: "app catalogue"
+  - name: "instances"
+  - name: "activities"
+  - name: "users"
+  - name: "system"
+
+schemes:
+  - "http"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+paths:
+  /users:
+    get:
+      tags:
+        - "users"
+      summary: "Get all registered users"
+      operationId: "listUsers"
+      responses:
+        200:
+          description: "Successfully retrived registered users"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+  
+    post:
+      tags:
+        - "users"
+      summary: "Generate a user with username / password"
+      operationId: "listUsers"
+      responses:
+        200:
+          description: "Successfully generated a user"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not generate a user"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /token:
+    get:
+      tags:
+        - "users"
+      summary: "Get a t token for authorization"
+      operationId: "listUsers"
+      responses:
+        200:
+          description: "Successfully retrived registered users"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+  
+  /secrets:
+    get:
+      tags:
+        - "users"
+      summary: "Check the login / token based authorization"
+      operationId: "listUsers"
+      responses:
+        200:
+          description: "now you kow the secrets"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+ 
+  /catalogues:
+    get:
+      tags:
+        - "app catalogue"
+      summary: "Get all available Catalogues"
+      operationId: "listApps"
+      responses:
+        200:
+          description: "Successfully retrived Catalogues"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+  
+  /catalogues/active:
+    get:
+      tags:
+        - "app catalogue"
+      summary: "Get the active catalogue name"
+      operationId: "listApps"
+      responses:
+        200:
+          description: "Successfully retrived Catalogues"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+    
+    post:
+      tags:
+        - "app catalogue"
+      summary: "Set the active catalogue name"
+      operationId: "listApps"
+      responses:
+        200:
+          description: "Successfully retrived Catalogues"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /apps:
+    get:
+      tags:
+        - "app catalogue"
+      summary: "Get all available Apps of the active catalogue"
+      operationId: "listApps"
+      responses:
+        200:
+          description: "Successfully retrived Apps"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+  
+  /app_names:
+    get:
+      tags:
+        - "app catalogue"
+      summary: "Get all available App Names of the active catalogue"
+      operationId: "listApps"
+      responses:
+        200:
+          description: "Successfully retrived Apps"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /instances:
+    get:
+      tags:
+        - "instances"
+      summary: "Get all installed apps"
+      operationId: "listInstalledApps"
+      responses:
+        200:
+          description: "Successfully retrived list"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+   
+  /instance_control/install:
+    post:
+      tags:
+        - "instances"
+      summary: "Install an App"
+      operationId: "listInstalledApps"
+      responses:
+        200:
+          description: "Successfully retrived list"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not load list"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /instance_control/start/{instanceName}:
+    post:
+      tags:
+        - "instances"
+      summary: "Starts specific app"
+      operationId: "startApp"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "start an app"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully started app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could not start app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /instance_control/stop/{instanceName}:
+    post:
+      tags:
+        - "instances"
+      summary: "Starts specific app"
+      operationId: "stopApp"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "stop an app"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully stopped app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could not stop app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /instance_control/remove/{instanceName}:
+    delete:
+      tags:
+        - "instances"
+      summary: "removes specific app"
+      operationId: "removeApp"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "remove an app"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully removed app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could not remove app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /instance_control/copy/{instanceName}/{newName}:
+    post:
+      tags:
+        - "instances"
+      summary: "copies specific app"
+      operationId: "copyApp"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "old appname"
+          required: true
+          type: "string"
+        - name: "newName"
+          in: "path"
+          description: "new appname"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully copied app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could not copy app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /instance_control/status/{instanceName}:
+    get:
+      tags:
+        - "instances"
+      summary: "return appstatus"
+      operationId: "getStatus"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "user defined app name"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully loaded status of app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could load status of app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+
+  /activities:
+    get:
+      tags:
+        - "activities"
+      summary: "return all activities"
+      operationId: "getStatus"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "user defined app name"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully loaded status of app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could load status of app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /activities/active:
+    get:
+      tags:
+        - "activities"
+      summary: "return all running and queued activities"
+      operationId: "getStatus"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "user defined app name"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully loaded status of app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could load status of app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /activity/{activityID}:
+    get:
+      tags:
+        - "activities"
+      summary: "return details about an activity"
+      operationId: "getStatus"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "user defined app name"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully loaded status of app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could load status of app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /activity/{activityID}/stop:
+    post:
+      tags:
+        - "activities"
+      summary: "(Try) to stop the activity"
+      operationId: "getStatus"
+      parameters:
+        - name: "instanceName"
+          in: "path"
+          description: "user defined app name"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successfully loaded status of app"
+          schema:
+            $ref: "#/definitions/string"
+        404:
+          description: "Could load status of app"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /sysstart:
+    get:
+      tags:
+        - "system"
+      summary: "Starts the bibbox system"
+      operationId: "startSystem"
+      responses:
+        200:
+          description: "Successfully started Bibbox system"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not start Bibbox system"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /sysstop:
+    get:
+      tags:
+        - "system"
+      summary: "Stopps the bibbox system"
+      operationId: "stopSystem"
+      responses:
+        200:
+          description: "Successfully stopped Bibbox system"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not stop Bibbox system"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /sysrestart:
+    get:
+      tags:
+        - "system"
+      summary: "Restarts the bibbox system"
+      operationId: "restartSystem"
+      responses:
+        200:
+          description: "Successfully restarted Bibbox system"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not restart Bibbox system"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+  /syscheck:
+    get:
+      tags:
+        - "system"
+      summary: "Checks the bibbox system services abd packages"
+      operationId: "checkSystem"
+      responses:
+        200:
+          description: "Successfully checked Bibbox system"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "Could not check Bibbox system"
+      x-swagger-router-controller: "web.controllers.bibbox_controller"
+
+definitions:
+  list:
+    type: string
+  string:
+    type: string
+
+

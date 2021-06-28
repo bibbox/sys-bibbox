@@ -42,12 +42,12 @@ class ActivityListAll(Resource):
     
         # return jsonify( activeTasks, scheduledTasks, finishedTasks )
 
-@api.route("/logs/<int:id>")
+@api.route("/logs/<int:activityID>")
 class ActivityListAll(Resource):
     @api.doc("get all logs from one activity")
-    def get(self, id):
+    def get(self, activityID):
         ls = LogService()
-        logs = ls.selectLogsFromActivity(id)
+        logs = ls.selectLogsFromActivity(activityID)
         return logs, 202
 
 

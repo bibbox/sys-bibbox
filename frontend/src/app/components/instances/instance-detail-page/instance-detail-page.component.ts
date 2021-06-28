@@ -29,8 +29,18 @@ export class InstanceDetailPageComponent implements OnInit {
 
   // form fields for patch request
   instanceDetailForm = this.fb.group({
-    displayname_short: ['', Validators.required],
-    displayname_long: ['', ],
+    displayname_short: ['',
+      [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(48)
+      ]
+    ],
+    displayname_long: ['',
+      [
+        Validators.maxLength(96)
+      ]
+    ],
     description_short: ['', ],
     description_long: ['', ]
   });
@@ -65,6 +75,7 @@ export class InstanceDetailPageComponent implements OnInit {
         this.loadContainerLogs();
         this.updateForm();
       });
+    console.log(this.instanceItem.container_names);
   }
 
   updateForm(): void {
@@ -120,8 +131,6 @@ export class InstanceDetailPageComponent implements OnInit {
     this.instanceService.getInstanceContainerLogs(this.instanceItem.instancename).subscribe(
       (res: JSON) => {
         this.instanceContainerLogs = res;
-        console.log('received instance container logs');
-        console.log(this.instanceContainerLogs);
       }
     );
   }

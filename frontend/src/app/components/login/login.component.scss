@@ -1,28 +1,51 @@
-body {
-  padding-top: 100px;
+.login {
+  display: flex;
+  flex-flow: column;
+  width: inherit;
+
+  .login-title {
+    text-align: left;
+    //padding: 0 10px;
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #2d6191
+  }
+  .login-form {
+    display: flex;
+    flex-flow: column;
+    .login-form-field{
+      display: flex;
+      flex-flow: column;
+
+      .login-form-field-input {
+
+        border: none;
+      }
+    }
+  }
+  .login-button-container{
+     .login-button{
+       color: #FFF;
+       background-color: #65b6f0;
+       white-space: nowrap;
+       user-select: none;
+       text-align: center;
+       vertical-align: middle;
+       touch-action: manipulation;
+       display: inline-block;
+       font-weight: 500;
+       width: 200px;
+       height: 50px;
+       margin: 50px 0 0 0;
+     }
+  }
+}
+input.ng-dirty.ng-invalid {
+  border-color: rgb(222, 65, 65);
+  background: rgb(242, 225, 225)
 }
 
-.form-signin {
-  max-width: 330px;
-  margin: 0 auto;
-}
-.form-signin .form-control {
-  box-sizing: border-box;
-  height: auto;
-  padding: 10px;
-  font-size: 16px;
-}
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-.login-button {
-  margin: 0;
+input.ng-valid[required], input.ng-valid {
+  border-color: #26b726;
+  background: #e4ede4
 }

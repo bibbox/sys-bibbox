@@ -62,6 +62,8 @@ import { ActivityMenuOverlayComponent } from './components/activities/activity-m
 import {MatProgressSpinnerModule, MatSpinner} from '@angular/material/progress-spinner';
 import {SocketioService} from './store/services/socketio.service';
 import {RouterModule} from '@angular/router';
+import {JwtModule} from '@auth0/angular-jwt';
+
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
 
@@ -125,6 +127,16 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     FlexLayoutModule,
     FormsModule,
     NgbModule,
+
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('access_token');
+        },
+        allowedDomains: ['localhost:4200', 'silicolabv4.bibboxlocal/api/v1/', 'silicolabv4.bibbox.org/api/v1/'],
+        // disallowedRoutes: ['localhost:4200/api/v1/users/token', 'http://silicolabv4.bibbox.org/api/v1/users/token'],
+      }
+    }),
 
     // store
     StoreModule.forRoot({

@@ -100,6 +100,11 @@ class InstanceHandler ():
         for key in services_dict.keys():
             if 'container_name' in services_dict[key]:
                 container_names.append(services_dict[key]['container_name'])
+            
+            ## if container_name not explicitly specified, use the service name instead
+            ## alternative: enforce container_name to be specified in docker-compose.yml file of new bibbox v4 apps
+            # else:
+            #     container_names.append(key)
 
         return container_names
 

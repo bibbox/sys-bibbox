@@ -92,6 +92,18 @@
         font-size: 14px;
       }
     }
+
+    .instance-hyperlink {
+      border-left: solid #d7dadd 2px;
+
+      .hyperlink-icon {
+        color: #939597;
+      }
+
+      .hyperlink-icon:hover{
+        color: inherit;
+      }
+    }
   }
   .instance-tile-body {
     height: 200px;

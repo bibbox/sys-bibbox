@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {AbstractControl, AsyncValidatorFn, FormGroup, ValidationErrors} from '@angular/forms';
+import {AbstractControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {InstanceService} from './instance.service';
@@ -9,12 +9,10 @@ import {InstanceService} from './instance.service';
 })
 export class ValidatorService {
 
-  constructor(private instanceService: InstanceService) { }
+  constructor() { }
 
   getFormValidationErrors(form: FormGroup): void {
-
     let totalErrors = 0;
-
     Object.keys(form.controls).forEach(key => {
       const controlErrors: ValidationErrors = form.get(key).errors;
       if (controlErrors != null) {

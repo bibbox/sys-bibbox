@@ -40,31 +40,45 @@
       <span class="instance-tile-header-title">{{instance.displayname_short}}</span>
       <span class="instance-tile-header-subtitle">{{instance.displayname_long}}</span>
     </div>
+    <div class="instance-hyperlink">
+      <ng-container *ngIf="instance.state == 'RUNNING'; else elseBlock">
+        <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">
+          <span class="fas fa-power-off fa-2x link-icons hyperlink-icon"></span>
+        </a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <a matTooltip="Open" class="disabled">
+          <span class="fas fa-power-off fa-2x link-icons hyperlink-icon"></span>
+        </a>
+      </ng-template>
+    </div>
   </div>
   <div class="instance-tile-body">
     <div class="instance-tile-body-description">{{instance.description_short}}</div>
   </div>
   <div class="instance-tile-footer">
-    <ng-container *ngIf="instance.state == 'RUNNING'; else elseBlock">
-      <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">
-        <span class="fas fa-power-off fa-2x link-icons"></span>
-      </a>
-    </ng-container>
-    <ng-template #elseBlock>
-      <a matTooltip="Open" class="disabled">
-        <span class="fas fa-power-off fa-2x link-icons"></span>
-      </a>
-    </ng-template>
+<!--    <ng-container *ngIf="instance.state == 'RUNNING'; else elseBlock">-->
+<!--      <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">-->
+<!--        <span class="fas fa-power-off fa-2x link-icons"></span>-->
+<!--      </a>-->
+<!--    </ng-container>-->
+<!--    <ng-template #elseBlock>-->
+<!--      <a matTooltip="Open" class="disabled">-->
+<!--        <span class="fas fa-power-off fa-2x link-icons"></span>-->
+<!--      </a>-->
+<!--    </ng-template>-->
     <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 0}" matTooltip="Dashboard">
       <span class="fas fa-cog fa-2x link-icons"></span>
     </a>
     <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 1}" matTooltip="Logs">
       <span class="fas fa-book fa-2x link-icons"></span>
     </a>
-    <span [ngSwitch]="instance.state" class="instance-tile-footer-state" matTooltip="{{instance.state}}">
-      <i *ngSwitchCase="('STOPPED' || 'ERROR')" class="fas fa-circle stopped"></i>
-      <i *ngSwitchCase="'RUNNING'" class="fas fa-circle running"></i>
-      <i *ngSwitchDefault class="fas fa-circle ongoing"></i>
-    </span>
+    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 0}">
+      <span [ngSwitch]="instance.state" class="instance-tile-footer-state" matTooltip="{{instance.state}}">
+        <i *ngSwitchCase="('STOPPED' || 'ERROR')" class="fas fa-circle stopped"></i>
+        <i *ngSwitchCase="'RUNNING'" class="fas fa-circle running"></i>
+        <i *ngSwitchDefault class="fas fa-circle ongoing"></i>
+      </span>
+    </a>
   </div>
 </div>

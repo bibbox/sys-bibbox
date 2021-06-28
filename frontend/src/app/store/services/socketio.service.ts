@@ -28,8 +28,8 @@ export class SocketioService {
 
   connect(): void {
     this.socket = io(
-      SOCKET_IO_URL,
-      // 'http://localhost:4200/socket.io',
+      // SOCKET_IO_URL,
+      'http://localhost:4200/socket.io',
       {
       //  reconnectionDelayMax: 10000,
       //   transports: ['websocket']
@@ -51,7 +51,7 @@ export class SocketioService {
   checkConnected(): void {
     this.socket.on('connected', (data) => {
       console.log('new ws connection: ', data.data);
-      console.log(this.socket.id);
+      // console.log(this.socket.id);
     });
   }
 }

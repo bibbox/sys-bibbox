@@ -1,15 +1,7 @@
 <div id="applications">
-  <div class= "tag-sidenav">
-    <h2 class="tags-title">Tags</h2>
-    <div class="facet-container">
-      <mat-checkbox *ngFor="let tag of tagsArray" class="tag-item" [(ngModel)]="tag.checked" color="primary" (ngModelChange)="doNothing()">
-        {{tag.name}}
-        <span class="tag-item-background"></span>
-      </mat-checkbox>
-    </div>
-  </div>
+<!--  <div id="applications-search"></div>-->
   <div id="applications-results">
-    <div *ngFor="let applicationGroup of applicationGroupItems$ | async">
+    <div *ngFor="let applicationGroup of appGroups">
       <app-application-group [applicationGroup]="applicationGroup"></app-application-group>
     </div>
   </div>

@@ -135,7 +135,11 @@
           </div>
         </ng-container>
         <div class="save-button">
-          <button (click)="saveInstanceChanges()"> Save </button>
+          <button
+            (click)="saveInstanceChanges()"
+            [disabled]="!instanceDetailForm.valid"
+            [style.background-color]="instanceDetailForm.invalid ? 'rgb(200, 100, 100)' : '#ffffff'"
+          > Save </button>
         </div>
       </ng-template>
     </mat-tab>

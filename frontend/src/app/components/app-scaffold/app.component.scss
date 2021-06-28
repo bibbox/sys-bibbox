@@ -8,12 +8,9 @@
 #content {
   flex-grow: 1;
   box-sizing: content-box;
-  align-self: center;
-  //max-width: 1400px;
-  //align-self: center;
+  align-self: stretch;
   padding-bottom: 100px;
-  margin-left: 20vh;
-  margin-right: 20vh;
+  margin: 0 10vw 0 10vw;
 }
 
 #footer {

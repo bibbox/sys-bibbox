@@ -10,27 +10,27 @@
       <div class="error-messages">
         <div *ngIf="installForm.controls.instance_id.hasError('nameAlreadyExists')">
           <mat-error>
-            Instance Name already exists.
+            InstanceID already exists.
           </mat-error>
         </div>
-        <div *ngIf="installForm.controls.instance_id.hasError('minlength')">
-          <mat-error>
-            ApplicationID too short!
-          </mat-error>
-        </div>
+<!--        <div *ngIf="installForm.controls.instance_id.hasError('minlength')">-->
+<!--          <mat-error>-->
+<!--            ApplicationID too short!-->
+<!--          </mat-error>-->
+<!--        </div>-->
         <div *ngIf="installForm.controls.instance_id.hasError('maxlength')">
           <mat-error>
-            ApplicationID too long!
+            InstanceID too long! max 48 chars.
           </mat-error>
         </div>
         <div *ngIf="installForm.controls.instance_id.hasError('required') && installForm.controls.instance_id.dirty">
           <mat-error>
-            ApplicationID cannot be empty!
+            InstanceID cannot be empty!
           </mat-error>
         </div>
         <div *ngIf="installForm.controls.instance_id.hasError('pattern')">
           <mat-error>
-            ApplicationID does not match RegEx constraints! Can only contain lowercase alphanumeric chars.
+            InstanceID does not match RegEx constraints! Can only contain lowercase alphanumeric chars, as well as hyphens and underscores as dividers.
           </mat-error>
         </div>
       </div>
