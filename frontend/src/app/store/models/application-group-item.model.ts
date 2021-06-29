@@ -6,7 +6,6 @@ export interface ApplicationGroupItem {
 }
 
 export interface ApplicationItem {
-  group_name?: string;
   app_name: string;
   app_display_name: string;
   short_description: string;
