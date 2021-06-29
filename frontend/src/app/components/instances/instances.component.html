@@ -1,7 +1,10 @@
 <div class="instances">
-<!--search chips-->
+  <div id="applications-search">
+    <input type="text" [formControl]="filterFormControl" placeholder="Search for instances" (input)="filter(this.filterFormControl.value)"/>
+    <span>matched: {{filteredInstances.length}}/{{instanceItems.length}}</span>
+  </div>
   <div class="instances_results">
-   <div *ngFor="let instance of instanceItems">
+   <div *ngFor="let instance of filteredInstances">
      <app-instance-tile [instance]="instance"></app-instance-tile>
    </div>
   </div>

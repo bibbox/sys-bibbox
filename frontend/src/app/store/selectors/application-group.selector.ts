@@ -3,7 +3,7 @@ import {ApplicationGroupAdapter, ApplicationGroupState} from '../reducers/applic
 
 const getApplicationGroupFeatureState = createFeatureSelector<ApplicationGroupState>('applicationGroups');
 
-export const loadApplications = createSelector(
+export const loadApplicationGroups = createSelector(
   getApplicationGroupFeatureState,
   ApplicationGroupAdapter.getSelectors().selectAll
 );
@@ -22,14 +22,3 @@ export const getApplicationGroupsError = createSelector(
   getApplicationGroupFeatureState,
   (state: ApplicationGroupState) => state.error
 );
-
-// export const getCurrentApplicationGroupID = createSelector(
-//   getApplicationGroupFeatureState,
-//   (state: ApplicationGroupState) => state.selectedEntityID
-// );
-//
-// export const getCurrentApplicationGroup = createSelector(
-//   getApplicationGroupFeatureState,
-//   getCurrentApplicationGroupID,
-//   state => state.entities[state.selectedEntityID]
-// );

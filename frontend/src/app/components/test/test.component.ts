@@ -52,16 +52,8 @@ export class TestComponent implements OnInit {
   constructor(private store: Store<{AppState}>) { }
 
   ngOnInit(): void {
-    this.getAllTags();
   }
 
-  getAllTags(): void {
-    const appGroups = this.store.pipe(select(applicationGroupSelector.loadApplications));
-    console.log(appGroups);
-    appGroups.forEach(data => (
-      console.log(data)
-    )).then() ;
-  }
 
   updateAllComplete(): any {
     this.allComplete = this.tasks != null && this.tasks.every(t => t.checked);

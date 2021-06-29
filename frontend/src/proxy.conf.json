@@ -10,7 +10,6 @@
     "target": "http://silicolabv4.bibboxlocal/socket.io",
     "secure": false,
     "changeOrigin": true,
-    "ws": true,
     "logLevel": "debug"
   }
 }

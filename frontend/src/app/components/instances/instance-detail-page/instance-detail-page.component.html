@@ -149,11 +149,11 @@
       <ng-template matTabContent>
         <br><br><br>
         <!-- https://material.angular.io/components/table/examples#table-http -->
-        <ng-container *ngFor="let container of this.instanceItem.container_names">
+        <ng-container *ngFor="let container of this.instanceItem.container_names; index as i">
           <div class="instance-details-log-item">
             <span class="instance-details-log-containername">{{container}}</span><br>
             <span class="instance-details-log-command">$ docker logs {{container}} --tail 200</span><br>
-            <div class="instance-details-log-container">
+            <div class="instance-details-log-container">  <!--#scrollContainer [scrollTop]="scrollContainer.scrollHeight">-->
               <div *ngFor="let log_entry of instanceContainerLogs[container]" class="instance-details-log-container-entry">{{log_entry}}</div>
             </div>
           </div>

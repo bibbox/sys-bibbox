@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {InstanceItem} from '../../../store/models/instance-item.model';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/models/app-state.model';
@@ -22,6 +22,9 @@ export class InstanceDetailPageComponent implements OnInit {
   instanceItem: InstanceItem;
   instanceNameFromUrl: string;
 
+  @ViewChild('scrollContainer') container: ElementRef;
+  scrollTop: number = null;
+
   instanceLinks = []; // external Links to Github repo
   instanceContainerLogs = {}; // dictionary -> key: containerName, value: logs of container
 
@@ -32,7 +35,6 @@ export class InstanceDetailPageComponent implements OnInit {
     displayname_short: ['',
       [
         Validators.required,
-        Validators.minLength(4),
         Validators.maxLength(48)
       ]
     ],

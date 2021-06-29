@@ -2,7 +2,7 @@ import {EntityState} from '@ngrx/entity';
 
 export interface ApplicationGroupItem {
   group_name: string;
-  group_members: EntityState<ApplicationItem>;
+  group_members: ApplicationItem[];
 }
 
 export interface ApplicationItem {

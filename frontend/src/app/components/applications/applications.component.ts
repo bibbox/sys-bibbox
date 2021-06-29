@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ApplicationGroupItem} from '../../store/models/application-group-item.model';
+import {ApplicationGroupItem, ApplicationItem} from '../../store/models/application-group-item.model';
 import * as applicationGroupSelector from '../../store/selectors/application-group.selector';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../store/models/app-state.model';
@@ -17,15 +17,27 @@ export class ApplicationsComponent implements OnInit {
   filterFormControl = new FormControl('');
 
   constructor(private store: Store<AppState>) {
-    this.store.pipe(select(applicationGroupSelector.loadApplications)).subscribe((res) => {
+    this.store.pipe(select(applicationGroupSelector.loadApplicationGroups)).subscribe((res) => {
       this.appGroups = res;
-      this.filter('');
+      this.filteredAppGroups = res;
     });
   }
 
   ngOnInit(): void {}
 
   filter(newFilterValue: string): void {
-    // this.filteredAppGroups = this.appGroups.filter();
+    this.filteredAppGroups = [];
+    this.appGroups.forEach((appGroup) => {
+      const tempGroupItems = appGroup.group_members.filter((item) => {
+        return !newFilterValue
+          || item.app_name.toLowerCase().indexOf(newFilterValue.trim()) !== -1
+          || item.tags.some(value => value.toLowerCase().indexOf(newFilterValue.trim()) !== -1);
+      });
+      const tempGroup: ApplicationGroupItem = {group_name: appGroup.group_name, group_members: tempGroupItems};
+      if (tempGroup.group_members.length) {
+        this.filteredAppGroups.push(tempGroup);
+      }
+    });
   }
 }
+

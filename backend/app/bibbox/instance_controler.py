@@ -294,15 +294,8 @@ def installInstance (self, instanceDescr):
                 # same stuff here, also write this in the log file
                 print (lineerror.rstrip())
 
-        # restart apache
-        # to update apache configs you need to either: 
-        #   1) replace apache configs
-        # or:
-        #   2) do graceful apache restart
-        logger.info("Reloading bibbox-sys-commander-apacheproxy...")
-        process = subprocess.Popen(['docker', 'exec', '-it', 'bibbox-sys-commander-apacheproxy', 'httpd', '-k', 'graceful'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
-        #process = subprocess.Popen(['docker', 'cp', '/opt/bibbox/sys-bibbox/apacheproxy/httpd.conf', 'bibbox-sys-commander-apacheproxy:/conf/httpd.conf'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
-        #process = subprocess.Popen(['docker', 'restart', 'bibbox-sys-commander-apacheproxy'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+        logger.info("Graceful reloading bibbox-sys-commander-apacheproxy...")
+        process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'httpd', '-k', 'graceful'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
         while True:
             line = process.stdout.readline()
             lineerror = process.stderr.readline()

@@ -148,6 +148,9 @@
         size: inherit;
       }
     }
+    a:last-child {
+      border-right: none;
+    }
 
     a:hover {
       flex: 1 1;

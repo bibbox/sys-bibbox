@@ -42,6 +42,10 @@ export function ApplicationGroupReducer(
         error: action.payload,
         loading: false
       };
+    case ApplicationGroupsActionTypes.FILTER_APPLICATION_GROUPS:
+      return {
+        ...state
+      };
     default:
       return {...state};
   }

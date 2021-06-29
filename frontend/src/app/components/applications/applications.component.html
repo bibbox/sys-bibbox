@@ -1,7 +1,9 @@
 <div id="applications">
-<!--  <div id="applications-search"></div>-->
+  <div id="applications-search">
+    <input type="text" [formControl]="filterFormControl" placeholder="Search for apps" (input)="filter(this.filterFormControl.value)"/>
+  </div>
   <div id="applications-results">
-    <div *ngFor="let applicationGroup of appGroups">
+    <div *ngFor="let applicationGroup of filteredAppGroups">
       <app-application-group [applicationGroup]="applicationGroup"></app-application-group>
     </div>
   </div>
