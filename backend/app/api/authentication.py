@@ -7,7 +7,7 @@ auth = HTTPBasicAuth()
 
 def check_password(username_or_token, password):
     # first try to authenticate by token
-    print (' XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ')
+    print (' XXXXXXXXXXXXXXX Auth Check XXXXXXXXXXXXXXX ')
     if 'X-API-KEY' in request.headers:
         username_or_token = request.headers['X-API-KEY']
 

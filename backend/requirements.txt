@@ -37,6 +37,7 @@ passlib
 itsdangerous
 docker
 docker-compose
+httplib2
 
 flask-socketio
 python-engineio

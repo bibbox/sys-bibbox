@@ -3,6 +3,9 @@ import requests
 import json 
 import os
 import shutil
+from pathlib import Path
+import httplib2
+import subprocess
 
 from backend.app.bibbox.instance import InstanceDescription
 
@@ -52,6 +55,77 @@ class FileHandler():
         fileurl = self.__getBaseUrlRaw (organization, repository, version) + '/' + filename
         self.copyFileFromWeb (fileurl, instancename, destinationfilename)
 
+    def downloadGithubZip (self, organization, repository, version, instancename, logger=None):
+        try:
+            # get url
+            url = ''
+            if version == 'development':
+                url = 'https://github.com/' + organization + '/' + repository + '/archive/refs/heads/master.zip'
+
+                # newer git default branches are called main instead of master: 
+                h = httplib2.Http()
+                res = h.request(url, 'HEAD')
+
+                if not int(res[0]['status']) < 400:
+                    url = 'https://github.com/' + organization + '/' + repository + '/archive/refs/heads/main.zip'
+
+
+            else:
+                url = 'https://github.com/' + organization + '/' + repository + '/archive/refs/heads/' + version + '.zip'
+
+            # download zip
+            try:
+                download = requests.get(url, verify=False, timeout=3).content
+            except Exception as ex:
+                if logger:
+                    logger.error(f"Something went wrong during connecting to the Web: {ex}")
+                raise Exception('Something went wrong during connecting to the Web. Please Check your internet connection!')
+            
+            with open(self.INSTANCEPATH + instancename + '/' + 'repo.zip', 'wb') as file:
+                file.write(download)
+
+            # unzip folder
+            zip_path = self.INSTANCEPATH + instancename + '/repo.zip'
+            target_path = self.INSTANCEPATH + instancename
+            archive_format = 'zip'
+            shutil.unpack_archive(zip_path, target_path, archive_format)
+            os.remove(zip_path)
+
+            # move unzipped elements to instance root
+            instance_root = os.path.join(self.INSTANCEPATH, instancename)
+            for entry in os.listdir(instance_root):
+                source_dir = os.path.join(instance_root, entry)
+                if os.path.isdir(source_dir):
+                    for fn in os.listdir(source_dir):
+                        shutil.move(os.path.join(source_dir, fn), instance_root)
+            
+            # rm .gitkeep files from empty directories as initdb wants empty dirs
+            process = subprocess.Popen(['find', instance_root, '-type', 'f', '-iname', '\.gitkeep', '-delete'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+            while True:
+                line = process.stdout.readline()
+                lineerror = process.stderr.readline()
+                if not line and not lineerror:
+                    break
+                #the real code does filtering here
+                if line:
+                    # look what we have to strip 
+                    # if there are some escape code, that the öine is overwritten, the last line in the log should be replaced
+                    result = ansi_escape.sub('', line).rstrip()
+                    print (line.rstrip())
+                    print (result)
+                if lineerror:
+                    # same stuff here, also write this in the log file
+                    print (lineerror.rstrip())
+
+                    
+        except Exception as ex:
+            if logger:
+                logger.error(f"Something went wrong during downloading or extracting the Zip: {ex}")
+        else:
+            if logger:
+                logger.info('Successfully copied files from GitHub.')
+
+
     def copyAllFilesToInstanceDirectory (self, instanceDescr, logger=None):
 
         instancename = instanceDescr['instancename']
@@ -59,31 +133,34 @@ class FileHandler():
         repository = instanceDescr['app']['name']
         version    = instanceDescr['app']['version']
 
-        for fn in ('docker-compose-template.yml', 'fileinfo.json', 'appinfo.json'):
-            if logger:
-                logger.info("Copying file {} from GitHub.".format(fn))
-            self.copyFileFromGithub (organization, repository, version, fn , instancename,  fn)
+        # for fn in ('docker-compose-template.yml', 'fileinfo.json', 'appinfo.json'):
+        #     if logger:
+        #         logger.info("Copying file {} from GitHub.".format(fn))
+        #     self.copyFileFromGithub (organization, repository, version, fn , instancename,  fn)
+        self.downloadGithubZip(organization, repository, version, instancename, logger)
 
-        filename =  self.INSTANCEPATH  + instancename + "/" + 'fileinfo.json'
-        with open(filename, 'r') as f:
-            fileinfo = json.load (f)
 
-        for directory_to_copy in fileinfo['makefolders']: 
-            dirname =  self.INSTANCEPATH  + instancename + "/" + directory_to_copy
-            if not os.path.exists(dirname):
-                if logger:
-                    logger.info("Creating directory: {}".format(dirname))
-                os.makedirs(dirname)
+        # filename =  self.INSTANCEPATH  + instancename + "/" + 'fileinfo.json'
+        # with open(filename, 'r') as f:
+        #     fileinfo = json.load (f)
+
+        # could be removed if file structure is already correct in GitHub
+        # for directory_to_copy in fileinfo['makefolders']: 
+        #     dirname =  self.INSTANCEPATH  + instancename + "/" + directory_to_copy
+        #     if not os.path.exists(dirname):
+        #         if logger:
+        #             logger.info("Creating directory: {}".format(dirname))
+        #         os.makedirs(dirname)
             
-        for file_to_copy in fileinfo['copyfiles']:
-            source = file_to_copy["source"]
-            destination = file_to_copy["destination"]
-            if logger:
-                logger.info("Copying file from {} to {}.".format(source, destination))
-            if ('https://' in source or 'http://' in source):
-                self.copyFileFromWeb    (source, instancename,  destination)
-            else:
-                self.copyFileFromGithub (organization, repository, version, source, instancename,  destination)
+        # for file_to_copy in fileinfo['copyfiles']:
+        #     source = file_to_copy["source"]
+        #     destination = file_to_copy["destination"]
+        #     if logger:
+        #         logger.info("Copying file from {} to {}.".format(source, destination))
+        #     if ('https://' in source or 'http://' in source):
+        #         self.copyFileFromWeb    (source, instancename,  destination)
+        #     else:
+        #         self.copyFileFromGithub (organization, repository, version, source, instancename,  destination)
 
     def getConfigFile (self, name):
          filename =  self.CONFIGPATH  + name
@@ -127,7 +204,6 @@ class FileHandler():
         else:            
             raise Exception("Error occurred during update of instance.json: Trying to set unknown instance state.")
 
-            
     def updateInstanceJsonProxy (self, instance_name, proxy_content):
         proxyInfos = []
         for containerInfo in proxy_content:

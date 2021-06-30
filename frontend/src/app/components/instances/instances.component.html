@@ -1,6 +1,6 @@
 <div class="instances">
   <div id="applications-search">
-    <input type="text" [formControl]="filterFormControl" placeholder="Search for instances" (input)="filter(this.filterFormControl.value)"/>
+    <input type="text" [formControl]="filterFormControl" placeholder="Search for instances" (input)="filterInstances(this.filterFormControl.value)"/>
     <span>matched: {{filteredInstances.length}}/{{instanceItems.length}}</span>
   </div>
   <div class="instances_results">

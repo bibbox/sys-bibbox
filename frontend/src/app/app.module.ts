@@ -59,10 +59,8 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import { ActivityMenuOverlayComponent } from './components/activities/activity-menu-overlay/activity-menu-overlay.component';
-import {MatProgressSpinnerModule, MatSpinner} from '@angular/material/progress-spinner';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {SocketioService} from './store/services/socketio.service';
-import {RouterModule} from '@angular/router';
-import {JwtModule} from '@auth0/angular-jwt';
 
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
@@ -127,17 +125,6 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     FlexLayoutModule,
     FormsModule,
     NgbModule,
-
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: () => {
-          return localStorage.getItem('access_token');
-        },
-        allowedDomains: ['localhost:4200', 'silicolabv4.bibboxlocal/api/v1/', 'silicolabv4.bibbox.org/api/v1/'],
-        // disallowedRoutes: ['localhost:4200/api/v1/users/token', 'http://silicolabv4.bibbox.org/api/v1/users/token'],
-      }
-    }),
-
     // store
     StoreModule.forRoot({
       instances: InstanceReducer,

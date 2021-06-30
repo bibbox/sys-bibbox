@@ -4,6 +4,7 @@ import * as applicationGroupSelector from '../../store/selectors/application-gro
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../store/models/app-state.model';
 import {FormControl} from '@angular/forms';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-applications',
@@ -19,7 +20,7 @@ export class ApplicationsComponent implements OnInit {
   constructor(private store: Store<AppState>) {
     this.store.pipe(select(applicationGroupSelector.loadApplicationGroups)).subscribe((res) => {
       this.appGroups = res;
-      this.filteredAppGroups = res;
+      this.filter('');
     });
   }
 

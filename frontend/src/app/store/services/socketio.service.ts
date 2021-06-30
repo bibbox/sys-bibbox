@@ -32,7 +32,7 @@ export class SocketioService {
       // 'http://localhost:4200/socket.io',
       {
       //  reconnectionDelayMax: 10000,
-      //   transports: ['websocket']
+      //  transports: ['websocket']
       }
       );
   }

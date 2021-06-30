@@ -18,17 +18,14 @@ export class InstancesComponent implements OnInit {
   constructor(private store: Store<AppState>) {
     this.store.pipe(select(instanceSelector.selectAllInstances)).subscribe((res) => {
       this.instanceItems = res;
-      this.filteredInstances = res;
+      this.filterInstances(this.filterFormControl.value);
     });
   }
 
   ngOnInit(): void {
-    // this.instanceItems$ = this.store.pipe(select(instanceSelector.selectAllInstances));
-    // this.loading$ = this.store.select(store => store.instances.loading);
-    // this.error$ = this.store.select(store => store.instances.error);
   }
 
-  filter(newFilterValue: string): void {
+  filterInstances(newFilterValue: string): void {
     this.filteredInstances = this.instanceItems.filter((item) => {
       return !newFilterValue ||
         item.displayname_short.toLowerCase().indexOf(newFilterValue.toLowerCase()) !== -1 ||
