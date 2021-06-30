@@ -127,7 +127,7 @@ def updateInstanceInfos (self, instance_name, payload):
 
 @app_celerey.task(bind=True,  name='instance.installInstance')
 def installInstance (self, instanceDescr):
-    path = INSTANCEPATH + instanceDescr['instancename']
+    path_dir = INSTANCEPATH + instanceDescr['instancename']
     # appinfo.json, fileinfo.json, docker-compose-template.yml, 
     
     file_handler = FileHandler()
@@ -152,7 +152,7 @@ def installInstance (self, instanceDescr):
     # generate the instance directory    
     try:
         try:
-            os.mkdir(path)
+            os.mkdir(path_dir)
             path = INSTANCEPATH + instanceDescr['instancename'] + "/instance.json"
             with open(path, 'w') as f:       
                 instanceDescr['state'] = 'INSTALLING'
@@ -175,9 +175,16 @@ def installInstance (self, instanceDescr):
             logger.error(f"Copying files from app-repository to instance directory failed: {ex}")
             raise
         else:
-            logger.info("Successfully copied files from app-repository to instance directory.")
-
-
+            logger.info("Successfully copied files from app-repository to instance directory.\n Setting Permissions")
+            uid = 1000
+            gid = 1000
+            os.chown(path_dir, uid, gid)
+            for root, dirs, files in os.walk(path_dir):
+                for dire in dirs:  
+                    os.chown(os.path.join(root, dire), uid, gid)
+                for file in files:
+                    os.chown(os.path.join(root, file), uid, gid)
+            logger.info("Successfully set permissions")
         instance = None
         try:
             # now we can generate an Instance object
