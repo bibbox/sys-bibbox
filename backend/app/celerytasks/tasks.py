@@ -34,7 +34,7 @@ def rawgithubprefix (github_organization, appid, version):
         return "https://raw.githubusercontent.com/" + github_organization +  "/" + appid + "/" + version + "/"
 
 def loadAndCheckJsonFromGit (url):
-    print ("read info from - ", url)
+    #print ("read info from - ", url)
     try:
         download = requests.get(url).content
         #print (download)
@@ -55,8 +55,8 @@ def syncAppCatalogue (self, catalogueNames):
     catalogueNames_ID = {}
     for ce in cataloguesInDB:
         catalogueNames_ID[ce['name']] = ce['id']
-
-    print (catalogueNames_ID)
+    print('Synching App Catalogue')
+    # print (catalogueNames_ID)
     for cn in catalogueNames:
         url = 'https://raw.githubusercontent.com/bibbox/application-store/master/' + cn + '.json'
         contentAsJson = loadAndCheckJsonFromGit (url)
@@ -105,5 +105,5 @@ def syncAppCatalogue (self, catalogueNames):
             v_rec= BibboxApp (appid, v, appinfo, envparam)
             db.session.add(v_rec)
             db.session.commit()        
-
+    print('Synching App Catalogue completed')
     

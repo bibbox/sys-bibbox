@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  BASEURL: 'silicolabv4.bibboxlocal'
   // SOCKET_IO_URL: 'http://silicolabv4.bibboxlocal/socket.io'
 };
 

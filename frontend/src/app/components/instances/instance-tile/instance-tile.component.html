@@ -1,38 +1,3 @@
-<!--<mat-card>-->
-<!--  <mat-card-header>-->
-<!--    <div mat-card-avatar class="mat-card-header-avatar"></div>-->
-<!--    <mat-card-title> {{instance.displayname_short}} </mat-card-title>-->
-<!--    <mat-card-subtitle> {{instance.instancename}} </mat-card-subtitle>-->
-<!--  </mat-card-header>-->
-<!--  <mat-card-content>-->
-<!--    <span>{{instance.description_short}}</span>-->
-<!--    &lt;!&ndash;         <img src="{{store}}" alt="404" class="application-icon">&ndash;&gt;-->
-<!--    &lt;!&ndash;          {{instance.state}}&ndash;&gt;-->
-<!--    &lt;!&ndash;          <span *ngFor="let entry of instance.proxy">&ndash;&gt;-->
-<!--    &lt;!&ndash;            <br/> new proxy entry:&ndash;&gt;-->
-<!--    &lt;!&ndash;            {{entry.DISPLAYNAME}}&ndash;&gt;-->
-<!--    &lt;!&ndash;            {{entry.TYPE}}&ndash;&gt;-->
-<!--    &lt;!&ndash;            {{entry.TEMPLATE}}&ndash;&gt;-->
-<!--    &lt;!&ndash;          </span>&ndash;&gt;-->
-<!--  </mat-card-content>-->
-<!--  <mat-card-actions class="mat-card-action-buttons">-->
-<!--    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 0}">-->
-<!--      <button matTooltip="Dashboard">-->
-<!--        <span class="fas fa-cog"></span>-->
-<!--      </button>-->
-<!--    </a>-->
-<!--    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 1}">-->
-<!--      <button matTooltip="Logs">-->
-<!--        <span class="fas fa-book"></span>-->
-<!--      </button>-->
-<!--    </a>-->
-<!--    <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer">-->
-<!--      <button matTooltip="Open">-->
-<!--        <span class="fas fa-power-off"></span>-->
-<!--      </button>-->
-<!--    </a>-->
-<!--  </mat-card-actions>-->
-<!--</mat-card>-->
 <div class="instance-tile">
   <div class="instance-tile-header">
     <img class="instance-tile-header-image" src="https://raw.githubusercontent.com/bibbox/{{instance.app.name}}/master/icon.png" alt="404">

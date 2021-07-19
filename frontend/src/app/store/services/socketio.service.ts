@@ -1,17 +1,9 @@
 import {Injectable} from '@angular/core';
 import {SOCKET_IO_URL} from '../../commons';
 import {io, Socket} from 'socket.io-client';
-import {Observable} from 'rxjs';
-import {BASEURL} from '../../../app.config';
-import {
-  DeleteAllInstancesAction,
-  DeleteInstanceAction,
-  DeleteInstanceSuccessAction,
-  LoadInstancesAction
-} from '../actions/instance.actions';
+import {DeleteInstanceSuccessAction} from '../actions/instance.actions';
 import {Store} from '@ngrx/store';
 import {AppState} from '../models/app-state.model';
-import {timeout} from 'rxjs/operators';
 import {InstanceService} from './instance.service';
 
 @Injectable({
@@ -29,7 +21,6 @@ export class SocketioService {
   connect(): void {
     this.socket = io(
       SOCKET_IO_URL,
-      // 'http://localhost:4200/socket.io',
       {
       //  reconnectionDelayMax: 10000,
       //  transports: ['websocket']

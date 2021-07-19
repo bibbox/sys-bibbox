@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CheckboxItemComponent } from './checkbox-item.component';
+import { SysLogsComponent } from './sys-logs.component';
 
-describe('CheckboxItemComponent', () => {
-  let component: CheckboxItemComponent;
-  let fixture: ComponentFixture<CheckboxItemComponent>;
+describe('SysLogsComponent', () => {
+  let component: SysLogsComponent;
+  let fixture: ComponentFixture<SysLogsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CheckboxItemComponent ]
+      declarations: [ SysLogsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CheckboxItemComponent);
+    fixture = TestBed.createComponent(SysLogsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

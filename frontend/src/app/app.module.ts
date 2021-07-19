@@ -12,7 +12,6 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { InstancesComponent } from './components/instances/instances.component';
 import {ApplicationsComponent} from './components/applications/applications.component';
-import { ProfileComponent } from './components/profile/profile.component';
 import { ContactComponent } from './components/about/contact/contact.component';
 import { PartnersComponent } from './components/about/partners/partners.component';
 import { ImprintComponent } from './components/about/imprint/imprint.component';
@@ -52,8 +51,6 @@ import {environment} from '../environments/environment';
 import {storeFreeze} from 'ngrx-store-freeze';
 import {AppState} from './store/models/app-state.model';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import { TestComponent } from './components/test/test.component';
-import { CheckboxItemComponent } from './components/test/checkbox-item/checkbox-item.component';
 import {HttperrorInterceptor} from './httperror.interceptor';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -61,6 +58,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { ActivityMenuOverlayComponent } from './components/activities/activity-menu-overlay/activity-menu-overlay.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {SocketioService} from './store/services/socketio.service';
+import { SysLogsComponent } from './components/sys-logs/sys-logs.component';
 
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
@@ -72,7 +70,6 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     FooterComponent,
     InstancesComponent,
     ApplicationsComponent,
-    ProfileComponent,
     ContactComponent,
     PartnersComponent,
     ImprintComponent,
@@ -86,9 +83,8 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     NotFoundComponent,
     InstallScreenComponent,
     InstallScreenDialogComponent,
-    TestComponent,
-    CheckboxItemComponent,
     ActivityMenuOverlayComponent,
+    SysLogsComponent,
   ],
   imports: [
     // angular

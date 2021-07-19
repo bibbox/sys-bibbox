@@ -36,7 +36,7 @@ from flask_socketio import SocketIO
 bootstrap = Bootstrap()
 app = Flask(__name__)
 
-socketio = SocketIO(app, logger=True, engineio_logger=True, cors_allowed_origins="*", namespace='/', message_queue='redis://redis:6379') #, )
+socketio = SocketIO(app, logger=False, engineio_logger=False, cors_allowed_origins="*", namespace='/', message_queue='redis://redis:6379') #, )
 
 db = SQLAlchemy()
 
