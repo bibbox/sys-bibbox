@@ -19,7 +19,6 @@ TODO: before running this script, run the following commands:
 
 
 INFO: if you want to manually change the URLs after installing:
-    change api-url in /opt/bibbox/sys-bibbox/frontend/src/proxy.conf.json --> "target" : "NEW_API_URL" (e.g. "http://api.silicolabv4.bibbox.org)
     change baseurl in /opt/bibbox/sys-bibbox/config-templates/bibbox.config
     change urls in /opt/bibbox/sys-bibbox/config-templates/  *.conf files
     change urls in /opt/bibbox/proxy/sites *.conf files
