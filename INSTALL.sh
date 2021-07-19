@@ -39,6 +39,8 @@ apt install docker-compose -y
 apt install nodejs npm -y
 apt install python3-pip -y
 printf 'n\n' | npm i -g @angular/cli
+printf 'n\n' | npm update -g @angular/cli
+
 
 #sudo chmod -R 777 /opt/bibbox/
 cd /opt/bibbox
