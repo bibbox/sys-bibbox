@@ -30,6 +30,8 @@ INFO: The first time loading the applications tab of the website shows no applic
 ---------------------------------------------------------------------------------------------------
 '
 read -p "Specify domainname + TLD (e.g. silicolabv4.bibbox.org): " DOMAINNAME
+# TODO: read envparams from file
+
 
 apt-get update
 #apt-get install docker.io -y
@@ -53,16 +55,17 @@ pip3 install -r requirements.txt
 
 # change domainname
 cd /opt/bibbox/sys-bibbox/config-templates
-sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" bibbox.config
-sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" 000-default.conf
-sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" 100-error.conf
+sed -e "s/§§BASEURL/$DOMAINNAME/g" bibbox.config.template > bibbox.config
+sed -e "s/§§BASEURL/$DOMAINNAME/g" 000-default.conf.template > 000-default.conf
+sed -e "s/§§BASEURL/$DOMAINNAME/g" 100-error.conf.template > 100-error.conf
 
 cd /opt/bibbox/sys-bibbox/apacheproxy
-sed -i -e "s/§§SERVERNAME/$DOMAINNAME/g" httpd.conf
+sed -e "s/§§SERVERNAME/$DOMAINNAME/g" httpd.conf.template > httpd.conf
 
-cd /opt/bibbox/sys-bibbox/frontend/src
-sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" proxy.conf.json
-sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" app.config.ts
+cd /opt/bibbox/sys-bibbox/frontend/src/environments
+sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.ts.template > environment.ts
+sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.prod.ts.template > environment.prod.ts
+
 
 
 
