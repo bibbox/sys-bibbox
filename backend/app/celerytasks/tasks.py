@@ -48,7 +48,7 @@ def loadAndCheckJsonFromGit (url):
     return json_again
     
 
-@app_celerey.task(bind=True, base=Singleton, name='tasks.syncAppCatalogue')
+@app_celerey.task(bind=True, name='tasks.syncAppCatalogue') #  base=Singleton,
 def syncAppCatalogue (self, catalogueNames):
     
     cataloguesInDB = catalogue_service.all_as_dict()
@@ -79,10 +79,10 @@ def syncAppCatalogue (self, catalogueNames):
                 app_name =  group_member ['app_name']
                 for version in group_member ['versions']:
                     if app_name in  appVersions:
-                        if version['docker_version'] not in appVersions[app_name]:
-                            appVersions [app_name].append (version['docker_version'])
+                        if version['app_version'] not in appVersions[app_name]:
+                            appVersions [app_name].append (version['app_version'])
                     else:
-                        appVersions [app_name] = [version['docker_version']]
+                        appVersions [app_name] = [version['app_version']]
                         
     for appid in appVersions.keys():
         appinfo = ""

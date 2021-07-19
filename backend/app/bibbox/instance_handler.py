@@ -128,7 +128,7 @@ class InstanceHandler ():
         comp_str = self.template_str
         comp_str = comp_str.replace('§§INSTANCE', compose_dict['instancename'])
         
-        # only applicable if §§KEY in docker-compose-template.yml == KEY in instanceDescr['instanceDescr'] (without §§ Prefix) 
+        # only applicable if §§KEY in docker-compose.yml.template == KEY in instanceDescr['instanceDescr'] (without §§ Prefix) 
         # for key, value in self.instanceDescr.items():
         #     if not isinstance(value, dict):
         #         str = str.replace('§§' + key, value)

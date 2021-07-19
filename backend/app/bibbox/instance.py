@@ -76,7 +76,7 @@ class Instance  ():
 
     def composeTemplate (self):
         
-        path = self.BASEURL + self.id + '/' + 'docker-compose-template.yml'
+        path = self.BASEURL + self.id + '/' + 'docker-compose.yml.template'
         reader = open(path, 'r')
         try:
             c = reader.read()

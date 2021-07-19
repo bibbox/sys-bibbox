@@ -49,9 +49,8 @@ export class InstallScreenDialogComponent implements OnInit {
   }
 
   openInstallScreen(): void {
-    console.log(this.selectedVersion.version.split(' ').join('-'));
     this.router.navigateByUrl(
-      'install/' + this.applicationItem.app_name + '/' + this.selectedVersion.version.split(' ').join('-'),
+      'install/' + this.applicationItem.app_name + '/' + this.selectedVersion.app_version,
       {state: [{...this.applicationItem}, this.selectedVersion]}
     ).then();
 

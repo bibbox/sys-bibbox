@@ -128,7 +128,7 @@ def updateInstanceInfos (self, instance_name, payload):
 @app_celerey.task(bind=True,  name='instance.installInstance')
 def installInstance (self, instanceDescr):
     path_dir = INSTANCEPATH + instanceDescr['instancename']
-    # appinfo.json, fileinfo.json, docker-compose-template.yml, 
+    # appinfo.json, fileinfo.json, docker-compose.yml.template, 
     
     file_handler = FileHandler()
 

@@ -117,6 +117,12 @@ class Instance(Resource):
         instanceDescr['description_short'] = ''   
         instanceDescr['description_long'] = ''  
         
+        # test if version does anything
+        if 'version' in instanceDescr:
+            print( instanceDescr['version'])
+            del instanceDescr['version']  
+        
+        
         jobID = 27
         jobURL = "api/v1/activities/27"
 
