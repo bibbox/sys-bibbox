@@ -7,7 +7,7 @@ import time
 
 # emit vs socketio.emit
 # emit ... only Server-Client except when using broadcast=True, context aware
-# socketio.emit ... broadcast to all connected clients, context unaware
+# socketio.emit ... broadcast to all connected clients, context unaware --> call socketio.emit when outside of app-context e.g. from celery task
 
 # class SocketIOService():
 #    def __init__(self):
