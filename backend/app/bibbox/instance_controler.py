@@ -225,7 +225,7 @@ def installInstance (self, instanceDescr):
                 f.write ( docker_compose )
         except Exception as ex:
             #print ("ERROR in the generation of the Docker Compose" )
-            logger.error("Creation of the {} docker-compose file failed. Exception: {}".format(instanceDescr['instancename'] + "/docker-compose.yml"), ex)
+            logger.error("Creation of the {} docker-compose file failed. Exception: {}".format(instanceDescr['instancename'] + "/docker-compose.yml", ex))
             raise
 
         else:
