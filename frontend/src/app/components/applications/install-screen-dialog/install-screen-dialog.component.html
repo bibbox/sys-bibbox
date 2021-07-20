@@ -15,13 +15,13 @@
           <span class="app-detail-label"> Shortname </span><br/>
           <span class="app-detail-value"> {{appInfo.short_name}} </span><br/><br/>
 
-          <span class="app-detail-label"> Docker versions </span><br/>
+          <span class="app-detail-label"> App Versions </span><br/>
           <span class="app-detail-value">
             <mat-form-field appearance="fill" class="docker-select-panel-class" [floatLabel]="'never'">
               <mat-label></mat-label>
               <mat-select [(value)]="selectedVersion" (selectionChange)="loadAppInfo()">
                 <mat-option *ngFor="let version of applicationItem.versions" [value]="version">
-                  {{version.docker_version}}
+                  {{version.app_version}}
                 </mat-option>
               </mat-select>
             </mat-form-field>

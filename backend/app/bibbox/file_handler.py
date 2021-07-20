@@ -66,9 +66,6 @@ class FileHandler():
                 h = httplib2.Http()
                 res = h.request(url, 'HEAD')
 
-                if not int(res[0]['status']) < 400:
-                    url = 'https://github.com/' + organization + '/' + repository + '/archive/refs/heads/main.zip'
-
 
             else:
                 url = 'https://github.com/' + organization + '/' + repository + '/archive/refs/heads/' + version + '.zip'
@@ -133,7 +130,7 @@ class FileHandler():
         repository = instanceDescr['app']['name']
         version    = instanceDescr['app']['version']
 
-        # for fn in ('docker-compose-template.yml', 'fileinfo.json', 'appinfo.json'):
+        # for fn in ('docker-compose.yml.template', 'fileinfo.json', 'appinfo.json'):
         #     if logger:
         #         logger.info("Copying file {} from GitHub.".format(fn))
         #     self.copyFileFromGithub (organization, repository, version, fn , instancename,  fn)

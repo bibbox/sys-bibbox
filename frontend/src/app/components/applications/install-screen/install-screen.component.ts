@@ -56,7 +56,7 @@ export class InstallScreenComponent implements OnInit {
     this.installForm = this.formBuilder.group(
       {
         app_name: this.appItem.app_name,
-        version: this.selectedVersion.docker_version,
+        version: this.selectedVersion.app_version,
         instance_id: ['',
           [
             Validators.required,

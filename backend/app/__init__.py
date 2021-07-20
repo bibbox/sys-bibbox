@@ -36,7 +36,7 @@ from flask_socketio import SocketIO
 bootstrap = Bootstrap()
 app = Flask(__name__)
 
-socketio = SocketIO(app, logger=True, engineio_logger=True, cors_allowed_origins="*", namespace='/', message_queue='redis://redis:6379') #, )
+socketio = SocketIO(app, logger=False, engineio_logger=False, cors_allowed_origins="*", namespace='/', message_queue='redis://redis:6379') #, )
 
 db = SQLAlchemy()
 
@@ -48,8 +48,9 @@ restapi = Api (apiblueprint)
 app_celerey = Celery(__name__, broker=Config.CELERY_BROKER_URL)
 
 def create_app(config_name):
-    
+    # TODO: enforce stricter CORS
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
     print ("CREATE APP IN ", config_name, " MODE")
     
     app.config.from_object(config[config_name])

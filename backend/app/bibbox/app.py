@@ -26,7 +26,7 @@ class AppCatalogue():
 
   def availableCatalogues (self):
       # read the list of available catalogues from the Config File, don't store it as instance variable
-      return ['bibbox', 'eB3Kit']  
+      return ['bibbox'] #, 'eB3Kit']  
 
   def activeCatalogue (self):
       # read the acive catalogue Config File, don't store it as instance variable
@@ -58,12 +58,12 @@ class AppCatalogue():
                 app_name =  group_member ['app_name']
                 group_member['icon_url'] = 'https://raw.githubusercontent.com/bibbox/' +  group_member['app_name'] + '/master/icon.png'
                 for v in group_member ['versions']:
-                    if v['docker_version'] == 'development':
+                    if v['app_version'] == 'development':
                         v['appinfo'] =  'https://raw.githubusercontent.com/bibbox/' + app_name   + '/master/appinfo.json'
                         v['environment_parameters'] =  'https://raw.githubusercontent.com/bibbox/' + app_name   + '/master/environment-parameters.json'
                     else:
-                        v['appinfo'] =  'https://raw.githubusercontent.com/bibbox/' + app_name   + '/' + v['docker_version'] + '/appinfo.json'
-                        v['environment_parameters'] =  'https://raw.githubusercontent.com/bibbox/' + app_name   + '/' + v['docker_version'] + '/environment-parameters.json'
+                        v['appinfo'] =  'https://raw.githubusercontent.com/bibbox/' + app_name   + '/' + v['app_version'] + '/appinfo.json'
+                        v['environment_parameters'] =  'https://raw.githubusercontent.com/bibbox/' + app_name   + '/' + v['app_version'] + '/environment-parameters.json'
 
       return apps
 

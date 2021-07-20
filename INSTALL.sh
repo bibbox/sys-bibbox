@@ -19,7 +19,6 @@ TODO: before running this script, run the following commands:
 
 
 INFO: if you want to manually change the URLs after installing:
-    change api-url in /opt/bibbox/sys-bibbox/frontend/src/proxy.conf.json --> "target" : "NEW_API_URL" (e.g. "http://api.silicolabv4.bibbox.org)
     change baseurl in /opt/bibbox/sys-bibbox/config-templates/bibbox.config
     change urls in /opt/bibbox/sys-bibbox/config-templates/  *.conf files
     change urls in /opt/bibbox/proxy/sites *.conf files
@@ -30,13 +29,18 @@ INFO: The first time loading the applications tab of the website shows no applic
 ---------------------------------------------------------------------------------------------------
 '
 read -p "Specify domainname + TLD (e.g. silicolabv4.bibbox.org): " DOMAINNAME
+# TODO: read envparams from file
+
 
 apt-get update
 #apt-get install docker.io -y
 apt install docker-compose -y
 apt install nodejs npm -y
 apt install python3-pip -y
+nvm install 14.16.0 -y
 printf 'n\n' | npm i -g @angular/cli
+#printf 'n\n' | npm update -g @angular/cli
+
 
 #sudo chmod -R 777 /opt/bibbox/
 cd /opt/bibbox
@@ -53,16 +57,17 @@ pip3 install -r requirements.txt
 
 # change domainname
 cd /opt/bibbox/sys-bibbox/config-templates
-sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" bibbox.config
-sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" 000-default.conf
-sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" 100-error.conf
+sed -e "s/§§BASEURL/$DOMAINNAME/g" bibbox.config.template > bibbox.config
+sed -e "s/§§BASEURL/$DOMAINNAME/g" 000-default.conf.template > 000-default.conf
+sed -e "s/§§BASEURL/$DOMAINNAME/g" 100-error.conf.template > 100-error.conf
 
 cd /opt/bibbox/sys-bibbox/apacheproxy
-sed -i -e "s/§§SERVERNAME/$DOMAINNAME/g" httpd.conf
+sed -e "s/§§SERVERNAME/$DOMAINNAME/g" httpd.conf.template > httpd.conf
 
-cd /opt/bibbox/sys-bibbox/frontend/src
-sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" proxy.conf.json
-sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" app.config.ts
+cd /opt/bibbox/sys-bibbox/frontend/src/environments
+sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.ts.template > environment.ts
+sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.prod.ts.template > environment.prod.ts
+
 
 
 
@@ -70,9 +75,9 @@ sed -i -e "s/silicolabv4.bibboxlocal/$DOMAINNAME/g" app.config.ts
 cd /opt/bibbox/sys-bibbox/frontend
 
 printf 'n\n' | npm i
-printf 'n\n' | npm update
+#printf 'n\n' | npm update
 
-ng build --prod
+ng build #--prod
 
 
 # copy config templates to the actual destination
