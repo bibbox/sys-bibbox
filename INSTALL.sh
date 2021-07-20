@@ -6,6 +6,7 @@ TODO: before running this script, run the following commands:
     sudo apt install git -y
     sudo apt-get install docker.io -y
     sudo docker network create bibbox-default-network
+    sudo groupadd docker
     sudo usermod -aG docker $USER
     newgrp docker
 

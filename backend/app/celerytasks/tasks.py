@@ -48,7 +48,7 @@ def loadAndCheckJsonFromGit (url):
     return json_again
     
 
-@app_celerey.task(bind=True, name='tasks.syncAppCatalogue') #  base=Singleton,
+@app_celerey.task(bind=True, name='tasks.syncAppCatalogue', base=Singleton) # without singleton, we get recurring queuePool size overflow errors
 def syncAppCatalogue (self, catalogueNames):
     
     cataloguesInDB = catalogue_service.all_as_dict()
