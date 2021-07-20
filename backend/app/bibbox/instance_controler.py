@@ -163,6 +163,7 @@ def installInstance (self, instanceDescr):
             #print ("Creation of the directory %s failed" % path)
             logger.error("Creation of the directory {} failed. Exception: {}".format(instanceDescr['instancename'] + "/instance.json"), ex)
             raise
+
         else:
             #print ("Successfully created the directory %s " % path)
             logger.info("Successfully created the directory {}.".format(instanceDescr['instancename'] + "/instance.json"))
@@ -174,6 +175,7 @@ def installInstance (self, instanceDescr):
         except Exception as ex:
             logger.error(f"Copying files from app-repository to instance directory failed: {ex}")
             raise
+
         else:
             logger.info("Successfully copied files from app-repository to instance directory.\n Setting Permissions")
             uid = 1000
@@ -193,8 +195,7 @@ def installInstance (self, instanceDescr):
             logger.error(f"Generating instance object failed: {ex}")
             raise
 
-        compose_file_name = INSTANCEPATH + instanceDescr['instancename'] + "/docker-compose.yml"
-        proxy_file_name   = PROXYPATH    + '005-' + instanceDescr['instancename'] + ".conf"
+
 
         # add the container names to the instance.json file
         try:
@@ -206,10 +207,14 @@ def installInstance (self, instanceDescr):
         except Exception as ex:
             logger.error("Updating {} instance.json file with container_names failed. Exception: {}".format(instanceDescr['instancename']), ex)
             raise
+
         else:
             logger.info("Successfully updated the {} instance.json file with container_names.".format(instanceDescr['instancename']))
             emitInstanceRefresh()
 
+
+        compose_file_name = INSTANCEPATH + instanceDescr['instancename'] + "/docker-compose.yml"
+        proxy_file_name   = PROXYPATH    + '005-' + instanceDescr['instancename'] + ".conf"
 
         # generate the docker-compose file
         try:
@@ -222,6 +227,7 @@ def installInstance (self, instanceDescr):
             #print ("ERROR in the generation of the Docker Compose" )
             logger.error("Creation of the {} docker-compose file failed. Exception: {}".format(instanceDescr['instancename'] + "/docker-compose.yml"), ex)
             raise
+
         else:
             #print ("Successfully created the docker-compose" )
             logger.info("Successfully created the {} docker-compose file.".format(instanceDescr['instancename'] + "/docker-compose.yml"))
@@ -235,6 +241,7 @@ def installInstance (self, instanceDescr):
             #print ("ERROR in the generation of the Proxy File" )
             logger.error("Creation of the {} proxy file failed. Exception: {}".format('005-' + instanceDescr['instancename'] + ".conf", ex))
             raise
+
         else:
             #print ("Successfully created the proxy file" )
             logger.info("Successfully created the {} proxy file.".format('005-' + instanceDescr['instancename'] + ".conf"))

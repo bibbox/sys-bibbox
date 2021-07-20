@@ -95,6 +95,7 @@ class FileHandler():
                 if os.path.isdir(source_dir):
                     for fn in os.listdir(source_dir):
                         shutil.move(os.path.join(source_dir, fn), instance_root)
+                    os.rmdir(source_dir)
             
             # rm .gitkeep files from empty directories as initdb wants empty dirs
             process = subprocess.Popen(['find', instance_root, '-type', 'f', '-iname', '\.gitkeep', '-delete'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
