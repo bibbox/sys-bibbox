@@ -88,7 +88,13 @@ cp /opt/bibbox/sys-bibbox/config-templates/bibbox.config /opt/bibbox/config/bibb
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-default.template /opt/bibbox/config/proxy-default.template
 
 
-sudo docker-compose up --build -d
+docker-compose up --build -d
+
+# re init db
+# docker exec bibbox-sys-commander-backend python manage.py recreate_db
+# docker exec bibbox-sys-commander-backend python manage.py seed_db
+
+
 echo 'INSTALLATION COMPLETE'
 
 : '
