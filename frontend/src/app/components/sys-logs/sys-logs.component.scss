@@ -1,3 +1,16 @@
+.sys-container-panel {
+  background: none;
+  box-shadow: none;
+  border-bottom: solid 1px #dddddd;
+
+  .sys-container-panel__header {
+    padding: 5px 5px 5px 5px;
+    position: relative;
+    width: 100%;
+    // transition: background 0.3s ease-in-out;
+  }
+}
+
 .sys-container-log-item {
   //float: left;
   //width: 100%;

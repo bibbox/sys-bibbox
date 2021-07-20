@@ -1,1 +1,19 @@
-<p>sys-logs works!</p>
+<mat-accordion>
+  <mat-expansion-panel hideToggle
+    *ngFor="let container of containerNames"
+    class="sys-container-panel"
+  >
+    <mat-expansion-panel-header class="sys-container-panel__header">
+      {{container}}
+    </mat-expansion-panel-header>
+    <div>
+      <div class="sys-container-log-item">
+        <span class="sys-container-log-item__containername">{{container}}</span><br>
+        <span class="sys-container-log-item__command">$ docker logs {{container}} --tail 200</span><br>
+        <div class="sys-container-log-item__container" #scrollContainer [scrollTop]="scrollContainer.scrollHeight">  <!--#scrollContainer [scrollTop]="scrollContainer.scrollHeight">-->
+          <div *ngFor="let log_entry of sysLogs[container]" class="sys-container-log-item__container-entry">{{log_entry}}</div>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

@@ -19,4 +19,8 @@ export class ActivityService {
   getLogsOfActivity(activityID: number): Observable<LogItem[]> {
     return this.http.get<LogItem[]>(API_ACTIVITY_URL + 'logs/' + activityID);
   }
+
+  getSysLogs(): Observable<JSON> {
+    return this.http.get<JSON>(API_ACTIVITY_URL + '/syslogs');
+  }
 }

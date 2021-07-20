@@ -38,7 +38,7 @@ apt-get update
 apt install docker-compose -y
 apt install nodejs npm -y
 apt install python3-pip -y
-nvm install 14.16.0 -y
+# nvm install 14.16.0 -y
 printf 'n\n' | npm i -g @angular/cli
 #printf 'n\n' | npm update -g @angular/cli
 
@@ -78,7 +78,7 @@ cd /opt/bibbox/sys-bibbox/frontend
 printf 'n\n' | npm i
 #printf 'n\n' | npm update
 
-ng build #--prod
+ng build --prod
 
 
 # copy config templates to the actual destination

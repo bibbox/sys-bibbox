@@ -7,6 +7,7 @@ from backend.app import apiblueprint as api, app_celerey as app_celery, app, db,
 
 from backend.app.services.activity_service import ActivityService
 from backend.app.services.log_service import LogService
+from backend.app.bibbox.docker_handler import DockerHandler
 
 
 api = Namespace('activities', description='Activity Resources')
@@ -15,12 +16,6 @@ restapi.add_namespace (api, '/activities')
 
 activity_service = ActivityService()
 log_service = LogService()
-
-'''
-TODO
-I've implemented these wrong - needs rework
- - Lukas
-'''
 
 @api.route("/")
 class ActivityListAll(Resource):
@@ -49,6 +44,19 @@ class ActivityListAll(Resource):
         ls = LogService()
         logs = ls.selectLogsFromActivity(activityID)
         return logs, 202
+
+@api.route("/syslogs")
+class SysLogs(Resource):
+    @api.doc("get all logs from sys-containers as dict")
+    def get(self):
+        logs = {}
+        try:
+            dh = DockerHandler()
+            logs = dh.docker_getContainerLogs('sys-bibbox')
+        except Exception as ex:
+            print(ex)
+            logs = {'error': ex}
+        return logs, 200
 
 
 # @api.route("/active")

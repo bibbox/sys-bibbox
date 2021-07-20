@@ -22,7 +22,7 @@ class LogService(SQLAlchemyService):
         try:
             logs = list()
             res = db.session.query(Log).filter(Log.activity_id == aid).limit(limit)
-            print(res)
+            # print(res)
             for log in res:
                 logs.append({
                     'id'          : log.id,
