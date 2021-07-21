@@ -2,6 +2,7 @@
   <mat-expansion-panel hideToggle
     *ngFor="let container of containerNames"
     class="sys-container-panel"
+                       (opened)="setScrollHeight(scrollContainer.scrollHeight)"
   >
     <mat-expansion-panel-header class="sys-container-panel__header">
       {{container}}
@@ -17,3 +18,12 @@
     </div>
   </mat-expansion-panel>
 </mat-accordion>
+
+
+<!--<div class="sys-container-log-item" *ngFor="let container of containerNames">-->
+<!--  <span class="sys-container-log-item__containername">{{container}}</span><br>-->
+<!--  <span class="sys-container-log-item__command">$ docker logs {{container}} &#45;&#45;tail 200</span><br>-->
+<!--  <div class="sys-container-log-item__container" #scrollContainer [scrollTop]="scrollContainer.scrollHeight">  &lt;!&ndash;#scrollContainer [scrollTop]="scrollContainer.scrollHeight">&ndash;&gt;-->
+<!--    <div *ngFor="let log_entry of sysLogs[container]" class="sys-container-log-item__container-entry">{{log_entry}}</div>-->
+<!--  </div>-->
+<!--</div>-->

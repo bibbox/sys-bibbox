@@ -1,48 +1,3 @@
-//@import '../../../../styles-variables';
-//
-//mat-card {
-//  height: 300px;
-//  width: 300px;
-//  margin: 20px 20px 20px 20px;
-//  align-self: auto;
-//
-//  mat-card-header {
-//    .mat-card-header-avatar {
-//      background-size: cover;
-//    }
-//
-//    mat-card-title {
-//      position: relative;
-//    }
-//    mat-card-subtitle {
-//      min-height: 60px;
-//    }
-//
-//    @media (max-width: map-get($grid-breakpoints, sm)) {
-//      mat-card-subtitle {
-//        min-height: auto;
-//      }
-//    }
-//  }
-//
-//
-//  a[mat-icon-button] {
-//    position: center;
-//  }
-//
-//  .application-icon {
-//    position: relative;
-//    bottom: 2px;
-//    font-size: 16px;
-//    margin: 6px;
-//    max-height: 40px;
-//  }
-//  .mat-card-action-buttons {
-//    display: flex;
-//    justify-content: space-between;
-//  }
-//}
-
 .instance-tile {
   background: #e9eaee;
   height: 300px;
@@ -58,24 +13,33 @@
   -webkit-box-shadow: 1px 1px 10px 2px #C7C7C7;
   box-shadow: 1px 1px 10px 2px #C7C7C7;
 
-  .instance-tile-header {
+  .instance-tile__header {
     height: 60px;
     display: flex;
     flex-direction: row;
     border-bottom: solid #d7dadd 2px;
 
 
-    .instance-tile-header-image {
+    .instance-tile__header-image {
       border-right: solid #d7dadd 2px;
       height: inherit;
-      width: inherit;
-      padding: 8px;
+      width: auto;
+      flex-grow: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        height: inherit;
+        width: inherit;
+        padding: 4px;
+      }
     }
 
-    .instance-tile-header-titles {
+    .instance-tile__header-titles {
       display: flex;
       flex-direction: column;
-      .instance-tile-header-title {
+      flex-grow: 1;
+      .instance-tile__header-title {
         flex: 1 1;
         width: 100%;
         text-align: left;
@@ -84,7 +48,7 @@
         margin-bottom: 0;
         font-weight: bold;
       }
-      .instance-tile-header-subtitle {
+      .instance-tile__header-subtitle {
         flex: 1 1;
         width: 100%;
         padding: 0 10px 5px 10px;
@@ -93,24 +57,33 @@
       }
     }
 
-    .instance-hyperlink {
+    .instance-tile__hyperlink {
+      width: 55px;
+      height: 55px;
+      flex-grow: 0;
       border-left: solid #d7dadd 2px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-      .hyperlink-icon {
+      .instance-tile__hyperlink-icon, .instance-tile__hyperlink-icon-disabled {
         color: #939597;
       }
-
-      .hyperlink-icon:hover{
+      .instance-tile__hyperlink-icon:hover{
         color: inherit;
+      }
+
+      .instance-tile__hyperlink-icon-disabled:hover {
+        color: #939597;
       }
     }
   }
-  .instance-tile-body {
+  .instance-tile__body {
     height: 200px;
     display: flex;
     flex-direction: column;
 
-    .instance-tile-body-description {
+    .instance-tile__body-description {
       border: 5px #666666;
       height: 100%;
       white-space: pre-wrap;
@@ -126,7 +99,7 @@
     }
 
   }
-  .instance-tile-footer {
+  .instance-tile__footer {
     display: flex;
     flex: 1 1;
     flex-direction: row;
@@ -163,7 +136,7 @@
       }
     }
 
-    .instance-tile-footer-state{
+    .instance-tile__footer-state{
       flex: 1 1;
       justify-content: center;
       display: flex;

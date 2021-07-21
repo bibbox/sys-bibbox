@@ -11,9 +11,18 @@
   align-content: flex-start;
 
 
+  .application-search {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    align-self: center;
+    padding-bottom: 20px;
+  }
+
+
   #applications-results {
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: column wrap;
     //padding: 0 10px;
     //border-left: solid 1px #CCC //removed tag-search
 

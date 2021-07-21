@@ -1,27 +1,30 @@
 <div class="instance-tile">
-  <div class="instance-tile-header">
-    <img class="instance-tile-header-image" src="https://raw.githubusercontent.com/bibbox/{{instance.app.name}}/master/icon.png" alt="404">
-    <div class="instance-tile-header-titles">
-      <span class="instance-tile-header-title">{{instance.displayname_short}}</span>
-      <span class="instance-tile-header-subtitle">{{instance.displayname_long}}</span>
+  <div class="instance-tile__header">
+    <div class="instance-tile__header-image">
+      <img src="https://raw.githubusercontent.com/bibbox/{{instance.app.name}}/master/icon.png" alt="404">
     </div>
-    <div class="instance-hyperlink">
+    <div class="instance-tile__header-titles">
+      <span class="instance-tile__header-title">{{instance.displayname_short}}</span>
+      <span class="instance-tile__header-subtitle">{{instance.displayname_long}}</span>
+    </div>
+    <div class="instance-tile__hyperlink">
       <ng-container *ngIf="instance.state == 'RUNNING'; else elseBlock">
         <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">
-          <span class="fas fa-power-off fa-2x link-icons hyperlink-icon"></span>
+          <span class="fas fa-power-off fa-2x link-icons instance-tile__hyperlink-icon"></span>
+<!--          fa-external-link-square-alt fa-external-link-alt-->
         </a>
       </ng-container>
       <ng-template #elseBlock>
         <a matTooltip="Open" class="disabled">
-          <span class="fas fa-power-off fa-2x link-icons hyperlink-icon"></span>
+          <span class="fas fa-power-off fa-2x link-icons instance-tile__hyperlink-icon-disabled"></span>
         </a>
       </ng-template>
     </div>
   </div>
-  <div class="instance-tile-body">
-    <div class="instance-tile-body-description">{{instance.description_short}}</div>
+  <div class="instance-tile__body">
+    <div class="instance-tile__body-description">{{instance.description_short}}</div>
   </div>
-  <div class="instance-tile-footer">
+  <div class="instance-tile__footer">
 <!--    <ng-container *ngIf="instance.state == 'RUNNING'; else elseBlock">-->
 <!--      <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">-->
 <!--        <span class="fas fa-power-off fa-2x link-icons"></span>-->
@@ -39,7 +42,7 @@
       <span class="fas fa-book fa-2x link-icons"></span>
     </a>
     <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 0}">
-      <span [ngSwitch]="instance.state" class="instance-tile-footer-state" matTooltip="{{instance.state}}">
+      <span [ngSwitch]="instance.state" class="instance-tile__footer-state" matTooltip="{{instance.state}}">
         <i *ngSwitchCase="('STOPPED' || 'ERROR')" class="fas fa-circle stopped"></i>
         <i *ngSwitchCase="'RUNNING'" class="fas fa-circle running"></i>
         <i *ngSwitchDefault class="fas fa-circle ongoing"></i>

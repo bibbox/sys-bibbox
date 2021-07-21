@@ -1,5 +1,6 @@
 import os 
 import yaml
+import copy
 
 from backend.app.bibbox.file_handler import FileHandler
 
@@ -49,9 +50,9 @@ class InstanceHandler ():
         compose_str = self.__replacePlaceholders(self.instanceDescr)
         proxy_info = []
         services_dict = yaml.safe_load(compose_str)['services']
-
         for service_key in services_dict.keys():
             if 'proxy' in services_dict[service_key]:
+
                 proxy_entry = {
                     'CONTAINER'     : '',
                     'URLPREFIX'     : '',
@@ -68,27 +69,30 @@ class InstanceHandler ():
         return proxy_info
 
     def generateProxyFile (self):
-
         fh = FileHandler()
-        proxyfilecontent = ""
         defaultTemplate = fh.getConfigFile ('proxy-default.template')
         config = fh.getBIBBOXconfig ()
-        
-        proxyinfomation = self.getProxyInformation ()
-        for pi in proxyinfomation:
+        proxy_infomation = self.getProxyInformation ()
+
+        proxyfile_content = ""
+
+        for pi in proxy_infomation:
             if (pi['TEMPLATE'] == 'default'):
-                proxy = defaultTemplate.replace('§§BASEURL',   config['baseurl'])
+                proxy = defaultTemplate.replace('§§BASEURL', config['baseurl'])
                 proxy = proxy.replace('§§INSTANCEID', pi['URLPREFIX'])
                 proxy = proxy.replace('§§CONTAINERNAME', pi['CONTAINER'])
-                if not proxyfilecontent.endswith("\n\n"):                
-                    proxyfilecontent = proxyfilecontent + proxy + '\n\n'
+                
+                proxyfile_content += proxy + '\n\n'
+
+
             else:
                 # TODO
                 # dynamic templates
                 pass
 
         filename = '005-' + self.instanceDescr['instancename'] + '.conf'
-        fh.writeProxyFile (filename, proxyfilecontent)
+        fh.writeProxyFile (filename, proxyfile_content)
+
 
 
     def getContainerNames (self):

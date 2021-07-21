@@ -15,6 +15,7 @@ export class SysLogsComponent implements OnInit, OnDestroy {
   sysLogs = {};
   containerNames = [];
   timeInterval: Subscription = interval(4000).subscribe();
+  activeContainerScrollHeight = 0;
 
   constructor(
     private as: ActivityService,
@@ -37,5 +38,9 @@ export class SysLogsComponent implements OnInit, OnDestroy {
           this.containerNames = Object.keys(this.sysLogs);
         }
       );
+  }
+
+  setScrollHeight(h: number): void {
+    this.activeContainerScrollHeight = h;
   }
 }

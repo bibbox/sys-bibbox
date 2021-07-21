@@ -1,7 +1,23 @@
 <div id="applications">
-  <div id="applications-search">
-    <input type="text" [formControl]="filterFormControl" placeholder="Search for apps" (input)="filter(this.filterFormControl.value)"/>
+  <div class="application-search">
+    <div class="input-group">
+      <input
+        [formControl]="filterFormControl"
+        placeholder="Search for apps"
+        (input)="filter(this.filterFormControl.value)"
+        class="form-control py-2 border-right-0 border"
+        type="search"
+      />
+      <span class="input-group-append">
+        <span class="input-group-text bg-white">
+          <i class="fas fa-search"></i>
+        </span>
+      </span>
+    </div>
+    <br>
+    <!--    <div class="application-search__selected-instances"> selected: {{filteredInstances.length}}/{{instanceItems.length}}</div>-->
   </div>
+
   <div id="applications-results">
     <div *ngFor="let applicationGroup of filteredAppGroups">
       <app-application-group [applicationGroup]="applicationGroup"></app-application-group>

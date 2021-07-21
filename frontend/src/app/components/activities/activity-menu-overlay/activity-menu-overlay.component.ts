@@ -20,7 +20,7 @@ export class ActivityMenuOverlayComponent implements OnInit {
   };
   activityList: ActivityItem[] = [];
   activeActivities: number;
-  timeInterval: Subscription = interval(3000).subscribe();
+  timeInterval: Subscription = interval(5000).subscribe();
 
   constructor(
     private activityService: ActivityService,

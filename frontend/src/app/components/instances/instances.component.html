@@ -1,7 +1,21 @@
 <div class="instances">
-  <div id="applications-search">
-    <input type="text" [formControl]="filterFormControl" placeholder="Search for instances" (input)="filterInstances(this.filterFormControl.value)"/>
-    <span>matched: {{filteredInstances.length}}/{{instanceItems.length}}</span>
+  <div class="application-search">
+    <div class="input-group">
+      <input
+        [formControl]="filterFormControl"
+        placeholder="Search for instances"
+        (input)="filterInstances(this.filterFormControl.value)"
+        class="form-control py-2 border-right-0 border"
+        type="search"
+      />
+      <span class="input-group-append">
+        <span class="input-group-text bg-white">
+          <i class="fas fa-search"></i>
+        </span>
+      </span>
+    </div>
+    <br>
+<!--    <div class="application-search__selected-instances"> selected: {{filteredInstances.length}}/{{instanceItems.length}}</div>-->
   </div>
   <div class="instances_results">
    <div *ngFor="let instance of filteredInstances">

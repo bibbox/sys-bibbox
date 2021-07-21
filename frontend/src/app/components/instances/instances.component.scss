@@ -1,13 +1,23 @@
 //@import "src/styles.css";
 
 .instances {
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-heading {
   text-transform: uppercase;
   margin: 0 0 20px 0;
 }
+
+.application-search {
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+  align-self: center;
+  padding-bottom: 20px;
+}
+
 
 .instances_results {
   display: flex;
