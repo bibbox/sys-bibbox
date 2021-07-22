@@ -37,7 +37,11 @@
       <ng-template matExpansionPanelContent>
         <div class="activity-item-log-container">
           <div class="container-log-entry" *ngFor="let item of activityLogs">
-            [{{item.timestamp}}] [{{item.type}}] {{item.message}}
+            <span> [{{item.timestamp}}] </span>
+            <span *ngIf="item.type === LOG_TYPES.INFO" class="log__info">[{{item.type}}]</span>
+            <span *ngIf="item.type === LOG_TYPES.WARNING" class="log__warn">[{{item.type}}]</span>
+            <span *ngIf="item.type === LOG_TYPES.ERROR" class="log__error">[{{item.type}}]</span>
+            <span> {{item.message}} </span>
           </div>
         </div>
       </ng-template>

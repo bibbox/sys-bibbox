@@ -167,6 +167,7 @@ def installInstance (self, instanceDescr):
         else:
             #print ("Successfully created the directory %s " % path)
             logger.info("Successfully created the directory {}.".format(instanceDescr['instancename'] + "/instance.json"))
+            
             emitInstanceRefresh()
     
         try:

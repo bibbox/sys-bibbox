@@ -22,15 +22,20 @@
 
     .instance-tile__header-image {
       border-right: solid #d7dadd 2px;
-      height: inherit;
-      width: auto;
+      height: 55px;
+      width: 55px;
+      max-height: 55px;
+      max-width: 55px;
       flex-grow: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       img {
-        height: inherit;
-        width: inherit;
+        display: block;
+        max-height: inherit;
+        max-width: inherit;
+        height: auto;
+        width: auto;
         padding: 4px;
       }
     }

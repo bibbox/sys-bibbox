@@ -21,6 +21,13 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     error: 'assets/error.png',
     ongoing: 'assets/loading.gif'
   };
+
+  LOG_TYPES = {
+    WARNING : 'WARNING',
+    ERROR: 'ERROR',
+    INFO: 'INFO'
+  };
+
   activityList: ActivityItem[] = [];
   activityLogs: LogItem[] = [];
   timeInterval: Subscription = interval(1000).subscribe();
