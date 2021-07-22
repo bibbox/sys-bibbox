@@ -161,7 +161,7 @@ def installInstance (self, instanceDescr):
                 simplejson.dump (instanceDescrInTheFile, f)
         except OSError as ex:
             #print ("Creation of the directory %s failed" % path)
-            logger.error("Creation of the directory {} failed. Exception: {}".format(instanceDescr['instancename'] + "/instance.json"), ex)
+            logger.error("Creation of the directory {} failed. Exception: {}".format(instanceDescr['instancename'] + "/instance.json", ex))
             raise
 
         else:
@@ -206,7 +206,7 @@ def installInstance (self, instanceDescr):
             file_handler.updateInstanceJsonContainerNames(instanceDescr['instancename'], container_names)
 
         except Exception as ex:
-            logger.error("Updating {} instance.json file with container_names failed. Exception: {}".format(instanceDescr['instancename']), ex)
+            logger.error("Updating {} instance.json file with container_names failed. Exception: {}".format(instanceDescr['instancename'], ex))
             raise
 
         else:
