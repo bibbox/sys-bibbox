@@ -1,32 +1,25 @@
-<footer class="docs-footer mt-4">
-  <div class="docs-footer-list">
-
-
-    <div class="docs-footer-copyright">
-      <div>
-        <a href="http://bibbox.org/" target="_blank" rel="noopener noreferrer">
-          &#169; BIBBOX <span class="year">{{year}}</span>
-        </a>
-      </div>
+<footer class="app-scaffold-footer">
+  <div class="app-scaffold-footer__copyright">
+    <div>
+      <a href="http://bibbox.org/" target="_blank" rel="noopener noreferrer">
+        &#169; BIBBOX <span class="year">{{year}}</span>
+      </a>
     </div>
+  </div>
 
-    <div class="docs-footer-navbar">
-      <button class="" *ngFor="let item of bottomNavigation" [routerLink]="[item.link]" routerLinkActive="active">
-        {{item.label}}
-      </button>
-    </div>
+  <div class="app-scaffold-footer__navbar">
+    <button class="" *ngFor="let item of bottomNavigation" [routerLink]="[item.link]" routerLinkActive="active">
+      {{item.label}}
+    </button>
+  </div>
 
 
-    <div class="docs-footer-logo">
-      <div class="footer-logo">
-        <a href="https://b3africa.org" target="_blank" rel="noopener noreferrer">
-          <img class="docs-footer-logos" src="assets/b3africa.png" alt="b3africa">
-        </a>
-        <a href="https://bbmri-eric.eu" target="_blank" rel="noopener noreferrer">
-          <img class="docs-footer-logos" src="assets/bbmri-eric.png" alt="bbmri eric">
-        </a>
-      </div>
-    </div>
-
+  <div class="app-scaffold-footer__logos">
+    <a href="https://b3africa.org" target="_blank" rel="noopener noreferrer">
+      <img class="app-scaffold-footer__logos-img" src="assets/b3africa.png" alt="b3africa">
+    </a>
+    <a href="https://bbmri-eric.eu" target="_blank" rel="noopener noreferrer">
+      <img class="app-scaffold-footer__logos-img" src="assets/bbmri-eric.png" alt="bbmri eric">
+    </a>
   </div>
 </footer>

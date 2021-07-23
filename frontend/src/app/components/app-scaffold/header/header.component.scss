@@ -1,51 +1,54 @@
-.toolbar {
-  background: inherit;
+.app-scaffold-header {
   display: flex;
   flex-direction: row;
-}
 
+  .app-scaffold-header__branding {
+    flex-grow: 0;
+    justify-content: start;
+    align-self: center;
+    width: 20vw;
 
-.branding {
-  flex-grow: 0;
-
-  .navbar-icon {
-    max-height: 50px;
-    height: 50px;
-    width: auto;
-  }
-}
-
-
-.nav-buttons{
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-
-  .nav-button {
-    border-radius: 25px 25px 25px 25px;
-    background: inherit;
-    border: none;
-    box-shadow: none;
-    font-size: larger;
+    .app-scaffold-header__navbar-icon {
+      max-height: 50px;
+      height: 50px;
+      width: auto;
+    }
   }
 
-  .nav-button:hover {
-    background-color: #999999;
+  .app-scaffold-header__nav-buttons{
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .app-scaffold-header__nav-button {
+      border-radius: 25px 25px 25px 25px;
+      background: inherit;
+      box-shadow: none;
+      font-size: larger;
+
+    }
+
+    .app-scaffold-header__nav-button:hover {
+      background-color: #999999;
+    }
+
+    .app-scaffold-header__nav-button:focus {
+      color: #2d6191;
+      box-shadow: inset 0 0 10px #C7C7C7;
+    }
+
+    .app-scaffold-header__nav-button:target {
+      color: #2d6191;
+      box-shadow: inset 0 0 10px #C7C7C7;
+    }
   }
 
-  .nav-button:focus {
-    color: #2d6191;
-    box-shadow: inset 0 0 10px #C7C7C7;
+  .app-scaffold-header__activity-menu-overlay {
+    flex-grow: 0;
+    display: flex;
+    justify-content: flex-end;
+    width: 20vw;
   }
 
-  .nav-button:target {
-    color: #2d6191;
-    box-shadow: inset 0 0 10px #C7C7C7;
-  }
-}
-
-
-.activity-menu-overlay {
-  flex-grow: 0;
-  justify-content: end;
 }

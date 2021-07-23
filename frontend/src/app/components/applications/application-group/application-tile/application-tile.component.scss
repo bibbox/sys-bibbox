@@ -49,15 +49,20 @@
   }
 
 
-  .character, .icon {
+  .icon {
     font-size: 35px;
     float: left;
     width: 100%;
     margin-bottom: 10px;
 
     img {
-      width: 90px;
-      height: 90px
+      max-height: 90px;
+      max-width: 90px;
+      height: auto;
+      width: auto;
+      align-self: center;
+      justify-self: center;
+      justify-content: center;
     }
   }
 
