@@ -10,6 +10,7 @@ from sqlalchemy import desc
 
 from backend.app.models.activity import Activity
 from backend.app.services import SQLAlchemyService
+from backend.app.services.socketio_service import emitActivityRefresh
 from backend.app import db
 
 
@@ -39,6 +40,8 @@ class ActivityService(SQLAlchemyService):
         db.session.commit()
         db.session.refresh(ac)
 
+        emitActivityRefresh()
+
         return ac.id
 
 
@@ -57,6 +60,8 @@ class ActivityService(SQLAlchemyService):
         })
 
         db.session.commit()
+
+        emitActivityRefresh()
 
     def selectAll(self):
         res = db.session.query(Activity).order_by(desc(Activity.id))

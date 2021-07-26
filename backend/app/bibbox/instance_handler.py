@@ -25,19 +25,16 @@ class InstanceHandler ():
              "proxy", 
              "ports"
             ]
+
         compose_str = self.__removeKeysFromNestedDict(yaml.safe_load(compose_str), keys_to_remove)
         return compose_str
 
     def getComposeLocal (self):
 
-        modified_instanceDescr = self.instanceDescr
-        modified_instanceDescr['instancename'] = 'bibbox'
-
-        compose_local_str = self.__replacePlaceholders(modified_instanceDescr)
-
+        compose_local_str = self.__replacePlaceholders(self.instanceDescr)
+        
         keys_to_remove = [
              "proxy", 
-             "ports", 
              "networks"
             ]
 

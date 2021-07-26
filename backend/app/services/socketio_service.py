@@ -32,6 +32,11 @@ def emitInstanceRefresh():
     socketio.emit('new_instance_data', {'data': 'New Instance Data in Backend'}, broadcast=True, namespace='/socket.io') #, namespace="/socket.io")
     socketio.sleep(0)
 
+def emitActivityRefresh():
+    #print('emitting new_activity_status info')
+    socketio.emit('new_activity_status', {'data': 'new activity status'}, broadcast=True, namespace='/socket.io') #, namespace="/socket.io")
+    socketio.sleep(0)
+
 def emitInstanceDeleted(instance_name):
     #print('emitting instance delete info')
     socketio.emit('instance_deleted', {'id': instance_name}, broadcast=True, namespace='/socket.io') #, namespace="/socket.io")

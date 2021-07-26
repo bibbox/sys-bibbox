@@ -233,6 +233,23 @@ def installInstance (self, instanceDescr):
             #print ("Successfully created the docker-compose" )
             logger.info("Successfully created the {} docker-compose file.".format(instanceDescr['instancename'] + "/docker-compose.yml"))
 
+         # generate the docker-compose local file
+        try:
+            template_str = instance.composeTemplate()    
+            instance_handler =  InstanceHandler (template_str, instanceDescr)
+            docker_compose = yaml.dump(instance_handler.getComposeLocal(), default_flow_style=False)
+            compose_file_name_local = compose_file_name + '.local'
+            with open(compose_file_name_local, 'w') as f:       
+                f.write ( docker_compose )
+        except Exception as ex:
+            #print ("ERROR in the generation of the Docker Compose" )
+            logger.error("Creation of the {} docker-compose-local file failed. Exception: {}".format(instanceDescr['instancename'] + "/docker-compose.yml.local", ex))
+            raise
+
+        else:
+            #print ("Successfully created the docker-compose" )
+            logger.info("Successfully created the {} docker-compose file.".format(instanceDescr['instancename'] + "/docker-compose.yml.local"))
+
         # write the proxy file
         try:
             template_str = instance.composeTemplate()    
