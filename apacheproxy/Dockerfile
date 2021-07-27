@@ -10,7 +10,7 @@ RUN mkdir -p /var/www/html/sys-bibbox-client/
 RUN mkdir -p /var/www/html/error/
 
 
-COPY index.html /var/www/html/error/index.html
+COPY error.html /var/www/html/error/error.html
 COPY robots.txt /var/www/robots.txt
 
 # COPY htaccess.conf /var/www/html/sys-bibbox-client/.htaccess
