@@ -1,7 +1,5 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromInstance from '../reducers/instance.reducer';
-import {Dictionary} from '@ngrx/entity';
-import {InstanceItem} from '../models/instance-item.model';
 
 const selectInstanceState = createFeatureSelector<fromInstance.InstanceState>('instances');
 

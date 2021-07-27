@@ -4,7 +4,13 @@
     <span> | {{title}}</span>
   </div>
   <div class="app-scaffold-header__nav-buttons">
-    <button class="app-scaffold-header__nav-button" *ngFor="let item of navigation" [routerLink]="item.link" routerLinkActive="active">
+    <button
+      class="app-scaffold-header__nav-button"
+      id="{{item.label}}"
+      *ngFor="let item of navigation"
+      type="button"
+      [routerLink]="item.link"
+      routerLinkActive="active">
       {{item.label}}
     </button>
   </div>

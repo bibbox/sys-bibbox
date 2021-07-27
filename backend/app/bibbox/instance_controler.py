@@ -38,7 +38,7 @@ def stopInstance (self, instance_name, called_from_deleteInstance=False):
     fh = FileHandler()
 
      # activity service for db-stuff with activity entries
-    if called_from_deleteInstance:
+    if not called_from_deleteInstance:
         activity_service = ActivityService()
     
         # create activity entry in db -> returns ID of created entry 
@@ -51,7 +51,7 @@ def stopInstance (self, instance_name, called_from_deleteInstance=False):
 
     fh.updateInstanceJsonState(instance_name, 'STOPPED')
     
-    if called_from_deleteInstance:
+    if not called_from_deleteInstance:
         logger.info("stopped containers of {}.".format(instance_name))
         activity_service.update(activity_id, "FINISHED", "SUCCESS")
     

@@ -77,7 +77,6 @@ export class InstanceDetailPageComponent implements OnInit {
         this.loadContainerLogs();
         this.updateForm();
       });
-    console.log(this.instanceItem.container_names);
   }
 
   updateForm(): void {

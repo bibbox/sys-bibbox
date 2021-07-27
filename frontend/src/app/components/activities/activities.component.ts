@@ -1,11 +1,13 @@
-import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {SVG_PATHS} from '../../commons';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ACTIVITY_STATES, SVG_PATHS} from '../../commons';
 import {ActivityService} from '../../store/services/activity.service';
 import {ActivityItem, LogItem} from '../../store/models/activity.model';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {interval, Observable, Subject, Subscription} from 'rxjs';
-import {map, startWith, switchMap} from 'rxjs/operators';
-import {NONE_TYPE} from '@angular/compiler';
+import {Router} from '@angular/router';
+import {interval, Subscription} from 'rxjs';
+import {startWith, switchMap} from 'rxjs/operators';
+import {AppState} from '../../store/models/app-state.model';
+import {select, Store} from '@ngrx/store';
+import * as activitySelector from '../../store/selectors/activity.selector';
 
 @Component({
   selector: 'app-activities',
@@ -16,11 +18,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   focussedActivityID: number = this.router.getCurrentNavigation().extras.state?.index || undefined;
 
   svgPaths = SVG_PATHS;
-  activityStates = {
-    finished : 'assets/done.png',
-    error: 'assets/error.png',
-    ongoing: 'assets/loading.gif'
-  };
+  activityStates = ACTIVITY_STATES;
 
   LOG_TYPES = {
     WARNING : 'WARNING',
@@ -36,26 +34,24 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   constructor(
     private activityService: ActivityService,
-    private router: Router) {
+    private router: Router,
+    private store: Store<AppState>) {
 
-    if (this.focussedActivityID !== undefined){
-      this.getLogsOfActivity(this.focussedActivityID);
-    }
+      this.store.pipe(select(activitySelector.selectAllActivities)).subscribe((res) => {
+        this.activityList = res;
+        this.sortActivityList();
+      });
+
+      if (this.focussedActivityID !== undefined){
+        this.getLogsOfActivity(this.focussedActivityID);
+      }
   }
 
   ngOnInit(): void {
-    this.getActivities();
   }
 
   ngOnDestroy(): void {
     this.timeInterval.unsubscribe();
-  }
-
-  getActivities(): void {
-    this.activityService.getActivities().subscribe(
-      (res) => this.activityList = res,
-    );
-    // this.activityList.sort((a, b) => (a.id < b.id) ? 1 : -1);
   }
 
   getLogsOfActivity(activityID: number): void {
@@ -65,7 +61,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         startWith(0),
         switchMap(() => this.activityService.getLogsOfActivity(activityID))
       ).subscribe((res: LogItem[]) => this.activityLogs = res);
-    // this.activityService.getLogsOfActivity(activityID).subscribe((res) => this.activityLogs = res);
+    this.activityService.getLogsOfActivity(activityID).subscribe((res) => this.activityLogs = res);
   }
 
   unsubscribeFromLogs(): void {
@@ -74,5 +70,9 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   clearLogs(): void {
     this.activityLogs = [];
+  }
+
+  sortActivityList(): void {
+    this.activityList.sort((a, b) => (a.start_time < b.start_time) ? 1 : 0);
   }
 }

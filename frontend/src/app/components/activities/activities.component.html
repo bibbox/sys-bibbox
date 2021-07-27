@@ -14,24 +14,24 @@
         <img *ngSwitchDefault [src]="activityStates.ongoing" alt="state">
       </span>
         <span class="activity-icon">
-        <svg viewBox="0 0 1000 1000" [ngSwitch]="activity.type">
-          <path *ngSwitchCase="'INSTALL_INSTANCE'" [attr.d]="svgPaths.install"></path>
-          <path *ngSwitchCase="'DELETE_INSTANCE'" [attr.d]="svgPaths.delete"></path>
-          <path *ngSwitchCase="'START_INSTANCE'" [attr.d]="svgPaths.start"></path>
-          <path *ngSwitchCase="'STOP_INSTANCE'" [attr.d]="svgPaths.stop"></path>
-          <path *ngSwitchCase="'RESTART_INSTANCE'" [attr.d]="svgPaths.restart"></path>
-        </svg>
-      </span>
+          <svg viewBox="0 0 1000 1000" [ngSwitch]="activity.type" width="100%">
+            <path *ngSwitchCase="'INSTALL_INSTANCE'" [attr.d]="svgPaths.install"></path>
+            <path *ngSwitchCase="'DELETE_INSTANCE'" [attr.d]="svgPaths.delete"></path>
+            <path *ngSwitchCase="'START_INSTANCE'" [attr.d]="svgPaths.start"></path>
+            <path *ngSwitchCase="'STOP_INSTANCE'" [attr.d]="svgPaths.stop"></path>
+            <path *ngSwitchCase="'RESTART_INSTANCE'" [attr.d]="svgPaths.restart"></path>
+          </svg>
+        </span>
         <div>
-        <span class="activity-title">
-          {{activity.name}}
-        </span> <br>
-          <span class="activity-start-date">
-          started: {{activity.start_time}}
-        </span>
-          <span class="activity-end-date" *ngIf="activity.finished_time !== 'None'">
-          finished: {{activity.finished_time}}
-        </span>
+          <span class="activity-title">
+            {{activity.name}}
+          </span> <br>
+            <span class="activity-start-date">
+            started: {{activity.start_time}}
+          </span>
+            <span class="activity-end-date" *ngIf="activity.finished_time !== 'None'">
+            finished: {{activity.finished_time}}
+          </span>
         </div>
       </mat-expansion-panel-header>
       <ng-template matExpansionPanelContent>

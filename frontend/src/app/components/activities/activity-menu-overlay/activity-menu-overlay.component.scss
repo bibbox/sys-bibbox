@@ -2,12 +2,12 @@
   box-shadow: #555555;
   background: inherit;
 
-  .activity-overlay-button {
+  .activity-overlay__button {
     background: inherit;
     width: 0;
   }
-  .activity-overlay-menu {
-    .activity-overlay-menu-item {
+  .activity-overlay__menu {
+    .activity-overlay__menu-item {
       .item-state {
         background: red;
         img {
@@ -45,7 +45,7 @@
         font-size: 15px
       }
     }
-    .activity-overlay-menu-item-last {
+    .activity-overlay__menu-item-last {
 
     }
   }

@@ -5,6 +5,7 @@ import {DeleteInstanceSuccessAction} from '../actions/instance.actions';
 import {Store} from '@ngrx/store';
 import {AppState} from '../models/app-state.model';
 import {InstanceService} from './instance.service';
+import {ActivityService} from './activity.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,15 @@ import {InstanceService} from './instance.service';
 export class SocketioService {
 
   private socket: Socket;
-  constructor(private iservice: InstanceService, private store: Store<AppState>) {
+  constructor(
+    private instanceService: InstanceService,
+    private activityService: ActivityService,
+    private store: Store<AppState>
+  ) {
     this.connect();
     this.checkConnected();
     this.addInstanceUpdatesListener();
+    this.addActivityUpdatesListener();
   }
 
   connect(): void {
@@ -29,13 +35,20 @@ export class SocketioService {
   }
 
   addInstanceUpdatesListener(): void {
-    this.socket.on('new_instance_data', (data) => {
+    this.socket.on('new_instance_data', () => {
       console.log('new instance data');
-      this.iservice.refreshStoreInstances();
+      this.instanceService.refreshStoreInstances();
     });
     this.socket.on('instance_deleted', (response) => {
       console.log('deleted instance ' + response.id);
       this.store.dispatch(new DeleteInstanceSuccessAction(response.id));
+    });
+  }
+
+  addActivityUpdatesListener(): void {
+    this.socket.on('new_activity_status', () => {
+      console.log('new_activity_status');
+      this.activityService.refreshStoreActivities();
     });
   }
 

@@ -1,28 +1,25 @@
 <div class="login">
-  <form [formGroup]="loginForm">
-    <h1 class="login-title">Login</h1>
-<!--    <div *ngIf="userService.invalidLogin" class="text-danger m-3">-->
-<!--      Ihre Login Daten sind nicht korrekt, bitte versuchen Sie es erneut.-->
-<!--    </div>-->
-    <div class="login-form">
-      <div class="login-form-field">
-        <label for="field_username">Username</label>
-        <input type="text" class="login-form-field-input" id="field_username" aria-describedby="usernameHelp" formControlName="username">
-      </div>
-      <div class="login-form-field">
-        <label for="field_password">Password</label>
-        <input type="password" class="login-form-field-input" id="field_password" formControlName="password">
-      </div>
-    </div>
-    <div class="login-button-container">
-<!--      (click)="this.userService.login(getUsername(),getPassword())"-->
-      <button
-        [disabled]="!loginForm.valid"
-        (click)="this.logFunct(getUsername(), getPassword())"
-        type="submit"
-        class="login-button">
-        <span>Sign In</span>
-      </button>
-    </div>
+  <form [formGroup]="loginForm" class="login__form">
+    <h1 class="login__title">Login</h1>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Username" formControlName="username" class="login__input">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input type="password" matInput placeholder="Password" formControlName="password" class="login__input">
+    </mat-form-field>
+
+<!--    <p *ngIf="error" class="error">-->
+<!--      {{ error }}-->
+<!--    </p>-->
+
+  <button
+    [disabled]="!loginForm.valid"
+    (click)="this.logFunct(getUsername(), getPassword())"
+    type="submit"
+    class="login__button">
+    <span>Sign In</span>
+  </button>
+  <!--      (click)="this.userService.login(getUsername(),getPassword())"-->
   </form>
 </div>

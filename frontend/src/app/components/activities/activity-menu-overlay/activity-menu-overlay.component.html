@@ -1,16 +1,17 @@
 <div class="activity-overlay">
-  <button [matMenuTriggerFor]="activityMenuOverlay" class="activity-overlay-button" (onMenuOpen)="getActivities()"> <!-- *ngSwitchCase="activeActivities" -->
-    <img *ngIf="!activeActivities" src="assets/done.png" alt="activity status" style="width: 30px; height: 30px; align-self: center">
+  <button [matMenuTriggerFor]="activityMenuOverlay" class="activity-overlay__button"> <!-- *ngSwitchCase="activeActivities" -->
     <ng-container *ngIf="activeActivities">
-      <img *ngIf="activeActivities" src="assets/loading.gif" alt="activity status" style="width: 30px; height: 30px; align-self: center">
+      <img *ngIf="activeActivities" src="../../../../assets/loading.gif" alt="activity status" style="width: 30px; height: 30px; align-self: center">
       <label>{{activeActivities}}</label>
     </ng-container>
+    <img *ngIf="!activeActivities && lastActivityStatus === 'FAILURE'" src="assets/error.png" alt="activity status" style="width: 30px; height: 30px; align-self: center">
+    <img *ngIf="!activeActivities && lastActivityStatus === 'SUCCESS'" src="assets/done.png" alt="activity status" style="width: 30px; height: 30px; align-self: center">
   </button>
-  <mat-menu #activityMenuOverlay="matMenu" class="activity-overlay-menu">
+  <mat-menu #activityMenuOverlay="matMenu" class="activity-overlay__menu">
     <span mat-menu-item
           *ngFor="let activity of activityList | slice:0:10"
           [routerLink]="['/activities/']" [state]="{index: activity.id}"
-          class="activity-overlay-menu-item"
+          class="activity-overlay__menu-item"
     >
 <!--      <span class="activity-menu-item-state" [ngSwitch]="activity.state">-->
 <!--        <img *ngSwitchCase="'FINISHED'" [src]="activityStates.finished" alt="state">-->
@@ -30,7 +31,7 @@
       <span> {{activity.start_time}} - {{activity.finished_time}} </span>
 
     </span>
-    <span mat-menu-item [routerLink]="['/activities/']" class="activity-overlay-menu-item-last"> Show history </span>
+    <span mat-menu-item [routerLink]="['/activities/']" class="activity-overlay__menu-item-last"> Show history </span>
 
     <!--  <button mat-menu-item>-->
     <!--    <mat-icon>dialpad</mat-icon>-->

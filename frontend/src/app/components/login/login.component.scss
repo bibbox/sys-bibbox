@@ -3,49 +3,23 @@
   flex-flow: column;
   width: inherit;
 
-  .login-title {
+  .login__title {
     text-align: left;
-    //padding: 0 10px;
     margin-bottom: 15px;
     font-size: 20px;
     color: #2d6191
   }
-  .login-form {
+  .login__form {
     display: flex;
     flex-flow: column;
-    .login-form-field{
-      display: flex;
-      flex-flow: column;
-
-      .login-form-field-input {
-
-        border: none;
-      }
-    }
   }
-  .login-button-container{
-     .login-button{
-       color: #FFF;
-       background-color: #65b6f0;
-       white-space: nowrap;
-       user-select: none;
-       text-align: center;
-       vertical-align: middle;
-       touch-action: manipulation;
-       display: inline-block;
-       font-weight: 500;
-       width: 200px;
-       height: 50px;
-       margin: 50px 0 0 0;
-     }
-  }
-}
-input.ng-dirty.ng-invalid {
-  border-color: rgb(222, 65, 65);
-  background: rgb(242, 225, 225)
-}
-
-input.ng-valid[required], input.ng-valid {
-  border-color: #26b726;
-  background: #e4ede4
+   .login__button{
+     color: #FFF;
+     background-color: #65b6f0;
+     text-align: center;
+     display: inline-block;
+     width: 200px;
+     height: 50px;
+     margin: 0;
+   }
 }

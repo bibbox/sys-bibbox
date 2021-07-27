@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {SVG_PATHS} from '../../../commons';
 import {ActivityItem} from '../../../store/models/activity.model';
 import {ActivityService} from '../../../store/services/activity.service';
-import {Router} from '@angular/router';
-import {interval, Subscription} from 'rxjs';
+import {AppState} from '../../../store/models/app-state.model';
+import {select, Store} from '@ngrx/store';
+import * as activitySelector from '../../../store/selectors/activity.selector';
 
 @Component({
   selector: 'app-activity-menu-overlay',
@@ -13,33 +14,26 @@ import {interval, Subscription} from 'rxjs';
 export class ActivityMenuOverlayComponent implements OnInit {
 
   svgPaths = SVG_PATHS;
-  activityStates = {
-    finished : 'assets/done.png',
-    error: 'assets/error.png',
-    ongoing: 'assets/loading.gif'
-  };
   activityList: ActivityItem[] = [];
-  activeActivities: number;
-  timeInterval: Subscription = interval(5000).subscribe();
+  activeActivities: 0;
+  lastActivityStatus: string;
 
   constructor(
     private activityService: ActivityService,
-    private router: Router) { }
+    private store: Store<AppState>
+  ) {
+      this.store.pipe(select(activitySelector.selectAllActivities)).subscribe((res) => {
+        this.activityList = res;
+        this.countActiveActivities();
+        this.setLastActivityStatus();
+      });
+  }
+
 
   ngOnInit(): void {
-    this.getActivities();
   }
 
-  getActivities(): void {
-    this.activityService.getActivities().subscribe(
-      (res) => {
-        this.activityList = res;
-        this.checkForActiveActivities();
-      }
-    );
-  }
-
-  checkForActiveActivities(): void {
+  countActiveActivities(): void {
     this.activeActivities = 0;
     this.activityList.forEach(value => {
       if (value.finished_time === 'None') {
@@ -47,6 +41,12 @@ export class ActivityMenuOverlayComponent implements OnInit {
       }
     });
     console.log('active activities: ', this.activeActivities);
+  }
+
+  setLastActivityStatus(): void {
+    if (this.activityList.length) {
+      this.lastActivityStatus = this.activityList[this.activityList.length - 1].result;
+    }
   }
 
   // openReferredActivity(activityID?: number): void {

@@ -59,6 +59,8 @@ import { ActivityMenuOverlayComponent } from './components/activities/activity-m
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {SocketioService} from './store/services/socketio.service';
 import { SysLogsComponent } from './components/sys-logs/sys-logs.component';
+import {ActivityReducer} from './store/reducers/activity.reducer';
+import {ActivityEffects} from './store/effects/activity.effects';
 
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
@@ -125,9 +127,10 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     StoreModule.forRoot({
       instances: InstanceReducer,
       applicationGroups: ApplicationGroupReducer,
+      activities: ActivityReducer,
       auth: AuthReducer,
     }, {metaReducers}),
-    EffectsModule.forRoot([InstanceEffects, ApplicationsEffects]),
+    EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects]),
     StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
   ],
   bootstrap: [AppComponent],

@@ -3,8 +3,8 @@
     <img *ngIf="application.decoration == 'new'" src="../../../../../assets/new.png" alt="new">
     <img *ngIf="application.decoration == 'announced'" src="../../../../../assets/announced.png" alt="announced">
   </span>
-    <span class="icon">
-    <img src="{{application.icon_url}}" alt="404">
+  <span class="icon">
+    <img src="{{application.icon_url}}" alt="{{application.icon_url}}">
     <span class="name"> {{application.app_display_name}} </span>
   </span>
     <span title="Example short description" class="description">

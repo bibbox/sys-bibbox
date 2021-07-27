@@ -32,7 +32,6 @@ export class ApplicationsComponent implements OnInit {
     this.appGroups.forEach((appGroup) => {
       const tempGroupItems = appGroup.group_members.filter((item) => {
         return !newFilterValue
-          || item.app_name.toLowerCase().indexOf(newFilterValue) !== -1
           || item.app_display_name.toLowerCase().indexOf(newFilterValue) !== -1
           || item.tags.some(value => value.toLowerCase().indexOf(newFilterValue) !== -1);
       });
