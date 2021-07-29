@@ -28,8 +28,8 @@ export class SocketioService {
     this.socket = io(
       SOCKET_IO_URL,
       {
-      reconnectionDelayMax: 10000,
-      transports: ['polling'] // , 'websocket']
+      // reconnectionDelayMax: 10000,
+      // transports: ['polling'] // , 'websocket']
       }
       );
   }
