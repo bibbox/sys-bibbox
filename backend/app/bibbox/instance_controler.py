@@ -197,7 +197,7 @@ def installInstance (self, instanceDescr):
                     os.system(f'chmod -R {permission} {folder}')
 
                 else:
-                    logger.warning(f"Setting permissions for object {folder} failed. Path does not exist.")
+                    logger.warning(f"Setting permissions for object {folder} failed. Path {os.path.join(file_handler.INSTANCEPATH, folder)} does not exist.")
 
         except Exception as ex:
             logger.error("Setting permissions for {} failed. Exception: {}".format(instanceDescr['instancename'], ex))
