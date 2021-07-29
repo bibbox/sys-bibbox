@@ -26,6 +26,7 @@ export class SysLogsComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.timeInterval.unsubscribe();
+    this.sysLogs = [];
   }
 
   loadSysContainerLogs(): void {

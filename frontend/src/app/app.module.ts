@@ -43,7 +43,6 @@ import { InstallScreenComponent } from './components/applications/install-screen
 import { InstallScreenDialogComponent } from './components/applications/install-screen-dialog/install-screen-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {AuthReducer} from './store/reducers/auth.reducer';
 import {MatInputModule} from '@angular/material/input';
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
@@ -127,8 +126,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     StoreModule.forRoot({
       instances: InstanceReducer,
       applicationGroups: ApplicationGroupReducer,
-      activities: ActivityReducer,
-      auth: AuthReducer,
+      activities: ActivityReducer
     }, {metaReducers}),
     EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects]),
     StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),

@@ -67,7 +67,6 @@ class InstanceHandler ():
 
     def generateProxyFile (self):
         fh = FileHandler()
-        defaultTemplate = fh.getConfigFile ('proxy-default.template')
         config = fh.getBIBBOXconfig ()
         proxy_infomation = self.getProxyInformation ()
 
@@ -75,16 +74,25 @@ class InstanceHandler ():
 
         for pi in proxy_infomation:
             if (pi['TEMPLATE'] == 'default'):
+                defaultTemplate = fh.getConfigFile ('proxy-default.template')
                 proxy = defaultTemplate.replace('§§BASEURL', config['baseurl'])
                 proxy = proxy.replace('§§INSTANCEID', pi['URLPREFIX'])
                 proxy = proxy.replace('§§CONTAINERNAME', pi['CONTAINER'])
                 
                 proxyfile_content += proxy + '\n\n'
 
+            elif (pi['TEMPLATE'] == 'websocket'):
+                wsTemplate = fh.getConfigFile('proxy-websocket.template')
+                proxy = wsTemplate.replace('§§BASEURL', config['baseurl'])
+                proxy = proxy.replace('§§INSTANCEID', pi['URLPREFIX'])
+                proxy = proxy.replace('§§CONTAINERNAME', pi['CONTAINER'])
+                proxy = proxy.replace('§§PATH_TO_SOCKET', pi['PATH_TO_SOCKET'])
 
+                proxyfile_content += proxy + '\n\n'
+            
             else:
                 # TODO
-                # dynamic templates
+                # other dynamic templates
                 pass
 
         filename = '005-' + self.instanceDescr['instancename'] + '.conf'

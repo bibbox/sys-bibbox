@@ -1,8 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SocketioService} from '../../store/services/socketio.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../store/models/app-state.model';
 import * as applicationGroupActions from '../../store/actions/applications.actions';
+import * as instanceActions from '../../store/actions/instance.actions';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     this.store.dispatch(new applicationGroupActions.LoadApplicationGroupsAction());
+    this.store.dispatch(new instanceActions.LoadInstancesAction());
     // try {
     //   // this.socketService.setupSocketConnection();
     //   // this.socketService.getInstanceUpdates();

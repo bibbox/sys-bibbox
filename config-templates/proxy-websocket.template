@@ -1,0 +1,11 @@
+<VirtualHost *:80>
+        ServerName §§INSTANCEID.§§BASEURL
+        ProxyRequests           Off
+        ProxyPreserveHost       On
+
+        ProxyPass               §§PATH_TO_SOCKET ws://§§CONTAINERNAME§§PATH_TO_SOCKET
+        ProxyPassReverse        §§PATH_TO_SOCKET ws://§§CONTAINERNAME§§PATH_TO_SOCKET
+
+        ProxyPass               /       http://§§CONTAINERNAME/
+        ProxyPassReverse        /       http://§§CONTAINERNAME/
+</VirtualHost>

@@ -45,7 +45,7 @@ export class ActivityMenuOverlayComponent implements OnInit {
 
   setLastActivityStatus(): void {
     if (this.activityList.length) {
-      this.lastActivityStatus = this.activityList[this.activityList.length - 1].result;
+      this.lastActivityStatus = this.activityList[0].result;
     }
   }
 
