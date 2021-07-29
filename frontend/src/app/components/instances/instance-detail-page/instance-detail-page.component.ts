@@ -10,6 +10,7 @@ import {InstanceService} from '../../../store/services/instance.service';
 import {DeleteInstanceAction} from '../../../store/actions/instance.actions';
 import {FormBuilder, Validators} from '@angular/forms';
 import {SVG_PATHS} from '../../../commons';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-instance-detail-page',
@@ -21,6 +22,7 @@ export class InstanceDetailPageComponent implements OnInit {
   instance$: Observable<InstanceItem>;
   instanceItem: InstanceItem;
   instanceNameFromUrl: string;
+  baseurl = environment.BASEURL;
 
   @ViewChild('scrollContainer') container: ElementRef;
   scrollTop: number = null;

@@ -88,7 +88,7 @@
             <div class="detail-item">
               <span class="description"> Containers: </span>
               <div class="container-names">
-                <div *ngFor="let container of this.instanceItem.container_names"> {{container}} </div>
+                <span *ngFor="let container of this.instanceItem.container_names"> {{container}} </span>
               </div>
             </div>
             <div class="detail-item">
@@ -98,6 +98,17 @@
             <div class="detail-item">
               <span class="description"> Proxy: </span>
               /opt/bibbox/proxy/sites/005-{{instanceItem.instancename}}.conf
+            </div>
+            <div class="detail-item">
+              <span class="description"> URLs: </span>
+              <div class="container-names">
+                <span *ngFor="let URL of this.instanceItem.proxy">
+                  {{URL.DISPLAYNAME}}:
+                  <a href="http://{{URL.URLPREFIX}}.{{baseurl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">
+                    {{URL.URLPREFIX}}.{{baseurl}}
+                  </a>
+                </span>
+              </div>
             </div>
           </div>
         </div>

@@ -178,22 +178,42 @@ def installInstance (self, instanceDescr):
             raise
 
         else:
-            logger.info("Successfully copied files from app-repository to instance directory.\n Setting Permissions")
-            uid = 1000
-            gid = 1000
-            os.chown(path_dir, uid, gid)
-            for root, dirs, files in os.walk(path_dir):
-                for dire in dirs:  
-                    os.chown(os.path.join(root, dire), uid, gid)
-                for file in files:
-                    os.chown(os.path.join(root, file), uid, gid)
+            logger.info("Successfully copied files from app-repository to instance directory.")
+
+        
+        try:
+            objects_to_set_permissions = file_handler.getPermissionsFromFileinfo(instanceDescr['instancename'])
+            logger.info("Trying to set permissions now...")
+            for folder, permission in objects_to_set_permissions.items():
+                current_path = os.path.join(file_handler.INSTANCEPATH, instanceDescr['instancename'], folder)
+
+
+                if int(permission) not in range(0, 778):
+                    logger.warning(f'Numeric Permission Value not valid! Value: {permission}, valid range: 000-777. Skipping ...')
+                    continue
+
+                if os.path.exists(current_path):
+                    logger.info(f"Setting permissions for object {folder} to {permission}.")
+                    os.system(f'chmod -R {permission} {folder}')
+
+                else:
+                    logger.warning(f"Setting permissions for object {folder} failed. Path does not exist.")
+
+        except Exception as ex:
+            logger.error("Setting permissions for {} failed. Exception: {}".format(instanceDescr['instancename'], ex))
+            raise
+        else:
             logger.info("Successfully set permissions")
+        
+        
+
+
         instance = None
         try:
             # now we can generate an Instance object
             instance = Instance (instanceDescr['instancename'])
         except Exception as ex:
-            logger.error(f"Generating instance object failed: {ex}")
+            logger.error(f"Creating instance object failed: {ex}")
             raise
 
 

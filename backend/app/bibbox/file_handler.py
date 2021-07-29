@@ -280,6 +280,9 @@ class FileHandler():
                 file_path = self.PROXYPATH + "sites/" + filename
                 os.unlink(file_path)
 
+    def getPermissionsFromFileinfo(self, instance_name):
+        file_info = self.__readJsonFile(self.INSTANCEPATH + instance_name + '/fileinfo.json')
+        return dict(file_info['permissions'])
 
     def getInstancesJSONFile (self):
         try:
