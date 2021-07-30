@@ -11,11 +11,13 @@
   //align-items: center;
 
   .instance-details-header {
-    float: left;
+    display: flex;
+    flex-direction: row;
     width: 100%;
     margin-bottom: 20px;
 
     .instance-details-title {
+      flex-grow: 1;
       float: left;
       cursor: pointer;
       padding-left: 80px;
@@ -45,14 +47,15 @@
     }
 
     .instance-details-controls {
-      float: right;
-      padding-left: 30px;
-      margin-top: 15px;
-      margin-bottom: 20px
-    }
+      display: flex;
+      flex-direction: row;
+      justify-content: right;
+      align-content: flex-end;
 
-    span, button {
-      float: left
+      //float: right;
+      //padding-left: 30px;
+      //margin-top: 15px;
+      //margin-bottom: 20px
     }
   }
 
@@ -68,14 +71,13 @@
   }
 
   .status {
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
+    width: 35px;
+    height: 35px;
+    border-radius: 25px;
     border: solid 2px lightgray;
-    float: left;
-    margin-top: 2.5px;
-    margin-right: 10px;
-    background: #DDD
+    background: #DDD;
+    align-self: center;
+    justify-self: center;
   }
 
   .running {
@@ -92,10 +94,6 @@
 
   input [type=text],
   textarea {
-    display: inline-block;
-    width: 100%;
-    max-width: 100%;
-    padding: 5px 10px;
     border-radius: 3px;
     border: solid 1px lightgray;
     background: white;
@@ -103,11 +101,12 @@
   }
 
   button {
+    height: 35px;
+    align-self: center;
+    justify-self: center;
     svg {
-      float: left;
       height: 20px;
       width: 20px;
-      margin-right: 10px;
 
       path {
         fill: black;
@@ -120,7 +119,7 @@
   button:hover {
     svg {
       path {
-        fill: white
+         fill: white
       }
     }
   }
@@ -214,10 +213,14 @@
 
 
 .description-form-field {
-  width: 90%;
   display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  margin-top: 10px;
+
 
   textarea {
+    margin: 2px;
     min-height: 80px;
     overflow-y: auto;
   }
