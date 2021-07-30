@@ -172,13 +172,14 @@ def installInstance (self, instanceDescr):
     
         try:
             # copy all file from the APP repository to the instance Directory
-            file_handler.copyAllFilesToInstanceDirectory (instanceDescr, logger)
+            logger.info("Trying to download github files...")
+            file_handler.downloadGithubZip (instanceDescr, logger)
         except Exception as ex:
-            logger.error(f"Copying files from app-repository to instance directory failed: {ex}")
+            logger.error(f"Copying files from github-repository to instance directory failed: {ex}")
             raise
 
         else:
-            logger.info("Successfully copied files from app-repository to instance directory.")
+            logger.info("Successfully downloaded files from github-repository to instance directory.")
 
         
         try:
