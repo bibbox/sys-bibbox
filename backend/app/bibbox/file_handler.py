@@ -9,26 +9,6 @@ import subprocess
 
 from backend.app.bibbox.instance import InstanceDescription
 
-
-
-# add gitpython to requirements.txt
-
-# TODO
-#
-# to overcome the 'RAW CACHE' problem, we have to use git directly
-# this seems to be the standard lib
-# https://gitpython.readthedocs.io/en/stable/tutorial.html
-#
-# then it would make sense to mit the Github functions in a seperate class
-# which makes a local copy/cache of the github repository with the correct 
-# version. 
-# 
-# in offline mode, we could then just read from the local dir
-#  => we need a global config saying, that we work in offline mode 
-#  => and a cache-all function downling all the reproes and builiding all images
-#  
-
-
 class FileHandler():
     
     def __init__(self):
@@ -36,26 +16,64 @@ class FileHandler():
         self.CONFIGPATH   = "/opt/bibbox/config/"
         self.PROXYPATH    = "/opt/bibbox/proxy/"
 
-    def copyFileFromWeb (self, fileurl, instancename, filename):
-        try:
-            download = requests.get(fileurl).content
-        except Exception:
-            raise Exception('Something went wrong during connecting to the Web. Please Check your internet connection!')
+    # def copyFileFromWeb (self, fileurl, instancename, filename):
+    #     try:
+    #         download = requests.get(fileurl).content
+    #     except Exception:
+    #         raise Exception('Something went wrong during connecting to the Web. Please Check your internet connection!')
 
-        filename =  self.INSTANCEPATH  + instancename + "/" + filename
+    #     filename =  self.INSTANCEPATH  + instancename + "/" + filename
 
-        with open(filename, 'wb') as f:
-            f.write(download)
+    #     with open(filename, 'wb') as f:
+    #         f.write(download)
     
-    def copyFileFromGithub (self, organization, repository, version, filename, instancename, destinationfilename):
-        #
-        # TODO replace this with the local 'roberts' variant
-        #      (after a first protype of the frontend is running) 
-        #
-        fileurl = self.__getBaseUrlRaw (organization, repository, version) + '/' + filename
-        self.copyFileFromWeb (fileurl, instancename, destinationfilename)
+    # def copyFileFromGithub (self, organization, repository, version, filename, instancename, destinationfilename):
+    #     #
+    #     # TODO replace this with the local 'roberts' variant
+    #     #      (after a first protype of the frontend is running) 
+    #     #
+    #     fileurl = self.__getBaseUrlRaw (organization, repository, version) + '/' + filename
+    #     self.copyFileFromWeb (fileurl, instancename, destinationfilename)
 
-    def downloadGithubZip (self, organization, repository, version, instancename, logger=None):
+    # deprecated as we download the zipped repos now
+    def copyAllFilesToInstanceDirectory (self, instanceDescr, logger=None): 
+        pass
+
+
+        # for fn in ('docker-compose.yml.template', 'fileinfo.json', 'appinfo.json'):
+        #     if logger:
+        #         logger.info("Copying file {} from GitHub.".format(fn))
+        #     self.copyFileFromGithub (organization, repository, version, fn , instancename,  fn)
+
+        # filename =  self.INSTANCEPATH  + instancename + "/" + 'fileinfo.json'
+        # with open(filename, 'r') as f:
+        #     fileinfo = json.load (f)
+
+        # could be removed if file structure is already correct in GitHub
+        # for directory_to_copy in fileinfo['makefolders']: 
+        #     dirname =  self.INSTANCEPATH  + instancename + "/" + directory_to_copy
+        #     if not os.path.exists(dirname):
+        #         if logger:
+        #             logger.info("Creating directory: {}".format(dirname))
+        #         os.makedirs(dirname)
+            
+        # for file_to_copy in fileinfo['copyfiles']:
+        #     source = file_to_copy["source"]
+        #     destination = file_to_copy["destination"]
+        #     if logger:
+        #         logger.info("Copying file from {} to {}.".format(source, destination))
+        #     if ('https://' in source or 'http://' in source):
+        #         self.copyFileFromWeb    (source, instancename,  destination)
+        #     else:
+        #         self.copyFileFromGithub (organization, repository, version, source, instancename,  destination)
+
+
+    def downloadGithubZip (self, instanceDescr,logger=None):
+        instancename = instanceDescr['instancename']
+        organization = instanceDescr['app']['organization']
+        repository = instanceDescr['app']['name']
+        version    = instanceDescr['app']['version']
+
         try:
             # get url
             url = ''
@@ -123,43 +141,7 @@ class FileHandler():
             if logger:
                 logger.info('Successfully copied files from GitHub.')
 
-
-    def copyAllFilesToInstanceDirectory (self, instanceDescr, logger=None):
-
-        instancename = instanceDescr['instancename']
-        organization = instanceDescr['app']['organization']
-        repository = instanceDescr['app']['name']
-        version    = instanceDescr['app']['version']
-
-        # for fn in ('docker-compose.yml.template', 'fileinfo.json', 'appinfo.json'):
-        #     if logger:
-        #         logger.info("Copying file {} from GitHub.".format(fn))
-        #     self.copyFileFromGithub (organization, repository, version, fn , instancename,  fn)
-        self.downloadGithubZip(organization, repository, version, instancename, logger)
-
-
-        # filename =  self.INSTANCEPATH  + instancename + "/" + 'fileinfo.json'
-        # with open(filename, 'r') as f:
-        #     fileinfo = json.load (f)
-
-        # could be removed if file structure is already correct in GitHub
-        # for directory_to_copy in fileinfo['makefolders']: 
-        #     dirname =  self.INSTANCEPATH  + instancename + "/" + directory_to_copy
-        #     if not os.path.exists(dirname):
-        #         if logger:
-        #             logger.info("Creating directory: {}".format(dirname))
-        #         os.makedirs(dirname)
-            
-        # for file_to_copy in fileinfo['copyfiles']:
-        #     source = file_to_copy["source"]
-        #     destination = file_to_copy["destination"]
-        #     if logger:
-        #         logger.info("Copying file from {} to {}.".format(source, destination))
-        #     if ('https://' in source or 'http://' in source):
-        #         self.copyFileFromWeb    (source, instancename,  destination)
-        #     else:
-        #         self.copyFileFromGithub (organization, repository, version, source, instancename,  destination)
-
+    
     def getConfigFile (self, name):
          filename =  self.CONFIGPATH  + name
          with open(filename, 'r') as f:
@@ -311,13 +293,13 @@ class FileHandler():
 
         return instance_names
 
-    def __getBaseUrlRaw (self, organization, repository, version):
-        burl = ''
-        if version == 'development':
-            burl = 'https://raw.githubusercontent.com/' + organization + '/' + repository   + '/master/'
-        else:
-            burl = 'https://raw.githubusercontent.com/'  + organization + '/' + repository   + '/' + version + '/'
-        return burl
+    # def __getBaseUrlRaw (self, organization, repository, version):
+    #     burl = ''
+    #     if version == 'development':
+    #         burl = 'https://raw.githubusercontent.com/' + organization + '/' + repository   + '/master/'
+    #     else:
+    #         burl = 'https://raw.githubusercontent.com/'  + organization + '/' + repository   + '/' + version + '/'
+    #     return burl
 
     def __readJsonFile (self, path):
         reader = open(path, 'r')

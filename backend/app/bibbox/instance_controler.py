@@ -109,6 +109,7 @@ def restartInstance (self, instance_name):
     
     emitInstanceRefresh()
 
+#to be implemented
 @app_celerey.task(bind=True,  name='instance.copyInstance')
 def copyInstance (self, instanceNameSrc, instanceNameDest):
     pass
