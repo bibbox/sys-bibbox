@@ -347,7 +347,55 @@ def installInstance (self, instanceDescr):
             if lineerror:
                 # same stuff here, also write this in the log file
                 print (lineerror.rstrip())
+        
+         try:
+            objects_to_set_permissions = file_handler.getPermissionsFromFileinfo(instanceDescr['instancename'])
+            logger.info("Trying to set permissions now...")
+            for folder, permission in objects_to_set_permissions.items():
+                current_path = os.path.join(file_handler.INSTANCEPATH, instanceDescr['instancename'], folder)
 
+
+                if int(permission) not in range(0, 778):
+                    logger.warning(f'Numeric Permission Value not valid! Value: {permission}, valid range: 000-777. Skipping ...')
+                    continue
+
+                if os.path.exists(current_path):
+                    logger.info(f"Setting permissions for object {folder} to {permission}.")
+                    os.system(f'chmod -R {permission} {folder}')
+
+                else:
+                    logger.warning(f"Setting permissions for object {folder} failed. Path {os.path.join(file_handler.INSTANCEPATH, folder)} does not exist.")
+
+        except Exception as ex:
+            logger.error("Setting permissions for {} failed. Exception: {}".format(instanceDescr['instancename'], ex))
+            raise
+        else:
+            logger.info("Successfully set permissions")
+        
+        try:
+            objects_to_set_permissions = file_handler.getPermissionsFromFileinfo(instanceDescr['instancename'])
+            logger.info("Trying to set permissions now...")
+            for folder, permission in objects_to_set_permissions.items():
+                current_path = os.path.join(file_handler.INSTANCEPATH, instanceDescr['instancename'], folder)
+
+
+                if int(permission) not in range(0, 778):
+                    logger.warning(f'Numeric Permission Value not valid! Value: {permission}, valid range: 000-777. Skipping ...')
+                    continue
+
+                if os.path.exists(current_path):
+                    logger.info(f"Setting permissions for object {folder} to {permission}.")
+                    os.system(f'chmod -R {permission} {folder}')
+
+                else:
+                    logger.warning(f"Setting permissions for object {folder} failed. Path {os.path.join(file_handler.INSTANCEPATH, folder)} does not exist.")
+
+        except Exception as ex:
+            logger.error("Setting permissions for {} failed. Exception: {}".format(instanceDescr['instancename'], ex))
+            raise
+        else:
+            logger.info("Successfully set permissions")
+        
         logger.info("Graceful reloading bibbox-sys-commander-apacheproxy...")
         process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'httpd', '-k', 'graceful'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
         while True:
