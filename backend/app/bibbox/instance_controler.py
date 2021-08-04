@@ -206,10 +206,7 @@ def installInstance (self, instanceDescr):
             raise
         else:
             logger.info("Successfully set permissions")
-        
-        
-
-
+    
         instance = None
         try:
             # now we can generate an Instance object
@@ -348,7 +345,7 @@ def installInstance (self, instanceDescr):
                 # same stuff here, also write this in the log file
                 print (lineerror.rstrip())
         
-         try:
+        try:
             objects_to_set_permissions = file_handler.getPermissionsFromFileinfo(instanceDescr['instancename'])
             logger.info("Trying to set permissions now...")
             for folder, permission in objects_to_set_permissions.items():
