@@ -95,7 +95,7 @@ class FileHandler():
                 if logger:
                     logger.error(f"Something went wrong during connecting to the Web: {ex}")
                 raise Exception('Something went wrong during connecting to the Web. Please Check your internet connection!')
-            
+
             with open(self.INSTANCEPATH + instancename + '/' + 'repo.zip', 'wb') as file:
                 file.write(download)
 
@@ -137,6 +137,7 @@ class FileHandler():
         except Exception as ex:
             if logger:
                 logger.error(f"Something went wrong during downloading or extracting the Zip: {ex}")
+            raise
         else:
             if logger:
                 logger.info('Successfully copied files from GitHub.')

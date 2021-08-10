@@ -186,8 +186,8 @@ def installInstance (self, instanceDescr):
         try:
             objects_to_set_permissions = file_handler.getPermissionsFromFileinfo(instanceDescr['instancename'])
             logger.info("Trying to set permissions now...")
-            for folder, permission in objects_to_set_permissions.items():
-                current_path = os.path.join(file_handler.INSTANCEPATH, instanceDescr['instancename'], folder)
+            for object, permission in objects_to_set_permissions.items():
+                current_path = os.path.join(file_handler.INSTANCEPATH, instanceDescr['instancename'], object)
 
 
                 if int(permission) not in range(0, 778):
@@ -195,11 +195,12 @@ def installInstance (self, instanceDescr):
                     continue
 
                 if os.path.exists(current_path):
-                    logger.info(f"Setting permissions for object {folder} to {permission}.")
-                    os.system(f'chmod -R {permission} {folder}')
+                    res_code = os.system(f'chmod -R {permission} {current_path}')
+                    logger.info(f"Setting permissions for object {object} to {permission}. Result code: {res_code}")
+                    
 
                 else:
-                    logger.warning(f"Setting permissions for object {folder} failed. Path {os.path.join(file_handler.INSTANCEPATH, folder)} does not exist.")
+                    logger.warning(f"Setting permissions for object {object} failed. Path {os.path.join(file_handler.INSTANCEPATH, object)} does not exist. Skipping...")
 
         except Exception as ex:
             logger.error("Setting permissions for {} failed. Exception: {}".format(instanceDescr['instancename'], ex))

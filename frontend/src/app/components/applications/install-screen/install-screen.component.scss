@@ -1,20 +1,23 @@
 #app-install {
   display: flex;
+  justify-content: center;
   width: 100%;
 
   .install-form {
-    align-items: center;
+    align-content: center;
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: column nowrap;
 
     .app-install-text{
       width: 100%;
       display: inline-block;
       margin-bottom: 20px;
-      text-align: center
+      text-align: center;
+      align-self: center;
     }
 
     h2 {
+      align-self: center;
       text-align: center;
       font-size: 25px;
       color: #2d6191;
@@ -29,6 +32,7 @@
 
     .install-form-item {
       display: flex;
+      align-self: center;
       flex-flow: column wrap;
       width: 100%;
 
@@ -79,7 +83,7 @@
     }
 
 
-    .field-description, .install-submit {
+    .field-description {
       width: 100%;
       margin-left: 20%;
       margin-right: 20%;

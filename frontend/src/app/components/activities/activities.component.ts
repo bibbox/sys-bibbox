@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ACTIVITY_STATES, SVG_PATHS} from '../../commons';
 import {ActivityService} from '../../store/services/activity.service';
 import {ActivityItem, LogItem} from '../../store/models/activity.model';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {interval, Subscription} from 'rxjs';
 import {startWith, switchMap} from 'rxjs/operators';
 import {AppState} from '../../store/models/app-state.model';
@@ -15,7 +15,7 @@ import * as activitySelector from '../../store/selectors/activity.selector';
   styleUrls: ['./activities.component.scss']
 })
 export class ActivitiesComponent implements OnInit, OnDestroy {
-  focussedActivityID: number = this.router.getCurrentNavigation().extras.state?.index || undefined;
+  focussedActivityID: number; // = this.router.getCurrentNavigation().extras.state?.index || undefined;
 
   svgPaths = SVG_PATHS;
   activityStates = ACTIVITY_STATES;
@@ -35,7 +35,12 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   constructor(
     private activityService: ActivityService,
     private router: Router,
+    private route: ActivatedRoute,
     private store: Store<AppState>) {
+
+      this.route.params.subscribe(params =>
+        this.focussedActivityID = params.activity_id
+      );
 
       this.store.pipe(select(activitySelector.selectAllActivities)).subscribe((res) => {
         this.activityList = res;

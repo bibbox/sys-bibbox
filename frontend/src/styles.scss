@@ -1,4 +1,4 @@
-@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+// @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 // @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 /* You can add global styles to this file, and also import other style files */
@@ -7,8 +7,9 @@ html, body {
   min-height: 100%;
   background: url("assets/furley_bg.png") repeat scroll;
 }
-body {font-family: Roboto, "Helvetica Neue", sans-serif; }
-
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 button {
   padding: 7px 15px;

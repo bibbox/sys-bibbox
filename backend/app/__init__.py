@@ -29,7 +29,7 @@ from backend.settings import config, Config
 
 from flask_cors import CORS
 from flask_socketio import SocketIO
-# review and restructer tha Application Context
+# review and restructure tha Application Context
 # https://flask.palletsprojects.com/en/1.1.x/patterns/appfactories/ 
 
 

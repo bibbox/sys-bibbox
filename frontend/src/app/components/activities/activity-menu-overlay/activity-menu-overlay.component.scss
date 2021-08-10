@@ -3,54 +3,114 @@
   background: inherit;
 
   .activity-overlay__button {
+    margin: 10px;
     background: inherit;
-    width: 0;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+
+
+    .activity-overlay__button-active-activities-label {
+      position: absolute;
+      align-self: center;
+      margin-bottom: 0 !important;
+    }
+
+    .activity-overlay__button-status-image {
+      width: 30px;
+      height: 30px;
+      align-self: center;
+      justify-items: center;
+    }
   }
-  .activity-overlay__menu {
-    .activity-overlay__menu-item {
-      .item-state {
-        background: red;
-        img {
-          float: left;
-          width: 20px;
-          height: 20px
-        }
-      }
-
-      .item-icon {
-        position: absolute;
-        top: 50%;
-        margin-top: -10px;
-        float: left;
-        width: 20px;
-        height: 20px;
-        left: 50px;
-
-        svg {
-          float: left;
-          width: 20px;
-          height: 20px
-        }
-      }
-
-      .item-title {
-        width: 100%;
-        font-size: 16px;
-        color: #2d6191
-      }
-
-      .item-start-date, .item-end-date {
-        margin-right: 20px;
-        color: #555;
-        font-size: 15px
-      }
-    }
-    .activity-overlay__menu-item-last {
-
-    }
+  .activity-overlay__button:hover {
+    color: white;
+    background: #6496b4;
+    cursor: pointer;
   }
 }
-::ng-deep .mat-menu-panel {
-  padding: 0 10px!important;
-  width: fit-content !important;
+//.cdk-overlay-container .mat-menu-panel {
+//  padding: 0 10px!important;
+//  width: fit-content !important;
+//  max-width: available !important;
+//}
+
+::ng-deep .activity-overlay__menu {
+  max-width: fit-content !important;
+  box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.3);
+  //width: 500px !important;
+  .activity-overlay__menu-item {
+    height: 50px;
+    border-bottom: solid 1px #dddddd;
+    padding: 5px 15px 5px 85px;
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+
+    .item-state {
+      position: absolute;
+      top: 50%;
+      margin-top: -10px;
+      float: left;
+      width: 20px;
+      height: 20px;
+      left: 15px;
+      img {
+        float: left;
+        width: 20px;
+        height: 20px
+      }
+    }
+
+    .item-icon {
+      position: absolute;
+      top: 50%;
+      margin-top: -10px;
+      float: left;
+      width: 20px;
+      height: 20px;
+      left: 50px;
+
+      svg {
+        float: left;
+        width: 20px;
+        height: 20px
+      }
+    }
+
+    .item-title {
+      width: 100%;
+      font-size: 16px;
+      color: #2d6191
+    }
+
+    .item-start-date, .item-end-date {
+      margin-right: 20px;
+      color: #555;
+      font-size: 14px
+    }
+  }
+  .activity-overlay__menu-item:hover {
+    background-color: rgb(221, 221, 221, 0.3);
+  }
+  .activity-overlay__menu-item-last {
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.42857143;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+  .activity-overlay__menu-item-last:hover {
+    color: white;
+    background: #6496b4;
+    cursor: pointer;
+  }
+
+}
+
+::ng-deep .mat-menu-content:not(:empty) {
+  padding: 0 0 0 0 !important;
 }

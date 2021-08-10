@@ -1,37 +1,45 @@
 <div class="activity-overlay">
-  <button [matMenuTriggerFor]="activityMenuOverlay" class="activity-overlay__button"> <!-- *ngSwitchCase="activeActivities" -->
+  <div [matMenuTriggerFor]="activityMenuOverlay" class="activity-overlay__button"> <!-- *ngSwitchCase="activeActivities" -->
     <ng-container *ngIf="activeActivities">
-      <img *ngIf="activeActivities" src="../../../../assets/loading.gif" alt="activity status" style="width: 30px; height: 30px; align-self: center">
-      <label>{{activeActivities}}</label>
+      <img src="../../../../assets/loading.gif" alt="activity status" class="activity-overlay__button-status-image">
+      <label class="activity-overlay__button-active-activities-label">{{activeActivities}}</label>
     </ng-container>
-    <img *ngIf="!activeActivities && lastActivityStatus === 'FAILURE'" src="assets/error.png" alt="activity status" style="width: 30px; height: 30px; align-self: center">
-    <img *ngIf="!activeActivities && lastActivityStatus === 'SUCCESS'" src="assets/done.png" alt="activity status" style="width: 30px; height: 30px; align-self: center">
-  </button>
+    <img *ngIf="!activeActivities && lastActivityStatus === 'FAILURE'" src="assets/error.png" alt="activity status" class="activity-overlay__button-status-image">
+    <img *ngIf="!activeActivities && lastActivityStatus === 'SUCCESS'" src="assets/done.png" alt="activity status" class="activity-overlay__button-status-image">
+  </div>
   <mat-menu #activityMenuOverlay="matMenu" class="activity-overlay__menu">
-    <span mat-menu-item
+    <div
           *ngFor="let activity of activityList | slice:0:10"
-          [routerLink]="['/activities/']" [state]="{index: activity.id}"
+          [routerLink]="['/activities/', activity.id]"
           class="activity-overlay__menu-item"
     >
-<!--      <span class="activity-menu-item-state" [ngSwitch]="activity.state">-->
-<!--        <img *ngSwitchCase="'FINISHED'" [src]="activityStates.finished" alt="state">-->
-<!--        <img *ngSwitchCase="'ERROR'" [src]="activityStates.error" alt="state">-->
-<!--        <img *ngSwitchDefault [src]="activityStates.ongoing" alt="state">-->
-<!--      </span>-->
-<!--      <span class="activity-icon">-->
-<!--        <svg viewBox="0 0 1000 1000" [ngSwitch]="activity.type">-->
-<!--          <path *ngSwitchCase="'INSTALL_INSTANCE'" [attr.d]="svgPaths.install"></path>-->
-<!--          <path *ngSwitchCase="'DELETE_INSTANCE'" [attr.d]="svgPaths.delete"></path>-->
-<!--          <path *ngSwitchCase="'START_INSTANCE'" [attr.d]="svgPaths.start"></path>-->
-<!--          <path *ngSwitchCase="'STOP_INSTANCE'" [attr.d]="svgPaths.stop"></path>-->
-<!--          <path *ngSwitchCase="'RESTART_INSTANCE'" [attr.d]="svgPaths.restart"></path>-->
-<!--        </svg>-->
-<!--      </span>-->
-      <span> {{activity.state}} - {{activity.name}} - {{activity.type}} </span>
-      <span> {{activity.start_time}} - {{activity.finished_time}} </span>
-
-    </span>
-    <span mat-menu-item [routerLink]="['/activities/']" class="activity-overlay__menu-item-last"> Show history </span>
+     <span class="item-state" [ngSwitch]="activity.state">
+        <img *ngSwitchCase="'FINISHED'" [src]="activityStates.finished" alt="state">
+        <img *ngSwitchCase="'ERROR'" [src]="activityStates.error" alt="state">
+        <img *ngSwitchDefault [src]="activityStates.ongoing" alt="state">
+      </span>
+      <span class="item-icon">
+          <svg viewBox="0 0 1000 1000" [ngSwitch]="activity.type" width="100%">
+            <path *ngSwitchCase="'INSTALL_INSTANCE'" [attr.d]="svgPaths.install"></path>
+            <path *ngSwitchCase="'DELETE_INSTANCE'" [attr.d]="svgPaths.delete"></path>
+            <path *ngSwitchCase="'START_INSTANCE'" [attr.d]="svgPaths.start"></path>
+            <path *ngSwitchCase="'STOP_INSTANCE'" [attr.d]="svgPaths.stop"></path>
+            <path *ngSwitchCase="'RESTART_INSTANCE'" [attr.d]="svgPaths.restart"></path>
+          </svg>
+        </span>
+      <div>
+          <span class="item-title">
+            {{activity.name}}
+          </span> <br>
+        <span class="item-start-date">
+            started: {{activity.start_time}}
+          </span>
+        <span class="item-end-date" *ngIf="activity.finished_time !== 'None'">
+            finished: {{activity.finished_time}}
+          </span>
+      </div>
+    </div>
+    <div [routerLink]="['/activities/']" class="activity-overlay__menu-item-last"> Show history </div>
 
     <!--  <button mat-menu-item>-->
     <!--    <mat-icon>dialpad</mat-icon>-->
@@ -47,3 +55,4 @@
     <!--  </button>-->
   </mat-menu>
 </div>
+

@@ -10,10 +10,10 @@
         # working 50%
         RewriteEngine on
         RewriteCond %{HTTP:Upgrade}  websocket [NC]
-        RewriteRule /socket.io/(.*) ws://bibbox-sys-commander-backend:5000/socket.io/$1 [P,L]
 
-        ProxyPass               /socket.io http://bibbox-sys-commander-backend:5000/socket.io
-        ProxyPassReverse        /socket.io http://bibbox-sys-commander-backend:5000/socket.io
+        RewriteRule             /socket.io/(.*) http://bibbox-sys-commander-backend:5000/socket.io/$1 [P,L]
+        ProxyPass               /socket.io      ws://bibbox-sys-commander-backend:5000/socket.io
+        ProxyPassReverse        /socket.io      ws://bibbox-sys-commander-backend:5000/socket.io
 
 
         DocumentRoot /var/www/html/sys-bibbox-client
@@ -39,9 +39,6 @@
         </Directory>
 
 
-        # <Location /socket.io/>
-
-        # </Location>
 
 </VirtualHost>
 

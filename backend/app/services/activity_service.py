@@ -30,7 +30,7 @@ class ActivityService(SQLAlchemyService):
         ac = Activity(
             name = name,
             type_ = type_,
-            start_time = datetime.fromtimestamp(time.time()),
+            start_time = datetime.fromtimestamp(time.time()).strftime("%d.%m.%Y %H:%M:%S"),
             finished_time = None,
             state = "RUNNING",
             result = None
@@ -54,7 +54,7 @@ class ActivityService(SQLAlchemyService):
                         .query(Activity) \
                         .filter(Activity.id == id) \
                         .update({
-                            'finished_time' : datetime.fromtimestamp(time.time()),
+                            'finished_time' : datetime.fromtimestamp(time.time()).strftime("%d.%m.%Y %H:%M:%S"),
                             'state'         : state,
                             'result'        : result
         })

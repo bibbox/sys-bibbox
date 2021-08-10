@@ -91,6 +91,10 @@ export class InstanceDetailPageComponent implements OnInit {
   }
 
   loadGithubLinks(): void {
+    let versionBranch = this.instanceItem.app.version;
+    if (this.instanceItem.app.version === 'development') {
+      versionBranch = 'master';
+    }
     // get instance links
     this.instanceLinks = [
       { label: 'GitHub Repository:',
@@ -100,7 +104,7 @@ export class InstanceDetailPageComponent implements OnInit {
         url: 'https://www.github.com/bibbox/'
           + this.instanceItem.app.name
           + '/blob/'
-          + this.instanceItem.app.version
+          + versionBranch
           + '/INSTALL-APP.md', }
     ];
   }

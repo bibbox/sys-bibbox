@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {SVG_PATHS} from '../../../commons';
+import {ACTIVITY_STATES, SVG_PATHS} from '../../../commons';
 import {ActivityItem} from '../../../store/models/activity.model';
 import {ActivityService} from '../../../store/services/activity.service';
 import {AppState} from '../../../store/models/app-state.model';
@@ -14,6 +14,8 @@ import * as activitySelector from '../../../store/selectors/activity.selector';
 export class ActivityMenuOverlayComponent implements OnInit {
 
   svgPaths = SVG_PATHS;
+  activityStates = ACTIVITY_STATES;
+
   activityList: ActivityItem[] = [];
   activeActivities: 0;
   lastActivityStatus: string;
