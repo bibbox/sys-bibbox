@@ -1,3 +1,5 @@
+@import "src/styles-variables";
+
 .activities {
   display: flex;
   width: 1400px;
@@ -7,7 +9,7 @@
     .activity-item {
       background: none;
       box-shadow: none;
-      border-bottom: solid 1px #dddddd;
+      border-bottom: solid 1px $custom_gray_lightaccent;
 
       .activity-item-header {
         padding: 5px 15px 5px 85px;
@@ -48,7 +50,7 @@
         .activity-title {
           width: 100%;
           font-size: 16px;
-          color: #2d6191
+          color: $custom_blue
         }
 
         .activity-start-date, .activity-end-date {
@@ -65,7 +67,7 @@
         max-height: 500px;
         overflow: auto;
         border-radius: 10px;
-        border: solid 1px lightgray;
+        border: solid 1px $custom_gray_lightaccent;
         margin-bottom: 40px;
 
         .container-log-entry {
@@ -77,11 +79,11 @@
 }
 
 .log__info {
-  color: #26b726;
+  color: $log_info;
 }
 .log__warn {
-  color: #ABA000;
+  color: $log_warn;
 }
 .log__error {
-  color: #f08080;
+  color: $log_error;
 }

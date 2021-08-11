@@ -29,7 +29,7 @@ export class SocketioService {
       SOCKET_IO_URL,
       {
       // reconnectionDelayMax: 10000,
-      transports: ['polling'] // , 'websocket'] // currently only polling works
+      // transports: ['polling'] // , 'websocket'] // currently only polling works
       }
       );
   }

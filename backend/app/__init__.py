@@ -69,16 +69,16 @@ def create_app(config_name):
 
     app_celerey.Task = ContextTask
 
-    logger = logging.getLogger(__name__)
+    # logger = logging.getLogger(__name__)
 
-    @after_setup_logger.connect 
-    def setup_loggers(logger, *args, **kwargs):
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    # @after_setup_logger.connect 
+    # def setup_loggers(logger, *args, **kwargs):
+    #     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-        # SysLogHandler
-        slh = logging.handlers.SysLogHandler(address=('logsN.papertrailapp.com', '...'))
-        slh.setFormatter(formatter)
-        logger.addHandler(slh)
+    #     # SysLogHandler
+    #     slh = logging.handlers.SysLogHandler(address=('logsN.papertrailapp.com', '...'))
+    #     slh.setFormatter(formatter)
+    #     logger.addHandler(slh)
 
     # swagger base URL has to be specified   
     swaggerui_blueprint = get_swaggerui_blueprint(

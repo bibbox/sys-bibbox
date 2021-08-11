@@ -75,3 +75,29 @@ class AppInfo (Resource):
         return appinfo
 # demo
 # http://127.0.0.1:5010/api/v1/apps/info?appid=app-redcap&version=development
+
+
+
+@api.param('testparam', 'test')
+@api.doc(
+
+)
+@api.route("/test", doc={"description": 'testdescription for the endpoint'})
+class TestClass (Resource):
+    @api.doc(
+        'get test stuff',     
+        responses={
+            200: 'Success',
+            400: 'Validation Error',
+            418: "I'm a teapot"
+        },
+        params={
+            "testparam": "a Testparam"
+        }
+    )
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('testparam')
+        args = parser.parse_args()
+        tp = args['testparam']
+        return {1: dir(api.doc())}

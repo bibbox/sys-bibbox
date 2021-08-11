@@ -3,10 +3,10 @@
 
 import {environment} from '../environments/environment';
 
-export const APP_TITLE_LONG = 'Silicolab Bibbox v4.0';
-export const APP_TITLE_SHORT = 'Bibbox v4.0';
+export const APP_TITLE_LONG = 'Silicolab BIBBOX v4.0';
+export const APP_TITLE_SHORT = 'BIBBOX';
 
-// paths of api endpoints
+// paths of api endpoints, to which we send requests to
 export const API_INSTANCES_URL = 'http://' + environment.BASEURL + '/api/v1/instances/';
 export const API_APPLICATIONS_URL = 'http://' + environment.BASEURL + '/api/v1/apps/';
 export const API_ACTIVITY_URL = 'http://' + environment.BASEURL + '/api/v1/activities/';

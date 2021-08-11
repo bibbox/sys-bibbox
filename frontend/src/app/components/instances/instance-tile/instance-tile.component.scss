@@ -1,3 +1,4 @@
+@import "src/styles-variables";
 .instance-tile {
   background: #e9eaee;
   height: 300px;
@@ -5,13 +6,13 @@
   margin: 20px;
   display: flex;
   flex-direction: column;
-  border: solid #d7dadd 2px;
+  // border: solid $custom_gray_lightaccent 1px;
   border-radius: 10px;
 
 
-  -moz-box-shadow:    1px 1px 10px 2px #C7C7C7;
-  -webkit-box-shadow: 1px 1px 10px 2px #C7C7C7;
-  box-shadow: 1px 1px 10px 2px #C7C7C7;
+  //-moz-box-shadow:    1px 1px 10px 2px #C7C7C7;
+  //-webkit-box-shadow: 1px 1px 10px 2px #C7C7C7;
+  box-shadow: 8px 4px 8px $custom_gray_medium+CC, -5px -5px 8px #FFFFFFCC;
 
   .instance-tile__header {
     height: 60px;
@@ -44,10 +45,12 @@
       display: flex;
       flex-direction: column;
       flex-grow: 1;
+
       .instance-tile__header-title {
         flex: 1 1;
         width: 100%;
-        text-align: left;
+        text-align: center;
+        color: $custom_gray_dark;
         //color: #6496b4;
         padding: 7px 10px;
         margin-bottom: 0;
@@ -56,8 +59,10 @@
       .instance-tile__header-subtitle {
         flex: 1 1;
         width: 100%;
+        color: $custom_gray_medium;
         padding: 0 10px 5px 10px;
         margin-bottom: 0;
+        text-align: center;
         font-size: 14px;
       }
     }
@@ -71,15 +76,16 @@
       justify-content: center;
       align-items: center;
 
+
+
       .instance-tile__hyperlink-icon, .instance-tile__hyperlink-icon-disabled {
-        color: #939597;
+        color: $custom_gray_medium;
       }
       .instance-tile__hyperlink-icon:hover{
-        color: inherit;
+        color: $custom_blue;
       }
-
       .instance-tile__hyperlink-icon-disabled:hover {
-        color: #939597;
+        color: $custom_gray_medium;
       }
     }
   }
@@ -87,21 +93,9 @@
     height: 200px;
     display: flex;
     flex-direction: column;
-
-    .instance-tile__body-description {
-      border: 5px #666666;
-      height: 100%;
-      white-space: pre-wrap;
-      margin: 20px;
-      padding: 5px;
-      flex-wrap: wrap;
-      overflow: hidden;
-
-      -moz-box-shadow:    inset 0 0 10px #C7C7C7;
-      -webkit-box-shadow: inset 0 0 10px #C7C7C7;
-      box-shadow:         inset 0 0 10px #C7C7C7;
-
-    }
+    overflow: hidden;
+    padding: 20px 20px 20px 20px;
+    color: $custom_gray_dark;
 
   }
   .instance-tile__footer {
@@ -122,7 +116,7 @@
       align-items: center;
 
       .link-icons{
-        color: #939597;
+        color: $custom_gray_medium;
         size: inherit;
       }
     }

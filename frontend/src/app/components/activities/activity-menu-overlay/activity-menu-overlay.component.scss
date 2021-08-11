@@ -1,5 +1,7 @@
+@import "src/styles-variables";
+
 .activity-overlay {
-  box-shadow: #555555;
+  box-shadow: $custom_gray_dark;
   background: inherit;
 
   .activity-overlay__button {
@@ -27,7 +29,7 @@
   }
   .activity-overlay__button:hover {
     color: white;
-    background: #6496b4;
+    background: $custom_blue;
     cursor: pointer;
   }
 }
@@ -43,7 +45,7 @@
   //width: 500px !important;
   .activity-overlay__menu-item {
     height: 50px;
-    border-bottom: solid 1px #dddddd;
+    border-bottom: solid 1px $custom_gray_light;
     padding: 5px 15px 5px 85px;
     position: relative;
     width: 100%;
@@ -83,7 +85,7 @@
     .item-title {
       width: 100%;
       font-size: 16px;
-      color: #2d6191
+      color: $custom_blue
     }
 
     .item-start-date, .item-end-date {
@@ -105,7 +107,7 @@
   }
   .activity-overlay__menu-item-last:hover {
     color: white;
-    background: #6496b4;
+    background: $custom_blue;
     cursor: pointer;
   }
 

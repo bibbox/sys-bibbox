@@ -1,3 +1,4 @@
+@import "src/styles-variables";
 .application-group-item {
   padding: 15px 10px 10px 10px;
   text-align: center;
@@ -6,7 +7,8 @@
   float: left;
   background: rgba(255, 255, 255, 0.75);
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-  color: rgb(85, 95, 125);
+  //color: rgb(85, 95, 125);
+  color: $custom_gray_dark;
   border-radius: 0 10px;
   margin: 10px;
   cursor: pointer;
@@ -20,6 +22,7 @@
     height: 50px;
     font-size: 16px;
     margin-bottom: 10px;
+    margin-top: 20px;
     border-bottom: solid 1px rgb(85, 95, 125);
     transition: border 0.2s ease-in-out;
     -webkit-transition: border 0.2s ease-in-out
@@ -30,7 +33,7 @@
     font-size: 13px;
     width: 100%;
     display: inline-block;
-    color: #666;
+    color: $custom_gray_dark;
     transition: color 0.2s ease-in-out;
     -webkit-transition: color 0.2s ease-in-out;
   }
@@ -71,7 +74,7 @@
 
 .application-group-item:hover {
   color: white;
-  background: #6496b4
+  background: $custom_blue; //#6496b4
 }
 
 .application-group-item.highlight .name,

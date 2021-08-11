@@ -15,5 +15,30 @@ $grid-breakpoints: (
   xl: 1200px
 );
 
+
+
+// base colors
+$custom_blue: #176fb6; //#6496b4
+$custom_gray_light: #f0f1f4;
+$custom_gray_lightaccent: #E3E4E7;
+$custom_gray_medium: #a8a9ab;
+$custom_gray_dark: #555555;
+
+// notification colors
 $success-colors: mat-palette($mat-green, 400);
 $warning-colors: mat-palette($mat-amber, 400);
+
+// // log colors
+$log_info: #26b726;
+$log_warn: #ABA000;
+$log_error: #f08080;
+
+
+// fonts
+$material-icons-font-path: '~material-icons/iconfont/';
+$roboto-font-path: "~roboto-fontface/fonts" !default;
+
+// // font weights
+$custom_font_weight_light: 300 !default;
+$custom_font_weight_normal: 400 !default;
+$custom_font_weight_bold: 500 !default;

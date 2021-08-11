@@ -34,6 +34,8 @@
     "@ngrx/store-devtools": "^11.0.1",
     "bootstrap": "^4.6.0",
     "material-design-icons": "^3.0.1",
+    "material-icons": "^1.1.1",
+    "roboto-fontface": "^0.10.0",
     "rxjs": "~6.6.0",
     "socket.io-client": "^4.1.1",
     "tslib": "^2.0.0",

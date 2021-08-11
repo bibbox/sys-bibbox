@@ -2,32 +2,34 @@
 // @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 /* You can add global styles to this file, and also import other style files */
+@import "styles-variables";
+@import "~roboto-fontface/css/roboto/sass/roboto-fontface";
+@import "~material-icons/iconfont/material-icons.css";
 
 html, body {
   min-height: 100%;
-  background: url("assets/furley_bg.png") repeat scroll;
+  background: $custom_gray_light; //url("assets/furley_bg.png") repeat scroll;
 }
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 button {
-  padding: 7px 15px;
+  padding: 10px 15px;
   margin: 10px;
   border-radius: 5px;
-  background: white;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-  border: 0;
-  color: #555;
+  border: none;
+  background: inherit;
+  box-shadow: none;
   cursor: pointer;
-  min-width: 80px;
   transition: all 0.2s ease-in-out;
   -webkit-transition: all 0.2s ease-in-out;
+  // border: 1px solid $custom_gray_lightaccent;
 }
 
 button:hover {
   color: white;
-  background: #6496b4;
+  background: $custom_blue;
 }
 
 

@@ -1,18 +1,29 @@
+@import "src/styles-variables";
 .app-scaffold-header {
   display: flex;
   flex-direction: row;
-  padding: 0 20px 0 20px;
+  padding: 10px 20px 0 20px;
 
   .app-scaffold-header__branding {
     flex-grow: 0;
     justify-content: start;
     align-self: center;
+    align-items: center;
+    justify-items: center;
     width: 20vw;
+    display: flex;
 
     .app-scaffold-header__navbar-icon {
       max-height: 50px;
       height: 50px;
       width: auto;
+    }
+
+    .app-scaffold-header__branding-text {
+      margin-left: 15px;
+      font-weight: $custom_font_weight_light;
+      font-size: x-large;
+      color: $custom_blue;
     }
   }
 
@@ -24,26 +35,11 @@
     height: 70px;
 
     .app-scaffold-header__nav-button {
-      // border-radius: 25px 25px 25px 25px;
-      background: inherit;
-      box-shadow: none;
+      border: none;
+      width: 100px;
       font-size: larger;
+      font-weight: $custom_font_weight_light;
     }
-
-    .app-scaffold-header__nav-button:hover {
-      background-color: #2d6191;
-      color: white;
-    }
-
-    .app-scaffold-header__nav-button:focus {
-      background-color: #2d6191;
-      color: white;
-    }
-
-    //.app-scaffold-header__nav-button:target {
-    //  background-color: #2d6191;
-    //  color: white;
-    //}
   }
 
   .app-scaffold-header__activity-menu-overlay {

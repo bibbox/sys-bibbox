@@ -1,10 +1,10 @@
+@import "src/styles-variables";
 .application-group {
   margin-bottom: 20px;
-  border-bottom: solid 1px #DDD;
-  padding-bottom: 15px;
+  padding-bottom: 30px;
   display: flex;
   flex-flow: row wrap;
-  align-content: flex-start;
+  align-content: space-evenly;
 }
 
 .application-group:last-child {
@@ -16,5 +16,6 @@
   padding: 0 10px;
   margin-bottom: 15px;
   font-size: 20px;
-  color: #2d6191
+  color: $custom_blue;
+  font-weight: $custom_font_weight_normal;
 }
