@@ -7,8 +7,8 @@
     </div>
   </div>
 
-  <div class="app-scaffold-footer__navbar">
-    <button class="" *ngFor="let item of bottomNavigation" [routerLink]="[item.link]" routerLinkActive="active">
+  <div class="app-scaffold-footer__nav-buttons">
+    <button class="app-scaffold-footer__nav-button" *ngFor="let item of bottomNavigation" [routerLink]="[item.link]" routerLinkActive="active">
       {{item.label}}
     </button>
   </div>

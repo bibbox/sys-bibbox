@@ -9,15 +9,7 @@
   .app-scaffold-footer__copyright {
     flex-grow: 0;
     width: 20vw;
-    align-self: center;
-  }
-
-  .app-scaffold-footer__navbar {
-    flex-grow: 1;
-    display: flex;
-    flex-flow: row;
-    align-self: center;
-    justify-content: center;
+    align-self: end;
   }
 
   .app-scaffold-footer__logos {
@@ -31,7 +23,36 @@
       width: auto;
     }
   }
-  a {
+
+  .app-scaffold-footer__nav-buttons {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: end;
+    height: 40px;
+
+    .app-scaffold-footer__nav-button {
+      // border-radius: 25px 25px 25px 25px;
+      background: inherit;
+      box-shadow: none;
+      font-size: larger;
+    }
+
+    .app-scaffold-footer__nav-button:hover {
+      background-color: #2d6191;
+      color: white;
+    }
+
+    .app-scaffold-footer__nav-button:focus {
+      background-color: #2d6191;
+      color: white;
+    }
+
+  }
+
+
+    a {
     text-decoration: none;
     color: inherit;
   }
