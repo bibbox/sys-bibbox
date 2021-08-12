@@ -3,29 +3,26 @@
 .instances {
   display: flex;
   flex-direction: column;
-}
+  .application-search {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    min-width: 220px;
+    width: 20vw;
+    padding-bottom: 20px;
+  }
 
-.main-heading {
-  text-transform: uppercase;
-  margin: 0 0 20px 0;
-}
-
-.application-search {
-  display: flex;
-  flex-direction: column;
-  width: 20vw;
-  align-self: center;
-  padding-bottom: 20px;
-}
-
-
-.instances_results {
-  display: flex;
-  width: auto;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  .instances_results {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+  }
 
 }
+
+
+
+
+
 
 

@@ -3,11 +3,11 @@
   background: #e9eaee;
   height: 300px;
   width: 300px;
-  margin: 20px;
   display: flex;
+  margin: 20px;
   flex-direction: column;
   border-radius: 10px;
-  box-shadow: 8px 4px 8px $custom_gray_medium+CC, -5px -5px 8px #FFFFFFCC;
+  box-shadow: 5px 5px 8px 3px $custom_gray_medium+AA, -5px -5px 8px 3px #FFFFFFCC;
 
   .instance-tile__header {
     height: 60px;
@@ -27,12 +27,10 @@
       align-items: center;
       justify-content: center;
       img {
+        height: 48px;
+        width: 48px;
         display: block;
-        max-height: inherit;
-        max-width: inherit;
-        height: auto;
-        width: auto;
-        padding: 6px;
+        padding: 2px;
       }
     }
 
@@ -150,4 +148,3 @@
     }
   }
 }
-

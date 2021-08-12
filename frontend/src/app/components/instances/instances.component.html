@@ -17,8 +17,6 @@
     <br>
   </div>
   <div class="instances_results">
-   <div *ngFor="let instance of filteredInstances">
-     <app-instance-tile [instance]="instance"></app-instance-tile>
-   </div>
+    <app-instance-tile *ngFor="let instance of filteredInstances" [instance]="instance"></app-instance-tile>
   </div>
 </div>
