@@ -1,3 +1,4 @@
+@import "src/styles-variables";
 #instance-details {
   flex-direction: column;
   display: flex;
@@ -101,7 +102,7 @@
   }
 
   button {
-    height: 35px;
+    border: 1px $custom_gray_medium+CC solid;
     align-self: center;
     justify-self: center;
     svg {
@@ -178,7 +179,7 @@
       float: left;
       width: 100%;
       margin-bottom: 10px;
-      background: black;
+      background: $custom_gray_dark;
       color: white;
       padding: 3px 10px;
       border-radius: 3px
@@ -230,7 +231,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
 }
 
 
@@ -348,4 +348,6 @@ input.ng-valid[required], input.ng-valid {
   background: #e4ede4
 }
 
-
+.button-disabled {
+  background: $custom_gray_lightaccent;
+}

@@ -49,7 +49,7 @@
 
       <ng-container *ngIf="instanceItem.state === ('RESTARTING' || 'STOPPING' || 'DELETING' || 'STARTING')"> <!--  -->
         <span class="status in_operation"></span>
-        <button disabled style="background: lightgray" (click)="manageInstance('start')">
+        <button disabled class="button-disabled" (click)="manageInstance('start')">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.start"></path>
           </svg>
@@ -146,10 +146,19 @@
           </div>
         </ng-container>
         <div class="save-button">
+<!--          <button-->
+<!--            (click)="saveInstanceChanges()"-->
+<!--            [disabled]="!instanceDetailForm.valid"-->
+<!--            [style.background-color]="instanceDetailForm.invalid ? 'rgb(200, 100, 100)' : '#ffffff'"-->
+<!--          > Save </button>-->
           <button
+            *ngIf="instanceDetailForm.invalid"
+            disabled
+            class="button-disabled"
+          > Save </button>
+          <button
+            *ngIf="instanceDetailForm.valid"
             (click)="saveInstanceChanges()"
-            [disabled]="!instanceDetailForm.valid"
-            [style.background-color]="instanceDetailForm.invalid ? 'rgb(200, 100, 100)' : '#ffffff'"
           > Save </button>
         </div>
       </ng-template>

@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {AppInfo, ApplicationItem, IVersions} from '../../../store/models/application-group-item.model';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import {FormControl, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ApplicationService} from '../../../store/services/application.service';
 
@@ -53,7 +53,5 @@ export class InstallScreenDialogComponent implements OnInit {
       'install/' + this.applicationItem.app_name + '/' + this.selectedVersion.app_version,
       {state: [{...this.applicationItem}, this.selectedVersion]}
     ).then();
-
-    // todo: store call for add Instance
   }
 }

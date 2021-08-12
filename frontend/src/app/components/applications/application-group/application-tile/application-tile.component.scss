@@ -1,5 +1,5 @@
 @import "src/styles-variables";
-.application-group-item {
+.application-tile {
   padding: 15px 10px 10px 10px;
   text-align: center;
   width: 150px;
@@ -72,27 +72,27 @@
 }
 
 
-.application-group-item:hover {
+.application-tile:hover {
   color: white;
   background: $custom_blue; //#6496b4
 }
 
-.application-group-item.highlight .name,
-.application-group-item:hover .name {
+.application-tile.highlight .name,
+.application-tile:hover .name {
   border-bottom: solid 1px white
 }
 
-.application-group-item.highlight .description,
-.application-group-item:hover .description {
+.application-tile.highlight .description,
+.application-tile:hover .description {
   color: white
 }
 
-.application-group-item.highlight .tag,
-.application-group-item:hover .tag {
+.application-tile.highlight .tag,
+.application-tile:hover .tag {
   color: white;
   background: rgba(255, 255, 255, 0.2)
 }
 
-.application-group-item:hover .tag:hover{
+.application-tile:hover .tag:hover{
   background: rgba(0, 0, 0, 0.9)
 }

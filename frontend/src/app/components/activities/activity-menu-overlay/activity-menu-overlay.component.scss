@@ -40,15 +40,15 @@
 //}
 
 ::ng-deep .activity-overlay__menu {
-  max-width: fit-content !important;
+  max-width: 500px !important;
   box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.3);
-  //width: 500px !important;
+  width: 500px !important;
   .activity-overlay__menu-item {
     height: 50px;
     border-bottom: solid 1px $custom_gray_light;
     padding: 5px 15px 5px 85px;
     position: relative;
-    width: 100%;
+    //width: 495px;
     cursor: pointer;
 
     .item-state {
@@ -85,7 +85,7 @@
     .item-title {
       width: 100%;
       font-size: 16px;
-      color: $custom_blue
+      color: $custom_blue;
     }
 
     .item-start-date, .item-end-date {
@@ -99,16 +99,31 @@
   }
   .activity-overlay__menu-item-last {
     text-align: center;
-    width: 100%;
+    width: inherit;
     font-size: 14px;
     line-height: 1.42857143;
     padding-top: 3px;
     padding-bottom: 3px;
   }
+
   .activity-overlay__menu-item-last:hover {
     color: white;
     background: $custom_blue;
     cursor: pointer;
+  }
+
+  .activity-overlay__menu-item-empty {
+    text-align: center;
+    width: inherit;
+    height: 50px;
+    background: $custom_gray_light;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    line-height: 1.42857143;
+    padding-top: 3px;
+    padding-bottom: 3px;
   }
 
 }

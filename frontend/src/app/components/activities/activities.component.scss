@@ -75,15 +75,19 @@
         }
       }
     }
+    .activities__empty {
+      display: flex;
+      justify-content: center;
+    }
   }
 }
 
 .log__info {
-  color: $log_info;
+  color: $custom_color_info;
 }
 .log__warn {
-  color: $log_warn;
+  color: $custom_color_warn;
 }
 .log__error {
-  color: $log_error;
+  color: $custom_color_error;
 }

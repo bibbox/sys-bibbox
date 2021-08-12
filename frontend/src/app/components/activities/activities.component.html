@@ -1,5 +1,6 @@
 <div class="activities">
   <mat-accordion class="activity-list">
+    <span *ngIf="!activityList.length" class="activities__empty"> nothing to show here </span>
     <mat-expansion-panel (opened)="getLogsOfActivity(activity.id)"
                          (destroyed)="unsubscribeFromLogs(); clearLogs()"
                          #mep="matExpansionPanel"
