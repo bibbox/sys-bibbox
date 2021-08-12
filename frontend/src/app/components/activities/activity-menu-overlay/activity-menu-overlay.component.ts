@@ -51,13 +51,4 @@ export class ActivityMenuOverlayComponent implements OnInit {
         (prev, current) => (prev.finished_time > current.finished_time) ? prev : current).result;
     }
   }
-
-  // openReferredActivity(activityID?: number): void {
-  //   if (activityID) {
-  //     this.router.navigate(['activities', {activityID}]).then();
-  //     console.log('clicked activity: ', activityID);
-  //   } else {
-  //     this.router.navigate(['activities']).then();
-  //   }
-  // }
 }

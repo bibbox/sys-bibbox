@@ -111,7 +111,6 @@ export class InstanceDetailPageComponent implements OnInit {
 
   deleteInstance(): void {
     console.log('delete instance:' + this.instanceItem.instancename);
-    // this.store.dispatch(new DeleteInstanceAction(this.instanceItem.instancename));
     this.instanceService.deleteInstance(this.instanceItem.instancename).subscribe(
       (res) => console.log(res)
     );

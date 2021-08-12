@@ -33,6 +33,15 @@ class AppCatalogue():
       return 'bibbox'  
 
   def appNames  (self, catalogueName):
+      """
+      This function returns all app names from the actively used catalogue.
+      This function also spawns a celery worker, which asynchronously updates the app catalogue
+      in the database with the data from the respective app-repositories.
+
+      :param catalogueName: name of the catalogue to retreive appNames from
+      :returns: sorted list of appNames from the catalogue
+      """
+
       syncAppCatalogue.delay ( self.availableCatalogues() )
       c = catalogue_service.catalogue (catalogueName)      
       appDescr = {}
@@ -48,6 +57,22 @@ class AppCatalogue():
       return  appNames 
 
   def appDescriptions  (self, catalogueName):
+      """
+      This function returns app-objects from the actively used catalogue. 
+      An app-object is a dictionary with the following key, value pairs:
+        - app_name: name of the app
+        - icon_url: url to the icon of the app
+        - app_version: version of the app (Naming Convention: app_version should correspond to github repo branchname)
+        - appinfo: url to the appinfo.json
+        - environment_parameters: url to the environment-parameters.json
+
+      This function also spawns a celery worker, which asynchronously updates the app catalogue
+      in the database with the data from the respective app-repositories.
+
+      :param catalogueName: name of the catalogue to retreive appNames from
+      :returns: sorted list of appNames from the catalogue
+      """
+      
       syncAppCatalogue.delay ( self.availableCatalogues() )
       c = catalogue_service.catalogue (catalogueName)
       apps = []
@@ -68,9 +93,20 @@ class AppCatalogue():
       return apps
 
   def appDescription   (self, catalogueName, appName):
+      """
+      not implemented
+      """
       return []  
 
   def appInfo  (self, appid, version):
+      """
+      This function returns the info of the specified app-version.
+
+      :param appid: ID of the app from which to retrieve infos
+      :param version: Appversion of the app from which to retrieve infos
+      
+      :returns: dictionary of appInfos, empty if none
+      """
       apprecord = app_service.version (appid, version)
       if apprecord:
           return simplejson.loads(apprecord.appinfo)
@@ -78,6 +114,14 @@ class AppCatalogue():
           return {}  
 
   def environment_parameters (self, appid, version):
+      """
+      This function returns the info of the specified app-version.
+
+      :param appid: ID of the app from which to retrieve infos
+      :param version: Appversion of the app from which to retrieve infos
+      
+      :returns: dictionary of appInfos, empty if none
+      """
       apprecord = app_service.version (appid, version)
       if apprecord:
           return simplejson.loads(apprecord.environment_parameters)

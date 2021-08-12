@@ -81,9 +81,15 @@ def create_app(config_name):
     #     logger.addHandler(slh)
 
     # swagger base URL has to be specified   
+    # swaggerui_blueprint = get_swaggerui_blueprint(
+    #     '/bibbox/api/docs',
+    #     '/bibbox/static/bibbox-api-spec.yml',
+    #     config={'app_name': "BIBBOX COMMANDER"}
+    # )
+
     swaggerui_blueprint = get_swaggerui_blueprint(
         '/bibbox/api/docs',
-        '/bibbox/static/bibbox-api-spec.yml',
+        '/static/bibbox-api-spec.yml',
         config={'app_name': "BIBBOX COMMANDER"}
     )
 

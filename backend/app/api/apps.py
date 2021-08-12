@@ -78,7 +78,7 @@ class AppInfo (Resource):
 
 
 
-@api.param('testparam', 'test')
+#@api.param('testparam', 'test')
 @api.doc(
 
 )

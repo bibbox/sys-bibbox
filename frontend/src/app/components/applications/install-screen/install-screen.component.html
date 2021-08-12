@@ -59,9 +59,15 @@
       </div>
     </div>
 
-    <span class="install-submit">
+    <div class="install-submit">
       <button class="app-install-cancel" type="button" (click)="cancel()">Cancel</button>
-      <button class="app-install-submit" type="button" (click)="install()" [disabled]="!installForm.valid">Install</button>
-    </span>
+
+      <ng-container *ngIf="installForm.valid && envParamForm.valid">
+        <button class="app-install-submit" type="button" (click)="install()">Install</button>
+      </ng-container>
+      <ng-container *ngIf="installForm.invalid || envParamForm.invalid">
+        <button class="app-install-submit-invalid" type="button" disabled> Install </button>
+      </ng-container>
+      </div>
   </form>
 </div>
