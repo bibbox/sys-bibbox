@@ -86,11 +86,10 @@
   }
   .instance-tile__body {
     height: 200px;
-    display: flex;
-    flex-direction: column;
     overflow: hidden;
     padding: 20px 20px 20px 20px;
     color: $custom_gray_dark;
+    white-space: pre-line;
 
   }
   .instance-tile__footer {
