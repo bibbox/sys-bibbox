@@ -28,6 +28,7 @@ export class ActivityMenuOverlayComponent implements OnInit {
         this.activityList = res;
         this.countActiveActivities();
         this.setLastActivityStatus();
+        this.sortActivities();
       });
   }
 
@@ -43,6 +44,10 @@ export class ActivityMenuOverlayComponent implements OnInit {
       }
     });
     console.log('active activities: ', this.activeActivities);
+  }
+
+  sortActivities(): void {
+    this.activityList.sort((a, b) => (a.id < b.id) ? 1 : -1);
   }
 
   setLastActivityStatus(): void {
