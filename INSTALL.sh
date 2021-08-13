@@ -57,19 +57,20 @@ pip3 install -r requirements.txt
 
 
 # change domainname
+chmod -R 775 /opt/bibbox/sys-bibbox/config-templates
 cd /opt/bibbox/sys-bibbox/config-templates
 sed -e "s/§§BASEURL/$DOMAINNAME/g" bibbox.config.template > bibbox.config
 sed -e "s/§§BASEURL/$DOMAINNAME/g" 000-default.conf.template > 000-default.conf
 sed -e "s/§§BASEURL/$DOMAINNAME/g" 100-error.conf.template > 100-error.conf
 
+chmod -R 775 /opt/bibbox/sys-bibbox/apacheproxy
 cd /opt/bibbox/sys-bibbox/apacheproxy
 sed -e "s/§§SERVERNAME/$DOMAINNAME/g" httpd.conf.template > httpd.conf
 
+chmod -R 775 /opt/bibbox/sys-bibbox/frontend/src/environments
 cd /opt/bibbox/sys-bibbox/frontend/src/environments
 sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.ts.template > environment.ts
 sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.prod.ts.template > environment.prod.ts
-
-
 
 
 # compile frontend code
