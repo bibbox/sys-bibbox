@@ -7,13 +7,14 @@
         ProxyPassReverse        /api/       http://bibbox-sys-commander-backend:5000/api/
 
 
-        # working 50%
+        # working ws implementation
         RewriteEngine on
-        RewriteCond %{HTTP:Upgrade}  websocket [NC]
-
-        RewriteRule             /socket.io/(.*) http://bibbox-sys-commander-backend:5000/socket.io/$1 [P,L]
-        ProxyPass               /socket.io      ws://bibbox-sys-commander-backend:5000/socket.io
-        ProxyPassReverse        /socket.io      ws://bibbox-sys-commander-backend:5000/socket.io
+        RewriteCond %{REQUEST_URI}  ^/socket.io         [NC]
+        RewriteCond %{QUERY_STRING} transport=websocket [NC]
+        RewriteRule /(.*) ws://bibbox-sys-commander-backend:5000/$1 [P,L]
+        
+        ProxyPass          /socket.io      http://bibbox-sys-commander-backend:5000/socket.io
+        ProxyPassReverse   /socket.io      http://bibbox-sys-commander-backend:5000/socket.io
 
 
         DocumentRoot /var/www/html/sys-bibbox-client

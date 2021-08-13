@@ -38,7 +38,7 @@ export class ActivityMenuOverlayComponent implements OnInit {
   countActiveActivities(): void {
     this.activeActivities = 0;
     this.activityList.forEach(value => {
-      if (value.finished_time === 'None') {
+      if (value.finished_time === '') {
         this.activeActivities += 1;
       }
     });

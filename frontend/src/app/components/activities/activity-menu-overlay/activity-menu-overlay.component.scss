@@ -25,6 +25,9 @@
       height: 30px;
       align-self: center;
       justify-items: center;
+      .loading{
+        background: $custom_gray_medium;
+      }
     }
   }
   .activity-overlay__button:hover {

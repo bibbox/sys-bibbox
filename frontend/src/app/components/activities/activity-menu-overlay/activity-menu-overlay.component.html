@@ -1,10 +1,9 @@
 <div class="activity-overlay">
   <div [matMenuTriggerFor]="activityMenuOverlay" class="activity-overlay__button"> <!-- *ngSwitchCase="activeActivities" -->
     <ng-container *ngIf="activeActivities">
-      <img src="../../../../assets/loading.gif" alt="activity status" class="activity-overlay__button-status-image">
+      <img src="assets/loading.gif" alt="activity status" class="activity-overlay__button-status-image loading">
       <label class="activity-overlay__button-active-activities-label">{{activeActivities}}</label>
     </ng-container>
-
     <img *ngIf="!activeActivities && lastActivityStatus === 'FAILURE'" src="assets/error.png" alt="activity status" class="activity-overlay__button-status-image">
     <img *ngIf="!activeActivities && lastActivityStatus === 'SUCCESS'" src="assets/done.png" alt="activity status" class="activity-overlay__button-status-image">
     <i *ngIf="!activityList.length" class="fas fa-question-circle fa-2x activity-overlay__button-status-image"></i>
