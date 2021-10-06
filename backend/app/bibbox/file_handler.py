@@ -87,6 +87,10 @@ class FileHandler():
 
             else:
                 url = 'https://github.com/' + organization + '/' + repository + '/archive/refs/heads/' + version + '.zip'
+                status = requests.get(url, verify=False, timeout=3).status_code
+                if status != 200:
+                    url = 'https://github.com/' + organization + '/' + repository + '/archive/refs/tags/' + version + '.zip'
+
 
             # download zip
             try:
