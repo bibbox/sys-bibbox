@@ -32,13 +32,21 @@ INFO: The first time loading the applications tab of the website shows no applic
 read -p "Specify domainname + TLD (e.g. silicolabv4.bibbox.org): " DOMAINNAME
 # TODO: read envparams from file
 
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" bash_completion
+
+nvm install 14.16.0
+nvm use v14.16.0
 
 apt-get update
 #apt-get install docker.io -y
 apt install docker-compose -y
-apt install nodejs npm -y
+apt install npm -y
 apt install python3-pip -y
-# nvm install 14.16.0 -y
+
+#nvm install 14.16.0 -y
 printf 'n\n' | npm i -g @angular/cli
 #printf 'n\n' | npm update -g @angular/cli
 
