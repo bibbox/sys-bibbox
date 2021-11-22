@@ -77,7 +77,7 @@ class FileHandler():
         try:
             # get url
             url = ''
-            if version == 'development':
+            if version == 'latest':
                 url = 'https://github.com/' + organization + '/' + repository + '/archive/refs/heads/master.zip'
 
                 # newer git default branches are called main instead of master: 
