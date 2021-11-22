@@ -83,7 +83,7 @@ class AppCatalogue():
                 app_name =  group_member ['app_name']
                 group_member['icon_url'] = 'https://raw.githubusercontent.com/bibbox/' +  group_member['app_name'] + '/master/icon.png'
                 for v in group_member ['versions']:
-                    if v['app_version'] == 'development':
+                    if v['app_version'] == 'latest':
                         v['appinfo'] =  'https://raw.githubusercontent.com/bibbox/' + app_name   + '/master/appinfo.json'
                         v['environment_parameters'] =  'https://raw.githubusercontent.com/bibbox/' + app_name   + '/master/environment-parameters.json'
                     else:
