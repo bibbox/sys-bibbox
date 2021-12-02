@@ -136,8 +136,12 @@ class InstanceHandler ():
     def __replacePlaceholders (self, compose_dict):
         comp_str = self.template_str
         comp_str = comp_str.replace('§§INSTANCE', compose_dict['instancename'])
-        
-        # only applicable if §§KEY in docker-compose.yml.template == KEY in instanceDescr['instanceDescr'] (without §§ Prefix) 
+        # Replace BASEURL with bibbox baseurl
+        fh = FileHandler()
+        config = fh.getBIBBOXconfig ()
+        comp_str = comp_str.replace('§§BASEURL', config['baseurl'])
+
+        # only applicable if §§KEY in docker-compose.yml.template == KEY in instanceDescr['instanceDescr'] (without §§ Prefix)
         # for key, value in self.instanceDescr.items():
         #     if not isinstance(value, dict):
         #         str = str.replace('§§' + key, value)
