@@ -14,7 +14,9 @@ import {InstallScreenComponent} from './components/applications/install-screen/i
 import {SysLogsComponent} from './components/sys-logs/sys-logs.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full'}, // -> upon reaching baseurl we want to redirect to the login page
+  // TODO redirect when login does anything
+//  { path: '', redirectTo: '/login', pathMatch: 'full'}, // -> upon reaching baseurl we want to redirect to the login page
+  { path: '', redirectTo: '/applications', pathMatch: 'full'}, // -> upon reaching baseurl we want to redirect to the store page for now
   { path: 'install/:application_name/:version', component: InstallScreenComponent, pathMatch: 'full'},
   { path: 'instances/:instance_name', component: InstanceDetailPageComponent, pathMatch: 'full'},
 

@@ -32,6 +32,7 @@ export class LoginComponent {
   }
 
   logFunct(usr: string, pw: string): void {
+    // TODO remove for production!!!
     console.log('login ', usr, ' pw: ', pw);
   }
 }
