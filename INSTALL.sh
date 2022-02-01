@@ -30,6 +30,7 @@ INFO: The first time loading the applications tab of the website shows no applic
 ---------------------------------------------------------------------------------------------------
 '
 read -p "Specify domainname + TLD (e.g. silicolabv4.bibbox.org): " DOMAINNAME
+read -p "Specify EMAIL for https-certificate (e.g. backoffice.bibbox@gmail.com): " EMAIL
 # TODO: read envparams from file
 
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
