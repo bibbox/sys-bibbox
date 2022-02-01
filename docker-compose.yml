@@ -17,6 +17,9 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - DOMAINNAME=${DOMAINNAME:-demo.bibbox.org}
+      - EMAIL=${EMAIL:-backoffice.bibbox@gmail.com}
 
   #  bibbox-sys-commander-nginx:
   #    container_name: bibbox-sys-commander-nginx
@@ -89,7 +92,7 @@ services:
        retries: 5
     depends_on:
       bibbox-sys-commander-keycloak:
-        condition: service_started  
+        condition: service_started
 
   bibbox-sys-commander-celery-monitor:
     container_name: bibbox-sys-commander-celery-monitor
