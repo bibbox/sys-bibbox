@@ -9,8 +9,10 @@ services:
     container_name: bibbox-sys-commander-apacheproxy
     restart: unless-stopped
     networks:
-      - bibbox-default-network
-    image: bibbox/bibbox-sys-commander-apacheproxy:latest
+    - bibbox-default-network
+    build:
+      context:    ./apacheproxy
+      dockerfile: Dockerfile
     volumes:
       #- /opt/bibbox/proxy/sites:/usr/local/apache2/conf/sites
       - /opt/bibbox/proxy/sites:/etc/apache2/sites-available/
@@ -52,10 +54,12 @@ services:
     networks:
       - bibbox-default-network
     links:
-      -  bibbox-sys-commander-redis:redis
-      -  bibbox-sys-commander-celery:celery
-      -  bibbox-sys-commander-postgres:postgres
-    image: bibbox/bibbox-sys-commander-backend:latest
+        -  bibbox-sys-commander-redis:redis
+        -  bibbox-sys-commander-celery:celery
+        -  bibbox-sys-commander-postgres:postgres
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
     ports:
       - "5010:5000"
     volumes:
@@ -78,9 +82,11 @@ services:
     networks:
       - bibbox-default-network
     links:
-      -  bibbox-sys-commander-redis:redis
-      -  bibbox-sys-commander-postgres:postgres
-    image: bibbox/bibbox-sys-commander-backend:latest
+        -  bibbox-sys-commander-redis:redis
+        -  bibbox-sys-commander-postgres:postgres
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
     command: bash -c 'while ! curl --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/auth/realms/master; do sleep 2; done; celery -A celery_worker.app_celerey worker -l INFO'
     volumes:
       - ./data/celery:/queue
@@ -100,7 +106,9 @@ services:
 
   bibbox-sys-commander-celery-monitor:
     container_name: bibbox-sys-commander-celery-monitor
-    image: bibbox/bibbox-sys-commander-backend:latest
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
     networks:
       - bibbox-default-network
     links:
@@ -120,22 +128,24 @@ services:
       - /opt/bibbox:/opt/bibbox
 
   bibbox-sys-commander-postgres:
-    container_name:  bibbox-sys-commander-postgres
-    restart: unless-stopped
-    networks:
-      - bibbox-default-network
-    image: bibbox/bibbox-sys-commander-postgres:latest
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./data/postgresql/data:/var/lib/postgresql/data
-    env_file:
-      - .env
-    healthcheck:
-       test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${DB_NAME}'"]
-       interval: 10s
-       timeout: 5s
-       retries: 5
+      container_name:  bibbox-sys-commander-postgres
+      restart: unless-stopped
+      networks:
+       - bibbox-default-network
+      build:
+        context:   ./postgresql
+        dockerfile: Dockerfile
+      ports:
+        - "5432:5432" 
+      volumes:
+        - ./data/postgresql/data:/var/lib/postgresql/data
+      env_file:
+        - .env
+      healthcheck:
+        test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${DB_NAME}'"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
 
   bibbox-sys-commander-redis:
     container_name: bibbox-sys-commander-redis
