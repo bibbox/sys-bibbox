@@ -47,7 +47,11 @@ apt install docker-compose -y
 apt install npm -y
 apt install python3-pip -y
 
-printf 'n\n' | npm i -g @angular/cli
+#nvm install 14.16.0 -y
+#printf 'n\n' | npm i -g @angular/cl
+#npm audit fix
+#printf 'n\n' | npm i -g
+
 #printf 'n\n' | npm update -g @angular/cli
 
 
