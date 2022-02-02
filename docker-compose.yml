@@ -13,7 +13,7 @@ services:
     image: bibbox/bibbox-sys-commander-apacheproxy:latest
     volumes:
       - /opt/bibbox/proxy/sites:/usr/local/apache2/conf/sites
-      - /opt/bibbox/proxy/letsencrypt:etc/letsencrypt
+      - /opt/bibbox/proxy/letsencrypt:/etc/letsencrypt
       - /opt/bibbox/sys-bibbox/frontend/dist/sys-bibbox-client:/var/www/html/sys-bibbox-client
     ports:
       - "80:80"
