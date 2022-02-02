@@ -137,6 +137,7 @@ def installInstance (self, instanceDescr):
     # appinfo.json, fileinfo.json, docker-compose.yml.template, 
     
     file_handler = FileHandler()
+    dh = DockerHandler()
 
     # check if directory structure is valid, fixes structure if invalid
     # needs to be called sooner, but where/when?
@@ -410,7 +411,25 @@ def installInstance (self, instanceDescr):
         #     logger.info("Successfully set permissions")
         
         logger.info("Graceful reloading bibbox-sys-commander-apacheproxy...")
-        process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'httpd', '-k', 'graceful'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+        #process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'httpd', '-k', 'graceful'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+        #just a quick test
+        process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'certbot', 'certonly', '--apache', '-d', '${DOMAINNAME:-demo.bibbox.org}', '-n', '--email ', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+        while True:
+            line = process.stdout.readline()
+            lineerror = process.stderr.readline()
+            if not line and not lineerror:
+                break
+            #the real code does filtering here
+            if line:
+                # look what we have to strip
+                # if there are some escape code, that the line is overwritten, the last line in the log should be replaced
+                result = ansi_escape.sub('', line).rstrip()
+                print (line.rstrip())
+                print (result)
+            if lineerror:
+                # same stuff here, also write this in the log file
+                print (lineerror.rstrip())
+        process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'service', 'apache2', 'restart'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
         while True:
             line = process.stdout.readline()
             lineerror = process.stderr.readline()
