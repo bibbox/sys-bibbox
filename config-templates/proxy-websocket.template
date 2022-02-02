@@ -1,11 +1,39 @@
 <VirtualHost *:80>
+   ServerName §§INSTANCEID.§§BASEURL
+   Redirect / https://§§INSTANCEID.§§BASEURL/
+</VirtualHost>
+
+<VirtualHost *:443>
         ServerName §§INSTANCEID.§§BASEURL
+
+        SSLEngine On
+        SSLCertificateFile      /etc/letsencrypt/live/§§INSTANCEID.§§BASEURL/cert.pem
+        SSLCertificateKeyFile   /etc/letsencrypt/live/§§INSTANCEID.§§BASEURL/privkey.pem
+        SSLCertificateChainFile /etc/letsencrypt/live/§§INSTANCEID.§§BASEURL/fullchain.pem
+
+        <Proxy *>
+                        Order deny,allow
+                        Allow from all
+        </Proxy>
+
         ProxyRequests           Off
-        ProxyPreserveHost       On
+        ProxyPreserveHost On
 
         ProxyPass               §§PATH_TO_SOCKET ws://§§CONTAINERNAME§§PATH_TO_SOCKET
         ProxyPassReverse        §§PATH_TO_SOCKET ws://§§CONTAINERNAME§§PATH_TO_SOCKET
 
-        ProxyPass               /       http://§§CONTAINERNAME/
-        ProxyPassReverse        /       http://§§CONTAINERNAME/
+        ProxyPass               /  https://§§CONTAINERNAME/
+        ProxyPassReverse        /  https://§§CONTAINERNAME/
 </VirtualHost>
+
+#<VirtualHost *:80>
+#        ServerName §§INSTANCEID.§§BASEURL
+#        ProxyRequests           Off
+#        ProxyPreserveHost       On
+#
+#        ProxyPass               §§PATH_TO_SOCKET ws://§§CONTAINERNAME§§PATH_TO_SOCKET
+#        ProxyPassReverse        §§PATH_TO_SOCKET ws://§§CONTAINERNAME§§PATH_TO_SOCKET
+#
+#        ProxyPass               /       http://§§CONTAINERNAME/
+#        ProxyPassReverse        /       http://§§CONTAINERNAME/
+#</VirtualHost>
