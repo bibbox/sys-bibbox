@@ -154,6 +154,13 @@ cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/si
 docker exec -it bibbox-sys-commander-apacheproxy apache2ctl -k graceful
 
 
+docker exec -it bibbox-sys-commander-apacheproxy certbot --apache -d ${DOMAINNAME:-demo.bibbox.org} -n --email ${EMAIL:-backoffice.bibbox@gmail.com} --agree-tos
+
+docker exec -it bibbox-sys-commander-apacheproxy cp /usr/local/apache2/conf/sites/000-default.conf /etc/apache2/sites-available/000-default-le-ssl.conf
+
+docker exec -it bibbox-sys-commander-apacheproxy service apache2 restart
+
+
 # re init db
 # docker exec bibbox-sys-commander-backend python manage.py recreate_db
 # docker exec bibbox-sys-commander-backend python manage.py seed_db
