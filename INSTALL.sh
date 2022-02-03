@@ -102,7 +102,7 @@ ng build --configuration production
 cp /opt/bibbox/sys-bibbox/config-templates/100-error.conf /opt/bibbox/proxy/sites/100-error.conf
 #cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/sites/000-default.conf
 cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf.apache2 /opt/bibbox/proxy/sites/000-default.conf
-cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/sites/000-default-le-ssl.conf.conf
+cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/sites/000-default-le-ssl.conf
 cp /opt/bibbox/sys-bibbox/config-templates/bibbox.config /opt/bibbox/config/bibbox.config
 cp /opt/bibbox/sys-bibbox/config-templates/005-fdp.conf /opt/bibbox/proxy/sites/005-fdp.conf
 
