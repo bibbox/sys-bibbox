@@ -2,6 +2,7 @@
 
 docker-compose down
 
+rm /opt/bibbox/proxy/sites/000-default-le-ssl.conf
 cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf.apache2 /opt/bibbox/proxy/sites/000-default.conf
 
 docker-compose up --build -d
