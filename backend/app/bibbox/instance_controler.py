@@ -279,15 +279,20 @@ def installInstance (self, instanceDescr):
             pi = instance_handler.getProxyInformation()
             # create https certificate
             config = file_handler.getBIBBOXconfig ()
+            command_array=['certbot', 'certonly',  '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) ,
+                           '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
+            logger.info("Executing comman in docker")
+
+            dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
+                           command_array=command_array)
+
             command_array=['docker', 'exec', 'bibbox-sys-commander-apacheproxy',
-                     'bash', '-c', '\'', 'certbot', 'certonly',  '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) ,
-                           '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos', '&&',
-                           'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' ,
+                           'bash', '-c', '\'', 'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' ,
                            'certbot', '--expand', '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) ,
-                     '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos','\'']
+                           '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos','\'']
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
-            process = subprocess.Popen(command_array,
-                                       shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+            dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
+                           command_array=command_array)
 
             while True:
                 line = process.stdout.readline()
