@@ -1,6 +1,9 @@
 <VirtualHost *:80>
    ServerName §§INSTANCEID.§§BASEURL
    Redirect / https://§§INSTANCEID.§§BASEURL/
+   RewriteEngine on
+   RewriteCond %{SERVER_NAME} =§§INSTANCEID.§§BASEURL
+   RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -10,6 +13,7 @@
         SSLCertificateFile      /etc/letsencrypt/live/§§INSTANCEID.§§BASEURL/cert.pem
         SSLCertificateKeyFile   /etc/letsencrypt/live/§§INSTANCEID.§§BASEURL/privkey.pem
         SSLCertificateChainFile /etc/letsencrypt/live/§§INSTANCEID.§§BASEURL/fullchain.pem
+        Include        /etc/letsencrypt/options-ssl-apache.conf
 
         <Proxy *>
                         Order deny,allow

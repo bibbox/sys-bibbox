@@ -30,8 +30,9 @@ RUN apt-get -y update && \
     a2enmod proxy_http && \
     a2enmod proxy_wstunnel && \
     a2enmod proxy_ajp && \
-#    systemctl restart apache2 && \
-    service apache2 restart && \
+    apt-get install systemctl && \
+    systemctl restart apache2 && \
+#    service apache2 restart && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install certbot && \
     apt-get install -y python3-certbot-apache;
 
