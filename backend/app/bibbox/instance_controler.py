@@ -285,7 +285,7 @@ def installInstance (self, instanceDescr):
                            'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' ,
                            'certbot', '--expand', '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) ,
                      '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos','\'']
-            logger.info("subprocess command: ".format(command=" ".join(command_array)))
+            logger.info("subprocess: {command}".format(command=" ".join(command_array)))
             process = subprocess.Popen(command_array,
                                        shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
 
