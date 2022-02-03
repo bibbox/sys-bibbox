@@ -311,7 +311,7 @@ def installInstance (self, instanceDescr):
                     print (lineerror.rstrip())
 
 
-            except Exception as ex:
+        except Exception as ex:
             #print ("ERROR in the generation of the Proxy File" )
             logger.error("Creation of the {} proxy file failed. Exception: {}".format('005-' + instanceDescr['instancename'] + ".conf", ex))
             raise
