@@ -143,7 +143,7 @@ docker exec -it bibbox-sys-commander-apacheproxy certbot --apache -d ${DOMAINNAM
 
 docker exec -it bibbox-sys-commander-apacheproxy cp /usr/local/apache2/conf/sites/000-default.conf /etc/apache2/sites-available/000-default-le-ssl.conf
 
-docker exec -it bibbox-sys-commander-apacheproxy service apache2 restart
+docker exec -it bibbox-sys-commander-apacheproxy systemctl restart apache2
 
 
 # re init db
