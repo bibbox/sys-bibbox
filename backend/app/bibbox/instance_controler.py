@@ -289,26 +289,29 @@ def installInstance (self, instanceDescr):
             pi = instance_handler.getProxyInformation()
             # create https certificate
             config = file_handler.getBIBBOXconfig ()
-            # process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'certbot', 'certonly',
-            #                             '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) ,
-            #                             '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos'],
-            #                            shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
-            #
-            # while True:
-            #     line = process.stdout.readline()
-            #     lineerror = process.stderr.readline()
-            #     if not line and not lineerror:
-            #         break
-            #     #the real code does filtering here
-            #     if line:
-            #         # look what we have to strip
-            #         # if there are some escape code, that the line is overwritten, the last line in the log should be replaced
-            #         result = ansi_escape.sub('', line).rstrip()
-            #         print (line.rstrip())
-            #         print (result)
-            #     if lineerror:
-            #         # same stuff here, also write this in the log file
-            #         print (lineerror.rstrip())
+            command_array=['docker', 'exec', 'bibbox-sys-commander-apacheproxy',
+                     'bash', '-c', '\'', 'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' , 'certbot', 'certonly',
+                     '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) ,
+                     '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos','\'']
+            logger.info("subprocess command: ".format(command=" ".join(command_array)))
+            process = subprocess.Popen(command_array,
+                                       shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+
+            while True:
+                line = process.stdout.readline()
+                lineerror = process.stderr.readline()
+                if not line and not lineerror:
+                    break
+                #the real code does filtering here
+                if line:
+                    # look what we have to strip
+                    # if there are some escape code, that the line is overwritten, the last line in the log should be replaced
+                    result = ansi_escape.sub('', line).rstrip()
+                    print (line.rstrip())
+                    print (result)
+                if lineerror:
+                    # same stuff here, also write this in the log file
+                    print (lineerror.rstrip())
 
 
         except Exception as ex:
