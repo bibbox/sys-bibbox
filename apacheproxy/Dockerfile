@@ -1,4 +1,4 @@
-FROM httpd:latest
+FROM ubuntu:22.04
 
 MAINTAINER Heimo Müller "heimo.mueller@mac.com"
 
