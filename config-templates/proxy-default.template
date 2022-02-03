@@ -19,8 +19,8 @@
         ProxyRequests           Off
         ProxyPreserveHost On
 
-        ProxyPass               /  https://§§CONTAINERNAME/
-        ProxyPassReverse        /  https://§§CONTAINERNAME/
+        ProxyPass               /  http://§§CONTAINERNAME/
+        ProxyPassReverse        /  http://§§CONTAINERNAME/
 </VirtualHost>
 
 
