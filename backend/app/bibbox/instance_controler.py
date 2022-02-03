@@ -290,8 +290,10 @@ def installInstance (self, instanceDescr):
             # create https certificate
             config = file_handler.getBIBBOXconfig ()
             command_array=['docker', 'exec', 'bibbox-sys-commander-apacheproxy',
-                     'bash', '-c', '\'', 'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' , 'certbot', 'certonly',
-                     '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) ,
+                     'bash', '-c', '\'', 'certbot', 'certonly',  '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) ,
+                           '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos', '&&',
+                           'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' ,
+                           'certbot', '--expand', '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) ,
                      '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos','\'']
             logger.info("subprocess command: ".format(command=" ".join(command_array)))
             process = subprocess.Popen(command_array,
