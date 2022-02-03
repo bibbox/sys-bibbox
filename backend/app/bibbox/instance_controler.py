@@ -279,7 +279,11 @@ def installInstance (self, instanceDescr):
             pi = instance_handler.getProxyInformation()
             # create https certificate
             config = file_handler.getBIBBOXconfig ()
-            process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'certbot', 'certonly', '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) , '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+            process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'certbot', 'certonly',
+                                        '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) ,
+                                        '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos'],
+                                       shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+
             while True:
                 line = process.stdout.readline()
                 lineerror = process.stderr.readline()
@@ -424,7 +428,7 @@ def installInstance (self, instanceDescr):
         logger.info("Graceful reloading bibbox-sys-commander-apacheproxy...")
         #process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'httpd', '-k', 'graceful'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
         #just a quick test
-        process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'systemctl', 'restart', 'apache2'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+        process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'apache2ctl', '-k', 'graceful'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
         while True:
             line = process.stdout.readline()
             lineerror = process.stderr.readline()
