@@ -298,9 +298,17 @@ def installInstance (self, instanceDescr):
             for line in stderror:
                 logger.error(line)
 
-            command_array=['bash', '-c', '"', 'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' ,
-                           'certbot', '--expand', '--apache'] + sub_domains + [
-                           '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos','"']
+            command_array=['ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/']
+            logger.info("subprocess: {command}".format(command=" ".join(command_array)))
+            stdout, stderror = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
+                                              command_array=command_array)
+
+            for line in stdout:
+                logger.info(line)
+            for line in stderror:
+                logger.error(line)
+
+            command_array=['certbot', '--expand', '--apache'] + sub_domains + ['-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
             stdout, stderror = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
                            command_array=command_array)
