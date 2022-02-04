@@ -34,9 +34,9 @@ class DockerHandler():
             if not line and not lineerror:
                 break
             if line:
-                std_out.appand(line.rstrip())
+                std_out.append(line.rstrip())
             if lineerror:
-                std_out.appand(lineerror.rstrip())
+                std_out.append(lineerror.rstrip())
 
         return {"std_out":std_out,
                 "std_error":std_error}
