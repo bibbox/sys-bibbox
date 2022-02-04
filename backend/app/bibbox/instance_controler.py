@@ -279,6 +279,7 @@ def installInstance (self, instanceDescr):
             proxy_infomation = instance_handler.getProxyInformation()
             # create https certificate
 #            config = file_handler.getBIBBOXconfig ()
+            logger.info("Executing command in docker")
             fh = FileHandler()
             config = fh.getBIBBOXconfig ()
             sub_domains=[]
@@ -287,15 +288,16 @@ def installInstance (self, instanceDescr):
 
             command_array = ['certbot', 'certonly', '--apache'] + sub_domains + ['-n',
                              '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
-            logger.info("Executing command in docker")
+            logger.info("subprocess: {command}".format(command=" ".join(command_array)))
+
 
             dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
                            command_array=command_array)
 
             command_array=['docker', 'exec', 'bibbox-sys-commander-apacheproxy',
-                           'bash', '-c', '\'', 'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' ,
+                           'bash', '-c', '"', 'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' ,
                            'certbot', '--expand', '--apache'] + sub_domains + [
-                           '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos','\'']
+                           '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos','"']
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
             dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
                            command_array=command_array)
