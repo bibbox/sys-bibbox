@@ -26,22 +26,20 @@ class DockerHandler():
         docker_command.extend(command_array)
         process = subprocess.Popen(docker_command,
                                    shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
-
+        std_out=[]
+        std_error=[]
         while True:
             line = process.stdout.readline()
             lineerror = process.stderr.readline()
             if not line and not lineerror:
                 break
-            #the real code does filtering here
             if line:
-                # look what we have to strip
-                # if there are some escape code, that the line is overwritten, the last line in the log should be replaced
-                result = ansi_escape.sub('', line).rstrip()
-                print (line.rstrip())
-                print (result)
+                std_out.extend(line.rstrip())
             if lineerror:
-                # same stuff here, also write this in the log file
-                print (lineerror.rstrip())
+                std_out.extend(lineerror.rstrip())
+
+        return {"std_out":std_out,
+                "std_error":std_error}
 
     def docker_getContainerLogs(self, instance_name):
         instance_name = str(instance_name).lower()
