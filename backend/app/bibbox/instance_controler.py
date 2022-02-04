@@ -276,39 +276,29 @@ def installInstance (self, instanceDescr):
             template_str = instance.composeTemplate()    
             instance_handler =  InstanceHandler (template_str, instanceDescr)
             instance_handler.generateProxyFile()
-            pi = instance_handler.getProxyInformation()
+            proxy_infomation = instance_handler.getProxyInformation()
             # create https certificate
-            config = file_handler.getBIBBOXconfig ()
-            command_array=['certbot', 'certonly',  '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) ,
-                           '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
-            logger.info("Executing comman in docker")
+#            config = file_handler.getBIBBOXconfig ()
+            fh = FileHandler()
+            config = fh.getBIBBOXconfig ()
+            sub_domains=[]
+            for pi in proxy_infomation:
+                sub_domains.extend(['-d',"{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl'])])
+
+            command_array = ['certbot', 'certonly', '--apache', sub_domains , '-n',
+                             '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
+            logger.info("Executing command in docker")
 
             dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
                            command_array=command_array)
 
             command_array=['docker', 'exec', 'bibbox-sys-commander-apacheproxy',
                            'bash', '-c', '\'', 'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' ,
-                           'certbot', '--expand', '--apache', '-d', "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl']) ,
+                           'certbot', '--expand', '--apache', sub_domains ,
                            '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos','\'']
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
             dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
                            command_array=command_array)
-
-            while True:
-                line = process.stdout.readline()
-                lineerror = process.stderr.readline()
-                if not line and not lineerror:
-                    break
-                #the real code does filtering here
-                if line:
-                    # look what we have to strip
-                    # if there are some escape code, that the line is overwritten, the last line in the log should be replaced
-                    result = ansi_escape.sub('', line).rstrip()
-                    print (line.rstrip())
-                    print (result)
-                if lineerror:
-                    # same stuff here, also write this in the log file
-                    print (lineerror.rstrip())
 
 
         except Exception as ex:
