@@ -308,8 +308,7 @@ def installInstance (self, instanceDescr):
             for line in stderror:
                 logger.error(line)
 
-            command_array=['docker', 'exec', 'bibbox-sys-commander-apacheproxy',
-                           'bash', '-c', '"', 'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' ,
+            command_array=['bash', '-c', '"', 'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' ,
                            'certbot', '--expand', '--apache'] + sub_domains + [
                            '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos','"']
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
