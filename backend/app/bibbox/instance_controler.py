@@ -285,7 +285,7 @@ def installInstance (self, instanceDescr):
             for pi in proxy_infomation:
                 sub_domains.extend(['-d',"{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl'])])
 
-            command_array = ['certbot', 'certonly', '--apache', sub_domains , '-n',
+            command_array = ['certbot', 'certonly', '--apache'] + sub_domains + ['-n',
                              '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
             logger.info("Executing command in docker")
 
@@ -294,7 +294,7 @@ def installInstance (self, instanceDescr):
 
             command_array=['docker', 'exec', 'bibbox-sys-commander-apacheproxy',
                            'bash', '-c', '\'', 'ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/','&&' ,
-                           'certbot', '--expand', '--apache', sub_domains ,
+                           'certbot', '--expand', '--apache'] + sub_domains + [
                            '-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos','\'']
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
             dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
