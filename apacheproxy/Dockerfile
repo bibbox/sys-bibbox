@@ -32,6 +32,7 @@ RUN apt-get -y update && \
     a2enmod proxy_ajp && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y systemctl && \
     a2enmod remoteip &&\
+    a2enmod headers &&\
     systemctl restart apache2 && \
 #    service apache2 restart && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install certbot && \
