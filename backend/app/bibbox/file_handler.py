@@ -266,6 +266,10 @@ class FileHandler():
             if instance_name in filename:
                 file_path = self.PROXYPATH + "sites/" + filename
                 os.unlink(file_path)
+        for filename in os.listdir(self.PROXYPATH + "sites-enabled/"):
+            if instance_name in filename:
+                file_path = self.PROXYPATH + "sites-enabled/" + filename
+                os.unlink(file_path)
 
     def getPermissionsFromFileinfo(self, instance_name):
         file_info = self.__readJsonFile(self.INSTANCEPATH + instance_name + '/fileinfo.json')
