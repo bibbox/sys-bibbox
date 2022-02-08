@@ -154,6 +154,8 @@ cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/si
 docker exec -it bibbox-sys-commander-apacheproxy apache2ctl -k graceful
 
 
+docker exec bibbox-sys-commander-apacheproxy ln -s ../sites-available/000-default.conf /etc/apache2/sites-enabled/
+
 docker exec -it bibbox-sys-commander-apacheproxy certbot --apache -d ${DOMAINNAME:-demo.bibbox.org} -n --email ${EMAIL:-backoffice.bibbox@gmail.com} --agree-tos
 
 cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/sites/000-default-le-ssl.conf
