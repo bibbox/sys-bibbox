@@ -16,6 +16,7 @@ services:
     volumes:
       #- /opt/bibbox/proxy/sites:/usr/local/apache2/conf/sites
       - /opt/bibbox/proxy/sites:/etc/apache2/sites-available/
+      - /opt/bibbox/proxy/sites-enabled:/etc/apache2/sites-enabled/
       - /opt/bibbox/proxy/letsencrypt:/etc/letsencrypt
       - /opt/bibbox/sys-bibbox/frontend/dist/sys-bibbox-client:/var/www/html/sys-bibbox-client
     ports:
