@@ -25,6 +25,10 @@
 
         ProxyPass               /  http://§§CONTAINERNAME/
         ProxyPassReverse        /  http://§§CONTAINERNAME/
+
+        RemoteIPHeader X-Forwarded-For
+        RemoteIPProxiesHeader X-Forwarded-By
+
 </VirtualHost>
 
 
