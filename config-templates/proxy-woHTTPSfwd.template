@@ -29,7 +29,8 @@
         RemoteIPHeader X-Forwarded-For
         RemoteIPProxiesHeader X-Forwarded-By
 
-        RequestHeader set X-Forwarded-Proto "https"
+        # If the app only works with https this is needed. If the app does not work with https this does not work
+        #RequestHeader set X-Forwarded-Proto "https"
 
 </VirtualHost>
 

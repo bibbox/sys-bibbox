@@ -91,9 +91,12 @@ class InstanceHandler ():
                 proxyfile_content += proxy + '\n\n'
             
             else:
-                # TODO
-                # other dynamic templates
-                pass
+                defaultTemplate = fh.getConfigFile ('proxy-{}.template'.format(pi['TEMPLATE']))
+                proxy = defaultTemplate.replace('§§BASEURL', config['baseurl'])
+                proxy = proxy.replace('§§INSTANCEID', pi['URLPREFIX'])
+                proxy = proxy.replace('§§CONTAINERNAME', pi['CONTAINER'])
+
+                proxyfile_content += proxy + '\n\n'
 
         filename = '005-' + self.instanceDescr['instancename'] + '.conf'
         fh.writeProxyFile (filename, proxyfile_content)
