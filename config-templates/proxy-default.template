@@ -30,6 +30,7 @@
         RemoteIPProxiesHeader X-Forwarded-By
 
         RequestHeader set X-Forwarded-Proto "https"
+        SSLProxyEngine On
 
 </VirtualHost>
 
