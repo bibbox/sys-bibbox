@@ -291,11 +291,11 @@ def installInstance (self, instanceDescr):
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
 
 
-            stdout, stderror = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
+            std_info = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
                            command_array=command_array)
-            for line in stdout:
+            for line in std_info["std_out"]:
                 logger.info(line)
-            for line in stderror:
+            for line in std_info["std_error"]:
                 logger.error(line)
 
             command_array=['ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/']
