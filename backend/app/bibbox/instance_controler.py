@@ -274,49 +274,50 @@ def installInstance (self, instanceDescr):
         # write the proxy file
         try:
             template_str = instance.composeTemplate()    
-            instance_handler =  InstanceHandler (template_str, instanceDescr)
+            instance_handler = InstanceHandler (template_str, instanceDescr)
             instance_handler.generateProxyFile()
-            proxy_infomation = instance_handler.getProxyInformation()
+            proxy_information = instance_handler.getProxyInformation()
             # create https certificate
 #            config = file_handler.getBIBBOXconfig ()
             logger.info("Executing command in docker")
             fh = FileHandler()
             config = fh.getBIBBOXconfig ()
-            sub_domains=[]
-            for pi in proxy_infomation:
+            #sub_domains=[]
+            for pi in proxy_information:
+                sub_domains=[]
                 sub_domains.extend(['-d',"{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl'])])
 
-            command_array = ['certbot', 'certonly', '--apache'] + sub_domains + ['-n',
-                             '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
-            logger.info("subprocess: {command}".format(command=" ".join(command_array)))
+                command_array = ['certbot', 'certonly', '--apache'] + sub_domains + ['-n',
+                                 '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
+                logger.info("subprocess: {command}".format(command=" ".join(command_array)))
 
 
-            std_info = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
-                           command_array=command_array)
-            for line in std_info["std_out"]:
-                logger.info(line)
-            for line in std_info["std_error"]:
-                logger.error(line)
+                std_info = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
+                               command_array=command_array)
+                for line in std_info["std_out"]:
+                    logger.info(line)
+                for line in std_info["std_error"]:
+                    logger.error(line)
 
-            command_array=['ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/']
-            logger.info("subprocess: {command}".format(command=" ".join(command_array)))
-            stdout, stderror = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
-                                              command_array=command_array)
+                command_array=['ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/']
+                logger.info("subprocess: {command}".format(command=" ".join(command_array)))
+                stdout, stderror = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
+                                                  command_array=command_array)
 
-            for line in stdout:
-                logger.info(line)
-            for line in stderror:
-                logger.error(line)
+                for line in stdout:
+                    logger.info(line)
+                for line in stderror:
+                    logger.error(line)
 
-            command_array=['certbot', '--expand', '--apache'] + sub_domains + ['-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
-            logger.info("subprocess: {command}".format(command=" ".join(command_array)))
-            stdout, stderror = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
-                           command_array=command_array)
+                command_array=['certbot', '--expand', '--apache'] + sub_domains + ['-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
+                logger.info("subprocess: {command}".format(command=" ".join(command_array)))
+                stdout, stderror = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
+                               command_array=command_array)
 
-            for line in stdout:
-                logger.info(line)
-            for line in stderror:
-                logger.error(line)
+                for line in stdout:
+                    logger.info(line)
+                for line in stderror:
+                    logger.error(line)
 
 
         except Exception as ex:
