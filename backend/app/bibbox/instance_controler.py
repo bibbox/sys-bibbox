@@ -284,21 +284,23 @@ def installInstance (self, instanceDescr):
             config = fh.getBIBBOXconfig ()
             sub_domains=[]
             for pi in proxy_information:
-                sub_domains.extend(["{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl'])])
-            # NOTE certbot --help says you can also provide multiple domains with -d domain1 -d domain2
-            # However this does not work for certbot certonly (version 1.21.0)
-            # Therefore you need to comma seperate the individual domains. -d domain1,domain2
-            command_array = ['certbot', 'certonly', '--apache', '-d'] + [",".join(sub_domains)] + ['-n',
-                             '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
-            logger.info("subprocess: {command}".format(command=" ".join(command_array)))
+                sub_domain = "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl'])
+                sub_domains.extend(['-d', sub_domain])
+                # NOTE certbot --help says you can also provide multiple domains with -d domain1 -d domain2
+                # However this does not work for certbot certonly (version 1.21.0)
+                # Therefore you need to comma seperate the individual domains. -d domain1,domain2
+
+                command_array = ['certbot', 'certonly', '--apache', '-d', sub_domain, '-n',
+                                 '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
+                logger.info("subprocess: {command}".format(command=" ".join(command_array)))
 
 
-            std_info = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
-                           command_array=command_array)
-            for line in std_info["std_out"]:
-                logger.info(line)
-            for line in std_info["std_error"]:
-                logger.error(line)
+                std_info = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
+                               command_array=command_array)
+                for line in std_info["std_out"]:
+                    logger.info(line)
+                for line in std_info["std_error"]:
+                    logger.error(line)
 
             command_array=['ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/']
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
@@ -310,7 +312,7 @@ def installInstance (self, instanceDescr):
             for line in stderror:
                 logger.error(line)
 
-            command_array=['certbot', '--expand', '--apache', '-d'] + [",".join(sub_domains)] + ['-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
+            command_array=['certbot', '--expand', '--apache'] + sub_domains + ['-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
             stdout, stderror = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
                            command_array=command_array)
