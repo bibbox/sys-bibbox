@@ -22,8 +22,8 @@
         ProxyPass               §§PATH_TO_SOCKET ws://§§CONTAINERNAME§§PATH_TO_SOCKET
         ProxyPassReverse        §§PATH_TO_SOCKET ws://§§CONTAINERNAME§§PATH_TO_SOCKET
 
-        ProxyPass               /  https://§§CONTAINERNAME/
-        ProxyPassReverse        /  https://§§CONTAINERNAME/
+        ProxyPass               /  http://§§CONTAINERNAME/
+        ProxyPassReverse        /  http://§§CONTAINERNAME/
 </VirtualHost>
 
 #<VirtualHost *:80>
