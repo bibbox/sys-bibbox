@@ -6,7 +6,7 @@ from backend.app.bibbox.file_handler import FileHandler
 
 
 # TODO can we just initaite the class with the instance name and then read and write the stuff directly from the directory
-#      we could also renamoe the class to InstanceHandler, as we are doing template and proxies
+#      we could also rename the class to InstanceHandler, as we are doing template and proxies
 #      I would even do the update of the INSTANCE file with the proxy information and other things in this class
 
 class InstanceHandler ():
