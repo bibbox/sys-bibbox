@@ -60,7 +60,7 @@ class InstanceHandler ():
                 port_suffix = services_dict[service_key]['ports'][0].split(":")[-1]
                 proxy_entry['CONTAINER'] = "{}:{}".format(services_dict[service_key]['container_name'], port_suffix)
                 for key, value in services_dict[service_key]['proxy'].items():
-                    proxy_entry[key] = value
+                    proxy_entry[key] = str(value)
 
                 proxy_info.append(proxy_entry)
         return proxy_info

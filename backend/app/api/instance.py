@@ -101,7 +101,7 @@ class Instance(Resource):
     
     def get(self, id):
         fh = FileHandler()
-        idescr = fh.getInstanceJSONContent(id)
+        idescr = fh.getInstanceJSONContent(str(id))
         return idescr, 200
 
 
@@ -111,7 +111,7 @@ class Instance(Resource):
     def post(self, id):
 
         instanceDescr = request.json
-        instanceDescr['instancename'] = id
+        instanceDescr['instancename'] = str(id)
         instanceDescr['state'] = 'JUSTBORN'
         instanceDescr['displayname_long'] = ''    
         instanceDescr['description_short'] = ''   
@@ -140,7 +140,7 @@ class Instance(Resource):
     def delete(self, id):
 
         # make this more dynamic and check the parameters
-        instancename = id
+        instancename = str(id)
 
         jobID = 27
         jobURL = "api/v1/activities/27"
@@ -169,7 +169,7 @@ class Instance(Resource):
     @api.doc("Patch instance.json values. Requires a dict of key-value pairs to update.")
     def patch(self, id):
         
-        instance_name = id
+        instance_name = str(id)
         payload = request.json
 
         jobID = 27
@@ -198,7 +198,7 @@ class Instance(Resource):
 
         try:
             dh = DockerHandler()
-            logs = dh.docker_getContainerLogs(id)
+            logs = dh.docker_getContainerLogs(str(id))
 
         except Exception as ex:
             print(ex)
