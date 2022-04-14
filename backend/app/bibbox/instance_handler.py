@@ -57,6 +57,8 @@ class InstanceHandler ():
                     'TEMPLATE'      : '',
                     'DISPLAYNAME'   : ''
                 }
+                # possible bugfix is to asuure type superscriptions yields desired Output
+                # e.g.:assert isinstance(services_dict[service_key]['ports'], list) 
                 port_suffix = services_dict[service_key]['ports'][0].split(":")[-1]
                 proxy_entry['CONTAINER'] = "{}:{}".format(services_dict[service_key]['container_name'], port_suffix)
                 for key, value in services_dict[service_key]['proxy'].items():
