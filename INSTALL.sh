@@ -80,6 +80,8 @@ cd /opt/bibbox/sys-bibbox/frontend/src/environments
 sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.ts.template > environment.ts
 sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.prod.ts.template > environment.prod.ts
 
+cd /opt/bibbox/sys-bibbox/fdp-configs
+sed -e "s/§§BASEURL/$DOMAINNAME/g" fdp.env.template > fdp.env
 
 # compile frontend code
 cd /opt/bibbox/sys-bibbox/frontend

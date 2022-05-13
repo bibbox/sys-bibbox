@@ -1,0 +1,8 @@
+instance:
+    clientUrl: ${CLIENTURL:-http://localhost:8088}
+    index:  true # Necessary so that Master FDP can ping this FDP
+    
+repository:
+    type: 5
+    blazegraph:
+        url: http://blazegraph:8080/blazegraph
