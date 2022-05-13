@@ -70,6 +70,7 @@ cd /opt/bibbox/sys-bibbox/config-templates
 sed -e "s/§§BASEURL/$DOMAINNAME/g" bibbox.config.template > bibbox.config
 sed -e "s/§§BASEURL/$DOMAINNAME/g" 000-default.conf.template > 000-default.conf
 sed -e "s/§§BASEURL/$DOMAINNAME/g" 100-error.conf.template > 100-error.conf
+sed -e "s/§§BASEURL/$DOMAINNAME/g" 005-fdp.conf.template > 005-fdp.conf
 
 chmod -R 775 /opt/bibbox/sys-bibbox/apacheproxy
 cd /opt/bibbox/sys-bibbox/apacheproxy
@@ -96,6 +97,7 @@ ng build --prod
 cp /opt/bibbox/sys-bibbox/config-templates/100-error.conf /opt/bibbox/proxy/sites/100-error.conf
 cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/sites/000-default.conf
 cp /opt/bibbox/sys-bibbox/config-templates/bibbox.config /opt/bibbox/config/bibbox.config
+cp /opt/bibbox/sys-bibbox/config-templates/005-fdp.conf /opt/bibbox/proxy/sites/005-fdp.conf
 
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-default.template /opt/bibbox/config/proxy-default.template
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-websocket.template /opt/bibbox/config/proxy-websocket.template
