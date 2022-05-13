@@ -47,7 +47,7 @@ apt install npm -y
 apt install python3-pip -y
 
 #nvm install 14.16.0 -y
-#printf 'n\n' | npm i -g @angular/cli
+printf 'n\n' | npm i -g @angular/cli
 #printf 'n\n' | npm update -g @angular/cli
 
 
