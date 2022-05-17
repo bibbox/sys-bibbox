@@ -12,6 +12,7 @@ import {InstanceDetailPageComponent} from './components/instances/instance-detai
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {InstallScreenComponent} from './components/applications/install-screen/install-screen.component';
 import {SysLogsComponent} from './components/sys-logs/sys-logs.component';
+import {environment} from '../environments/environment';
 
 const routes: Routes = [
   // TODO redirect when login does anything
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'applications', component: ApplicationsComponent, pathMatch: 'full'},
   { path: 'instances', component: InstancesComponent, pathMatch: 'full'},
   { path: 'sys-logs', component: SysLogsComponent, pathMatch: 'full'},
+  { path: 'fdp', redirectTo: 'http://fdp.' + environment.BASEURL, pathMatch: 'full'},
   // activities need two routes, in case we want to view activities without providing an activity id
   { path: 'activities/:activity_id', component: ActivitiesComponent, pathMatch: 'full'},
   { path: 'activities', component: ActivitiesComponent, pathMatch: 'full'},
