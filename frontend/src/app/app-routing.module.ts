@@ -25,7 +25,8 @@ const routes: Routes = [
   { path: 'applications', component: ApplicationsComponent, pathMatch: 'full'},
   { path: 'instances', component: InstancesComponent, pathMatch: 'full'},
   { path: 'sys-logs', component: SysLogsComponent, pathMatch: 'full'},
-  { path: 'fdp', redirectTo: 'http://fdp.' + environment.BASEURL, pathMatch: 'full'},
+  { path: 'fdp', component: ApplicationsComponent, resolve: { url: 'externalUrlRedirectResolver'},
+    data: {externalUrl: 'http://fdp.' + environment.BASEURL}},
   // activities need two routes, in case we want to view activities without providing an activity id
   { path: 'activities/:activity_id', component: ActivitiesComponent, pathMatch: 'full'},
   { path: 'activities', component: ActivitiesComponent, pathMatch: 'full'},
@@ -51,3 +52,15 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+
+@NgModule({
+  providers: [
+    {
+      provide: 'externalUrlRedirectResolver',
+      useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
+      {
+        window.location.href = (route.data as any).externalUrl;
+      }
+    }
+  ]
+})
