@@ -49,9 +49,7 @@ const routes: Routes = [
      // {useHash: true}
     ),
   ],
-  exports: [RouterModule]
-})
-@NgModule({
+  exports: [RouterModule],
   providers: [
     {
       provide: 'externalUrlRedirectResolver',
@@ -62,6 +60,7 @@ const routes: Routes = [
     }
   ]
 })
+
 export class AppRoutingModule { }
 
 
