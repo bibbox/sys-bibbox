@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {ApplicationsComponent} from './components/applications/applications.component';
 import {InstancesComponent} from './components/instances/instances.component';
