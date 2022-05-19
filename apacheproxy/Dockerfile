@@ -15,8 +15,8 @@ RUN mkdir -p /var/www/html/error/
 COPY error.html /var/www/html/error/error.html
 COPY robots.txt /var/www/robots.txt
 
-COPY htpasswd.conf /etc/apache2/.htpasswd
-COPY htaccess.conf /var/www/html/sys-bibbox-client/.htaccess
+ADD htpasswd.conf /etc/apache2/.htpasswd
+#COPY htaccess.conf /var/www/html/sys-bibbox-client/.htaccess
 
 EXPOSE 80
 
