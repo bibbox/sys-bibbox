@@ -20,7 +20,7 @@
         DocumentRoot /var/www/html/sys-bibbox-client
         <Directory /var/www/html/sys-bibbox-client>
                 Options Indexes FollowSymLinks MultiViews
-                AllowOverride None
+                AllowOverride All
                 # Info: deprecated since v2.4:
                 # - Order allow,deny
                 # - Allow from all
