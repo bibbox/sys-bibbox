@@ -93,8 +93,7 @@ export class InstallScreenComponent implements OnInit {
         this.formBuilder.control('', [
           Validators.required,
           Validators.minLength(Number(envParam.min_length)),
-          Validators.maxLength(Number(envParam.max_length)),
-          this.validatorService.noWhitespaceValidator]
+          Validators.maxLength(Number(envParam.max_length))]
         )
       );
     }
