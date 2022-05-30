@@ -164,7 +164,7 @@ services:
 
 
   bibbox-sys-commander-master-fdp:
-    image: fairdata/fairdatapoint:1.12.0
+    image: fairdata/fairdatapoint:1.13.2
     container_name: bibbox-sys-commander-master-fdp
     restart: unless-stopped
     networks:
