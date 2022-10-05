@@ -1,12 +1,30 @@
 <div id="instance-details" *ngIf="instance$ | async" xmlns="http://www.w3.org/1999/html">
   <div class="instance-details-header">
     <div class="instance-details-title">
-      <img src="https://raw.githubusercontent.com/bibbox/{{instanceItem.app.name}}/master/icon.png" alt="application-icon">
-      <h1>{{instanceDetailForm.controls['displayname_short'].value}}</h1>
-      <h3>{{instanceDetailForm.controls['displayname_long'].value}}</h3>
+      <div class="instance-details-subtitle">
+        <img src="https://raw.githubusercontent.com/bibbox/{{instanceItem.app.name}}/master/icon.png"
+          alt="application-icon">
+        <h1>{{instanceDetailForm.controls['displayname_short'].value}}</h1>
+        <h3>{{instanceDetailForm.controls['displayname_long'].value}}</h3>
+      </div>
+      <span *ngFor="let URL of this.instanceItem.proxy">
+        <ng-container *ngIf="instanceItem.state === 'RUNNING' ">
+          <ng-container *ngIf="URL.TYPE === 'PRIMARY' ">
+            <a href="http://{{URL.URLPREFIX}}.{{baseurl}}" target="_blank" rel="noopener noreferrer">
+              <button>
+                <span class="fas fa-power-off fa-2x link-icons instance-tile__hyperlink-icon"></span>
+                <span class=" text"> Open {{URL.DISPLAYNAME}} </span>
+              </button>
+            </a>
+          </ng-container>
+        </ng-container>
+
+      </span>
+
     </div>
     <span class="instance-details-controls" *ngIf="tabIndex == 0">
-      <ng-container *ngIf="instanceItem.state === 'ERROR'"> <!--  -->
+      <ng-container *ngIf="instanceItem.state === 'ERROR'">
+        <!--  -->
         <span class="status in_operation"></span>
         <button (click)="deleteInstance()">
           <svg viewBox="0 0 1000 1000">
@@ -15,7 +33,8 @@
           <span class="text"> Delete </span>
         </button>
       </ng-container>
-      <ng-container *ngIf="instanceItem.state === 'STOPPED'"> <!--  -->
+      <ng-container *ngIf="instanceItem.state === 'STOPPED'">
+        <!--  -->
         <span class="status stopped"></span>
         <button (click)="manageInstance('start')">
           <svg viewBox="0 0 1000 1000">
@@ -31,7 +50,8 @@
         </button>
       </ng-container>
 
-      <ng-container *ngIf="instanceItem.state === 'RUNNING'"> <!--  -->
+      <ng-container *ngIf="instanceItem.state === 'RUNNING'">
+        <!--  -->
         <span class="status running"></span>
         <button (click)="manageInstance('stop')">
           <svg viewBox="0 0 1000 1000">
@@ -47,7 +67,8 @@
         </button>
       </ng-container>
 
-      <ng-container *ngIf="instanceItem.state === ('RESTARTING' || 'STOPPING' || 'DELETING' || 'STARTING')"> <!--  -->
+      <ng-container *ngIf="instanceItem.state === ('RESTARTING' || 'STOPPING' || 'DELETING' || 'STARTING')">
+        <!--  -->
         <span class="status in_operation"></span>
         <button disabled class="button-disabled" (click)="manageInstance('start')">
           <svg viewBox="0 0 1000 1000">
@@ -57,7 +78,8 @@
         </button>
 
       </ng-container>
-      <ng-container *ngIf="instanceItem.state === ('JUSTBORN' || 'INSTALLING')"> <!--  -->
+      <ng-container *ngIf="instanceItem.state === ('JUSTBORN' || 'INSTALLING')">
+        <!--  -->
         Currently installing...
       </ng-container>
     </span>
@@ -68,9 +90,12 @@
       <ng-template matTabContent>
         <br><br><br>
         <span class="instance-details-info-primary">
-          <span class="instance-details-info-primary-item"> <span class="label-short">ID: </span> <span class="value"> {{instanceItem.instancename}} </span> </span>
-          <span class="instance-details-info-primary-item"> <span class="label-short">App: </span> <span class="value"> {{instanceItem.app.name}} {{instanceItem.app.version}} </span> </span>
-          <span class="instance-details-info-primary-item"> <span class="label-short">Version: </span> <span class="value"> {{instanceItem.app.version}} </span> </span>
+          <span class="instance-details-info-primary-item"> <span class="label-short">ID: </span> <span class="value">
+              {{instanceItem.instancename}} </span> </span>
+          <span class="instance-details-info-primary-item"> <span class="label-short">App: </span> <span class="value">
+              {{instanceItem.app.name}} {{instanceItem.app.version}} </span> </span>
+          <span class="instance-details-info-primary-item"> <span class="label-short">Version: </span> <span
+              class="value"> {{instanceItem.app.version}} </span> </span>
         </span>
         <div class="instance-details-info">
           <div class="container-box">
@@ -104,7 +129,8 @@
               <div class="container-names">
                 <span *ngFor="let URL of this.instanceItem.proxy">
                   {{URL.DISPLAYNAME}}:
-                  <a href="http://{{URL.URLPREFIX}}.{{baseurl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">
+                  <a href="http://{{URL.URLPREFIX}}.{{baseurl}}" target="_blank" rel="noopener noreferrer"
+                    matTooltip="Open">
                     {{URL.URLPREFIX}}.{{baseurl}}
                   </a>
                 </span>
@@ -118,48 +144,39 @@
           <div class="instance-names">
             <div class="instance-names-item">
               <label class="value">Short name</label>
-              <input type="text" class="instance-names-item-input right" formControlName="displayname_short" [value]="instanceDetailForm.controls['displayname_short'].value">
+              <input type="text" class="instance-names-item-input right" formControlName="displayname_short"
+                [value]="instanceDetailForm.controls['displayname_short'].value">
             </div>
             <div class="instance-names-item">
               <label class="value">Long name</label>
-              <input type="text" class="instance-names-item-input right" formControlName="displayname_long" [value]="instanceDetailForm.controls['displayname_long'].value">
+              <input type="text" class="instance-names-item-input right" formControlName="displayname_long"
+                [value]="instanceDetailForm.controls['displayname_long'].value">
             </div>
           </div>
           <br><br>
           <div class="descriptions">
             <div class="description-form-field">
               <label class="value">Short Description</label>
-              <textarea matInput matTextareaAutosize
-                        formControlName="description_short"
-                        [value]="instanceDetailForm.controls['description_short'].value"
-                        class="description-form-field-input">
+              <textarea matInput matTextareaAutosize formControlName="description_short"
+                [value]="instanceDetailForm.controls['description_short'].value" class="description-form-field-input">
               </textarea>
             </div>
             <div class="description-form-field">
               <label class="value">Long Description</label>
-              <textarea matInput matTextareaAutosize
-                        formControlName="description_long"
-                        [value]="instanceDetailForm.controls['description_long'].value"
-                        class="description-form-field-input">
+              <textarea matInput matTextareaAutosize formControlName="description_long"
+                [value]="instanceDetailForm.controls['description_long'].value" class="description-form-field-input">
               </textarea>
             </div>
           </div>
         </ng-container>
         <div class="save-button">
-<!--          <button-->
-<!--            (click)="saveInstanceChanges()"-->
-<!--            [disabled]="!instanceDetailForm.valid"-->
-<!--            [style.background-color]="instanceDetailForm.invalid ? 'rgb(200, 100, 100)' : '#ffffff'"-->
-<!--          > Save </button>-->
-          <button
-            *ngIf="instanceDetailForm.invalid"
-            disabled
-            class="button-disabled"
-          > Save </button>
-          <button
-            *ngIf="instanceDetailForm.valid"
-            (click)="saveInstanceChanges()"
-          > Save </button>
+          <!--          <button-->
+          <!--            (click)="saveInstanceChanges()"-->
+          <!--            [disabled]="!instanceDetailForm.valid"-->
+          <!--            [style.background-color]="instanceDetailForm.invalid ? 'rgb(200, 100, 100)' : '#ffffff'"-->
+          <!--          > Save </button>-->
+          <button *ngIf="instanceDetailForm.invalid" disabled class="button-disabled"> Save </button>
+          <button *ngIf="instanceDetailForm.valid" (click)="saveInstanceChanges()"> Save </button>
         </div>
       </ng-template>
     </mat-tab>
@@ -172,8 +189,10 @@
           <div class="instance-details-log-item">
             <span class="instance-details-log-containername">{{container}}</span><br>
             <span class="instance-details-log-command">$ docker logs {{container}} --tail 200</span><br>
-            <div class="instance-details-log-container">  <!--#scrollContainer [scrollTop]="scrollContainer.scrollHeight">-->
-              <div *ngFor="let log_entry of instanceContainerLogs[container]" class="instance-details-log-container-entry">{{log_entry}}</div>
+            <div class="instance-details-log-container">
+              <!--#scrollContainer [scrollTop]="scrollContainer.scrollHeight">-->
+              <div *ngFor="let log_entry of instanceContainerLogs[container]"
+                class="instance-details-log-container-entry">{{log_entry}}</div>
             </div>
           </div>
           <br><br><br>

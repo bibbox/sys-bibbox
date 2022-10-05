@@ -1,11 +1,15 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {InstanceItem} from '../../../store/models/instance-item.model';
-import {environment} from '../../../../environments/environment';
+import { Component, Injectable, Input, OnInit } from '@angular/core';
+import { InstanceItem } from '../../../store/models/instance-item.model';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-instance-tile',
   templateUrl: './instance-tile.component.html',
   styleUrls: ['./instance-tile.component.scss']
+})
+
+@Injectable({
+  providedIn: 'root'
 })
 export class InstanceTileComponent implements OnInit {
 
@@ -27,4 +31,5 @@ export class InstanceTileComponent implements OnInit {
       }
     }
   }
+
 }

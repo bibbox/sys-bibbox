@@ -23,10 +23,17 @@
       cursor: pointer;
       padding-left: 80px;
       position: relative;
-      margin-bottom: 20px;
+      flex-direction: column;
+      display: flex;
+      gap: 15px;
+
+      .instance-details-subtitle {
+        display: flex;
+        flex-direction: row;
+      }
 
       img {
-        position: absolute;
+        position: relative;
         height: 50px !important;
         top: 50%;
         left: 0;
@@ -38,12 +45,20 @@
         padding: 0;
         float: left;
         margin-bottom: 10px;
+        margin-left: 20px;
         font-size: 25px
       }
 
       h3 {
         float: left;
         clear: left
+      }
+      a {
+      position: relative;
+      }
+
+      button {
+      margin: 0
       }
     }
 
