@@ -44,5 +44,7 @@ RUN apt-get -y update && \
 # COPY htaccess.conf /var/www/html/sys-bibbox-client/.htaccess
 
 EXPOSE 80
+EXPOSE 443
 
-CMD ["httpd", "-D", "FOREGROUND"]
+#CMD ["httpd", "-D", "FOREGROUND"]
+CMD ["tail", "-f", "/dev/null"]
