@@ -19,7 +19,27 @@ class DockerHandler():
     def docker_restartInstance(self, instance_name):   
         command = "docker-compose restart".split()
         subprocess.call(command, cwd=f"{self.INSTANCEPATH}{instance_name}", stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
-    
+
+    def docker_exec(self,instance_name,command_array):
+        #logger.info("subprocess: {command}".format(command=" ".join(command_array)))
+        docker_command=['docker', 'exec', instance_name]
+        docker_command.extend(command_array)
+        process = subprocess.Popen(docker_command,
+                                   shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+        std_out=["stdout:"]
+        std_error=["stderr:"]
+        while True:
+            line = process.stdout.readline()
+            lineerror = process.stderr.readline()
+            if not line and not lineerror:
+                break
+            if line:
+                std_out.extend([line.rstrip()])
+            if lineerror:
+                std_error.extend([lineerror.rstrip()])
+
+        return {"std_out":std_out,
+                "std_error":std_error}
 
     def docker_getContainerLogs(self, instance_name):
         instance_name = str(instance_name).lower()

@@ -132,6 +132,7 @@ def installInstance (self, instanceDescr):
     # appinfo.json, fileinfo.json, docker-compose.yml.template, 
     
     file_handler = FileHandler()
+    dh = DockerHandler()
 
     # check if directory structure is valid, fixes structure if invalid
     # needs to be called sooner, but where/when?
@@ -273,8 +274,55 @@ def installInstance (self, instanceDescr):
         # write the proxy file
         try:
             template_str = instance.composeTemplate()    
-            instance_handler =  InstanceHandler (template_str, instanceDescr)
+            instance_handler = InstanceHandler (template_str, instanceDescr)
             instance_handler.generateProxyFile()
+            proxy_information = instance_handler.getProxyInformation()
+            # create https certificate
+#            config = file_handler.getBIBBOXconfig ()
+            logger.info("Executing command in docker")
+            fh = FileHandler()
+            config = fh.getBIBBOXconfig ()
+            sub_domains=[]
+            for pi in proxy_information:
+                sub_domain = "{prefix}.{baseurl}".format(prefix=pi['URLPREFIX'], baseurl=config['baseurl'])
+                sub_domains.extend(['-d', sub_domain])
+                # NOTE certbot --help says you can also provide multiple domains with -d domain1 -d domain2
+                # However this does not work for certbot certonly (version 1.21.0)
+                # Therefore you need to comma seperate the individual domains. -d domain1,domain2
+
+                command_array = ['certbot', 'certonly', '--apache', '-d', sub_domain, '-n',
+                                 '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
+                logger.info("subprocess: {command}".format(command=" ".join(command_array)))
+
+
+                std_info = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
+                               command_array=command_array)
+                for line in std_info["std_out"]:
+                    logger.info(line)
+                for line in std_info["std_error"]:
+                    logger.error(line)
+
+            command_array=['ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/']
+            logger.info("subprocess: {command}".format(command=" ".join(command_array)))
+            stdout, stderror = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
+                                              command_array=command_array)
+
+            for line in stdout:
+                logger.info(line)
+            for line in stderror:
+                logger.error(line)
+
+            command_array=['certbot', '--expand', '--apache'] + sub_domains + ['-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
+            logger.info("subprocess: {command}".format(command=" ".join(command_array)))
+            stdout, stderror = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
+                           command_array=command_array)
+
+            for line in stdout:
+                logger.info(line)
+            for line in stderror:
+                logger.error(line)
+
+
         except Exception as ex:
             #print ("ERROR in the generation of the Proxy File" )
             logger.error("Creation of the {} proxy file failed. Exception: {}".format('005-' + instanceDescr['instancename'] + ".conf", ex))
@@ -400,7 +448,9 @@ def installInstance (self, instanceDescr):
         #     logger.info("Successfully set permissions")
         
         logger.info("Graceful reloading bibbox-sys-commander-apacheproxy...")
-        process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'httpd', '-k', 'graceful'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+        #process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'httpd', '-k', 'graceful'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+        #just a quick test
+        process = subprocess.Popen(['docker', 'exec', 'bibbox-sys-commander-apacheproxy', 'apache2ctl', '-k', 'graceful'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
         while True:
             line = process.stdout.readline()
             lineerror = process.stderr.readline()

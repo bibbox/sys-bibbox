@@ -263,8 +263,13 @@ class FileHandler():
     def removeProxyConfigFile(self, instance_name):
         print("Removing Proxy Config file")
         for filename in os.listdir(self.PROXYPATH + "sites/"):
-            if instance_name in filename:
+            #if instance_name in filename: <-- not a good idea if instance is called e.g. 'a' this will delete every file with an 'a' in it (e.g. 000-default...)
+            if "005-{}.conf".format(instance_name) == filename:
                 file_path = self.PROXYPATH + "sites/" + filename
+                os.unlink(file_path)
+        for filename in os.listdir(self.PROXYPATH + "sites-enabled/"):
+            if "005-{}.conf".format(instance_name) == filename:
+                file_path = self.PROXYPATH + "sites-enabled/" + filename
                 os.unlink(file_path)
 
     def getPermissionsFromFileinfo(self, instance_name):

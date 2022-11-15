@@ -1,18 +1,33 @@
 <VirtualHost *:80>
+   ServerName §§BASEURL
+   Redirect / https://§§BASEURL/
+</VirtualHost>
+
+<VirtualHost *:443>
         ServerName §§BASEURL
+
+        SSLEngine On
+        SSLCertificateFile      /etc/letsencrypt/live/§§BASEURL/cert.pem
+        SSLCertificateKeyFile   /etc/letsencrypt/live/§§BASEURL/privkey.pem
+        SSLCertificateChainFile /etc/letsencrypt/live/§§BASEURL/fullchain.pem
+
+        <Proxy *>
+                        Order deny,allow
+                        Allow from all
+        </Proxy>
+
         ProxyRequests           Off
         ProxyPreserveHost       On
-       
+
         ProxyPass               /api/       http://bibbox-sys-commander-backend:5000/api/
         ProxyPassReverse        /api/       http://bibbox-sys-commander-backend:5000/api/
-
 
         # working ws implementation
         RewriteEngine on
         RewriteCond %{REQUEST_URI}  ^/socket.io         [NC]
         RewriteCond %{QUERY_STRING} transport=websocket [NC]
         RewriteRule /(.*) ws://bibbox-sys-commander-backend:5000/$1 [P,L]
-        
+
         ProxyPass          /socket.io      http://bibbox-sys-commander-backend:5000/socket.io
         ProxyPassReverse   /socket.io      http://bibbox-sys-commander-backend:5000/socket.io
 
@@ -29,7 +44,7 @@
 
 
                 RewriteEngine on
-                
+
                 # Don't rewrite files or directories
                 RewriteCond %{REQUEST_FILENAME} -f [OR]
                 RewriteCond %{REQUEST_FILENAME} -d
@@ -39,9 +54,54 @@
                 RewriteRule ^ index.html [L]
         </Directory>
 
-
-
 </VirtualHost>
+
+
+
+#<VirtualHost *:80>
+#        ServerName §§BASEURL
+#        ProxyRequests           Off
+#        ProxyPreserveHost       On
+#
+#        ProxyPass               /api/       http://bibbox-sys-commander-backend:5000/api/
+#        ProxyPassReverse        /api/       http://bibbox-sys-commander-backend:5000/api/
+#
+#
+#        # working ws implementation
+#        RewriteEngine on
+#        RewriteCond %{REQUEST_URI}  ^/socket.io         [NC]
+#        RewriteCond %{QUERY_STRING} transport=websocket [NC]
+#        RewriteRule /(.*) ws://bibbox-sys-commander-backend:5000/$1 [P,L]
+#
+#        ProxyPass          /socket.io      http://bibbox-sys-commander-backend:5000/socket.io
+#        ProxyPassReverse   /socket.io      http://bibbox-sys-commander-backend:5000/socket.io
+#
+#
+#        DocumentRoot /var/www/html/sys-bibbox-client
+#        <Directory /var/www/html/sys-bibbox-client>
+#                Options Indexes FollowSymLinks MultiViews
+#                AllowOverride None
+#                # Info: deprecated since v2.4:
+#                # - Order allow,deny
+#                # - Allow from all
+#                # Use following instead
+#                Require all granted
+#
+#
+#                RewriteEngine on
+#
+#                # Don't rewrite files or directories
+#                RewriteCond %{REQUEST_FILENAME} -f [OR]
+#                RewriteCond %{REQUEST_FILENAME} -d
+#                RewriteRule ^ - [L]
+#
+#                # Rewrite everything else to index.html to allow HTML5 state links
+#                RewriteRule ^ index.html [L]
+#        </Directory>
+#
+#
+#
+#</VirtualHost>
 
 # for testing, could be removed in final product
 <VirtualHost *:80>

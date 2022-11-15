@@ -6,12 +6,13 @@ import {environment} from '../environments/environment';
 export const APP_TITLE_LONG = 'FAIR-Toolbox based on BIBBOX v4.0';
 export const APP_TITLE_SHORT = 'FAIR-Toolbox';
 
+// TODO set http:// or https:// via variable (set during installation)
 // paths of api endpoints, to which we send requests to
-export const API_INSTANCES_URL = 'http://' + environment.BASEURL + '/api/v1/instances/';
-export const API_APPLICATIONS_URL = 'http://' + environment.BASEURL + '/api/v1/apps/';
-export const API_ACTIVITY_URL = 'http://' + environment.BASEURL + '/api/v1/activities/';
-export const API_AUTH_URL = 'http://' + environment.BASEURL + '/api/v1/users/';
-export const SOCKET_IO_URL = 'http://' + environment.BASEURL + '/socket.io';
+export const API_INSTANCES_URL = 'https://' + environment.BASEURL + '/api/v1/instances/';
+export const API_APPLICATIONS_URL = 'https://' + environment.BASEURL + '/api/v1/apps/';
+export const API_ACTIVITY_URL = 'https://' + environment.BASEURL + '/api/v1/activities/';
+export const API_AUTH_URL = 'https://' + environment.BASEURL + '/api/v1/users/';
+export const SOCKET_IO_URL = 'https://' + environment.BASEURL + '/socket.io';
 
 export const  SVG_PATHS = {
   start: 'M959.191 483.331h-286.755c-14.648 0-27.668 9.135-32.497 22.942l-75.81 215.46L447.159 142.291c-3.097-15.225-16.118-26.565-31.658-27.458C400.224 114.046 385.734 123.549 380.851 138.354L267.819 482.124H40.809c-18.9 0-34.387 15.277-34.387 34.387 0 18.9 15.435 34.388 34.388 34.388h252c14.752 0 27.93-9.555 32.602-23.625l80.115-243.863 115.868 574.245c3.097 15.173 15.96 26.355 31.237 27.51.84 0 1.628 0 2.415 0 14.49 0 27.51-9.135 32.498-22.942L696.744 552.054h262.447c19.058 0 34.388-15.435 34.388-34.387C993.579 498.609 978.249 483.331 959.191 483.331z',
