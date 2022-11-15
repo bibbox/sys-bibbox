@@ -92,7 +92,9 @@ export class InstanceDetailPageComponent implements OnInit {
 
   loadGithubLinks(): void {
     let versionBranch = this.instanceItem.app.version;
-    if (this.instanceItem.app.version === 'development') {
+    // TODO do we need a special case for development?
+    // if (this.instanceItem.app.version === 'development') {
+    if (this.instanceItem.app.version === 'latest') {
       versionBranch = 'master';
     }
     // get instance links
