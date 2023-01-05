@@ -11,6 +11,7 @@ import {DeleteInstanceAction} from '../../../store/actions/instance.actions';
 import {FormBuilder, Validators} from '@angular/forms';
 import {SVG_PATHS} from '../../../commons';
 import {environment} from '../../../../environments/environment';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-instance-detail-page',
@@ -56,6 +57,7 @@ export class InstanceDetailPageComponent implements OnInit {
     private snackbar: MatSnackBar,
     private instanceService: InstanceService,
     private fb: FormBuilder,
+    private _location: Location
   ) {
     // redirect if state is empty -> caused by hard reloading current view
     if (this.router.getCurrentNavigation().extras.state === undefined){
@@ -139,5 +141,9 @@ export class InstanceDetailPageComponent implements OnInit {
         this.instanceContainerLogs = res;
       }
     );
+  }
+
+  backClicked(): void {
+    this._location.back();
   }
 }
