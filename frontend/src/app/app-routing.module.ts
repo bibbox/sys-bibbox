@@ -55,7 +55,9 @@ const routes: Routes = [
       provide: 'externalUrlRedirectResolver',
       useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
       {
-        window.location.href = (route.data as any).externalUrl;
+        //window.location.href = (route.data as any).externalUrl;
+        // Open in new tab instead of same window
+        window.open((route.data as any).externalUrl, "_blank");
       }
     }
   ]
