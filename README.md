@@ -82,11 +82,18 @@ sudo bash INSTALL.sh
 
  The BIBBOX is structured in multiple docker containers:
 ##### apacheproxy
+Proxy to enable access to the individual  installed app and serves the angular frontend.
 ##### backend
+The backend  is  built  with Flask. Flask  is  a  Python  web  application  framework  based  on  the  Web  Server Gateway  Interface  (WSGI)  toolkit.
 ##### celery
+Celery is a task manager which distributes tasks to worker instances. Celery usually uses a message broker such as Redis for the distribution of tasks.
 ##### celery-monitor
+Monitor to inspect celery task.
 ##### postgres
+Postgres is used as database and stores  activity  ,and  system  log  information,  which  can  be accessed  via  the  frontend.
 ##### redis
+Redis is an in-memory data structure store, used as a (NoSQL) database, cache, and message broker.
 ##### adminer
+Adminer can be used to access and manage databases.
 ##### cadvisor
-
+cadvisor CContainer Advisor) provides resource usage and performance characteristics of the running containers. 
