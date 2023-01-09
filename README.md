@@ -96,4 +96,4 @@ Redis is an in-memory data structure store, used as a (NoSQL) database, cache, a
 ##### adminer
 Adminer can be used to access and manage databases.
 ##### cadvisor
-cadvisor CContainer Advisor) provides resource usage and performance characteristics of the running containers. 
+cadvisor (Container Advisor) provides resource usage and performance characteristics of the running containers. 
