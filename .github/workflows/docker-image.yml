@@ -15,11 +15,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build apacheproxy Docker image
-      run: docker build . --file ./apacheproxy/Dockerfile --tag bibbox-sys-commander-apacheproxy:$(date +%s)
+      run: docker build ./apacheproxy/ --file ./apacheproxy/Dockerfile --tag bibbox-sys-commander-apacheproxy:$(date +%s)
 
     - name: Build backend Docker image
-      run: docker build . --file ./backend/Dockerfile --tag bibbox-sys-commander-backend:$(date +%s)
+      run: docker build ./backend/ --file ./backend/Dockerfile --tag bibbox-sys-commander-backend:$(date +%s)
     
     - name: Build postgresql Docker image
-      run: docker build . --file ./postgresql/Dockerfile --tag bibbox-sys-commander-postgres:$(date +%s)
+      run: docker build ./postgresql/ --file ./postgresql/Dockerfile --tag bibbox-sys-commander-postgres:$(date +%s)
     
