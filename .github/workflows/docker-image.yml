@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build apacheproxy Docker image
+      run: docker build . --file ./apacheproxy/Dockerfile --tag bibbox-sys-commander-apacheproxy:$(date +%s)
+
+    - name: Build backend Docker image
+      run: docker build . --file ./backend/Dockerfile --tag bibbox-sys-commander-backend:$(date +%s)
+    
+    - name: Build postgresql Docker image
+      run: docker build . --file ./postgresql/Dockerfile --tag bibbox-sys-commander-postgres:$(date +%s)
+    
