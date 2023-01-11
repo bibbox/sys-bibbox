@@ -28,6 +28,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: ./frontend
     - run: npm ci
     - run: npm run build:prod --if-present
     - run: npm test
