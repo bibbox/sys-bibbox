@@ -1,6 +1,8 @@
-[![Build Status](https://github.com/bibbox/sys-bibbox/actions/workflows/docker-image.yml/badge.svg)](https://github.com/bibbox/sys-bibbox/actions)
-
-
+[![Build Status Docker](https://github.com/bibbox/sys-bibbox/actions/workflows/docker-image.yml/badge.svg)](https://github.com/bibbox/sys-bibbox/actions)
+[![Build Status Node.js](https://github.com/bibbox/sys-bibbox/actions/workflows/node.js.yml/badge.svg)](https://github.com/bibbox/sys-bibbox/actions)
+<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/bibbox/sys-bibbox">
+<img alt="GitHub language count" src="https://img.shields.io/github/languages/count/bibbox/sys-bibbox">
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/bibbox/sys-bibbox">
 # BIBBOX 
 
 <img src="./frontend/src/assets/silicolab_logo.png" align="right"
