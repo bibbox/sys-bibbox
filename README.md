@@ -1,3 +1,6 @@
+[![Build Status](https://github.com/bibbox/sys-bibbox/actions/workflows/docker-image.yml/badge.svg)](https://github.com/bibbox/sys-bibbox/actions)
+
+
 # BIBBOX 
 
 <img src="./frontend/src/assets/silicolab_logo.png" align="right"
