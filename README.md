@@ -16,6 +16,11 @@ In the current state we are building apps to support pathologists, bioinformatic
   <img src="./img/example.png" alt="Size Limit CLI" width="738">
 </p>
 
+## Documentation
+
+Please refer to the online documentation at [bibbox.readthedocs.io](https://bibbox.readthedocs.io/), which includes installation instructions, a user guide and a developer guide for the BIBBOX system.
+
+
 ## How It Works
  - Apps provided in the BIBBOX-**Store** can be easily installed with a few clicks and without any IT-knowledge.
  - Installed instances can be managed in the **Instances** tab.
