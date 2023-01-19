@@ -6,7 +6,7 @@
 # BIBBOX 
 
 <img src="./frontend/src/assets/silicolab_logo.png" align="right"
-     alt="Size Limit logo by Anton Lovchikov" width="120" height="120">
+     alt="Size Limit logo by Anton Lovchikov" width="100" height="100">
 
 The BIBBOX Framework serves as a Basic Infrastructure Building Box (BIBBOX),  which provides software solutions in form of apps for biobanking and bioinformatics. 
 It provides the possibility to install apps and serve them directly towards the End-User. 
@@ -22,18 +22,18 @@ In the current state we are building apps to support pathologists, bioinformatic
    - See the apps dashboard by clicking the gear symbol on the bottom left of the apps tile.
    - Logs of an app are accessed by clicking the book symbol in the bottom-middle of the apps tile.
  - In the **Activities** tab each event can be expanded and contains a short descriptions about the nature of the given error.
- - The log of the individual system conatiner of the BIBBOX can be inpected in the **Sys Logs** tab.
+ - The log of the individual system container of the BIBBOX can be inspected in the **Sys Logs** tab.
 
 ## Quicktstart (for development)
 
-Please floww the install instructions on our read the docs page - [Install Bibbox(Linux)](https://bibbox.readthedocs.io/en/latest/installation_v4_bibbox_linux/) - for further deails. 
+Please follow the install instructions on our read the docs page - [Install Bibbox(Linux)](https://bibbox.readthedocs.io/en/latest/installation_v4_bibbox_linux/) - for further details. 
 
 
 <details><summary><b>Show short instructions</b></summary>
 
  1. Install docker and docker-compose
 
- 2. Create the bibbox location folder
+ 2. Create the `bibbox` location folder
 
 ```sh
 cd /opt
