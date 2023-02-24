@@ -26,6 +26,8 @@ backend/logs
 
 CLIFunctions.sh
 
+frontend/node_modules
+
 # ignore all files which get created from templates
 apacheproxy/httpd.conf
 frontend/src/environments/environment.ts
