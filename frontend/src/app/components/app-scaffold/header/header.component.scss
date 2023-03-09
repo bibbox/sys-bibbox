@@ -27,6 +27,7 @@
     }
   }
 
+
   .app-scaffold-header__nav-buttons{
     flex-grow: 1;
     display: flex;
@@ -40,6 +41,10 @@
       font-size: large;
       font-weight: $custom_font_weight_light;
     }
+  }
+  .app-scaffold-header__nav-buttons .active {
+    color: white;
+    background: $custom_blue;
   }
 
   .app-scaffold-header__activity-menu-overlay {
