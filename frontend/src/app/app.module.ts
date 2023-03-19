@@ -1,16 +1,17 @@
-import {NgModule} from '@angular/core';
+import {NgModule, isDevMode, APP_INITIALIZER} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserModule} from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {initializeKeycloak} from './keycloak-init.factory';
 
 // design design modules
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatCardModule} from '@angular/material/card';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {MatTooltipModule} from '@angular/material/tooltip';
@@ -70,6 +71,8 @@ import { InstallScreenComponent } from './components/applications/install-screen
 import { InstallScreenDialogComponent } from './components/applications/install-screen-dialog/install-screen-dialog.component';
 import { ActivityMenuOverlayComponent } from './components/activities/activity-menu-overlay/activity-menu-overlay.component';
 import { SysLogsComponent } from './components/sys-logs/sys-logs.component';
+import {KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
+import { InfoComponent } from './components/info/info.component';
 
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
@@ -96,6 +99,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     InstallScreenDialogComponent,
     ActivityMenuOverlayComponent,
     SysLogsComponent,
+    InfoComponent,
   ],
   imports: [
     // angular
@@ -107,6 +111,9 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     // http client
     HttpClientModule,
 
+    // keycloak
+    KeycloakAngularModule,
+
     // design
     MatButtonModule,
     MatToolbarModule,
@@ -115,11 +122,13 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     MatIconModule,
     MatCardModule,
     MatTabsModule,
+
     // MatListModule,
     MatSelectModule,
     MatSnackBarModule,
     MatInputModule,
     MatDialogModule,
+
     // MatGridListModule,
     MatFormFieldModule,
     MatCheckboxModule,
@@ -131,15 +140,17 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     FontAwesomeModule,
     FlexLayoutModule,
     FormsModule,
-    NgbModule,
+//    NgbModule,
     // store
     StoreModule.forRoot({
       instances: InstanceReducer,
       applicationGroups: ApplicationGroupReducer,
       activities: ActivityReducer
     }, {metaReducers}),
-    EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects]),
+    EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects, ]),
     StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
+    // StoreModule.forRoot({}, {}),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   bootstrap: [AppComponent],
   providers: [
@@ -149,7 +160,13 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
       multi: true,
       deps: [MatSnackBar]
     },
-    SocketioService
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService],
+    },
+    SocketioService,
   ]
 })
 export class AppModule {}

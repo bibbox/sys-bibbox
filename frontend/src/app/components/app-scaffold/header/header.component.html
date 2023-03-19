@@ -13,6 +13,14 @@
       routerLinkActive="active">
       {{item.label}}
     </button>
+    <button
+      class="app-scaffold-header__logout-button"
+      type="button"
+      id="Logout-Button"
+      (click)="logout()"
+    >
+      Log-out
+    </button>
   </div>
   <app-activity-menu-overlay class="app-scaffold-header__activity-menu-overlay"></app-activity-menu-overlay>
 </div>

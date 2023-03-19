@@ -19,6 +19,9 @@
 
         DocumentRoot /var/www/html/sys-bibbox-client
         <Directory /var/www/html/sys-bibbox-client>
+                # CORS
+                Header set Access-Control-Allow-Origin "*"
+
                 Options Indexes FollowSymLinks MultiViews
                 AllowOverride None
                 # Info: deprecated since v2.4:

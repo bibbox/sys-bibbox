@@ -21,6 +21,8 @@ from flask_swagger_ui import get_swaggerui_blueprint
 
 from flask_sqlalchemy import SQLAlchemy
 
+from flask_cors import CORS
+
 
 from celery import Celery
 from celery.signals import after_setup_logger
@@ -36,6 +38,8 @@ from flask_socketio import SocketIO
 bootstrap = Bootstrap()
 app = Flask(__name__)
 
+
+
 socketio = SocketIO(app, logger=False, engineio_logger=False, cors_allowed_origins="*", namespace='/', message_queue='redis://redis:6379') #, )
 
 db = SQLAlchemy()
@@ -49,7 +53,8 @@ app_celerey = Celery(__name__, broker=Config.CELERY_BROKER_URL)
 
 def create_app(config_name):
     # TODO: enforce stricter CORS
-    cors = CORS(app, resources={r"/*": {"origins": "*"}})
+    # cors = CORS(app, resources={r"/*": {"origins": "*"}})
+    CORS(app)
 
     print ("CREATE APP IN ", config_name, " MODE")
     

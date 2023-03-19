@@ -1,4 +1,5 @@
-@import '~@angular/material/theming';
+@import '../node_modules/@angular/material/theming';
+
 
 $toolbar-breakpoint: 600px;
 
@@ -25,8 +26,8 @@ $custom_gray_medium: #a8a9ab;
 $custom_gray_dark: #555555;
 
 // notification colors
-$success-colors: mat-palette($mat-green, 400);
-$warning-colors: mat-palette($mat-amber, 400);
+//$success-colors: mat-palette($mat-green, 400);
+//$warning-colors: mat-palette($mat-amber, 400);
 
 // // log colors
 $custom_color_info: #26b726;

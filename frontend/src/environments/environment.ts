@@ -4,8 +4,21 @@
 
 export const environment = {
   production: false,
-  BASEURL: 'bibbox.local.dev'
+  BASEURL: 'localhost',
+  KEYCLOAK_URL: `http://localhost:5014`,
+  KEYCLOAK_CLIENT_ID: 'sys-bibbox-frontend',
+  KEYCLOAK_REALM: 'sys-bibbox',
+
+  KEYCLOAK_NON_PROTECTED_PATHS: [
+    '/logout',
+    'https://raw.githubusercontent.com/',
+  ],
+
 };
+
+// TODO replace Keycloak env params dynamically
+
+// baseurl bibbox.local
 
 /*
  * For easier debugging in development mode, you can import the following file

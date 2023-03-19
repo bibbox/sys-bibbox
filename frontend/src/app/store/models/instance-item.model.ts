@@ -1,5 +1,6 @@
 export interface InstanceItem {
   instancename: string;
+  installed_by?: string; //currently optional to support old instances
   displayname_short: string;
   displayname_long: string;
   description_short: string;

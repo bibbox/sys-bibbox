@@ -84,7 +84,7 @@ sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.prod.ts.template > environment.
 # compile frontend code
 cd /opt/bibbox/sys-bibbox/frontend
 
-printf 'n\n' | npm i
+printf 'n\n' | npm ci
 #printf 'n\n' | npm update
 
 ng build --prod

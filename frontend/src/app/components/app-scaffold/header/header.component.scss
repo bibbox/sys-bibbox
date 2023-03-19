@@ -27,6 +27,14 @@
     }
   }
 
+  .app-scaffold-header__logout-button{
+    width: 110px;
+    font-size: large;
+    font-weight: $custom_font_weight_light;
+    border-color: $custom_color_error;
+    background-color: $custom_color_error;
+  }
+
   .app-scaffold-header__nav-buttons{
     flex-grow: 1;
     display: flex;

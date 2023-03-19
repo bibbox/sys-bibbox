@@ -24,7 +24,7 @@ export class ActivityService {
   }
 
   getSysLogs(): Observable<JSON> {
-    return this.http.get<JSON>(API_ACTIVITY_URL + '/syslogs');
+    return this.http.get<JSON>(API_ACTIVITY_URL + 'syslogs');
   }
 
   refreshStoreActivities(): void {

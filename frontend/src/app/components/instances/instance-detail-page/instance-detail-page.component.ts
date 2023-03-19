@@ -7,10 +7,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as InstanceSelector from '../../../store/selectors/instance.selector';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {InstanceService} from '../../../store/services/instance.service';
-import {DeleteInstanceAction} from '../../../store/actions/instance.actions';
 import {FormBuilder, Validators} from '@angular/forms';
-import {SVG_PATHS} from '../../../commons';
+import {KEYCLOAK_ROLES, SVG_PATHS} from '../../../commons';
 import {environment} from '../../../../environments/environment';
+import {UserService} from '../../../store/services/user.service';
 
 @Component({
   selector: 'app-instance-detail-page',
@@ -56,6 +56,7 @@ export class InstanceDetailPageComponent implements OnInit {
     private snackbar: MatSnackBar,
     private instanceService: InstanceService,
     private fb: FormBuilder,
+    private userService: UserService,
   ) {
     // redirect if state is empty -> caused by hard reloading current view
     if (this.router.getCurrentNavigation().extras.state === undefined){
@@ -110,6 +111,14 @@ export class InstanceDetailPageComponent implements OnInit {
   }
 
   deleteInstance(): void {
+    const isAdmin = this.userService.checkIfUserIsRole(KEYCLOAK_ROLES.admin);
+    const doesInstanceOwnerMatch = this.userService.getUserID() === this.instanceItem.installed_by;
+
+    if (!(isAdmin || doesInstanceOwnerMatch)) {
+      this.snackbar.open('You are not allowed to delete this instance', 'OK', {duration: 4000});
+      return;
+    }
+
     console.log('delete instance:' + this.instanceItem.instancename);
     this.instanceService.deleteInstance(this.instanceItem.instancename).subscribe(
       (res) => console.log(res)

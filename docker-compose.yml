@@ -146,6 +146,7 @@ services:
         ADMINER_DEFAULT_DB_HOST: postgres
         ADMINER_DEFAULT_DB_NAME: bibbox
   
+
   bibbox-sys-commander-cadvisor:      
       container_name: bibbox-sys-commander-cadvisor
       image: gcr.io/cadvisor/cadvisor
@@ -162,3 +163,26 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock:ro 
         - /dev/disk/:/dev/disk:ro 
   
+
+  bibbox-sys-commander-keycloak:
+      container_name: bibbox-sys-commander-keycloak #change name later
+      image: jboss/keycloak
+      networks: 
+      - bibbox-default-network
+      restart: unless-stopped
+      ports:
+        - "5014:8080"
+      environment:
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
+        DB_VENDOR: postgres
+        DB_ADDR: bibbox-sys-commander-postgres
+        DB_DATABASE: keycloak
+        DB_USER: keycloak
+        DB_PASSWORD: keycloak
+      #  KEYCLOAK_IMPORT: /tmp/realm-test.json # replace with custom realm definition
+      # volumes:
+      #   - ./keycloak/realms/realm-test.json:/tmp/realm-test.json
+      command: ["-Dkeycloak.profile.feature.upload_scripts=enabled"]
+      depends_on:
+        - bibbox-sys-commander-postgres

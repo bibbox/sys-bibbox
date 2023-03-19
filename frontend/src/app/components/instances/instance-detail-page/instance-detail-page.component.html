@@ -95,6 +95,10 @@
               <span class="description"> Instance: </span>
               /opt/bibbox/instances/{{instanceItem.instancename}}
             </div>
+            <div *ngIf="instanceItem.installed_by" class="detail-item">
+              <span class="description"> Installed by ID: </span>
+              {{instanceItem.installed_by}}
+            </div>
             <div class="detail-item">
               <span class="description"> Proxy: </span>
               /opt/bibbox/proxy/sites/005-{{instanceItem.instancename}}.conf

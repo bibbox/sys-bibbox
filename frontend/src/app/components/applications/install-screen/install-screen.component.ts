@@ -17,6 +17,7 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {AddInstanceAction} from '../../../store/actions/instance.actions';
 import {ValidatorService} from '../../../store/services/validator.service';
+import {UserService} from '../../../store/services/user.service';
 
 @Component({
   selector: 'app-install-screen',
@@ -32,7 +33,8 @@ export class InstallScreenComponent implements OnInit {
     private appService: ApplicationService,
     private instanceService: InstanceService,
     private formBuilder: FormBuilder,
-    private validatorService: ValidatorService
+    private validatorService: ValidatorService,
+    private userService: UserService
   ) {
 
     // TODO: Find better Workaround
@@ -114,7 +116,8 @@ export class InstallScreenComponent implements OnInit {
           name         : this.installForm.value.app_name,
           version      : this.installForm.value.version,
         },
-        parameters  : this.envParamForm.value
+        parameters  : this.envParamForm.value,
+        installed_by : this.userService.getUserID()
       };
 
       console.log(this.installForm.value.instance_id, JSON.stringify(payload));
