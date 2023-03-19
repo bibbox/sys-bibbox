@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {User} from '../models/user.model';
 import {Store} from '@ngrx/store';
 import {KeycloakService} from 'keycloak-angular';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class UserService {
 
   constructor(
     private store: Store<{AppState}>,
-    private kcService: KeycloakService
+    private kcService: KeycloakService,
+    private router: Router,
   ) {
     // just for testing
     this.kcService.getKeycloakInstance();
@@ -26,25 +28,19 @@ export class UserService {
     return this.kcService.getKeycloakInstance().tokenParsed.resource_access['sys-bibbox-frontend'].roles;
   }
 
-  checkIfUserIsRole(role: string): boolean {
+  isRole(role: string): boolean {
     return this.getUserRoles().includes(role);
   }
 
-
-  canSeeSysLogs(): boolean {
-    return this.getUserRoles().includes('can_see_syslogs');
+  async isLoggedIn(): Promise<boolean> {
+    return await this.kcService.isLoggedIn();
   }
 
-  debug(): void {
+  logout(): void {
+    this.kcService.logout().then(r => this.router.navigate(['/info']));
+  }
 
-    console.warn(this.user.roles);
-    // console.warn(this.kcService.getKeycloakInstance().tokenParsed.resource_access['sys-bibbox-frontend'].roles);
-    console.log("------------------")
-    console.warn(this.kcService.getKeycloakInstance().loadUserInfo());
-    console.log("------------------")
-    console.warn(this.kcService.getKeycloakInstance().tokenParsed.sub);
-    console.log("------------------")
-    console.warn(this.kcService.getKeycloakInstance().idTokenParsed);
-    console.log("------------------")
+  login(): void {
+    this.kcService.login().then(r => this.router.navigate(['/']));
   }
 }

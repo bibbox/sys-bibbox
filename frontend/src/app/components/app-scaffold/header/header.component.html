@@ -1,9 +1,12 @@
 <div class="app-scaffold-header">
-  <div class="app-scaffold-header__branding">
-    <img src="assets/silicolab_logo.png" alt="silicolab_logo.svg" class="app-scaffold-header__navbar-icon"/>
-    <span class="app-scaffold-header__branding-text"> {{title}}</span>
-  </div>
-  <div class="app-scaffold-header__nav-buttons">
+
+  <span class="app-scaffold-header__left_aligned" >
+    <div class="app-scaffold-header__branding">
+      <img src="assets/silicolab_logo.png" alt="silicolab_logo.svg" class="app-scaffold-header__navbar-icon"/>
+      <span class="app-scaffold-header__branding-text"> {{title}}</span>
+    </div>
+  </span>
+  <div *ngIf="loggedIn" class="app-scaffold-header__nav-buttons">
     <button
       class="app-scaffold-header__nav-button"
       id="{{item.label}}"
@@ -13,14 +16,28 @@
       routerLinkActive="active">
       {{item.label}}
     </button>
+  </div>
+  <div class="app-scaffold-header__right_aligned">
+    <app-activity-menu-overlay *ngIf="loggedIn" class="app-scaffold-header__activity-menu-overlay"></app-activity-menu-overlay>
     <button
-      class="app-scaffold-header__logout-button"
+      *ngIf="loggedIn"
+      class="app-scaffold-header__login-logout-button"
       type="button"
       id="Logout-Button"
-      (click)="logout()"
+      title="Logout"
+      (click)="initiateLogout()"
     >
-      Log-out
+      <i class="fa fa-sign-out" aria-hidden="true"></i>
+    </button>
+    <button
+      *ngIf="!loggedIn"
+      class="app-scaffold-header__login-logout-button"
+      type="button"
+      id="Login-Button"
+      title="Login"
+      (click)="initiateLogin()"
+    >
+      <i class="fa fa-sign-in" aria-hidden="true"></i>
     </button>
   </div>
-  <app-activity-menu-overlay class="app-scaffold-header__activity-menu-overlay"></app-activity-menu-overlay>
 </div>

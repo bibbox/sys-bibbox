@@ -17,7 +17,7 @@ import {InfoComponent} from './components/info/info.component';
 
 const routes: Routes = [
   // TODO redirect when login does anything
-  { path: '', pathMatch: 'full',  canActivate: [AuthGuard]}, // upon reaching baseurl, redirect to the login page
+  { path: '', pathMatch: 'full', redirectTo: 'info'}, // upon reaching baseurl, redirect to the login page
   // { path: '', redirectTo: '/applications', pathMatch: 'full'}, // -> upon reaching baseurl we want to redirect to the store page for now
   { path: 'install/:application_name/:version', component: InstallScreenComponent, pathMatch: 'full', canActivate: [AuthGuard]},
   { path: 'instances/:instance_name', component: InstanceDetailPageComponent, pathMatch: 'full', canActivate: [AuthGuard]},
@@ -31,14 +31,13 @@ const routes: Routes = [
   { path: 'activities', component: ActivitiesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
 
   // bottom nav
-  { path: 'contact', component: ContactComponent, pathMatch: 'full', canActivate: [AuthGuard]},
-  { path: 'partners', component: PartnersComponent, pathMatch: 'full', canActivate: [AuthGuard]},
-  { path: 'imprint', component: ImprintComponent, pathMatch: 'full', canActivate: [AuthGuard]},
+  { path: 'contact', component: ContactComponent, pathMatch: 'full'},
+  { path: 'partners', component: PartnersComponent, pathMatch: 'full'},
+  { path: 'imprint', component: ImprintComponent, pathMatch: 'full'},
 
   // info page which is displayed if the user is not logged in
   { path: 'info', component: InfoComponent, pathMatch: 'full'},
 
-  // auth
   // { path: 'login', component: LoginComponent, pathMatch: 'full'},
   { path: '**', component: NotFoundComponent, canActivate: [AuthGuard]}, // -> 404 page
 ];

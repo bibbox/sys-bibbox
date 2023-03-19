@@ -7,9 +7,13 @@
   .application-search {
     display: flex;
     flex-direction: column;
-    min-width: 220px;
+    min-width: 300px;
     align-self: center;
     padding-bottom: 20px;
+
+    .input-group-append {
+      display: flex;
+    }
   }
 
 

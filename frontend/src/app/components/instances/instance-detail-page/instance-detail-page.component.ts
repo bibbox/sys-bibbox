@@ -111,7 +111,7 @@ export class InstanceDetailPageComponent implements OnInit {
   }
 
   deleteInstance(): void {
-    const isAdmin = this.userService.checkIfUserIsRole(KEYCLOAK_ROLES.admin);
+    const isAdmin = this.userService.isRole(KEYCLOAK_ROLES.admin);
     const doesInstanceOwnerMatch = this.userService.getUserID() === this.instanceItem.installed_by;
 
     if (!(isAdmin || doesInstanceOwnerMatch)) {

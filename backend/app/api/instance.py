@@ -159,6 +159,7 @@ class Instance(Resource):
              "instance" :  instanceToBeDeleted,
         }
 
+
         deleteInstance.delay(instancename)
 
 

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {APP_TITLE_LONG, KEYCLOAK_ROLES} from '../../../commons';
 import {KeycloakService} from 'keycloak-angular';
+import {Router} from '@angular/router';
+import {UserService} from '../../../store/services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -17,18 +19,26 @@ export class HeaderComponent implements OnInit {
     //{ link: 'sys-logs', label: 'Sys-Logs'},
   ];
 
+  loggedIn = false;
+
   constructor(
-    private ksService: KeycloakService
+    private ksService: KeycloakService,
+    private router: Router,
+    private userService: UserService,
   ) {
   }
-
 
   ngOnInit(): void {
     // is admin user -> add sys-logs to navigation
     this.ksService.isUserInRole(KEYCLOAK_ROLES.admin) ? this.navigation.push({ link: 'sys-logs', label: 'Sys-Logs'}) : null;
+    this.userService.isLoggedIn().then(r => this.loggedIn = r);
   }
 
-  logout(): void {
-    // implement keycloak logout
+  initiateLogout(): void {
+    this.userService.logout();
+  }
+
+  initiateLogin(): void {
+    this.userService.login();
   }
 }

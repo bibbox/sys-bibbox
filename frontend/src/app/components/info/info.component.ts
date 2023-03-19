@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
+import {UserService} from '../../store/services/user.service';
 
 @Component({
   selector: 'app-info',
@@ -7,10 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InfoComponent implements OnInit {
 
-  constructor() { }
+  isLoggedin = false;
 
-  ngOnInit(): void {
-    // maybe redirect if user is logged in
+  constructor(
+    private router: Router,
+    private userService: UserService,
+  ) {
   }
 
+  ngOnInit(): void {
+    this.checkLogin().then(r => this.redirectIfLoggedIn())
+  }
+
+  async checkLogin(): Promise<void> {
+    this.isLoggedin = await this.userService.isLoggedIn();
+  }
+
+  redirectIfLoggedIn(): void {
+    if (this.isLoggedin) {
+      this.router.navigate(['/instances']);
+    }
+  }
 }
