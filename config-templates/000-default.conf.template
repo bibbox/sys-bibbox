@@ -20,7 +20,7 @@
         DocumentRoot /var/www/html/sys-bibbox-client
         <Directory /var/www/html/sys-bibbox-client>
                 # CORS
-                Header set Access-Control-Allow-Origin "*"
+                # Header set Access-Control-Allow-Origin "*"
 
                 Options Indexes FollowSymLinks MultiViews
                 AllowOverride None
