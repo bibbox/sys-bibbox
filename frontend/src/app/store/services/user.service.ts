@@ -3,37 +3,30 @@ import {User} from '../models/user.model';
 import {Store} from '@ngrx/store';
 import {KeycloakService} from 'keycloak-angular';
 import {Router} from '@angular/router';
+import {KEYCLOAK_CONFIG} from '../../commons';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  user: User;
-
   constructor(
     private store: Store<{AppState}>,
     private kcService: KeycloakService,
     private router: Router,
   ) {
-    // just for testing
-    this.kcService.getKeycloakInstance();
   }
 
   getUserID(): string {
-    return this.kcService.getKeycloakInstance().tokenParsed.sub;
+    return this.kcService.getKeycloakInstance().subject;
   }
 
   getUsername(): string {
     return this.kcService.getKeycloakInstance().tokenParsed.preferred_username;
   }
 
-  getUserRoles(): string[] {
-    return this.kcService.getKeycloakInstance().tokenParsed.resource_access['sys-bibbox-frontend'].roles;
-  }
-
   isRole(role: string): boolean {
-    return this.getUserRoles().includes(role);
+    return this.kcService.getKeycloakInstance().hasResourceRole(role, KEYCLOAK_CONFIG.resource_name);
   }
 
   async isLoggedIn(): Promise<boolean> {

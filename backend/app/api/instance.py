@@ -207,6 +207,27 @@ class Instance(Resource):
 
 
         return logs, 200
+    
+
+@api.route('/installed_by/<string:id>')
+@api.doc(params={'id': 'An ID'})
+class Instance(Resource):
+    def get(self, id):
+        # we want to return only instances where the installed_by field is set to the id
+        fh = FileHandler()
+
+        try: 
+            fh.writeInstancesJsonFile()
+            result = json.loads(fh.getInstancesJSONFile())
+            result = [instance for instance in result if 'installed_by' in instance and instance['installed_by'] == id]
+            
+        except:
+            result = []
+
+        return result, 200
+
+
+
 
 @api.route('/names/<string:name_to_check>')
 @api.doc(params={'name_to_check': 'Instancename to check'})

@@ -12,6 +12,7 @@ import {UserService} from '../../../store/services/user.service';
 export class HeaderComponent implements OnInit {
   title = APP_TITLE_LONG;
 
+
   navigation = [
     { link: 'applications', label: 'Store'},
     { link: 'instances', label: 'Instances' },
@@ -32,8 +33,14 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     // is admin user -> add sys-logs to navigation
     this.ksService.isUserInRole(KEYCLOAK_ROLES.admin) ? this.navigation.push({ link: 'sys-logs', label: 'Sys-Logs'}) : null;
-    this.userService.isLoggedIn().then(r => this.loggedIn = r);
-    this.username = this.userService.getUsername();
+    // this.userService.isLoggedIn().then(r => this.loggedIn = r);
+    // this.username = this.userService.getUsername();
+    this.userService.isLoggedIn().then(r => {
+      this.loggedIn = r;
+      if (r) {
+        this.username = this.userService.getUsername();
+      }
+    });
   }
 
   initiateLogout(): void {

@@ -8,7 +8,7 @@ import * as InstanceSelector from '../../../store/selectors/instance.selector';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {InstanceService} from '../../../store/services/instance.service';
 import {FormBuilder, Validators} from '@angular/forms';
-import {KEYCLOAK_ROLES, SVG_PATHS} from '../../../commons';
+import {KEYCLOAK_CONFIG, KEYCLOAK_ROLES, SVG_PATHS} from '../../../commons';
 import {environment} from '../../../../environments/environment';
 import {UserService} from '../../../store/services/user.service';
 
@@ -23,6 +23,8 @@ export class InstanceDetailPageComponent implements OnInit {
   instanceItem: InstanceItem;
   instanceNameFromUrl: string;
   baseurl = environment.BASEURL;
+  cannotDeleteInstanceTooltip: string = 'Only admins and instance owners can delete instances.';
+
 
   @ViewChild('scrollContainer') container: ElementRef;
   scrollTop: number = null;
@@ -110,14 +112,22 @@ export class InstanceDetailPageComponent implements OnInit {
     ];
   }
 
-  deleteInstance(): void {
+  canDeleteInstance(): boolean {
     const isAdmin = this.userService.isRole(KEYCLOAK_ROLES.admin);
     const doesInstanceOwnerMatch = this.userService.getUserID() === this.instanceItem.installed_by;
 
-    if (!(isAdmin || doesInstanceOwnerMatch)) {
-      this.snackbar.open('You are not allowed to delete this instance', 'OK', {duration: 4000});
-      return;
-    }
+    return isAdmin || doesInstanceOwnerMatch;
+  }
+
+
+  deleteInstance(): void {
+    // const isAdmin = this.userService.isRole(KEYCLOAK_ROLES.admin);
+    // const doesInstanceOwnerMatch = this.userService.getUserID() === this.instanceItem.installed_by;
+    //
+    // if (!(isAdmin || doesInstanceOwnerMatch)) {
+    //   this.snackbar.open('You are not allowed to delete this instance', 'OK', {duration: 4000});
+    //   return;
+    // }
 
     console.log('delete instance:' + this.instanceItem.instancename);
     this.instanceService.deleteInstance(this.instanceItem.instancename).subscribe(
@@ -132,7 +142,8 @@ export class InstanceDetailPageComponent implements OnInit {
 
   saveInstanceChanges(): void {
     console.log('save instance changes');
-    this.snackbar.open(JSON.stringify(this.instanceDetailForm.value) + this.instanceDetailForm.valid, 'OK', {duration: 4000});
+    // this.snackbar.open(JSON.stringify(this.instanceDetailForm.value) + this.instanceDetailForm.valid, 'OK', {duration: 4000});
+    this.snackbar.open('Changes saved', 'OK', {duration: 4000});
 
     if (this.instanceDetailForm.valid) {
       this.instanceService.updateInstanceDescription(this.instanceItem.instancename, JSON.stringify(this.instanceDetailForm.value))
@@ -149,4 +160,5 @@ export class InstanceDetailPageComponent implements OnInit {
       }
     );
   }
+
 }

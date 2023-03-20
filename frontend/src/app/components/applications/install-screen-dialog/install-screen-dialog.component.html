@@ -4,7 +4,13 @@
   </div>
   <div class="app-install-overlay__body">
     <div class="app-install-overlay__body-install-button">
-      <button [mat-dialog-close]="true" (click)="openInstallScreen()"> Install </button>
+      <button
+        [mat-dialog-close]="true"
+        (click)="openInstallScreen()"
+        [disabled]="disableInstallButton"
+        [matTooltip]="disableInstallButton ? maxInstancesTooltip : null">
+        Install
+      </button>
     </div>
 
     <div class="app-install-overlay__body-entry">

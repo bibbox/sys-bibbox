@@ -4,6 +4,10 @@ import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {FormControl, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ApplicationService} from '../../../store/services/application.service';
+import {KEYCLOAK_CONFIG, KEYCLOAK_ROLES} from '../../../commons';
+import {InstanceItem} from '../../../store/models/instance-item.model';
+import {UserService} from '../../../store/services/user.service';
+import {InstanceService} from '../../../store/services/instance.service';
 
 
 @Component({
@@ -16,11 +20,16 @@ export class InstallScreenDialogComponent implements OnInit {
   versionFormControl = new FormControl('', Validators.required);
   selectedVersion: IVersions;
   appInfo: AppInfo | null;
+  disableInstallButton: boolean;
+  maxInstancesTooltip: string = 'Cannot install instance. You have reached the maximum number of instances installable as a demo user.';
+
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public applicationItem: ApplicationItem,
     private router: Router,
-    private appService: ApplicationService
+    private appService: ApplicationService,
+    private userService: UserService,
+    private instanceService: InstanceService,
   ) {
     this.selectedVersion = this.applicationItem.versions[0];
     this.appInfo = {
@@ -35,6 +44,7 @@ export class InstallScreenDialogComponent implements OnInit {
       application_documentation_url: ''
     };
     this.loadAppInfo().then();
+    this.maxInstancesReached();
   }
 
   ngOnInit(): void {
@@ -53,5 +63,20 @@ export class InstallScreenDialogComponent implements OnInit {
       'install/' + this.applicationItem.app_name + '/' + this.selectedVersion.app_version,
       {state: [{...this.applicationItem}, this.selectedVersion]}
     ).then();
+  }
+
+  maxInstancesReached(): void {
+    const isDemoUser = this.userService.isRole(KEYCLOAK_ROLES.demo_user);
+
+    if (isDemoUser) {
+      const userID = this.userService.getUserID();
+      let instances: InstanceItem[] = [];
+
+      this.instanceService.getInstancesPerInstallerID(userID).subscribe(
+        (res: InstanceItem[]) => {
+          this.disableInstallButton = (res.length >= KEYCLOAK_CONFIG.max_instances_per_demo_user);
+        }
+      );
+    }
   }
 }

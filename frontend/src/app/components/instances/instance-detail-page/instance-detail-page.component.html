@@ -23,7 +23,7 @@
           </svg>
           <span class="text"> Start </span>
         </button>
-        <button (click)="deleteInstance()">
+        <button (click)="deleteInstance()" [disabled]="!canDeleteInstance()" [matTooltip]="!canDeleteInstance() ? cannotDeleteInstanceTooltip : null">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.delete"></path>
           </svg>

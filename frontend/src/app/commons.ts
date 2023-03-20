@@ -15,8 +15,13 @@ export const SOCKET_IO_URL = 'http://' + environment.BASEURL + '/socket.io';
 
 export const KEYCLOAK_ROLES = {
   admin: 'admin',
-  demo_user: 'demo_user',
-  standard_user: 'standard_user',
+  demo_user: 'demo-user',
+  standard_user: 'standard-user',
+}
+
+export const KEYCLOAK_CONFIG = {
+  max_instances_per_demo_user: 3,
+  resource_name: 'sys-bibbox-frontend',
 }
 
 

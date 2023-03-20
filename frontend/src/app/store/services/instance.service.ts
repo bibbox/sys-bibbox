@@ -26,6 +26,11 @@ export class InstanceService {
     return this.http.get<InstanceItem>(API_INSTANCES_URL + id);
   }
 
+  getInstancesPerInstallerID(installerID: string): Observable<InstanceItem[]> {
+    return this.http.get<InstanceItem[]>(API_INSTANCES_URL + 'installed_by/' + installerID);
+  }
+
+
   postInstance(instanceName: string, payload: string): Observable<InstanceItem> {
     const header = new HttpHeaders();
     header.set('Content-Type', 'application/json'); // ; charset=utf-8
@@ -46,6 +51,8 @@ export class InstanceService {
   getInstanceContainerLogs(instanceName: string): Observable<JSON> {
     return this.http.get<JSON>(API_INSTANCES_URL + 'logs/' + instanceName);
   }
+
+
 
   checkIfInstanceExists(instanceName: string): Observable<string> {
     return this.http.get<string>(API_INSTANCES_URL + 'names/' + instanceName);
