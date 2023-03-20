@@ -53,9 +53,8 @@ app_celerey = Celery(__name__, broker=Config.CELERY_BROKER_URL)
 
 def create_app(config_name):
     # TODO: enforce stricter CORS
-    # cors = CORS(app, resources={r"/*": {"origins": "*"}})
-    CORS(app)
-
+    cors = CORS(app, resources={r"/*": {"origins": "*"}})
+    
     print ("CREATE APP IN ", config_name, " MODE")
     
     app.config.from_object(config[config_name])

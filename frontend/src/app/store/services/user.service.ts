@@ -37,7 +37,7 @@ export class UserService {
   }
 
   logout(): void {
-    this.kcService.logout().then(r => this.router.navigate(['/info']));
+    this.router.navigate(['/info']).then(r => this.kcService.logout());
   }
 
   login(): void {
