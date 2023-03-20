@@ -24,6 +24,10 @@ export class UserService {
     return this.kcService.getKeycloakInstance().tokenParsed.sub;
   }
 
+  getUsername(): string {
+    return this.kcService.getKeycloakInstance().tokenParsed.preferred_username;
+  }
+
   getUserRoles(): string[] {
     return this.kcService.getKeycloakInstance().tokenParsed.resource_access['sys-bibbox-frontend'].roles;
   }

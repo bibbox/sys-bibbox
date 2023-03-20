@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {API_INSTANCES_URL} from '../../commons';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {InstanceItem} from '../models/instance-item.model';
-import {observable, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {DeleteAllInstancesAction, LoadInstancesAction} from '../actions/instance.actions';
 import {Store} from '@ngrx/store';

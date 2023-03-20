@@ -6,7 +6,8 @@
       <span class="app-scaffold-header__branding-text"> {{title}}</span>
     </div>
   </span>
-  <div *ngIf="loggedIn" class="app-scaffold-header__nav-buttons">
+  <span class="app-scaffold-header__center_aligned">
+    <div *ngIf="loggedIn" class="app-scaffold-header__nav-buttons">
     <button
       class="app-scaffold-header__nav-button"
       id="{{item.label}}"
@@ -17,7 +18,12 @@
       {{item.label}}
     </button>
   </div>
-  <div class="app-scaffold-header__right_aligned">
+  </span>
+  <span class="app-scaffold-header__right_aligned">
+    <div *ngIf="username" class="app-scaffold-header__login_info">
+      Logged in as: {{username}}
+    </div>
+
     <app-activity-menu-overlay *ngIf="loggedIn" class="app-scaffold-header__activity-menu-overlay"></app-activity-menu-overlay>
     <button
       *ngIf="loggedIn"
@@ -39,5 +45,5 @@
     >
       <i class="fa fa-sign-in" aria-hidden="true"></i>
     </button>
-  </div>
+  </span>
 </div>

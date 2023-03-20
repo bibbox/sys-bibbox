@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
   ];
 
   loggedIn = false;
+  username = '';
 
   constructor(
     private ksService: KeycloakService,
@@ -32,6 +33,7 @@ export class HeaderComponent implements OnInit {
     // is admin user -> add sys-logs to navigation
     this.ksService.isUserInRole(KEYCLOAK_ROLES.admin) ? this.navigation.push({ link: 'sys-logs', label: 'Sys-Logs'}) : null;
     this.userService.isLoggedIn().then(r => this.loggedIn = r);
+    this.username = this.userService.getUsername();
   }
 
   initiateLogout(): void {

@@ -27,11 +27,12 @@ export class SocketioService {
   connect(): void {
     this.socket = io(
       SOCKET_IO_URL,
-      {
-      // reconnectionDelayMax: 10000,
-      // transports: ['polling'] // , 'websocket'] // currently only polling works
-      }
+      // {
+      // // reconnectionDelayMax: 10000,
+      // // transports: ['polling'] // , 'websocket'] // currently only polling works
+      // }
       );
+    console.log('socket connected: ', this.socket.connected);
   }
 
   addInstanceUpdatesListener(): void {

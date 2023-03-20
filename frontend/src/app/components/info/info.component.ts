@@ -18,7 +18,7 @@ export class InfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkLogin().then(r => this.redirectIfLoggedIn())
+    // this.checkLogin().then(r => this.redirectIfLoggedIn())
   }
 
   async checkLogin(): Promise<void> {
