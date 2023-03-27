@@ -3,7 +3,7 @@ import json
 import docker
 
 from flask import Flask, request
-from flask_restplus import Namespace, Api, Resource, fields
+from flask_restx import Namespace, Api, Resource, fields
 from backend.app import app, db, restapi
 
 from backend.app.bibbox.instance_controler  import installInstance, startInstance, stopInstance, restartInstance, deleteInstance, testProcessAsync, updateInstanceInfos
