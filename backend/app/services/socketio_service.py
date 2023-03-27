@@ -17,7 +17,7 @@ import time
 @socketio.on('connect', namespace='/socket.io') # namespace='/socket.io')
 def ws_connect():
     #print('#'*50, ' connected websocket: ', '#'*50)
-    emit('connected', {'data': 'Connected'}, broadcast=False)#, namespace="/socket.io") # this should only emit event to connected client
+    emit('connected', {'data': 'Connected'})#, broadcast=False) throws error: TypeError: emit() got an unexpected keyword argument 'broadcast' #, namespace="/socket.io") # this should only emit event to connected client
     socketio.sleep(0) # when using gevent, socketio.sleep(0) after emit will release cpu and let other tasks do their work. https://github.com/miguelgrinberg/Flask-SocketIO/issues/418#issuecomment-283382281
     emitInstanceRefresh() # load instances when first connecting
     emitActivityRefresh() # load activities when first connecting
@@ -30,15 +30,15 @@ def disconnected():
 
 def emitInstanceRefresh():
     #print('emitting instance refresh info')
-    socketio.emit('new_instance_data', {'data': 'New Instance Data in Backend'}, broadcast=True, namespace='/socket.io') #, namespace="/socket.io")
+    socketio.emit('new_instance_data', {'data': 'New Instance Data in Backend'}, namespace='/socket.io')# , broadcast=True throws error: TypeError: emit() got an unexpected keyword argument 'broadcast' #, namespace="/socket.io")
     socketio.sleep(0)
 
 def emitActivityRefresh():
     #print('emitting new_activity_status info')
-    socketio.emit('new_activity_status', {'data': 'new activity status'}, broadcast=True, namespace='/socket.io') #, namespace="/socket.io")
+    socketio.emit('new_activity_status', {'data': 'new activity status'}, namespace='/socket.io')# , broadcast=True throws error: TypeError: emit() got an unexpected keyword argument 'broadcast' #, namespace="/socket.io")
     socketio.sleep(0)
 
 def emitInstanceDeleted(instance_name):
     #print('emitting instance delete info')
-    socketio.emit('instance_deleted', {'id': instance_name}, broadcast=True, namespace='/socket.io') #, namespace="/socket.io")
+    socketio.emit('instance_deleted', {'id': instance_name}, namespace='/socket.io')# , broadcast=True throws error: TypeError: emit() got an unexpected keyword argument 'broadcast' #, namespace="/socket.io")
     socketio.sleep(0)
