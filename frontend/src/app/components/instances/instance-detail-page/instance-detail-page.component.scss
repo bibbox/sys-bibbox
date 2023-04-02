@@ -57,6 +57,12 @@
       //padding-left: 30px;
       //margin-top: 15px;
       //margin-bottom: 20px
+
+      button:disabled {
+        background: $custom_gray_lightaccent;
+        border: 1px $custom_gray_lightaccent solid;
+        color: $custom_gray_dark;
+      }
     }
   }
 

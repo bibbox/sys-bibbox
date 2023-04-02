@@ -43,7 +43,7 @@ export class ActivityMenuOverlayComponent implements OnInit {
         this.activeActivities += 1;
       }
     });
-    console.log('active activities: ', this.activeActivities);
+    // console.log('active activities: ', this.activeActivities);
   }
 
   sortActivities(): void {

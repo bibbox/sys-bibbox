@@ -52,11 +52,11 @@ import {HttperrorInterceptor} from './httperror.interceptor';
 import {SocketioService} from './store/services/socketio.service';
 
 // component modules
-import {AppComponent} from './components/app-scaffold/app.component';
-import {HeaderComponent} from './components/app-scaffold/header/header.component';
-import {FooterComponent} from './components/app-scaffold/footer/footer.component';
+import { AppComponent } from './components/app-scaffold/app.component';
+import { HeaderComponent } from './components/app-scaffold/header/header.component';
+import { FooterComponent } from './components/app-scaffold/footer/footer.component';
 import { InstancesComponent } from './components/instances/instances.component';
-import {ApplicationsComponent} from './components/applications/applications.component';
+import { ApplicationsComponent } from './components/applications/applications.component';
 import { ContactComponent } from './components/about/contact/contact.component';
 import { PartnersComponent } from './components/about/partners/partners.component';
 import { ImprintComponent } from './components/about/imprint/imprint.component';
@@ -64,15 +64,16 @@ import { ActivitiesComponent } from './components/activities/activities.componen
 import { LoginComponent } from './components/login/login.component';
 import { InstanceDetailPageComponent } from './components/instances/instance-detail-page/instance-detail-page.component';
 import { ApplicationGroupComponent } from './components/applications/application-group/application-group.component';
-import {ApplicationTileComponent} from './components/applications/application-group/application-tile/application-tile.component';
+import { ApplicationTileComponent} from './components/applications/application-group/application-tile/application-tile.component';
 import { InstanceTileComponent } from './components/instances/instance-tile/instance-tile.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InstallScreenComponent } from './components/applications/install-screen/install-screen.component';
 import { InstallScreenDialogComponent } from './components/applications/install-screen-dialog/install-screen-dialog.component';
 import { ActivityMenuOverlayComponent } from './components/activities/activity-menu-overlay/activity-menu-overlay.component';
 import { SysLogsComponent } from './components/sys-logs/sys-logs.component';
-import {KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { InfoComponent } from './components/info/info.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
@@ -101,57 +102,58 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     SysLogsComponent,
     InfoComponent,
   ],
-  imports: [
-    // angular
-    BrowserModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    AppRoutingModule,
+    imports: [
+        // angular
+        BrowserModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        AppRoutingModule,
 
-    // http client
-    HttpClientModule,
+        // http client
+        HttpClientModule,
 
-    // keycloak
-    KeycloakAngularModule,
+        // keycloak
+        KeycloakAngularModule,
 
-    // design
-    MatButtonModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatMenuModule,
-    MatIconModule,
-    MatCardModule,
-    MatTabsModule,
+        // design
+        MatButtonModule,
+        MatToolbarModule,
+        MatTooltipModule,
+        MatMenuModule,
+        MatIconModule,
+        MatCardModule,
+        MatTabsModule,
 
-    // MatListModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    MatInputModule,
-    MatDialogModule,
+        // MatListModule,
+        MatSelectModule,
+        MatSnackBarModule,
+        MatInputModule,
+        MatDialogModule,
 
-    // MatGridListModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatTabsModule,
-    MatOptionModule,
-    MatExpansionModule,
-    MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    FontAwesomeModule,
-    FlexLayoutModule,
-    FormsModule,
+        // MatGridListModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatTabsModule,
+        MatOptionModule,
+        MatExpansionModule,
+        MatProgressSpinnerModule,
+        ReactiveFormsModule,
+        FontAwesomeModule,
+        FlexLayoutModule,
+        FormsModule,
 //    NgbModule,
-    // store
-    StoreModule.forRoot({
-      instances: InstanceReducer,
-      applicationGroups: ApplicationGroupReducer,
-      activities: ActivityReducer
-    }, {metaReducers}),
-    EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects, ]),
-    StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
-    // StoreModule.forRoot({}, {}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-  ],
+        // store
+        StoreModule.forRoot({
+            instances: InstanceReducer,
+            applicationGroups: ApplicationGroupReducer,
+            activities: ActivityReducer
+        }, {metaReducers}),
+        EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects,]),
+        StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
+        // StoreModule.forRoot({}, {}),
+        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
+        MatSlideToggleModule,
+    ],
   bootstrap: [AppComponent],
   providers: [
     {

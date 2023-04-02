@@ -10,7 +10,7 @@ export const APP_TITLE_SHORT = 'BIBBOX';
 export const API_INSTANCES_URL = 'http://' + environment.BASEURL + '/api/v1/instances/';
 export const API_APPLICATIONS_URL = 'http://' + environment.BASEURL + '/api/v1/apps/';
 export const API_ACTIVITY_URL = 'http://' + environment.BASEURL + '/api/v1/activities/';
-export const API_AUTH_URL = 'http://' + environment.BASEURL + '/api/v1/users/';
+// export const API_AUTH_URL = 'http://' + environment.BASEURL + '/api/v1/users/';
 export const SOCKET_IO_URL = 'http://' + environment.BASEURL + '/socket.io';
 
 export const KEYCLOAK_ROLES = {

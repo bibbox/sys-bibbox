@@ -8,7 +8,7 @@
     <span class="instance-details-controls" *ngIf="tabIndex == 0">
       <ng-container *ngIf="instanceItem.state === 'ERROR'"> <!--  -->
         <span class="status in_operation"></span>
-        <button (click)="deleteInstance()">
+        <button (click)="deleteInstance()" [disabled]="!canDeleteInstance()" [matTooltip]="!canDeleteInstance() ? cannotDeleteInstanceTooltip : null">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.delete"></path>
           </svg>
@@ -95,9 +95,17 @@
               <span class="description"> Instance: </span>
               /opt/bibbox/instances/{{instanceItem.instancename}}
             </div>
-            <div *ngIf="instanceItem.installed_by" class="detail-item">
+            <div *ngIf="instanceItem.installed_by_name" class="detail-item">
+              <span class="description"> Installed by: </span>
+              {{instanceItem.installed_by_name}}
+            </div>
+            <div *ngIf="instanceItem.installed_by_id" class="detail-item">
               <span class="description"> Installed by ID: </span>
-              {{instanceItem.installed_by}}
+              {{instanceItem.installed_by_id}}
+            </div>
+            <div *ngIf="instanceItem.time_of_installation" class="detail-item">
+              <span class="description"> Time of Installation: </span>
+              {{time_of_installation.toLocaleString("de-DE")}}
             </div>
             <div class="detail-item">
               <span class="description"> Proxy: </span>

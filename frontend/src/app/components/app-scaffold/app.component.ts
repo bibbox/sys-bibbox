@@ -14,7 +14,8 @@ import * as activityActions from '../../store/actions/activity.actions';
 export class AppComponent implements OnInit{
 
   constructor(private socketService: SocketioService,
-              private store: Store<AppState>) { }
+              private store: Store<AppState>
+  ) { }
 
   ngOnInit(): void {
     this.store.dispatch(new applicationGroupActions.LoadApplicationGroupsAction());

@@ -209,17 +209,17 @@ class Instance(Resource):
         return logs, 200
     
 
-@api.route('/installed_by/<string:id>')
-@api.doc(params={'id': 'An ID'})
+@api.route('/installed_by/<string:installer_id>')
+@api.doc(params={'installer_id': 'KeyCloak-issued ID of User'})
 class Instance(Resource):
-    def get(self, id):
+    def get(self, installer_id):
         # we want to return only instances where the installed_by field is set to the id
         fh = FileHandler()
 
         try: 
             fh.writeInstancesJsonFile()
             result = json.loads(fh.getInstancesJSONFile())
-            result = [instance for instance in result if 'installed_by' in instance and instance['installed_by'] == id]
+            result = [instance for instance in result if 'installed_by_id' in instance and instance['installed_by_id'] == installer_id]
             
         except:
             result = []

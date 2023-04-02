@@ -5,7 +5,7 @@ import logging
 import requests
 import simplejson
 
-from flask import current_app, render_template
+from flask import current_app
 from backend.app import app_celerey
 from backend.app import db
 

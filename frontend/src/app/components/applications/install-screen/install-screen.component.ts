@@ -108,7 +108,7 @@ export class InstallScreenComponent implements OnInit {
 
   install(): void {
     if (this.installForm.valid && this.envParamForm.valid) {
-      console.log('install');
+      // console.log('install');
       const payload = {
         displayname_short : this.installForm.value.instance_name,
         app : {
@@ -117,10 +117,11 @@ export class InstallScreenComponent implements OnInit {
           version      : this.installForm.value.version,
         },
         parameters  : this.envParamForm.value,
-        installed_by : this.userService.getUserID()
+        installed_by_id : this.userService.getUserID(),
+        installed_by_name: this.userService.getUsername()
       };
 
-      console.log(this.installForm.value.instance_id, JSON.stringify(payload));
+      // console.log(this.installForm.value.instance_id, JSON.stringify(payload));
 
       this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
       // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))

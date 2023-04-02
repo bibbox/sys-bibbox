@@ -4,6 +4,7 @@ import {Store} from '@ngrx/store';
 import {KeycloakService} from 'keycloak-angular';
 import {Router} from '@angular/router';
 import {KEYCLOAK_CONFIG} from '../../commons';
+import {AppState} from '../models/app-state.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import {KEYCLOAK_CONFIG} from '../../commons';
 export class UserService {
 
   constructor(
-    private store: Store<{AppState}>,
+    private store: Store<AppState>,
     private kcService: KeycloakService,
     private router: Router,
   ) {
@@ -38,6 +39,10 @@ export class UserService {
   }
 
   login(): void {
-    this.kcService.login().then(r => this.router.navigate(['/']));
+    this.kcService.login().then(
+
+      r => this.router.navigate(['/'])
+
+    );
   }
 }
