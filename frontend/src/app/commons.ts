@@ -13,18 +13,6 @@ export const API_ACTIVITY_URL = 'http://' + environment.BASEURL + '/api/v1/activ
 // export const API_AUTH_URL = 'http://' + environment.BASEURL + '/api/v1/users/';
 export const SOCKET_IO_URL = 'http://' + environment.BASEURL + '/socket.io';
 
-export const KEYCLOAK_ROLES = {
-  admin: 'admin',
-  demo_user: 'demo-user',
-  standard_user: 'standard-user',
-}
-
-export const KEYCLOAK_CONFIG = {
-  max_instances_per_demo_user: 3,
-  resource_name: 'sys-bibbox-frontend',
-}
-
-
 // use below only when using angular proxy
 // export const API_INSTANCES_URL = '/api/v1/instances/';
 // export const API_APPLICATIONS_URL = '/api/v1/apps/';

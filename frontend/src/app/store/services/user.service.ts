@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
-import {User} from '../models/user.model';
 import {Store} from '@ngrx/store';
 import {KeycloakService} from 'keycloak-angular';
 import {Router} from '@angular/router';
-import {KEYCLOAK_CONFIG} from '../../commons';
 import {AppState} from '../models/app-state.model';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +26,7 @@ export class UserService {
   }
 
   isRole(role: string): boolean {
-    return this.kcService.getKeycloakInstance().hasResourceRole(role, KEYCLOAK_CONFIG.resource_name);
+    return this.kcService.getKeycloakInstance().hasResourceRole(role, environment.KEYCLOAK_CONFIG.resource_name);
   }
 
   async isLoggedIn(): Promise<boolean> {
@@ -35,13 +34,13 @@ export class UserService {
   }
 
   logout(): void {
-    this.router.navigate(['/info']).then(r => this.kcService.logout());
+    this.router.navigate(['/info']).then(() => this.kcService.logout());
   }
 
   login(): void {
     this.kcService.login().then(
 
-      r => this.router.navigate(['/'])
+      () => this.router.navigate(['/'])
 
     );
   }

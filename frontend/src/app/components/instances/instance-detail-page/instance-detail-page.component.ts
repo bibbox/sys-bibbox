@@ -8,7 +8,7 @@ import * as InstanceSelector from '../../../store/selectors/instance.selector';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {InstanceService} from '../../../store/services/instance.service';
 import {FormBuilder, Validators} from '@angular/forms';
-import {KEYCLOAK_CONFIG, KEYCLOAK_ROLES, SVG_PATHS} from '../../../commons';
+import {SVG_PATHS} from '../../../commons';
 import {environment} from '../../../../environments/environment';
 import {UserService} from '../../../store/services/user.service';
 
@@ -118,7 +118,7 @@ export class InstanceDetailPageComponent implements OnInit {
   }
 
   canDeleteInstance(): boolean {
-    const isAdmin = this.userService.isRole(KEYCLOAK_ROLES.admin);
+    const isAdmin = this.userService.isRole(environment.KEYCLOAK_ROLES.admin);
     const doesInstanceOwnerMatch = this.userService.getUserID() === this.instanceItem.installed_by_id;
 
     return isAdmin || doesInstanceOwnerMatch;

@@ -4,10 +4,10 @@ import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {FormControl, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ApplicationService} from '../../../store/services/application.service';
-import {KEYCLOAK_CONFIG, KEYCLOAK_ROLES} from '../../../commons';
 import {InstanceItem} from '../../../store/models/instance-item.model';
 import {UserService} from '../../../store/services/user.service';
 import {InstanceService} from '../../../store/services/instance.service';
+import {environment} from '../../../../environments/environment';
 
 
 @Component({
@@ -66,15 +66,13 @@ export class InstallScreenDialogComponent implements OnInit {
   }
 
   maxInstancesReached(): void {
-    const isDemoUser = this.userService.isRole(KEYCLOAK_ROLES.demo_user);
+    const isDemoUser = this.userService.isRole(environment.KEYCLOAK_ROLES.demo_user);
 
     if (isDemoUser) {
       const userID = this.userService.getUserID();
-      let instances: InstanceItem[] = [];
-
       this.instanceService.getInstancesPerInstallerID(userID).subscribe(
         (res: InstanceItem[]) => {
-          this.disableInstallButton = (res.length >= KEYCLOAK_CONFIG.max_instances_per_demo_user);
+          this.disableInstallButton = (res.length >= environment.KEYCLOAK_CONFIG.max_instances_per_demo_user);
         }
       );
     }

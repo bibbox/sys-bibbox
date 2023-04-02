@@ -12,8 +12,8 @@ import {NotFoundComponent} from './components/not-found/not-found.component';
 import {InstallScreenComponent} from './components/applications/install-screen/install-screen.component';
 import {SysLogsComponent} from './components/sys-logs/sys-logs.component';
 import {AuthGuard} from './guard/auth.guard';
-import {KEYCLOAK_ROLES} from './commons';
 import {InfoComponent} from './components/info/info.component';
+import {environment} from '../environments/environment';
 
 const routes: Routes = [
   // TODO redirect when login does anything
@@ -25,7 +25,7 @@ const routes: Routes = [
   // top nav
   { path: 'applications', component: ApplicationsComponent, pathMatch: 'full', canActivate: [AuthGuard]},
   { path: 'instances', component: InstancesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
-  { path: 'sys-logs', component: SysLogsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [KEYCLOAK_ROLES.admin]}},
+  { path: 'sys-logs', component: SysLogsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_ROLES.admin]}},
   // activities need two routes, in case we want to view activities without providing an activity id
   { path: 'activities/:activity_id', component: ActivitiesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
   { path: 'activities', component: ActivitiesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
