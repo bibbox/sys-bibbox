@@ -1,7 +1,7 @@
 {
   "id": "sys-bibbox",
   "realm": "sys-bibbox",
-  "displayName": "BIBBOX v4 Auth",
+  "displayName": "Silicolab BIBBOX v4",
   "notBefore": 1680459751,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,
@@ -34,8 +34,8 @@
   "verifyEmail": false,
   "loginWithEmailAllowed": false,
   "duplicateEmailsAllowed": false,
-  "resetPasswordAllowed": false,
-  "editUsernameAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": true,
   "bruteForceProtected": false,
   "permanentLockout": false,
   "maxFailureWaitSeconds": 900,
@@ -865,8 +865,6 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost:80/*",
-        "http://localhost:*",
         "http://localhost:4200/*"
       ],
       "webOrigins": [
@@ -1574,7 +1572,7 @@
     ],
     "org.keycloak.userprofile.UserProfileProvider": [
       {
-        "id": "27e91a0a-3914-4374-ba8e-698fa1269ec8",
+        "id": "61806b0a-538f-4d02-be4f-528aa61553af",
         "providerId": "declarative-user-profile",
         "subComponents": {},
         "config": {}

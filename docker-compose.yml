@@ -81,6 +81,27 @@ services:
     env_file:
        - .env
 
+  # bibbox-sys-commander-celery-beat:
+  #   container_name:  bibbox-sys-commander-celery
+  #   restart: unless-stopped
+  #   networks:
+  #   - bibbox-default-network
+  #   links:
+  #       -  bibbox-sys-commander-redis:redis
+  #       -  bibbox-sys-commander-postgres:postgres
+  #   build:
+  #     context:    ./backend
+  #     dockerfile: Dockerfile
+  #   command: "celery beat -A celery_beat.app_celerey --loglevel=info"
+  #   volumes:
+  #     - ./data/celery:/queue
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - /opt/bibbox:/opt/bibbox
+  #     - ./backend:/usr/src/bibbox-sys-commander/backend
+  #   env_file:
+  #      - .env
+
+
   bibbox-sys-commander-celery-monitor:
     container_name: bibbox-sys-commander-celery-monitor
     build:
@@ -181,26 +202,9 @@ services:
         DB_DATABASE: keycloak
         DB_USER: keycloak
         DB_PASSWORD: keycloak
-        # KEYCLOAK_IMPORT: ./keycloak/realms/development-realm.json # replace with custom realm definition
-      # volumes:
-      #   - ./keycloak/realms/realm-test.json:/tmp/realm-test.json
+        KEYCLOAK_IMPORT: /opt/jboss/keycloak/import/realms/development-realm.json # path to realm file in container
+      volumes:
+        - ./keycloak/realms/development-realm.json:/opt/jboss/keycloak/import/realms/development-realm.json
       command: ["-Dkeycloak.profile.feature.upload_scripts=enabled"]
       depends_on:
         - bibbox-sys-commander-postgres
-
-
-  # bibbox-sys-commander-keycloak-postgres:
-  #     image: postgres:15.2
-  #     container_name:  bibbox-sys-commander-keycloak-postgres
-  #     restart: unless-stopped
-  #     networks:
-  #      - bibbox-default-network
-  #     # build:
-  #     #   context:   ./keycloak/postgresql
-  #     #   dockerfile: Dockerfile
-  #     ports:
-  #       - "5015:5433" 
-  #     environment:
-  #       POSTGRES_DB: keycloak
-  #       POSTGRES_USER: keycloak
-  #       POSTGRES_PASSWORD: keycloak

@@ -10,6 +10,7 @@ export const environment = {
   KEYCLOAK_URL: `http://localhost:5014`,
   KEYCLOAK_CLIENT_ID: 'sys-bibbox-frontend',
   KEYCLOAK_REALM: 'sys-bibbox',
+  
   KEYCLOAK_NON_PROTECTED_PATHS: [
     '/logout',
     'https://raw.githubusercontent.com/',
