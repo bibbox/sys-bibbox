@@ -7,10 +7,10 @@ import {LogItem} from '../../store/models/activity.model';
 
 @Component({
   selector: 'app-sys-logs',
-  templateUrl: './sys-logs.component.html',
-  styleUrls: ['./sys-logs.component.scss']
+  templateUrl: './admin-panel-sys-logs.component.html',
+  styleUrls: ['./admin-panel-sys-logs.component.scss']
 })
-export class SysLogsComponent implements OnInit, OnDestroy {
+export class AdminPanelSysLogsComponent implements OnInit, OnDestroy {
 
   sysLogs = {};
   containerNames = [];

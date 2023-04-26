@@ -10,10 +10,12 @@ import {ActivitiesComponent} from './components/activities/activities.component'
 import {InstanceDetailPageComponent} from './components/instances/instance-detail-page/instance-detail-page.component';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {InstallScreenComponent} from './components/applications/install-screen/install-screen.component';
-import {SysLogsComponent} from './components/sys-logs/sys-logs.component';
+import {AdminPanelSysLogsComponent} from './components/admin-panel-sys-logs/admin-panel-sys-logs.component';
 import {AuthGuard} from './guard/auth.guard';
 import {InfoComponent} from './components/info/info.component';
 import {environment} from '../environments/environment';
+import {AdminPanelInstancesComponent} from './components/admin-panel-instances/admin-panel-instances.component';
+import {AdminPanelUsersComponent} from './components/admin-panel-users/admin-panel-users.component';
 
 const routes: Routes = [
   // TODO redirect when login does anything
@@ -25,7 +27,13 @@ const routes: Routes = [
   // top nav
   { path: 'applications', component: ApplicationsComponent, pathMatch: 'full', canActivate: [AuthGuard]},
   { path: 'instances', component: InstancesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
-  { path: 'sys-logs', component: SysLogsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_ROLES.admin]}},
+
+  // top nav admin
+  { path: 'sys-logs', component: AdminPanelSysLogsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_ROLES.admin]}},
+  { path: 'instance-mgmt', component: AdminPanelInstancesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_ROLES.admin]}},
+  { path: 'user-mgmt', component: AdminPanelUsersComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_ROLES.admin]}},
+
+
   // activities need two routes, in case we want to view activities without providing an activity id
   { path: 'activities/:activity_id', component: ActivitiesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
   { path: 'activities', component: ActivitiesComponent, pathMatch: 'full', canActivate: [AuthGuard]},

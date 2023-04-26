@@ -23,13 +23,14 @@ export class InstanceDetailPageComponent implements OnInit {
   instanceItem: InstanceItem;
   instanceNameFromUrl: string;
   baseurl = environment.BASEURL;
-  cannotDeleteInstanceTooltip: string = 'Only admins and instance owners can delete instances.';
+  cannotManageInstanceTooltip: string = 'Only admins and instance owners can manage instances.';
   time_of_installation: Date;
+  time_of_last_stop: Date;
 
   @ViewChild('scrollContainer') container: ElementRef;
   scrollTop: number = null;
 
-  instanceLinks = []; // external Links to Github repo
+  instanceLinks = []; // external Links to GitHub repo
   instanceContainerLogs = {}; // dictionary -> key: containerName, value: logs of container
 
   svgPaths = SVG_PATHS;
@@ -82,6 +83,10 @@ export class InstanceDetailPageComponent implements OnInit {
         if (this.instanceItem.time_of_installation) {
           this.time_of_installation = new Date(parseInt(this.instanceItem.time_of_installation) * 1000);
         }
+        if (this.instanceItem.last_stop_time) {
+          this.time_of_last_stop = new Date(parseInt(this.instanceItem.last_stop_time) * 1000);
+        }
+
 
         this.loadGithubLinks();
         this.loadContainerLogs();
@@ -117,7 +122,7 @@ export class InstanceDetailPageComponent implements OnInit {
     ];
   }
 
-  canDeleteInstance(): boolean {
+  canManageInstance(): boolean {
     const isAdmin = this.userService.isRole(environment.KEYCLOAK_ROLES.admin);
     const doesInstanceOwnerMatch = this.userService.getUserID() === this.instanceItem.installed_by_id;
 

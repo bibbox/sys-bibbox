@@ -18,7 +18,7 @@ export const environment = {
   },
 
   KEYCLOAK_CONFIG : {
-    max_instances_per_demo_user: 3,
+    max_instances_per_demo_user: 0,
     resource_name: 'sys-bibbox-frontend',
   }
 };

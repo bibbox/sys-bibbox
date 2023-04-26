@@ -33,7 +33,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     // is admin user -> add sys-logs to navigation
-    this.ksService.isUserInRole(environment.KEYCLOAK_ROLES.admin) ? this.navigation.push({ link: 'sys-logs', label: 'Sys-Logs'}) : null;
+    this.ksService.isUserInRole(environment.KEYCLOAK_ROLES.admin) ? this.navigation.push(
+      { link: 'sys-logs', label: 'Sys-Logs'},
+      { link: 'instance-mgmt', label: 'Dashboard'},
+      { link: 'user-mgmt', label: 'IAM'},
+    ) : null;
     // this.userService.isLoggedIn().then(r => this.loggedIn = r);
     // this.username = this.userService.getUsername();
     this.userService.isLoggedIn().then(r => {

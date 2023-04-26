@@ -18,9 +18,6 @@ export class AppComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new applicationGroupActions.LoadApplicationGroupsAction());
-    this.store.dispatch(new instanceActions.LoadInstancesAction());
-    this.store.dispatch(new activityActions.LoadActivitiesAction());
   }
 
 }

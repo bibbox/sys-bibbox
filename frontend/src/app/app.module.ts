@@ -70,10 +70,13 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InstallScreenComponent } from './components/applications/install-screen/install-screen.component';
 import { InstallScreenDialogComponent } from './components/applications/install-screen-dialog/install-screen-dialog.component';
 import { ActivityMenuOverlayComponent } from './components/activities/activity-menu-overlay/activity-menu-overlay.component';
-import { SysLogsComponent } from './components/sys-logs/sys-logs.component';
+import { AdminPanelSysLogsComponent } from './components/admin-panel-sys-logs/admin-panel-sys-logs.component';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { InfoComponent } from './components/info/info.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { AdminPanelInstancesComponent } from './components/admin-panel-instances/admin-panel-instances.component';
+import {MatTableModule} from '@angular/material/table';
+import { AdminPanelUsersComponent } from './components/admin-panel-users/admin-panel-users.component';
 
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
@@ -99,61 +102,64 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     InstallScreenComponent,
     InstallScreenDialogComponent,
     ActivityMenuOverlayComponent,
-    SysLogsComponent,
+    AdminPanelSysLogsComponent,
     InfoComponent,
+    AdminPanelInstancesComponent,
+    AdminPanelUsersComponent,
   ],
-    imports: [
-        // angular
-        BrowserModule,
-        BrowserAnimationsModule,
-        CommonModule,
-        AppRoutingModule,
+  imports: [
+    // angular
+    BrowserModule,
+    BrowserAnimationsModule,
+    CommonModule,
+    AppRoutingModule,
 
-        // http client
-        HttpClientModule,
+    // http client
+    HttpClientModule,
 
-        // keycloak
-        KeycloakAngularModule,
+    // keycloak
+    KeycloakAngularModule,
 
-        // design
-        MatButtonModule,
-        MatToolbarModule,
-        MatTooltipModule,
-        MatMenuModule,
-        MatIconModule,
-        MatCardModule,
-        MatTabsModule,
+    // design
+    MatButtonModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatMenuModule,
+    MatIconModule,
+    MatCardModule,
+    MatTabsModule,
 
-        // MatListModule,
-        MatSelectModule,
-        MatSnackBarModule,
-        MatInputModule,
-        MatDialogModule,
+    // MatListModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    MatInputModule,
+    MatDialogModule,
 
-        // MatGridListModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatTabsModule,
-        MatOptionModule,
-        MatExpansionModule,
-        MatProgressSpinnerModule,
-        ReactiveFormsModule,
-        FontAwesomeModule,
-        FlexLayoutModule,
-        FormsModule,
+    // MatGridListModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatTabsModule,
+    MatOptionModule,
+    MatExpansionModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
+    FlexLayoutModule,
+    FormsModule,
 //    NgbModule,
-        // store
-        StoreModule.forRoot({
-            instances: InstanceReducer,
-            applicationGroups: ApplicationGroupReducer,
-            activities: ActivityReducer
-        }, {metaReducers}),
-        EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects,]),
-        StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
-        // StoreModule.forRoot({}, {}),
-        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
-        MatSlideToggleModule,
-    ],
+    // store
+    StoreModule.forRoot({
+      instances: InstanceReducer,
+      applicationGroups: ApplicationGroupReducer,
+      activities: ActivityReducer
+    }, {metaReducers}),
+    EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects,]),
+    StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
+    // StoreModule.forRoot({}, {}),
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
+    MatSlideToggleModule,
+    MatTableModule,
+  ],
   bootstrap: [AppComponent],
   providers: [
     {

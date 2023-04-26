@@ -8,7 +8,7 @@
     <span class="instance-details-controls" *ngIf="tabIndex == 0">
       <ng-container *ngIf="instanceItem.state === 'ERROR'"> <!--  -->
         <span class="status in_operation"></span>
-        <button (click)="deleteInstance()" [disabled]="!canDeleteInstance()" [matTooltip]="!canDeleteInstance() ? cannotDeleteInstanceTooltip : null">
+        <button (click)="deleteInstance()" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.delete"></path>
           </svg>
@@ -17,13 +17,13 @@
       </ng-container>
       <ng-container *ngIf="instanceItem.state === 'STOPPED'"> <!--  -->
         <span class="status stopped"></span>
-        <button (click)="manageInstance('start')">
+        <button (click)="manageInstance('start')" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.start"></path>
           </svg>
           <span class="text"> Start </span>
         </button>
-        <button (click)="deleteInstance()" [disabled]="!canDeleteInstance()" [matTooltip]="!canDeleteInstance() ? cannotDeleteInstanceTooltip : null">
+        <button (click)="deleteInstance()" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.delete"></path>
           </svg>
@@ -33,13 +33,13 @@
 
       <ng-container *ngIf="instanceItem.state === 'RUNNING'"> <!--  -->
         <span class="status running"></span>
-        <button (click)="manageInstance('stop')">
+        <button (click)="manageInstance('stop')" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.stop"></path>
           </svg>
           <span class="text"> Stop </span>
         </button>
-        <button (click)="manageInstance('restart')">
+        <button (click)="manageInstance('restart')" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.restart"></path>
           </svg>
@@ -106,6 +106,10 @@
             <div *ngIf="instanceItem.time_of_installation" class="detail-item">
               <span class="description"> Time of Installation: </span>
               {{time_of_installation.toLocaleString("de-DE")}}
+            </div>
+            <div *ngIf="instanceItem.state === 'STOPPED' && instanceItem.last_stop_time" class="detail-item">
+              <span class="description"> Stopped Since: </span>
+              {{time_of_last_stop.toLocaleString("de-DE")}}
             </div>
             <div class="detail-item">
               <span class="description"> Proxy: </span>

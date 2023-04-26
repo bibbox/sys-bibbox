@@ -26,7 +26,7 @@ export class UserService {
   }
 
   isRole(role: string): boolean {
-    return this.kcService.getKeycloakInstance().hasResourceRole(role, environment.KEYCLOAK_CONFIG.resource_name);
+    return this.kcService.getKeycloakInstance().hasRealmRole(role);
   }
 
   async isLoggedIn(): Promise<boolean> {

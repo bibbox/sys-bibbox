@@ -10,8 +10,10 @@ export function initializeKeycloak(keycloak: KeycloakService) {
         clientId: environment.KEYCLOAK_CLIENT_ID,
       },
       initOptions: {
-        checkLoginIframe: false
+        checkLoginIframe: false,
       },
+      enableBearerInterceptor: true,
+      bearerPrefix: 'Bearer',
       shouldAddToken: (request) => {
         const {method, url} = request;
         const isGetRequest = 'GET' === method.toUpperCase();

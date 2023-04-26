@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SysLogsComponent } from './sys-logs.component';
+import { AdminPanelSysLogsComponent } from './admin-panel-sys-logs.component';
 
 describe('SysLogsComponent', () => {
-  let component: SysLogsComponent;
-  let fixture: ComponentFixture<SysLogsComponent>;
+  let component: AdminPanelSysLogsComponent;
+  let fixture: ComponentFixture<AdminPanelSysLogsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SysLogsComponent ]
+      declarations: [ AdminPanelSysLogsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SysLogsComponent);
+    fixture = TestBed.createComponent(AdminPanelSysLogsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
