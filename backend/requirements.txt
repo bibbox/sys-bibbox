@@ -41,3 +41,6 @@ httplib2
 
 flask-socketio
 python-engineio
+
+python-keycloak
+authlib

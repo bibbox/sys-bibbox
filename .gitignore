@@ -43,3 +43,7 @@ config-templates/bibbox.config
 
 # dist
 frontend/dist
+
+
+# dev
+**/dummy_kc_file.py
