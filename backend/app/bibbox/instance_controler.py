@@ -46,9 +46,11 @@ def stopInstance (self, instance_name, called_from_deleteInstance=False):
         logger = DBLoggerService(activity_id, f"[STOP] {instance_name}").getLogger()
         logger.info("stopping containers of {}.".format(instance_name))
     fh.updateInstanceJsonState(instance_name, 'STOPPING')
+
+
     emitInstanceRefresh()
     dh.docker_stopInstance(instance_name)
-
+    fh.updateInstanceJsonInfo(instance_name, {'last_stop_time': int(time.time())}) # adds time of last stop to instance.json
     fh.updateInstanceJsonState(instance_name, 'STOPPED')
     
     if not called_from_deleteInstance:
@@ -73,6 +75,9 @@ def startInstance (self, instance_name):
     fh.updateInstanceJsonState(instance_name, 'STARTING')
     emitInstanceRefresh()
     
+    # remove stopped_since
+    fh.updateInstanceJsonInfo(instance_name, {'last_stop_time': '-'})
+
     dh.docker_startInstance(instance_name)
     fh.updateInstanceJsonState(instance_name, 'RUNNING')
     
@@ -151,6 +156,8 @@ def installInstance (self, instanceDescr):
     # set timestamp of installation
     # timestamp is in unix time format, more resistent to timezone changes
     instanceDescr['time_of_installation'] = int(time.time()) # wrap in int to remove microseconds
+    instanceDescr['last_stop_time'] = '-' # wrap in int to remove microseconds
+    
     
 
     # generate the instance directory    

@@ -9,6 +9,7 @@ from backend.app.services.activity_service import ActivityService
 from backend.app.services.log_service import LogService
 from backend.app.bibbox.docker_handler import DockerHandler
 
+from backend.app.services.keycloak_service import auth_token_required
 
 api = Namespace('activities', description='Activity Resources')
 restapi.add_namespace (api, '/activities')
@@ -20,6 +21,7 @@ log_service = LogService()
 @api.route("/")
 class ActivityListAll(Resource):
     @api.doc("get all activities")
+    @auth_token_required()
     def get(self):
         as_ = ActivityService()
         reply = as_.selectAll()
@@ -28,6 +30,7 @@ class ActivityListAll(Resource):
 @api.route("/logs/<int:activityID>")
 class ActivityListAll(Resource):
     @api.doc("get all logs from one activity")
+    @auth_token_required()
     def get(self, activityID):
         ls = LogService()
         logs = ls.selectLogsFromActivity(activityID)
@@ -36,6 +39,7 @@ class ActivityListAll(Resource):
 @api.route("/syslogs")
 class SysLogs(Resource):
     @api.doc("get all logs from sys-containers as dict")
+    @auth_token_required(required_roles=['bibbox-admin', "bibbox-adsad"])
     def get(self):
         logs = {}
         try:
@@ -45,6 +49,12 @@ class SysLogs(Resource):
             print(ex)
             logs = {'error': ex}
         return logs, 200
+
+@api.route("/ping")
+class Ping(Resource):
+    @api.doc("ping")
+    def get(self):
+        return "pong", 200
 
 
 # @api.route("/active")

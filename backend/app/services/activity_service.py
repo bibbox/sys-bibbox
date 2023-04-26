@@ -8,10 +8,11 @@ import time
 from datetime import datetime
 from sqlalchemy import desc
 
+
+from backend.app import db
 from backend.app.models.activity import Activity
 from backend.app.services import SQLAlchemyService
 from backend.app.services.socketio_service import emitActivityRefresh
-from backend.app import db
 
 
 class ActivityService(SQLAlchemyService):

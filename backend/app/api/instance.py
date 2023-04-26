@@ -9,6 +9,7 @@ from backend.app import app, db, restapi
 from backend.app.bibbox.instance_controler  import installInstance, startInstance, stopInstance, restartInstance, deleteInstance, testProcessAsync, updateInstanceInfos
 from backend.app.bibbox.file_handler import FileHandler
 from backend.app.bibbox.docker_handler import DockerHandler
+from backend.app.services.keycloak_service import auth_token_required
 
 
 api = Namespace('instances', description='Instance Ressources')
@@ -51,6 +52,7 @@ def instanceDesc ():
 @api.route('/stop/<string:id>')
 @api.doc("Stop all Instance Containers of specified instance")
 class Ping(Resource):
+    @auth_token_required()
     def get(self, id):
         
         stopInstance.delay(id)
@@ -60,6 +62,7 @@ class Ping(Resource):
 @api.route('/start/<string:id>')
 @api.doc("Start all Instance Containers of specified instance")
 class Ping(Resource):
+    @auth_token_required()
     def get(self, id):
         
         startInstance.delay(id)
@@ -69,6 +72,7 @@ class Ping(Resource):
 @api.route('/restart/<string:id>')
 @api.doc("Restart all Instance Containers of specified instance")
 class Ping(Resource):
+    @auth_token_required()
     def get(self, id):
         
         restartInstance.delay(id)
@@ -80,6 +84,7 @@ class Ping(Resource):
 @api.route('/')
 @api.doc("Get a list of all Instances")
 class InstanceList(Resource):
+    @auth_token_required()
     def get(self):
         # should we put in an own class ?, maybe yes ...
         fh = FileHandler()
@@ -98,7 +103,7 @@ class InstanceList(Resource):
 @api.doc(params={'id': 'An ID'})
 @api.doc("Get info about specified instance.")
 class Instance(Resource):
-    
+    @auth_token_required()
     def get(self, id):
         fh = FileHandler()
         idescr = fh.getInstanceJSONContent(str(id))
@@ -108,6 +113,7 @@ class Instance(Resource):
     @api.doc(responses={403: 'Not Authorized'})
     @api.doc(responses={ 202: 'Accepted', 400: 'Invalid Argument', 500: 'Mapping Key Error' }, 
              params={ 'id': 'Instance ID' })
+    @auth_token_required()
     def post(self, id):
 
         instanceDescr = request.json
@@ -137,6 +143,7 @@ class Instance(Resource):
         }
         return message, 202
 
+    @auth_token_required()
     def delete(self, id):
 
         # make this more dynamic and check the parameters
@@ -168,6 +175,7 @@ class Instance(Resource):
 
 
     @api.doc("Patch instance.json values. Requires a dict of key-value pairs to update.")
+    @auth_token_required()
     def patch(self, id):
         
         instance_name = str(id)
@@ -194,6 +202,7 @@ class Instance(Resource):
 @api.route('/logs/<string:id>')
 @api.doc(params={'id': 'An ID'})
 class Instance(Resource):
+    @auth_token_required()
     def get(self, id):
         logs = {}
 
@@ -212,6 +221,7 @@ class Instance(Resource):
 @api.route('/installed_by/<string:installer_id>')
 @api.doc(params={'installer_id': 'KeyCloak-issued ID of User'})
 class Instance(Resource):
+    @auth_token_required()
     def get(self, installer_id):
         # we want to return only instances where the installed_by field is set to the id
         fh = FileHandler()
@@ -232,6 +242,7 @@ class Instance(Resource):
 @api.route('/names/<string:name_to_check>')
 @api.doc(params={'name_to_check': 'Instancename to check'})
 class Instance(Resource):
+    @auth_token_required()
     def get(self, name_to_check):
         name_to_check = str(name_to_check).lower()
         fh = FileHandler()

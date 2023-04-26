@@ -10,6 +10,8 @@ from backend.app.models.app import BibboxApp
 from backend.app.models.catalogue import Catalogue
 from backend.app.services.catalogue_service import CatalogueService
 
+from backend.app.services.keycloak_service import auth_token_required
+
 catalogue_service = CatalogueService()
 appCatalogue = AppCatalogue ()
 
@@ -29,17 +31,20 @@ installparameter = api.model('InstallParameter', {
 
 @api.route("/catalogues")
 class Catalogues(Resource):
+    @auth_token_required()
     def get(self):
         cat = appCatalogue.availableCatalogues ()
         return cat
 
 @api.route("/catalogues/active")
 class ActiveCatalogue(Resource):
+    @auth_token_required()
     def get(self):
         return appCatalogue.activeCatalogue ()  
 
 @api.route("/")
 class AppsInActiveCataloge(Resource):
+    @auth_token_required()
     def get(self):
         activeCatalogeName = appCatalogue.activeCatalogue ()   
         apps = appCatalogue.appDescriptions (activeCatalogeName)
@@ -50,6 +55,7 @@ class AppsInActiveCataloge(Resource):
 @api.param('appid', 'app id')
 @api.route("/envparameter")
 class InstallParameter(Resource):
+    @auth_token_required()
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('version')
@@ -64,6 +70,7 @@ class InstallParameter(Resource):
 @api.param('appid', 'app id')
 @api.route("/info")
 class AppInfo (Resource):
+    @auth_token_required()
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('version')
@@ -95,6 +102,7 @@ class TestClass (Resource):
             "testparam": "a Testparam"
         }
     )
+
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('testparam')
