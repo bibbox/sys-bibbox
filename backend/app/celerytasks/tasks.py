@@ -22,13 +22,15 @@ catalogue_service = CatalogueService()
 app_service = AppService()
 
 def githubprefix (github_organization, appid, version):
-    if version == 'development':
+    # if version == 'development':
+    if version == 'latest':
         return "https://github.com/" + github_organization +  "/" + appid + "/"
     else: 
         return "https://github.com/" + github_organization +  "/" + appid + "/tree/" + version + "/"
 
 def rawgithubprefix (github_organization, appid, version):
-    if version == 'development':
+    # if version == 'development':
+    if version == 'latest':
         return "https://raw.githubusercontent.com/" + github_organization +  "/" + appid + "/master/"
     else: 
         return "https://raw.githubusercontent.com/" + github_organization +  "/" + appid + "/" + version + "/"
