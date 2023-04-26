@@ -37,8 +37,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" bash_completion
 
-nvm install 14.16.0
-nvm use v14.16.0
+nvm install 14.20.0
+nvm use v14.20.0
 
 apt-get update
 #apt-get install docker.io -y
