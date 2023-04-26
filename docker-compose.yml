@@ -72,7 +72,7 @@ services:
     build:
       context:    ./backend
       dockerfile: Dockerfile
-    command: "celery worker  -A celery_worker.app_celerey --loglevel=info"
+    command: "celery -A celery_worker.app_celerey worker -l INFO"
     volumes:
       - ./data/celery:/queue
       - /var/run/docker.sock:/var/run/docker.sock
@@ -93,8 +93,9 @@ services:
     restart: unless-stopped
     ports:
         - "5011:5555"    
-    entrypoint: flower
-    command:  -celery A celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0 
+    entrypoint: celery flower
+    #command:  -celery A celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0
+    command:  --app celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0
     depends_on:
       - bibbox-sys-commander-redis
     volumes:

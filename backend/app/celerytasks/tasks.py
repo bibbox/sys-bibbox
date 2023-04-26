@@ -15,7 +15,7 @@ from backend.app.services.catalogue_service import CatalogueService
 from backend.app.models.app import BibboxApp
 from backend.app.services.app_service import AppService
 
-from celery.task.control import inspect
+#from celery.task.control import inspect
 from celery_singleton import Singleton
 
 catalogue_service = CatalogueService()

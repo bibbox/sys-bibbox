@@ -1,4 +1,4 @@
-FROM python:3.6.2
+FROM python:3.9.16
 
 MAINTAINER Heimo Müller "heimo.mueller@mac.com"
 
@@ -47,3 +47,4 @@ EXPOSE 5000
 
 # run server
 CMD ["./entrypoint.sh"]
+

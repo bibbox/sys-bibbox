@@ -12,10 +12,9 @@ from re import A
 import engineio
 
 from flask import Flask, Blueprint, url_for, render_template
-from flask_restplus import Resource, Api
 from flask_bootstrap import Bootstrap
 
-from flask_restplus import Resource, Api
+from flask_restx import Resource, Api
 
 from flask_swagger_ui import get_swaggerui_blueprint
 
