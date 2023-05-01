@@ -1,26 +1,21 @@
-from keycloak import KeycloakOpenID #, KeycloakOpenIDConnection, KeycloakAdmin
+from keycloak import KeycloakOpenID, KeycloakAdmin #, KeycloakOpenIDConnection
 from functools import wraps
 from flask import request, jsonify
 from backend.app import app
 import dotenv
 import os
 
-# keycloak_openid = KeycloakOpenID(
-#     server_url=app.config.KEYCLOAK_CONFIG['server_url'],
-#     client_id=app.config.KEYCLOAK_CONFIG['client_id'],
-#     realm_name=app.config.KEYCLOAK_CONFIG['realm_name'],
-#     client_secret_key=app.config.KEYCLOAK_CONFIG['client_secret_key']
-# )
 dotenv.load_dotenv()
 
 keycloak_openid = KeycloakOpenID(
     server_url=os.getenv('KEYCLOAK_SERVER_URL'),
-    client_id=os.getenv('KEYCLOAK_CLIENT_ID'),
     realm_name=os.getenv('KEYCLOAK_REALM'),
+    client_id=os.getenv('KEYCLOAK_CLIENT_ID'),
     client_secret_key=os.getenv('KEYCLOAK_CLIENT_SECRET'),
 )
 
 
+# auth decorator
 def auth_token_required(*decorator_args, **decorator_kwargs):
     """
     Decorator to check if a valid token is present in the request header.
@@ -32,6 +27,16 @@ def auth_token_required(*decorator_args, **decorator_kwargs):
         def decorated(*args, **kwargs):
             # Get roles from decorator kwargs or default to an empty list
             required_roles = decorator_kwargs.get('required_roles', [])
+            
+            # additional checks: TODO: implement
+            # additional_checks = decorator_kwargs.get('additional_checks', [])
+            # for check in additional_checks:
+            #     if check == 'can_delete':
+            #         uid = None
+            #         iid = None
+                    
+            #         flag = does_user_have_permissions(uid, iid)
+
 
             token = None
             if 'Authorization' in request.headers:
@@ -45,11 +50,6 @@ def auth_token_required(*decorator_args, **decorator_kwargs):
 
                 # decode token sent with request with the public key from keycloak
                 token_info = keycloak_openid.decode_token(token, key=KEYCLOAK_PUBLIC_KEY, algorithms=['RS256'], options=options)
-
-
-
-
-
 
                 if required_roles:
                     # Check if user has the required realm roles
@@ -69,8 +69,6 @@ def auth_token_required(*decorator_args, **decorator_kwargs):
                                 return {'error': 'Missing Permissions.', 'token_info': token_info if 'token_info' in locals() else None, 
                     'token': token,}, 403
 
-
-
             except Exception as ex:
                 # TODO: modify this response, currently verbose to debug
                 return {
@@ -81,7 +79,6 @@ def auth_token_required(*decorator_args, **decorator_kwargs):
                     }, 401
 
             return f(*args, **kwargs)
-
         return decorated
 
     # Check if decorator arguments were passed and return either the wrapper function or the decorated function
@@ -91,120 +88,291 @@ def auth_token_required(*decorator_args, **decorator_kwargs):
         return wrapper
 
 
-""" Example Token Payload:
-{
-  "exp": 1682505782,
-  "iat": 1682503982,
-  "auth_time": 1682503982,
-  "jti": "25cc6997-a200-4d91-a0af-b5c81baf82f2",
-  "iss": "http://localhost:5014/auth/realms/sys-bibbox",
-  "aud": [
-    "realm-management",
-    "account"
-  ],
-  "sub": "2a9cb28b-a839-4e44-b1ff-94957c5671b0",
-  "typ": "Bearer",
-  "azp": "sys-bibbox-frontend",
-  "nonce": "a5d43ea2-2a6f-4482-80b0-229b285fcdae",
-  "session_state": "4e8d8ff0-63b5-41a3-a6e4-4c8a94dc8d85",
-  "acr": "1",
-  "allowed-origins": [
-    "http://localhost:4200"
-  ],
-  "realm_access": {
-    "roles": [
-      "bibbox-standard",
-      "offline_access",
-      "default-roles-sys-bibbox",
-      "uma_authorization",
-      "bibbox-admin"
-    ]
-  },
-  "resource_access": {
-    "realm-management": {
-      "roles": [
-        "manage-realm",
-        "manage-users"
-      ]
-    },
-    "account": {
-      "roles": [
-        "manage-account",
-        "manage-account-links",
-        "view-profile"
-      ]
-    }
-  },
-  "scope": "openid profile email",
-  "sid": "4e8d8ff0-63b5-41a3-a6e4-4c8a94dc8d85",
-  "email_verified": true,
-  "preferred_username": "admin",
-  "given_name": "",
-  "family_name": "",
-  "email": "admin@admin.com"
-}
-"""
+# user management --------------------------------------------------------------------------------------------------------------------
+class KeycloakAdminService():
+    def __init__(self):
+        # self.keycloak_api = keycloak_admin
+        self.keycloak_api = KeycloakAdmin(
+                                            server_url=os.getenv('KEYCLOAK_SERVER_URL'),
+                                            realm_name=os.getenv('KEYCLOAK_REALM'),
+                                            username=os.getenv('KEYCLOAK_ADMIN_USER'),
+                                            password=os.getenv('KEYCLOAK_ADMIN_PASSWORD'),
+                                            client_id=os.getenv('KEYCLOAK_ADMIN_CLIENT_ID'),
+                                            client_secret_key=os.getenv('KEYCLOAK_ADMIN_CLIENT_SECRET'),   
+                                        )
+        
+    def create_user(self, user_dict: dict):
+        """
+        Creates a new user in the keycloak realm.
+        The user_dict must contain the following keys:
+            - username
+            - password
+        The user_dict may contain the following keys:
+            - email
+            - firstName
+            - lastName
+
+        :param user_dict: dictionary containing the user information
+        :type user_dict: dict
+        :return: message and status code from keycloak server
+        """
 
 
+        try:
+          user_representation = {
+              'username': user_dict.get('username', None),
+              'enabled': True,
+              'credentials': [{
+                  'type': 'password',
+                  'value': user_dict.get('password', None),
+                  'temporary': False,
+              }],
+          }
+
+          if None in user_representation.values():
+              raise ValueError('Missing required key-value pair(s) in user dictionary')
+          
+          # check if user with username is available
+          self._validate_username_availability(user_representation['username'])
+
+          optional_fields = ['email', 'firstName', 'lastName']
+          for key in optional_fields:
+              if key in user_dict:
+                  user_representation[key] = user_dict[key]
+          self.keycloak_api.create_user(user_representation)
+
+        except Exception as ex:
+            raise ex
+        
+        else:
+            return {'message': 'User created successfully.'}, 201
 
 
+    def delete_user(self, user_id: str):
+        """
+        Removes a user from the keycloak realm.
+
+        :param user_id: id of the user to be deleted
+        :type user_id: str
+        """
+
+        # check if user to be deleted is not the admin user
+        if user_id == os.getenv('KEYCLOAK_ADMIN_USER_ID'):
+            raise ValueError('Cannot delete realm-admin user.')
 
 
-# class KeycloakService:
-#     def __init__(self):
-#         pass
-
-#     def init_keycloak(config: dict) -> KeycloakOpenID:
-#         keycloak_openid = KeycloakOpenID(server_url=config.KEYCLOAK_CONFIG['server_url'],
-#                                         client_id=config.KEYCLOAK_CONFIG['client_id'],
-#                                         realm_name=config.KEYCLOAK_CONFIG['realm_name'],
-#                                         client_secret_key=config.KEYCLOAK_CONFIG['client_secret_key'])
-#         return keycloak_openid
+        if user_id not in [user['id'] for user in self.get_users()]:
+            raise ValueError(f'User with id {user_id} does not exist.')
+        else:
+            self.keycloak_api.delete_user(user_id)
+            return {'message': f'User with id {user_id} deleted successfully.'}, 200
 
 
-#     def get_keycloak_token(keycloak_openid: KeycloakOpenID, username: str, password: str) -> dict:
-#         return keycloak_openid.token(username, password)
+    def update_user(self, user_id: str, user_dict: dict):
+        """
+        Updates a user in the keycloak realm.
+        The user_dict may contain the following keys:
+            - username
+            - password
+            - email
+            - firstName
+            - lastName
+
+        Existing values not included in the user_dict will not be changed.
 
 
-#     def get_userinfo(keycloak_openid: KeycloakOpenID, token: dict) -> dict:
-#         return keycloak_openid.userinfo(token['access_token'])
+        :param user_id: id of the user to be updated
+        :type user_id: str
+        :param user_dict: dictionary containing the user information
+        :type user_dict: dict
+        """
+
+        try:
+          user_representation = {}
+
+          optional_fields = ['username', 'email', 'firstName', 'lastName']
+          for key in optional_fields:
+              if key in user_dict:
+                  user_representation[key] = user_dict[key]
+
+          # cannot change username to an already existing username
+          if user_representation['username'] in [user['username'] for user in self.get_users()]:
+              raise ValueError(f'User with username {user_representation["username"]} already exists.')
+          
+
+          optional_credentials_dict = {
+              'password': user_dict.get('password', None),
+              'temporary': False,
+              'type': 'password'
+          }
+
+          if None not in optional_credentials_dict.values():
+              user_representation['credentials'] = [optional_credentials_dict]
+          
+          
+          self.keycloak_api.update_user(user_id, user_representation)
+
+        except Exception as ex:
+            raise ex
+        
+        else:
+            return {'message': f'User with id {user_id} successfully updated.'}, 201
+        
+    def get_user(self, user_id: str):
+        """
+        Returns a user from the keycloak realm.
+
+        :param user_id: id of the user to be returned
+        :type user_id: str
+        :return: user object
+        """
+        return self.keycloak_api.get_user(user_id)
 
 
-#     def get_user_roles(keycloak_openid: KeycloakOpenID, token: dict) -> list:
-#         return keycloak_openid.userinfo(token['access_token'])['resource_access']['account']['roles']
+    def get_users(self) -> list:
+        """
+        Returns a list of all users in the keycloak realm.
+        The list contains objects conforming to the UserRepresentation schema: https://www.keycloak.org/docs-api/18.0/rest-api/index.html#_userrepresentation
 
-#     def logout(keycloak_openid: KeycloakOpenID, token: dict) -> bool:
-#         return keycloak_openid.logout(token['refresh_token'])
-
-
-# class KeycloakAdminService(KeycloakService):
-#     def __init__(self, config: dict, admin_username: str, admin_password: str):
-#         self.keycloak_connection = KeycloakOpenIDConnection(
-#             server_url=config.KEYCLOAK_CONFIG['server_url'],
-#             client_id=config.KEYCLOAK_CONFIG['client_id'],
-#             realm_name=config.KEYCLOAK_CONFIG['realm_name'],
-#             client_secret_key=config.KEYCLOAK_CONFIG['client_secret_key'],
-#             verify=True,
-#             username=admin_username,
-#             password=admin_password
-#         )
-#         self.keycloak_admin = KeycloakAdmin(connection=self.keycloak_connection)
-
-#     def create_new_user(self, user_dict: dict):
-#         self.keycloak_admin.create_user(**user_dict)
-
-#     def get_users(self):
-#         return self.keycloak_admin.get_users()
+        :return: list of users
+        """
+        return self.keycloak_api.get_users()
     
-#     def delete_user(self, user_id: str):
-#         self.keycloak_admin.delete_user(user_id)
 
-#     def get_realm_roles(self):
-#         return self.keycloak_admin.get_realm_roles()
+    def get_usernames(self) -> list:
+        """
+        Returns a list of all usernames in the keycloak realm.
+
+        :return: list of usernames
+        """
+        return [user['username'] for user in self.get_users()]
+
+
+    # realm roles --------------------------------------------------------------------------------------------------------------------
+
+    def _validate_realm_roles(self, realm_role_names: list):
+        """
+        Checks if all realm roles in the list of realm_role_names exist.
+        
+        :param realm_role_names: list of realm role names
+        :type realm_role_names: list
+        """
+        valid_realm_role_names = self.get_realm_role_names()
+        for role in realm_role_names:
+            if role not in valid_realm_role_names:
+                raise ValueError(f'Role {role} does not exist.')
+        return True
+
+    def _validate_username_availability(self, username: str):
+        """
+        Checks if the username exists in the keycloak realm.
+
+        :param username: username
+        :type username: str
+        """
+        if username in self.get_usernames():
+            raise ValueError(f'User {username} already exists.')
+        return True
     
-#     def assign_realm_roles(self, user_id: str, realm_roles: list):
-#         self.keycloak_admin.assign_realm_roles(user_id, roles=realm_roles)
+    def _validate_user_id(self, user_id: str):
+        """
+        Checks if the user_id exists in the keycloak realm.
+
+        :param user_id: user_id
+        :type user_id: str
+        """
+        if user_id not in [user['id'] for user in self.get_users()]:
+            raise ValueError(f'User with id {user_id} does not exist.')
+        return True
 
 
 
-# admin functs
+    def get_realm_roles(self):
+        """
+        returns all realm roles from current realm (specified in KEYCLOAK_REALM env var)
+        """
+        return self.keycloak_api.get_realm_roles()
+    
+
+    def get_realm_role_names(self) -> list:
+        """
+        returns all realm role names from current realm (specified in KEYCLOAK_REALM env var)
+        """
+        return [role['name'] for role in self.get_realm_roles()]
+
+    def get_realm_roles_of_user(self, user_id: str):
+        """
+        returns all realm roles of a user
+
+        :param user_id: id of user
+        :type user_id: str
+        """
+        self._validate_user_id(user_id)
+        return self.keycloak_api.get_realm_roles_of_user(user_id)
+
+    def get_realm_role_names_of_user(self, user_id: str) -> list:
+        """
+        returns all realm role names of a user
+        
+        :param user_id: id of user
+        :type user_id: str
+        """
+        return [role['name'] for role in self.get_realm_roles_of_user(user_id)]
+
+
+    def assign_realm_roles(self, user_id: str, realm_role_names: list):
+        """
+        assigns realm roles to a user, removing all other realm roles from user
+
+        :param user_id: id of user
+        :type user_id: str
+        :param realm_role_names: list of realm role names
+        :type realm_role_names: list
+        """
+
+        self._validate_realm_roles(realm_role_names) # check if all roles exist
+        self._validate_user_id(user_id) # check if user exists
+
+        realm_roles = [self.keycloak_api.get_realm_role(role) for role in realm_role_names]
+
+        current_realm_roles = self.get_realm_role_names_of_user(user_id)
+        self.remove_realm_roles(user_id, current_realm_roles)
+        return self.keycloak_api.assign_realm_roles(user_id, roles=realm_roles)
+
+
+    def remove_realm_roles(self, user_id: str, realm_role_names: list):
+        """
+        removes all realm roles specified in realm_role_names from user with id user_id
+
+        :param user_id: id of user
+        :type user_id: str
+        :param realm_role_names: list of realm role names to be removed
+        :type realm_role_names: list
+        """
+        self._validate_realm_roles(realm_role_names)
+        self._validate_user_id(user_id)
+
+        realm_roles = [self.keycloak_api.get_realm_role(role) for role in realm_role_names]
+        return self.keycloak_api.delete_realm_roles_of_user(user_id, roles=realm_roles)
+
+
+    def update_multiple_user_role_mappings(self, user_role_mapping: list):
+        """
+        Updates the realm role mappings of multiple users. The user_role_mapping list contains dicts with the user_id and a list of roles to be assigned to the user.
+        For each mapping object, the current realm roles of the user are removed and the new roles are assigned.
+        The new roles are checked for validity before the mapping is updated.
+        
+        :param user_role_mapping: list of dicts containing user_id and roles
+        :type user_role_mapping: list
+        """
+
+        for element in user_role_mapping:
+            self._validate_user_id(element['user_id'])
+            self._validate_realm_roles(element['roles'])
+
+        for element in user_role_mapping:
+            current_realm_roles = self.get_realm_role_names_of_user(element['user_id'])
+            self.remove_realm_roles(element['user_id'], current_realm_roles)
+            self.assign_realm_roles(element['user_id'], element['roles'])
+
+        return {'message': 'Roles updated successfully.'}, 200

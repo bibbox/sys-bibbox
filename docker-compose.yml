@@ -60,6 +60,11 @@ services:
       - ./backend:/usr/src/bibbox-sys-commander/backend
     env_file:
       - .env
+    depends_on:
+      -  bibbox-sys-commander-redis
+      -  bibbox-sys-commander-celery
+      -  bibbox-sys-commander-postgres
+      -  bibbox-sys-commander-keycloak
 
   bibbox-sys-commander-celery:
     container_name:  bibbox-sys-commander-celery
@@ -80,6 +85,8 @@ services:
       - ./backend:/usr/src/bibbox-sys-commander/backend
     env_file:
        - .env
+    depends_on:
+      - bibbox-sys-commander-keycloak
 
   # bibbox-sys-commander-celery-beat:
   #   container_name:  bibbox-sys-commander-celery

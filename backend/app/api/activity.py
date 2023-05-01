@@ -39,7 +39,7 @@ class ActivityListAll(Resource):
 @api.route("/syslogs")
 class SysLogs(Resource):
     @api.doc("get all logs from sys-containers as dict")
-    @auth_token_required(required_roles=['bibbox-admin', "bibbox-adsad"])
+    @auth_token_required(required_roles=['bibbox-admin'])
     def get(self):
         logs = {}
         try:
