@@ -1,6 +1,115 @@
 <div class = "admin-panel">
-  <div class = "admin-panel__table">
-    works
-  </div>
-</div>
+  <div class="instances-search">
+    <div class="input-group">
+      <input
+        [formControl]="filterFormControl"
+        placeholder="Search for instances"
+        (input)="filterInstances(this.filterFormControl.value)"
+        class="form-control py-2 border-right-0 border"
+        type="search"
+      />
+      <span class="input-group-append">
+        <span class="input-group-text bg-white">
+          <i class="fas fa-search"></i>
+        </span>
+      </span>
 
+    </div>
+  </div>
+  <table>
+    <thead>
+    <tr>
+      <th>Icon</th>
+      <th>Instance Name</th>
+      <th>App Name</th>
+      <th>Installed By</th>
+      <th>Time of Installation</th>
+      <th>Stopped Since</th>
+      <th>State</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let instanceItem of filteredInstances">
+      <td>
+        <img src="https://raw.githubusercontent.com/bibbox/{{instanceItem.app.name}}/master/icon.png" [alt]="instanceItem.displayname_short" width="30" height="30"/>
+      </td>
+      <td>{{ instanceItem.instancename }}</td>
+      <td>{{ instanceItem.app.name }}</td>
+      <td>{{ instanceItem.installed_by_name }}</td>
+      <td>{{ convertToDate(instanceItem.time_of_installation) }}</td>
+
+<!--      check if instance.last_stop_time exists -->
+
+      <td> {{ convertToDate(instanceItem.last_stop_time) }} </td>
+
+      <td>
+      <span [ngSwitch]="instanceItem.state" class="instance-tile__footer-state" [matTooltip]="instanceItem.state" >
+        <i *ngSwitchCase="('STOPPED' || 'ERROR')" class="fas fa-circle stopped"> {{instanceItem.state}} </i>
+        <i *ngSwitchCase="'RUNNING'" class="fas fa-circle running"> {{instanceItem.state}} </i>
+        <i *ngSwitchDefault class="fas fa-circle ongoing"> {{instanceItem.state}} </i>
+      </span>
+      </td>
+      <td>
+        <ng-container *ngIf="instanceItem.state === 'ERROR'"> <!--  -->
+          <span class="status in_operation"></span>
+          <button (click)="deleteInstance(instanceItem)">
+            <svg viewBox="0 0 1000 1000" class="admin-panel__instance_state_svg">
+              <path [attr.d]="svgPaths.delete"></path>
+            </svg>
+            <span class="text"> Delete </span>
+          </button>
+        </ng-container>
+        <ng-container *ngIf="instanceItem.state === 'STOPPED'"> <!--  -->
+          <span class="status stopped"></span>
+          <button (click)="manageInstance(instanceItem, 'start')">
+            <svg viewBox="0 0 1000 1000" class="admin-panel__instance_state_svg">
+              <path [attr.d]="svgPaths.start"></path>
+            </svg>
+            <span class="text"> Start </span>
+          </button>
+          <button (click)="deleteInstance(instanceItem)">
+            <svg viewBox="0 0 1000 1000" class="admin-panel__instance_state_svg">
+              <path [attr.d]="svgPaths.delete"></path>
+            </svg>
+            <span class="text"> Delete </span>
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="instanceItem.state === 'RUNNING'"> <!--  -->
+          <span class="status running"></span>
+          <button (click)="manageInstance(instanceItem, 'stop')">
+            <svg viewBox="0 0 1000 1000" class="admin-panel__instance_state_svg">
+              <path [attr.d]="svgPaths.stop"></path>
+            </svg>
+            <span class="text"> Stop </span>
+          </button>
+          <button (click)="manageInstance(instanceItem, 'restart')">
+            <svg viewBox="0 0 1000 1000" class="admin-panel__instance_state_svg">
+              <path [attr.d]="svgPaths.restart"></path>
+            </svg>
+            <span class="text"> Restart </span>
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="instanceItem.state === ('RESTARTING' || 'STOPPING' || 'DELETING' || 'STARTING')"> <!--  -->
+          <span class="status in_operation"></span>
+          <button disabled class="button-disabled">
+            <span class="text"> In Operation </span>
+          </button>
+
+        </ng-container>
+        <ng-container *ngIf="instanceItem.state === ('JUSTBORN' || 'INSTALLING')"> <!--  -->
+          <button disabled class="button-disabled">
+            <svg viewBox="0 0 1000 1000" class="admin-panel__instance_state_svg">
+              <path [attr.d]="svgPaths.loading"></path>
+            </svg>
+            <span class="text"> Start </span>
+          </button>
+        </ng-container>
+
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

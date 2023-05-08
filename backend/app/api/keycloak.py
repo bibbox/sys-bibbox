@@ -28,6 +28,8 @@ user_dictionary = api.model('User', {
     'password': fields.String(required=True),
     'firstName': fields.String,
     'lastName': fields.String,
+    'roles' : fields.List(fields.String, required = True)
+    # add roles?
 })
 
 user_role_mapping = api.model('User_Role_Mapping', {
@@ -60,14 +62,15 @@ class Users(Resource):
     def post(self):
         kc_admin = KeycloakAdminService()
         try:
-            user, status = kc_admin.create_user(request.json)
+            message, status = kc_admin.create_user(request.json)
         except Exception as e:
             return {
                 "error": f"Could not create user in KeyCloak",
-                "exception" : str(e)
+                "exception" : str(e),
+                "request": request.json
             }, 500
         
-        return user, status
+        return message, status
     
 
 
@@ -88,34 +91,34 @@ class User(Resource):
         
         return msg, status
 
-    @api.doc("Get a User")
-    # @auth_token_required(roles=['bibbox-admin'])
-    def get(self, user_id):
-        try:
-            user, status = kc_admin.get_user(user_id)
-        except Exception as e:
-            return {
-                "error": f"Could not get user from KeyCloak",
-                "exception" : str(e)
-            }, 500
+    # @api.doc("Get a User")
+    # # @auth_token_required(roles=['bibbox-admin'])
+    # def get(self, user_id):
+    #     try:
+    #         user, status = kc_admin.get_user(user_id)
+    #     except Exception as e:
+    #         return {
+    #             "error": f"Could not get user from KeyCloak",
+    #             "exception" : str(e)
+    #         }, 500
         
-        return user, status
+    #     return user, status
 
 
-    @api.doc("Update a User")
-    @api.expect(user_dictionary, validate=True)
-    # @auth_token_required(roles=['bibbox-admin'])
-    def put(self, user_id):
-        try:
-            user_dict = request.json
-            user, status = kc_admin.update_user(user_id, user_dict)
-        except Exception as e:
-            return {
-                "error": f"Could not update user in KeyCloak",
-                "exception" : str(e)
-            }, 500
+    # @api.doc("Update a User")
+    # @api.expect(user_dictionary, validate=True)
+    # # @auth_token_required(roles=['bibbox-admin'])
+    # def patch(self, user_id):
+    #     try:
+    #         user_dict = request.json
+    #         user, status = kc_admin.update_user(user_id, user_dict)
+    #     except Exception as e:
+    #         return {
+    #             "error": f"Could not update user in KeyCloak",
+    #             "exception" : str(e)
+    #         }, 500
         
-        return user, status
+    #     return user, status
 
 
 
@@ -134,35 +137,41 @@ class UserRoles(Resource):
         
         return roles, status
     
-    @api.doc("Set Roles for a User")
-    @api.expect({'roles': fields.List(fields.String, required=True, description='A list of role names to assign corresponding roles to the user')}, validate=True)
-    def post(self, user_id):
-        try:
-            list_of_roles = request.json['roles']
-            roles, status = kc_admin.assign_realm_roles(user_id, list_of_roles)
+    # @api.doc("Set Roles for a User")
+    # # @api.expect({'roles': fields.List(fields.String, required=True, description='A list of role names to assign corresponding roles to the user')}, validate=True)
+    # def post(self, user_id):
+    #     try:
+            
+    #         list_of_roles = request.json['roles']
+            
+    #         # debug
+    #         # list_of_roles = ['bibbox-admin']
+            
+    #         updated_roles = kc_admin.assign_realm_roles(user_id, list_of_roles)
 
-        except ValueError as e:
-            return {"error": str(e)}, 400
+    #     except ValueError as e:
+    #         return {"error": str(e)}, 400
         
-        except Exception as e:
-            return {"error": "Could not add roles to user in KeyCloak"}, 500
+    #     except Exception as e:
+    #         return {"error": "Could not add roles to user in KeyCloak",
+    #                 "exception": str(e)}, 500
         
-        return roles, status
+    #     return updated_roles, 200
     
-    @api.doc("Remove Roles from a User")
-    @api.expect({'roles': fields.List(fields.String, required=True, description='A list of role names to remove corresponding roles from the user')}, validate=True)
-    def delete(self, user_id):
-        try:
-            list_of_roles = request.json['roles']
-            roles, status = kc_admin.remove_realm_roles(user_id, list_of_roles)
+    # @api.doc("Remove Roles from a User")
+    # @api.expect({'roles': fields.List(fields.String, required=True, description='A list of role names to remove corresponding roles from the user')}, validate=True)
+    # def delete(self, user_id):
+    #     try:
+    #         list_of_roles = request.json['roles']
+    #         roles, status = kc_admin.remove_realm_roles(user_id, list_of_roles)
 
-        except ValueError as e:
-            return {"error": str(e)}, 400
+    #     except ValueError as e:
+    #         return {"error": str(e)}, 400
         
-        except Exception as e:
-            return {"error": "Could not remove roles from user in KeyCloak"}, 500
+    #     except Exception as e:
+    #         return {"error": "Could not remove roles from user in KeyCloak"}, 500
         
-        return roles, status
+    #     return roles, status
     
     # @api.doc("Set Roles for multiple Users")
     # @api.expect({'roles': fields.List(fields.String, required=True, description='A list of role names to assign corresponding roles to the user')}, validate=True)
@@ -185,18 +194,20 @@ class Roles(Resource):
     @api.doc("Get all Roles")
     def get(self):
         try:
-            roles, status = kc_admin.get_realm_roles()
+            roles = kc_admin.get_realm_roles()
         except Exception as e:
             print(e)
             return {"error": "Could not get roles from KeyCloak"}, 500
         
-        return roles, status
-    
+        return roles, 200
+
+@api.route('/roles/update_role_mapping')
+class RoleMappings(Resource):
     # update the roles of all users
     @api.doc("Update the roles of multiple users")
     @api.expect(user_role_mapping, validate=True)
     # @auth_token_required(roles=['bibbox-admin'])
-    def put(self):
+    def post(self):
         try:
             msg, status = kc_admin.update_multiple_user_role_mappings(request.json['user_role_mappings'])
         except Exception as e:

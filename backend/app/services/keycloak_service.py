@@ -95,10 +95,11 @@ class KeycloakAdminService():
         self.keycloak_api = KeycloakAdmin(
                                             server_url=os.getenv('KEYCLOAK_SERVER_URL'),
                                             realm_name=os.getenv('KEYCLOAK_REALM'),
-                                            username=os.getenv('KEYCLOAK_ADMIN_USER'),
+                                            username=os.getenv('KEYCLOAK_ADMIN'),
                                             password=os.getenv('KEYCLOAK_ADMIN_PASSWORD'),
                                             client_id=os.getenv('KEYCLOAK_ADMIN_CLIENT_ID'),
-                                            client_secret_key=os.getenv('KEYCLOAK_ADMIN_CLIENT_SECRET'),   
+                                            client_secret_key=os.getenv('KEYCLOAK_ADMIN_CLIENT_SECRET'),
+                                            auto_refresh_token=['get', 'put', 'post', 'delete']
                                         )
         
     def create_user(self, user_dict: dict):
@@ -107,6 +108,7 @@ class KeycloakAdminService():
         The user_dict must contain the following keys:
             - username
             - password
+            - roles (contains the only default role for new users: bibbox-standard)
         The user_dict may contain the following keys:
             - email
             - firstName
@@ -119,33 +121,46 @@ class KeycloakAdminService():
 
 
         try:
-          user_representation = {
-              'username': user_dict.get('username', None),
-              'enabled': True,
-              'credentials': [{
-                  'type': 'password',
-                  'value': user_dict.get('password', None),
-                  'temporary': False,
-              }],
-          }
+            user_representation = {
+                'username': user_dict.get('username', None),
+                'enabled': True,
+                'credentials': [{
+                    'type': 'password',
+                    'value': user_dict.get('password', None),
+                    'temporary': False,
+                }],
+            }
 
-          if None in user_representation.values():
-              raise ValueError('Missing required key-value pair(s) in user dictionary')
-          
-          # check if user with username is available
-          self._validate_username_availability(user_representation['username'])
+            if None in user_representation.values():
+                raise ValueError('Missing required key-value pair(s) in user dictionary')
+            
+            # check if user with username is available
+            self._validate_username_availability(user_representation['username'])
 
-          optional_fields = ['email', 'firstName', 'lastName']
-          for key in optional_fields:
-              if key in user_dict:
-                  user_representation[key] = user_dict[key]
-          self.keycloak_api.create_user(user_representation)
+            optional_fields = ['email', 'firstName', 'lastName']
+            for key in optional_fields:
+                if key in user_dict:
+                    user_representation[key] = user_dict[key]
+            self.keycloak_api.create_user(user_representation)
+
+
+            user_id = self.get_user_by_username(user_representation['username'])['id']
+
+            # assign realm roles, if none are provided, assign bibbox-standard
+            self.assign_realm_roles(user_id, user_dict.get('roles', ['bibbox-standard']))
+
 
         except Exception as ex:
+
+            # if user was created, but realm roles could not be assigned, delete user again
+            if user_id:
+                self.delete_user(user_id)
+
             raise ex
         
         else:
-            return {'message': 'User created successfully.'}, 201
+            return {'message': 'User created successfully.',
+                    'userID': user_id}, 201
 
 
     def delete_user(self, user_id: str):
@@ -228,16 +243,59 @@ class KeycloakAdminService():
         """
         return self.keycloak_api.get_user(user_id)
 
+    def get_user_by_username(self, username: str):
+        """
+        Returns a user from the keycloak realm.
+
+        :param username: username of the user to be returned
+        :type username: str
+        :return: user object
+        """
+
+        users = self.get_users()
+        for user in users:
+            if user['username'] == username:
+                return user
+        else:
+            raise ValueError(f'User with username {username} does not exist.')
+
 
     def get_users(self) -> list:
         """
         Returns a list of all users in the keycloak realm.
-        The list contains objects conforming to the UserRepresentation schema: https://www.keycloak.org/docs-api/18.0/rest-api/index.html#_userrepresentation
 
+        the keycloak api returns a list of users conforming to the UserRepresentation schema: https://www.keycloak.org/docs-api/18.0/rest-api/index.html#_userrepresentation
+        these user objects are too complex for our purposes, so we only return the following attributes:
+            - id
+            - username
+            - email
+            - firstName
+            - lastName
+
+        We also add a 'roles' attribute, which contains a list of all bibbox-related realm roles assigned to the user.
+
+        
         :return: list of users
         """
-        return self.keycloak_api.get_users()
-    
+        kc_users = self.keycloak_api.get_users()
+
+        users = []
+        for user in kc_users:
+            user_dict = {}
+            required_attributes = ['id', 'username']
+            for attribute in required_attributes:
+                user_dict[attribute] = user[attribute]
+            
+            optional_attributes = ['email', 'firstName', 'lastName']
+            for attribute in optional_attributes:
+                if attribute in user:
+                    user_dict[attribute] = user[attribute]
+
+            user_dict['roles'] = self.get_realm_role_names_of_user(user['id'])
+
+            users.append(user_dict)
+
+        return users
 
     def get_usernames(self) -> list:
         """
@@ -307,18 +365,20 @@ class KeycloakAdminService():
         :param user_id: id of user
         :type user_id: str
         """
-        self._validate_user_id(user_id)
+        #self._validate_user_id(user_id)
         return self.keycloak_api.get_realm_roles_of_user(user_id)
 
     def get_realm_role_names_of_user(self, user_id: str) -> list:
         """
-        returns all realm role names of a user
+        returns all realm bibbox-specific role names of a user
         
         :param user_id: id of user
         :type user_id: str
         """
-        return [role['name'] for role in self.get_realm_roles_of_user(user_id)]
+        realm_roles = [role['name'] for role in self.get_realm_roles_of_user(user_id)]
+        bibbox_specific_realm_roles = [role for role in realm_roles if role.startswith('bibbox-')]
 
+        return bibbox_specific_realm_roles
 
     def assign_realm_roles(self, user_id: str, realm_role_names: list):
         """
@@ -337,12 +397,16 @@ class KeycloakAdminService():
 
         current_realm_roles = self.get_realm_role_names_of_user(user_id)
         self.remove_realm_roles(user_id, current_realm_roles)
-        return self.keycloak_api.assign_realm_roles(user_id, roles=realm_roles)
 
+        self.keycloak_api.assign_realm_roles(user_id, roles=realm_roles)
+
+        updated_roles = self.get_realm_role_names_of_user(user_id)
+
+        return updated_roles
 
     def remove_realm_roles(self, user_id: str, realm_role_names: list):
         """
-        removes all realm roles specified in realm_role_names from user with id user_id
+        removes all bibbox-specific realm roles specified in realm_role_names from user with id user_id
 
         :param user_id: id of user
         :type user_id: str
@@ -352,7 +416,8 @@ class KeycloakAdminService():
         self._validate_realm_roles(realm_role_names)
         self._validate_user_id(user_id)
 
-        realm_roles = [self.keycloak_api.get_realm_role(role) for role in realm_role_names]
+        realm_roles = [self.keycloak_api.get_realm_role(role) for role in realm_role_names if role.startswith('bibbox-')]
+
         return self.keycloak_api.delete_realm_roles_of_user(user_id, roles=realm_roles)
 
 
@@ -374,5 +439,7 @@ class KeycloakAdminService():
             current_realm_roles = self.get_realm_role_names_of_user(element['user_id'])
             self.remove_realm_roles(element['user_id'], current_realm_roles)
             self.assign_realm_roles(element['user_id'], element['roles'])
+
+            # only remove bibbox roles
 
         return {'message': 'Roles updated successfully.'}, 200

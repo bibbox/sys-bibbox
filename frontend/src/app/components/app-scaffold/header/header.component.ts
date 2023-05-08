@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit {
     this.ksService.isUserInRole(environment.KEYCLOAK_ROLES.admin) ? this.navigation.push(
       { link: 'sys-logs', label: 'Sys-Logs'},
       { link: 'instance-mgmt', label: 'Dashboard'},
-      { link: 'user-mgmt', label: 'IAM'},
+      { link: 'user-mgmt', label: 'Users'},
     ) : null;
     // this.userService.isLoggedIn().then(r => this.loggedIn = r);
     // this.username = this.userService.getUsername();

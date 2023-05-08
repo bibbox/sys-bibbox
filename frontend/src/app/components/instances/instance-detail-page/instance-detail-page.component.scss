@@ -88,15 +88,18 @@
   }
 
   .running {
-    background: rgb(140, 210, 90)
+    //background: rgb(140, 210, 90)
+    background: $custom_color_info
   }
 
   .in_operation {
-    background: #ebd67a;
+    //background: #ebd67a;
+    background: $custom_color_warn
   }
 
   .stopped {
-    background: rgb(222, 65, 65)
+    //background: rgb(222, 65, 65)
+    background: $custom_color_error
   }
 
   input [type=text],

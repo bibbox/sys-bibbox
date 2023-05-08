@@ -77,6 +77,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AdminPanelInstancesComponent } from './components/admin-panel-instances/admin-panel-instances.component';
 import {MatTableModule} from '@angular/material/table';
 import { AdminPanelUsersComponent } from './components/admin-panel-users/admin-panel-users.component';
+import {MatRadioModule} from '@angular/material/radio';
+import { CreateUserDialogComponent } from './components/admin-panel-users/create-user-dialog/create-user-dialog.component';
+import { ConfirmationDialogComponent } from './components/admin-panel-users/confirmation-dialog/confirmation-dialog.component';
 
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
@@ -106,60 +109,63 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     InfoComponent,
     AdminPanelInstancesComponent,
     AdminPanelUsersComponent,
+    CreateUserDialogComponent,
+    ConfirmationDialogComponent,
   ],
-  imports: [
-    // angular
-    BrowserModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    AppRoutingModule,
+    imports: [
+        // angular
+        BrowserModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        AppRoutingModule,
 
-    // http client
-    HttpClientModule,
+        // http client
+        HttpClientModule,
 
-    // keycloak
-    KeycloakAngularModule,
+        // keycloak
+        KeycloakAngularModule,
 
-    // design
-    MatButtonModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatMenuModule,
-    MatIconModule,
-    MatCardModule,
-    MatTabsModule,
+        // design
+        MatButtonModule,
+        MatToolbarModule,
+        MatTooltipModule,
+        MatMenuModule,
+        MatIconModule,
+        MatCardModule,
+        MatTabsModule,
 
-    // MatListModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    MatInputModule,
-    MatDialogModule,
+        // MatListModule,
+        MatSelectModule,
+        MatSnackBarModule,
+        MatInputModule,
+        MatDialogModule,
 
-    // MatGridListModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatTabsModule,
-    MatOptionModule,
-    MatExpansionModule,
-    MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    FontAwesomeModule,
-    FlexLayoutModule,
-    FormsModule,
+        // MatGridListModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatTabsModule,
+        MatOptionModule,
+        MatExpansionModule,
+        MatProgressSpinnerModule,
+        ReactiveFormsModule,
+        FontAwesomeModule,
+        FlexLayoutModule,
+        FormsModule,
 //    NgbModule,
-    // store
-    StoreModule.forRoot({
-      instances: InstanceReducer,
-      applicationGroups: ApplicationGroupReducer,
-      activities: ActivityReducer
-    }, {metaReducers}),
-    EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects,]),
-    StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
-    // StoreModule.forRoot({}, {}),
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
-    MatSlideToggleModule,
-    MatTableModule,
-  ],
+        // store
+        StoreModule.forRoot({
+            instances: InstanceReducer,
+            applicationGroups: ApplicationGroupReducer,
+            activities: ActivityReducer
+        }, {metaReducers}),
+        EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects,]),
+        StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
+        // StoreModule.forRoot({}, {}),
+        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
+        MatSlideToggleModule,
+        MatTableModule,
+        MatRadioModule,
+    ],
   bootstrap: [AppComponent],
   providers: [
     {

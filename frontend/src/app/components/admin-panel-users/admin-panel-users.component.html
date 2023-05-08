@@ -1,1 +1,58 @@
-<p>admin-panel-users works!</p>
+<div class="admin-panel__button_bar">
+  <button (click)="openDialog()">Add User</button>
+  <button (click)="confirmUpdateUsers()"> Save Changes </button>
+</div>
+<form>
+<!--  (ngSubmit)="updateUsers()">-->
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>E-Mail</th>
+      <th>Role</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of userForms; let i = index" [formGroup]="user">
+      <td>{{ user.controls.id.value }}</td>
+      <td>{{ user.controls.username.value }}</td>
+<!--      <td>-->
+<!--        <input type="text" formControlName="username">-->
+<!--      </td>-->
+      <td>{{ user.controls.firstName.value }}</td>
+      <td>{{ user.controls.lastName.value }}</td>
+      <td>{{ user.controls.email.value }}</td>
+      <td>
+        <mat-form-field appearance="fill">
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="role">
+            <mat-option *ngFor="let role of kcRoles" [value]="role.value">
+              {{ role.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+      <td>
+        <button (click)="confirmDelete(user.value)">
+          Delete User
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+<!--  <button type="submit">Save Changes</button>-->
+
+</form>
+
+
+<!--        <div formGroupName="role">-->
+<!--          <mat-radio-group [(ngModel)]="user.controls.role" formControlName="role">-->
+<!--            <mat-radio-button value="{{keycloak_roles.demo.value}}" [checked]="user.controls.role.value == keycloak_roles.demo.value"> Demo </mat-radio-button>-->
+<!--            <mat-radio-button value="{{keycloak_roles.standard.value}}" [checked]="user.controls.role.value == keycloak_roles.standard.value"> Standard </mat-radio-button>-->
+<!--            <mat-radio-button value="{{keycloak_roles.admin.value}}" [checked]="user.controls.role.value == keycloak_roles.admin.value"> Admin </mat-radio-button>-->
+<!--          </mat-radio-group>-->
+<!--        </div>-->
