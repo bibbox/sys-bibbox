@@ -2,7 +2,7 @@
 """Task Route for Demo application."""
 import re
 from flask import Flask, request, Blueprint, jsonify
-from flask_restplus import Namespace, Api, Resource, fields
+from flask_restx import Namespace, Api, Resource, fields
 from backend.app import apiblueprint as api, app_celerey as app_celery, app, db, restapi
 
 from backend.app.services.activity_service import ActivityService

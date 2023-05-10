@@ -12,6 +12,7 @@ import {SVG_PATHS} from '../../../commons';
 import {environment} from '../../../../environments/environment';
 import {UserService} from '../../../store/services/user.service';
 import {DeleteInstanceAction} from '../../../store/actions/instance.actions';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-instance-detail-page',
@@ -61,6 +62,7 @@ export class InstanceDetailPageComponent implements OnInit {
     private instanceService: InstanceService,
     private fb: FormBuilder,
     private userService: UserService,
+    private _location: Location
   ) {
     // redirect if state is empty -> caused by hard reloading current view
     if (this.router.getCurrentNavigation().extras.state === undefined){
@@ -106,7 +108,9 @@ export class InstanceDetailPageComponent implements OnInit {
 
   loadGithubLinks(): void {
     let versionBranch = this.instanceItem.app.version;
-    if (this.instanceItem.app.version === 'development') {
+    // TODO do we need a special case for development?
+    // if (this.instanceItem.app.version === 'development') {
+    if (this.instanceItem.app.version === 'latest') {
       versionBranch = 'master';
     }
     // get instance links
@@ -175,4 +179,7 @@ export class InstanceDetailPageComponent implements OnInit {
     );
   }
 
+  backClicked(): void {
+    this._location.back();
+  }
 }

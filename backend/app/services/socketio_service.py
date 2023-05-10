@@ -17,7 +17,7 @@ import time
 @socketio.on('connect', namespace='/socket.io') # namespace='/socket.io')
 def ws_connect():
     #print('#'*50, ' connected websocket: ', '#'*50)
-    emit('connected', {'data': 'Connected'}, broadcast=False)#, namespace="/socket.io") # this should only emit event to connected client
+    emit('connected', {'data': 'Connected'}, broadcast=False) #, namespace="/socket.io") # this should only emit event to connected client
     socketio.sleep(0) # when using gevent, socketio.sleep(0) after emit will release cpu and let other tasks do their work. https://github.com/miguelgrinberg/Flask-SocketIO/issues/418#issuecomment-283382281
     emitInstanceRefresh() # load instances when first connecting
     emitActivityRefresh() # load activities when first connecting

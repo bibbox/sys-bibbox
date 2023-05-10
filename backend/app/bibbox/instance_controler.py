@@ -24,7 +24,7 @@ from backend.app.bibbox.file_handler import FileHandler
 from backend.app.bibbox.instance import Instance
 from backend.app.bibbox.docker_handler import DockerHandler
 
-from celery.task.control import inspect
+#from celery.task.control import inspect
 from celery_singleton import Singleton
 
 # thats the path inside the container !

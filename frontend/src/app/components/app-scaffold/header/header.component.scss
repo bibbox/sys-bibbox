@@ -31,7 +31,7 @@
   }
 
   .app-scaffold-header__center_aligned {
-    width: 50vw;
+    // width: 50vw;
     .app-scaffold-header__nav-buttons{
       flex-grow: 1;
       display: flex;
@@ -46,6 +46,10 @@
         font-weight: $custom_font_weight_light;
       }
     }
+  }
+  .app-scaffold-header__nav-buttons .active {
+    color: white;
+    background: $custom_blue;
   }
 
   .app-scaffold-header__right_aligned {

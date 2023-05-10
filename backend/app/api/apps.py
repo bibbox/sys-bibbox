@@ -2,7 +2,7 @@
 """User Route for App Catalogues"""
 
 from flask import Blueprint, request, jsonify
-from flask_restplus import Namespace, Api, Resource, fields, reqparse
+from flask_restx import Namespace, Api, Resource, fields, reqparse
 
 from backend.app import app, db, restapi
 from backend.app.bibbox.app  import AppCatalogue

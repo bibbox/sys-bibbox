@@ -2,7 +2,7 @@
 """User Route for Demo application."""
 
 from flask import Blueprint, g, abort, request, jsonify,  url_for
-from flask_restplus import Namespace, Api, Resource, fields
+from flask_restx import Namespace, Api, Resource, fields
 from flask_httpauth import HTTPBasicAuth
 from functools import wraps 
 
