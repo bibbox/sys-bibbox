@@ -896,7 +896,7 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "/*"
+        "http://localhost/*"
       ],
       "webOrigins": [
         "*"
@@ -1058,7 +1058,7 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/*"
+        "§§PROTOCOL://§§BASEURL/*"
       ],
       "webOrigins": [
         "*",

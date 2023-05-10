@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from backend.app import app, db, restapi
-from flask_restplus import Namespace, Resource, fields
+from flask_restx import Namespace, Resource, fields
 from backend.app.services.keycloak_service import KeycloakAdminService, auth_token_required, KeycloakRoles
 from backend.app.services.socketio_service import emitUserRefresh, emitUserDeleted
 

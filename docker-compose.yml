@@ -208,13 +208,13 @@ services:
         DB_DATABASE: keycloak
         DB_USER: keycloak
         DB_PASSWORD: keycloak
-        KEYCLOAK_IMPORT: /opt/jboss/keycloak/import/realms/development-realm.json # path to realm file in container
+        KEYCLOAK_IMPORT: /opt/jboss/keycloak/import/realms/realm-export.json # path to realm file in container
       
       env_file: # we want to read some variables from the .env file as they are shared with the backend
         - .env
       
       volumes:
-        - ./keycloak/realms/development-realm.json:/opt/jboss/keycloak/import/realms/development-realm.json
+        - ./keycloak/realms/realm-export.json:/opt/jboss/keycloak/import/realms/realm-export.json
       command: ["-Dkeycloak.profile.feature.upload_scripts=enabled"]
       depends_on:
         - bibbox-sys-commander-postgres
