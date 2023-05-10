@@ -37,8 +37,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" bash_completion
 
-nvm install 14.16.0
-nvm use v14.16.0
+nvm install 16.19
+nvm use v16.19.0
 
 apt-get update
 #apt-get install docker.io -y
@@ -46,8 +46,7 @@ apt install docker-compose -y
 apt install npm -y
 apt install python3-pip -y
 
-#nvm install 14.16.0 -y
-printf 'n\n' | npm i -g @angular/cli
+printf 'n\n' | npm ci -g @angular/cli
 #printf 'n\n' | npm update -g @angular/cli
 
 
@@ -77,9 +76,16 @@ sed -e "s/§§SERVERNAME/$DOMAINNAME/g" httpd.conf.template > httpd.conf
 
 chmod -R 775 /opt/bibbox/sys-bibbox/frontend/src/environments
 cd /opt/bibbox/sys-bibbox/frontend/src/environments
-sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.ts.template > environment.ts
-sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.prod.ts.template > environment.prod.ts
 
+
+PORT=80
+PROTOCOL=http
+
+sed -e "s/§§BASEURL/$DOMAINNAME/g; s/§§KEYCLOAK_PORT/$PORT/g; s/§§PROTOCOL/$PROTOCOL/g" environment.ts.template > environment.ts
+sed -e "s/§§BASEURL/$DOMAINNAME/g; s/§§KEYCLOAK_PORT/$PORT/g; s/§§PROTOCOL/$PROTOCOL/g" environment.prod.ts.template > environment.prod.ts
+
+# replace the realm export template
+sed -e "s/§§BASEURL/$DOMAINNAME/g; s/§§PORT/$PORT/g; s/§§PROTOCOL/$PROTOCOL/g" /opt/bibbox/sys-bibbox/keycloak/realms/realm-export.json.template > /opt/bibbox/sys-bibbox/keycloak/realms/realm-export.json
 
 # compile frontend code
 cd /opt/bibbox/sys-bibbox/frontend
@@ -97,6 +103,9 @@ cp /opt/bibbox/sys-bibbox/config-templates/bibbox.config /opt/bibbox/config/bibb
 
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-default.template /opt/bibbox/config/proxy-default.template
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-websocket.template /opt/bibbox/config/proxy-websocket.template
+
+
+
 
 
 docker-compose up --build -d

@@ -1,11 +1,13 @@
 let BASEURL: string = §§BASEURL;
+let PROTOCOL: string = §§PROTOCOL;
+let KEYCLOAK_PORT: string = §§PORT;
 
 export const environment = {
   production: true,
   BASEURL: BASEURL
 
   KEYCLOAK_CONFIG: {
-    url: 'http://'+ BASEURL +':5014/auth',
+    url: 'PROTOCOL://'+ BASEURL +':KEYCLOAK_PORT/auth',
     realm: 'sys-bibbox',
     clientId: 'sys-bibbox-frontend',
 

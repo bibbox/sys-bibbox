@@ -87,6 +87,11 @@ def seed_db():
     db.session.commit()
 
 
+# @manager.command
+# def loadAppStore():
+#     from backend.app.celerytasks.tasks import syncAppCatalogue
+#     syncAppCatalogue.delay(['bibbox', 'bibbox'])
+
 
 
 # --------------------------------TEST SocketIO Implementation ------------------------------------

@@ -1,0 +1,6 @@
+we want to dynamically replace the rootUrl of the bibbox-frontend client in the realm-export.json
+
+
+§§PROTOCOL should be http or https
+§§BASEURL should be the base url of the bibbox-frontend client, e.g. silicolabv4.bibbox.org
+§§PORT should be the port of the bibbox-frontend client, e.g. 80 or 443

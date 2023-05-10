@@ -34,7 +34,7 @@
   "verifyEmail": false,
   "loginWithEmailAllowed": false,
   "duplicateEmailsAllowed": false,
-  "resetPasswordAllowed": true,
+  "resetPasswordAllowed": false,
   "editUsernameAllowed": true,
   "bruteForceProtected": false,
   "permanentLockout": false,
@@ -47,9 +47,36 @@
   "roles": {
     "realm": [
       {
+        "id": "05718cb9-f8df-4e10-ae74-ae446d02ff1c",
+        "name": "bibbox-admin",
+        "description": "bibbox admin role",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "sys-bibbox",
+        "attributes": {}
+      },
+      {
+        "id": "9be5241c-f6ad-45e7-af84-78441bd89793",
+        "name": "bibbox-demo",
+        "description": "bibbox demo role",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "sys-bibbox",
+        "attributes": {}
+      },
+      {
         "id": "a5f27690-0869-4b8b-9dfa-71fb26b00047",
         "name": "uma_authorization",
         "description": "${role_uma_authorization}",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "sys-bibbox",
+        "attributes": {}
+      },
+      {
+        "id": "8f016aca-d282-41ca-aa6f-9dc7517e9192",
+        "name": "bibbox-standard",
+        "description": "bibbox standard role, included in the default roles",
         "composite": false,
         "clientRole": false,
         "containerId": "sys-bibbox",
@@ -62,6 +89,7 @@
         "composite": true,
         "composites": {
           "realm": [
+            "bibbox-standard",
             "offline_access",
             "uma_authorization"
           ],
@@ -299,28 +327,20 @@
           "attributes": {}
         }
       ],
-      "sys-bibbox-frontend": [
-        {
-          "id": "f3a48c31-8291-4607-86dc-a206fb373d8c",
-          "name": "admin",
-          "composite": false,
-          "clientRole": true,
-          "containerId": "31694187-b7d5-4120-896d-bef0ff4d7a00",
-          "attributes": {}
-        },
-        {
-          "id": "c1152dd6-0186-4ec9-937d-83a445a4d71d",
-          "name": "demo-user",
-          "composite": false,
-          "clientRole": true,
-          "containerId": "31694187-b7d5-4120-896d-bef0ff4d7a00",
-          "attributes": {}
-        }
-      ],
+      "sys-bibbox-frontend": [],
       "security-admin-console": [],
       "admin-cli": [],
       "account-console": [],
-      "sys-bibbox-backend": [],
+      "sys-bibbox-backend": [
+        {
+          "id": "51faa9a7-8b6f-42bd-b464-1fd7fe3e80f8",
+          "name": "uma_protection",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "d04e0beb-4fdd-4a80-8490-e3811d835127",
+          "attributes": {}
+        }
+      ],
       "broker": [
         {
           "id": "a5a627c4-7e4b-4545-adac-d99690e5f7f7",
@@ -413,52 +433,7 @@
       ]
     }
   },
-  "groups": [
-    {
-      "id": "75239d24-a2fd-44b7-b0ee-dac77d465ee3",
-      "name": "sys-bibbox-admin-group",
-      "path": "/sys-bibbox-admin-group",
-      "attributes": {},
-      "realmRoles": [
-        "uma_authorization",
-        "default-roles-sys-bibbox",
-        "offline_access"
-      ],
-      "clientRoles": {
-        "sys-bibbox-frontend": [
-          "admin"
-        ]
-      },
-      "subGroups": []
-    },
-    {
-      "id": "a5fb5e1b-e847-4f23-a3ab-65e2bf0f7a98",
-      "name": "sys-bibbox-default-group",
-      "path": "/sys-bibbox-default-group",
-      "attributes": {},
-      "realmRoles": [
-        "default-roles-sys-bibbox"
-      ],
-      "clientRoles": {},
-      "subGroups": []
-    },
-    {
-      "id": "7937b474-1a84-4492-9188-1eff57d27b31",
-      "name": "sys-bibbox-demo-group",
-      "path": "/sys-bibbox-demo-group",
-      "attributes": {},
-      "realmRoles": [
-        "uma_authorization",
-        "offline_access"
-      ],
-      "clientRoles": {
-        "sys-bibbox-frontend": [
-          "demo-user"
-        ]
-      },
-      "subGroups": []
-    }
-  ],
+  "groups": [],
   "defaultRole": {
     "id": "3d07a340-596e-4762-95ef-08bd71865264",
     "name": "default-roles-sys-bibbox",
@@ -467,9 +442,6 @@
     "clientRole": false,
     "containerId": "sys-bibbox"
   },
-  "defaultGroups": [
-    "/sys-bibbox-default-group"
-  ],
   "requiredCredentials": [
     "password"
   ],
@@ -507,6 +479,57 @@
   "webAuthnPolicyPasswordlessCreateTimeout": 0,
   "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister": false,
   "webAuthnPolicyPasswordlessAcceptableAaguids": [],
+  "users": [
+    {
+      "id": "d815dfa7-dcc0-49ff-8a4a-92315748cb3d",
+      "createdTimestamp": 1682934583661,
+      "username": "service-account-admin-cli",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": false,
+      "serviceAccountClientId": "admin-cli",
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": [
+        "default-roles-sys-bibbox"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "manage-users",
+          "manage-realm"
+        ]
+      },
+      "notBefore": 0,
+      "groups": []
+    },
+    {
+      "id": "a73f3bda-8465-49ef-a513-423fa77ef554",
+      "createdTimestamp": 1682497835811,
+      "username": "service-account-sys-bibbox-backend",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": false,
+      "serviceAccountClientId": "sys-bibbox-backend",
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": [
+        "bibbox-admin",
+        "uma_authorization",
+        "default-roles-sys-bibbox"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "manage-users",
+          "manage-realm"
+        ],
+        "sys-bibbox-backend": [
+          "uma_protection"
+        ]
+      },
+      "notBefore": 0,
+      "groups": []
+    }
+  ],
   "scopeMappings": [
     {
       "clientScope": "offline_access",
@@ -628,6 +651,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
+      "secret": "**********",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -636,14 +660,81 @@
       "standardFlowEnabled": false,
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": true,
-      "serviceAccountsEnabled": false,
-      "publicClient": true,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
-      "attributes": {},
+      "attributes": {
+        "id.token.as.detached.signature": "false",
+        "saml.assertion.signature": "false",
+        "saml.force.post.binding": "false",
+        "saml.multivalued.roles": "false",
+        "saml.encrypt": "false",
+        "oauth2.device.authorization.grant.enabled": "true",
+        "backchannel.logout.revoke.offline.tokens": "false",
+        "saml.server.signature": "false",
+        "saml.server.signature.keyinfo.ext": "false",
+        "use.refresh.tokens": "true",
+        "exclude.session.state.from.auth.response": "false",
+        "oidc.ciba.grant.enabled": "false",
+        "saml.artifact.binding": "false",
+        "backchannel.logout.session.required": "false",
+        "client_credentials.use_refresh_token": "false",
+        "saml_force_name_id_format": "false",
+        "require.pushed.authorization.requests": "false",
+        "saml.client.signature": "false",
+        "tls.client.certificate.bound.access.tokens": "false",
+        "saml.authnstatement": "false",
+        "display.on.consent.screen": "false",
+        "saml.onetimeuse.condition": "false"
+      },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
+      "protocolMappers": [
+        {
+          "id": "440ba3b7-2810-4813-8f12-ee7849349d38",
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientId",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientId",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "1dc2eee5-d86a-45a0-a938-e3e933e54051",
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientHost",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "cb0fd92a-01f2-4830-9cae-06434d4178b1",
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientAddress",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        }
+      ],
       "defaultClientScopes": [
         "web-origins",
         "profile",
@@ -796,51 +887,110 @@
     {
       "id": "d04e0beb-4fdd-4a80-8490-e3811d835127",
       "clientId": "sys-bibbox-backend",
+      "rootUrl": "http://localhost:5010",
+      "adminUrl": "",
+      "baseUrl": "",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
+      "secret": "**********",
       "redirectUris": [
-        "http://localhost:5010/api/v1/"
+        "/*"
       ],
-      "webOrigins": [],
+      "webOrigins": [
+        "*"
+      ],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
       "standardFlowEnabled": true,
-      "implicitFlowEnabled": false,
+      "implicitFlowEnabled": true,
       "directAccessGrantsEnabled": true,
-      "serviceAccountsEnabled": false,
-      "publicClient": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
       "attributes": {
-        "id.token.as.detached.signature": "false",
-        "saml.assertion.signature": "false",
+        "access.token.lifespan": "7776000",
         "saml.force.post.binding": "false",
         "saml.multivalued.roles": "false",
-        "saml.encrypt": "false",
+        "token.endpoint.auth.signing.alg": "RS256",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false",
-        "saml.server.signature": "false",
         "saml.server.signature.keyinfo.ext": "false",
-        "use.refresh.tokens": "true",
-        "exclude.session.state.from.auth.response": "false",
+        "use.refresh.tokens": "false",
+        "jwt.credential.certificate": "MIICszCCAZsCBgGHjt1J+jANBgkqhkiG9w0BAQsFADAdMRswGQYDVQQDDBJzeXMtYmliYm94LWJhY2tlbmQwHhcNMjMwNDE3MTA1NjE5WhcNMzMwNDE3MTA1NzU5WjAdMRswGQYDVQQDDBJzeXMtYmliYm94LWJhY2tlbmQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCkK8buwJ29oAgmZa4mZCcmpDnzJNrurgjwLW89lI3Fd6z8Xuzyvc/C8ADD5wj2NtvMVl/vd89+iGpPLqIB7fGuGYvZNayfTre9GydtlpcHbQ8msg0gCUfISH3GkUCARsVzq9LrK2HgfuR66ubNvgZoHe8CxDZRo7E/ribWrETSbF6ZCpDHDFRsw/rlr4p+atGYFb69lDWwJT3czQ8jOLL9TuT+WlvNVICT0DYRhz/PrRk1PqvBg/IelgKx1Muy5lCs3+IyY+C1vktHKjzE74d8/w3Ysp8+8uMO1bbavOBdFbAc1fu5s6yGSSs/8wVrX9liFTYNAC7sddSS1dyUpldxAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAAMidFWrprvaeMgzrmGMuXq8aKlqq1+81Bik9tyrnxtahSHLIIGXAH/bTFRA/AU2cb99pfsD/3PQAJSAtv1bLV8yyfN8uDy/2Wo12xRnqC3ZrgaKmaV/Qla3vQJhbXhj4/ncn3/f+XkyFnnYPBpWZCXXkDkF8083aF+HET75qYmbCT4Xxmyj9dbbr2YWTGL621y8X/VT9PBCf7ZtdKLT/AE5XlJArnI3k0ZKPOPFIELlw0A9wHM1B3LpAboIBtR1ft7Xhb6S9qR1UsHh+nku8QEN2lYIMsX2hAtlsngMr5Gq0N4KzFx0XGhKfdIfH8ma7aYzs15mHMLrVZfHA/189jQ=",
         "oidc.ciba.grant.enabled": "false",
-        "saml.artifact.binding": "false",
         "backchannel.logout.session.required": "true",
         "client_credentials.use_refresh_token": "false",
-        "saml_force_name_id_format": "false",
         "require.pushed.authorization.requests": "false",
         "saml.client.signature": "false",
+        "client.session.max.lifespan": "2592000",
+        "client.session.idle.timeout": "2592000",
+        "id.token.as.detached.signature": "false",
+        "saml.assertion.signature": "false",
+        "saml.encrypt": "false",
+        "saml.server.signature": "false",
+        "exclude.session.state.from.auth.response": "false",
+        "saml.artifact.binding": "false",
+        "saml_force_name_id_format": "false",
         "tls.client.certificate.bound.access.tokens": "false",
         "saml.authnstatement": "false",
         "display.on.consent.screen": "false",
         "saml.onetimeuse.condition": "false"
       },
-      "authenticationFlowBindingOverrides": {},
+      "authenticationFlowBindingOverrides": {
+        "direct_grant": "e576961b-7233-4cd9-adaf-480c14e8479b",
+        "browser": "e576961b-7233-4cd9-adaf-480c14e8479b"
+      },
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "d2507d5c-c4c1-49d1-9e0e-250b36b492eb",
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientId",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientId",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "f4e4c2d1-9ab2-4eae-9079-833d56beb07f",
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientHost",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "97dfeeaf-27ca-465d-996c-2ca2a0045340",
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientAddress",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        }
+      ],
       "defaultClientScopes": [
         "web-origins",
         "profile",
@@ -852,7 +1002,50 @@
         "phone",
         "offline_access",
         "microprofile-jwt"
-      ]
+      ],
+      "authorizationSettings": {
+        "allowRemoteResourceManagement": true,
+        "policyEnforcementMode": "ENFORCING",
+        "resources": [
+          {
+            "name": "Default Resource",
+            "type": "urn:sys-bibbox-backend:resources:default",
+            "ownerManagedAccess": false,
+            "attributes": {},
+            "_id": "c9e99622-5c82-4df1-b0b9-2aea38e750b6",
+            "uris": [
+              "/*"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "c2814c39-68e1-4bc7-bc13-4fb80d161266",
+            "name": "Default Policy",
+            "description": "A policy that grants access only for users within this realm",
+            "type": "js",
+            "logic": "POSITIVE",
+            "decisionStrategy": "AFFIRMATIVE",
+            "config": {
+              "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
+            }
+          },
+          {
+            "id": "0cd1463d-a515-4b8b-93e5-372fbc5be6f0",
+            "name": "Default Permission",
+            "description": "A permission that applies to the default resource type",
+            "type": "resource",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "defaultResourceType": "urn:sys-bibbox-backend:resources:default",
+              "applyPolicies": "[\"Default Policy\"]"
+            }
+          }
+        ],
+        "scopes": [],
+        "decisionStrategy": "UNANIMOUS"
+      }
     },
     {
       "id": "31694187-b7d5-4120-896d-bef0ff4d7a00",
@@ -865,9 +1058,10 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost:4200/*"
+        "/*"
       ],
       "webOrigins": [
+        "*",
         "+"
       ],
       "notBefore": 0,
@@ -1465,34 +1659,6 @@
   "components": {
     "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy": [
       {
-        "id": "145a824f-3830-4ecf-af34-9473a56a7521",
-        "name": "Allowed Client Scopes",
-        "providerId": "allowed-client-templates",
-        "subType": "anonymous",
-        "subComponents": {},
-        "config": {
-          "allow-default-scopes": [
-            "true"
-          ]
-        }
-      },
-      {
-        "id": "5da049ed-93d1-4dac-80f4-4fbd87250388",
-        "name": "Full Scope Disabled",
-        "providerId": "scope",
-        "subType": "anonymous",
-        "subComponents": {},
-        "config": {}
-      },
-      {
-        "id": "e0388680-9069-4d20-baa8-0cbd276682d1",
-        "name": "Consent Required",
-        "providerId": "consent-required",
-        "subType": "anonymous",
-        "subComponents": {},
-        "config": {}
-      },
-      {
         "id": "a73939a0-f4c8-4850-adce-e40e177de6bf",
         "name": "Allowed Client Scopes",
         "providerId": "allowed-client-templates",
@@ -1568,12 +1734,32 @@
             "200"
           ]
         }
-      }
-    ],
-    "org.keycloak.userprofile.UserProfileProvider": [
+      },
       {
-        "id": "61806b0a-538f-4d02-be4f-528aa61553af",
-        "providerId": "declarative-user-profile",
+        "id": "145a824f-3830-4ecf-af34-9473a56a7521",
+        "name": "Allowed Client Scopes",
+        "providerId": "allowed-client-templates",
+        "subType": "anonymous",
+        "subComponents": {},
+        "config": {
+          "allow-default-scopes": [
+            "true"
+          ]
+        }
+      },
+      {
+        "id": "5da049ed-93d1-4dac-80f4-4fbd87250388",
+        "name": "Full Scope Disabled",
+        "providerId": "scope",
+        "subType": "anonymous",
+        "subComponents": {},
+        "config": {}
+      },
+      {
+        "id": "e0388680-9069-4d20-baa8-0cbd276682d1",
+        "name": "Consent Required",
+        "providerId": "consent-required",
+        "subType": "anonymous",
         "subComponents": {},
         "config": {}
       }
@@ -1583,6 +1769,17 @@
         "id": "505746f1-c278-42ae-8cb1-2e0b34dda654",
         "name": "rsa-generated",
         "providerId": "rsa-generated",
+        "subComponents": {},
+        "config": {
+          "priority": [
+            "100"
+          ]
+        }
+      },
+      {
+        "id": "162faedd-d392-4c0b-8458-67928688efff",
+        "name": "aes-generated",
+        "providerId": "aes-generated",
         "subComponents": {},
         "config": {
           "priority": [
@@ -1615,17 +1812,6 @@
           ],
           "algorithm": [
             "RSA-OAEP"
-          ]
-        }
-      },
-      {
-        "id": "162faedd-d392-4c0b-8458-67928688efff",
-        "name": "aes-generated",
-        "providerId": "aes-generated",
-        "subComponents": {},
-        "config": {
-          "priority": [
-            "100"
           ]
         }
       }
