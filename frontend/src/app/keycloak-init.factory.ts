@@ -5,9 +5,9 @@ export function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: environment.KEYCLOAK_URL + '/auth',
-        realm: environment.KEYCLOAK_REALM,
-        clientId: environment.KEYCLOAK_CLIENT_ID,
+        url: environment.KEYCLOAK_CONFIG.url,
+        realm: environment.KEYCLOAK_CONFIG.realm,
+        clientId: environment.KEYCLOAK_CONFIG.clientId,
       },
       initOptions: {
         checkLoginIframe: false,
@@ -17,7 +17,7 @@ export function initializeKeycloak(keycloak: KeycloakService) {
       shouldAddToken: (request) => {
         const {method, url} = request;
         const isGetRequest = 'GET' === method.toUpperCase();
-        const isAcceptablePathMatch = environment.KEYCLOAK_NON_PROTECTED_PATHS.some((path) => url.includes(path));
+        const isAcceptablePathMatch = environment.KEYCLOAK_CONFIG.non_protected_paths.some((path) => url.includes(path));
         return !(isGetRequest && isAcceptablePathMatch);
       }
     });

@@ -7,6 +7,50 @@ export interface UserRepresentation {
   email?: string;
 }
 
+export interface RoleRepresentation {
+  id?: string;
+  name?: string;
+  description?: string;
+  scopeParamRequired?: boolean;
+  composite?: boolean;
+  clientRole?: boolean;
+  containerId?: string;
+}
+
+export interface UserDictionary {
+  username: string;
+  password: string;
+  roles: string[];
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+export interface UserRoleMapping {
+  user_role_mappings: UserRoles[];
+}
+
+export interface UserRoles {
+  user_id: string;
+  roles: string[];
+}
+
+
+export interface CreateUserSuccessResponse {
+  message: string;
+  userRepresentation: UserRepresentation;
+}
+
+export interface UpdateRoleMappingSuccessResponse {
+  message: string;
+  users: UserRepresentation[];
+}
+
+export interface DeleteUserSuccessResponse {
+  message: string;
+  userID: string;
+}
+
 
 // export interface UserRepresentation {
 //   id?: string;
@@ -50,31 +94,3 @@ export interface UserRepresentation {
 //   algorithm?: string;
 //   config?: Record<string, any>;
 // }
-
-export interface RoleRepresentation {
-  id?: string;
-  name?: string;
-  description?: string;
-  scopeParamRequired?: boolean;
-  composite?: boolean;
-  clientRole?: boolean;
-  containerId?: string;
-}
-
-export interface UserDictionary {
-  username: string;
-  password: string;
-  roles: string[];
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-}
-
-export interface UserRoleMapping {
-  user_role_mappings: UserRoles[];
-}
-
-export interface UserRoles {
-  user_id: string;
-  roles: string[];
-}

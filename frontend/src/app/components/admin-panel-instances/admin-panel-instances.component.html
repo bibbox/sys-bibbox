@@ -26,7 +26,7 @@
       <th>Time of Installation</th>
       <th>Stopped Since</th>
       <th>State</th>
-      <th>Action</th>
+      <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -92,14 +92,14 @@
           </button>
         </ng-container>
 
-        <ng-container *ngIf="instanceItem.state === ('RESTARTING' || 'STOPPING' || 'DELETING' || 'STARTING')"> <!--  -->
+        <ng-container *ngIf="['RESTARTING', 'STOPPING', 'DELETING', 'STARTING'].includes(instanceItem.state)"> <!--  -->
           <span class="status in_operation"></span>
           <button disabled class="button-disabled">
             <span class="text"> In Operation </span>
           </button>
 
         </ng-container>
-        <ng-container *ngIf="instanceItem.state === ('JUSTBORN' || 'INSTALLING')"> <!--  -->
+        <ng-container *ngIf="['JUSTBORN', 'INSTALLING'].includes(instanceItem.state)"> <!--  -->
           <button disabled class="button-disabled">
             <svg viewBox="0 0 1000 1000" class="admin-panel__instance_state_svg">
               <path [attr.d]="svgPaths.loading"></path>

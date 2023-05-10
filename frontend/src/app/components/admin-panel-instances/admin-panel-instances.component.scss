@@ -22,15 +22,16 @@
 
 
   table {
-    width: 80%;
+    width: 100%;
     border-collapse: collapse;
     th {
       background-color: #eee;
       font-weight: bold;
-      text-align: left;
+      text-align: center;
       padding: 10px;
     }
     td {
+      text-align: center;
       padding: 10px;
       border-bottom: 1px solid #ccc;
       img {

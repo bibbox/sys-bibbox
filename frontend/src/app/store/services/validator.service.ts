@@ -31,4 +31,5 @@ export class ValidatorService {
     const isSpace = (control.value || '').match(/\s/g);
     return isSpace ? {whitespace: true} : null;
   }
+
 }

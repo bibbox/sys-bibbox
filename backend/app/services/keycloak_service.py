@@ -1,9 +1,11 @@
 from keycloak import KeycloakOpenID, KeycloakAdmin #, KeycloakOpenIDConnection
 from functools import wraps
-from flask import request, jsonify
-from backend.app import app
+from flask import request
+# from backend.app import app
+
 import dotenv
 import os
+
 
 dotenv.load_dotenv()
 
@@ -13,6 +15,12 @@ keycloak_openid = KeycloakOpenID(
     client_id=os.getenv('KEYCLOAK_CLIENT_ID'),
     client_secret_key=os.getenv('KEYCLOAK_CLIENT_SECRET'),
 )
+
+
+class KeycloakRoles:
+    admin = 'bibbox-admin'
+    standard = 'bibbox-standard'
+    demo = 'bibbox-demo'
 
 
 # auth decorator
@@ -59,9 +67,9 @@ def auth_token_required(*decorator_args, **decorator_kwargs):
                     else:
                         user_roles: list = token_info['realm_access']['roles']
                         
-                        # if bibbox-admin in roles, then add all realm-management roles to user_realm_roles
-                        if 'bibbox-admin' in required_roles:
-                            user_roles.extend(token_info['resource_access']['realm-management']['roles'])
+                        # # if bibbox-admin in roles, then add all realm-management roles to user_realm_roles
+                        # if 'bibbox-admin' in required_roles:
+                        #     user_roles.extend(token_info['resource_access']['realm-management']['roles'])
 
 
                         for role in required_roles:
@@ -92,6 +100,7 @@ def auth_token_required(*decorator_args, **decorator_kwargs):
 class KeycloakAdminService():
     def __init__(self):
         # self.keycloak_api = keycloak_admin
+
         self.keycloak_api = KeycloakAdmin(
                                             server_url=os.getenv('KEYCLOAK_SERVER_URL'),
                                             realm_name=os.getenv('KEYCLOAK_REALM'),
@@ -101,6 +110,7 @@ class KeycloakAdminService():
                                             client_secret_key=os.getenv('KEYCLOAK_ADMIN_CLIENT_SECRET'),
                                             auto_refresh_token=['get', 'put', 'post', 'delete']
                                         )
+        
         
     def create_user(self, user_dict: dict):
         """
@@ -135,7 +145,7 @@ class KeycloakAdminService():
                 raise ValueError('Missing required key-value pair(s) in user dictionary')
             
             # check if user with username is available
-            self._validate_username_availability(user_representation['username'])
+            self.validate_username_availability(user_representation['username'])
 
             optional_fields = ['email', 'firstName', 'lastName']
             for key in optional_fields:
@@ -160,7 +170,7 @@ class KeycloakAdminService():
         
         else:
             return {'message': 'User created successfully.',
-                    'userID': user_id}, 201
+                    'userRepresentation': str(self.get_user(user_id))}, 201
 
 
     def delete_user(self, user_id: str):
@@ -180,7 +190,8 @@ class KeycloakAdminService():
             raise ValueError(f'User with id {user_id} does not exist.')
         else:
             self.keycloak_api.delete_user(user_id)
-            return {'message': f'User with id {user_id} deleted successfully.'}, 200
+            return {'message': 'User deleted successfully.',
+                    'userID': str(user_id)}, 200
 
 
     def update_user(self, user_id: str, user_dict: dict):
@@ -231,7 +242,8 @@ class KeycloakAdminService():
             raise ex
         
         else:
-            return {'message': f'User with id {user_id} successfully updated.'}, 201
+            return {'message': 'User successfully updated.',
+                    'userID': str(user_id)}, 201
         
     def get_user(self, user_id: str):
         """
@@ -307,7 +319,6 @@ class KeycloakAdminService():
 
 
     # realm roles --------------------------------------------------------------------------------------------------------------------
-
     def _validate_realm_roles(self, realm_role_names: list):
         """
         Checks if all realm roles in the list of realm_role_names exist.
@@ -321,13 +332,17 @@ class KeycloakAdminService():
                 raise ValueError(f'Role {role} does not exist.')
         return True
 
-    def _validate_username_availability(self, username: str):
+    def validate_username_availability(self, username: str):
         """
         Checks if the username exists in the keycloak realm.
 
         :param username: username
         :type username: str
         """
+        # check if username matches keycloak admin username from the env file
+        if username == os.getenv('KEYCLOAK_ADMIN_USERNAME'):
+            raise ValueError('Username is reserved.')
+
         if username in self.get_usernames():
             raise ValueError(f'User {username} already exists.')
         return True
@@ -442,4 +457,5 @@ class KeycloakAdminService():
 
             # only remove bibbox roles
 
-        return {'message': 'Roles updated successfully.'}, 200
+        return {'message': 'Roles updated successfully.',
+                'users': str(self.get_users())}, 200

@@ -66,7 +66,7 @@ export class InstallScreenDialogComponent implements OnInit {
   }
 
   maxInstancesReached(): void {
-    const isDemoUser = this.userService.isRole(environment.KEYCLOAK_ROLES.demo_user);
+    const isDemoUser = this.userService.isRole(environment.KEYCLOAK_CONFIG.roles.demo_user);
 
     if (isDemoUser) {
       const userID = this.userService.getUserID();

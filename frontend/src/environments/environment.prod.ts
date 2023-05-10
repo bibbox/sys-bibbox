@@ -1,24 +1,26 @@
+let BASEURL: string = 'localhost';
+
 export const environment = {
   production: true,
-  BASEURL: 'bibbox.local',
+  BASEURL: BASEURL,
 
 
-  KEYCLOAK_URL: `http://localhost:5014`,
-  KEYCLOAK_CLIENT_ID: 'sys-bibbox-frontend',
-  KEYCLOAK_REALM: 'sys-bibbox',
-  KEYCLOAK_NON_PROTECTED_PATHS: [
-    '/logout',
-    'https://raw.githubusercontent.com/',
-  ],
+  KEYCLOAK_CONFIG: {
+    url: 'http://'+ BASEURL +':5014/auth',
+    realm: 'sys-bibbox',
+    clientId: 'sys-bibbox-frontend',
 
-  KEYCLOAK_ROLES : {
-    admin: 'admin',
-    demo_user: 'demo-user',
-    standard_user: 'standard-user',
-  },
+    non_protected_paths: [
+      '/logout',
+      'https://raw.githubusercontent.com/',
+    ],
 
-  KEYCLOAK_CONFIG : {
+    roles : {
+      admin: 'bibbox-admin',
+      demo_user: 'bibbox-demo',
+      standard_user: 'bibbox-standard',
+    },
+
     max_instances_per_demo_user: 0,
-    resource_name: 'sys-bibbox-frontend',
-  }
+  },
 };

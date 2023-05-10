@@ -85,27 +85,27 @@ class AppInfo (Resource):
 
 
 
-#@api.param('testparam', 'test')
-@api.doc(
+# #@api.param('testparam', 'test')
+# @api.doc(
 
-)
-@api.route("/test", doc={"description": 'testdescription for the endpoint'})
-class TestClass (Resource):
-    @api.doc(
-        'get test stuff',     
-        responses={
-            200: 'Success',
-            400: 'Validation Error',
-            418: "I'm a teapot"
-        },
-        params={
-            "testparam": "a Testparam"
-        }
-    )
+# )
+# @api.route("/test", doc={"description": 'testdescription for the endpoint'})
+# class TestClass (Resource):
+#     @api.doc(
+#         'get test stuff',     
+#         responses={
+#             200: 'Success',
+#             400: 'Validation Error',
+#             418: "I'm a teapot"
+#         },
+#         params={
+#             "testparam": "a Testparam"
+#         }
+#     )
 
-    def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('testparam')
-        args = parser.parse_args()
-        tp = args['testparam']
-        return {1: dir(api.doc())}
+#     def get(self):
+#         parser = reqparse.RequestParser()
+#         parser.add_argument('testparam')
+#         args = parser.parse_args()
+#         tp = args['testparam']
+#         return {1: dir(api.doc())}

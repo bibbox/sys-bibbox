@@ -1,7 +1,8 @@
 from flask import jsonify, request
 from backend.app import app, db, restapi
 from flask_restplus import Namespace, Resource, fields
-from backend.app.services.keycloak_service import KeycloakAdminService, auth_token_required
+from backend.app.services.keycloak_service import KeycloakAdminService, auth_token_required, KeycloakRoles
+from backend.app.services.socketio_service import emitUserRefresh, emitUserDeleted
 
 api = Namespace('kc', description='KeyCloak Ressources')
 restapi.add_namespace (api, '/kc')
@@ -44,7 +45,7 @@ user_role_mapping = api.model('User_Role_Mapping', {
 @api.route('/users')
 class Users(Resource):
     @api.doc("Get all Users")
-    # @auth_token_required(roles=['bibbox-admin'])
+    @auth_token_required(roles=[KeycloakRoles.admin])
     def get(self):
         try:
             users = kc_admin.get_users()
@@ -58,11 +59,12 @@ class Users(Resource):
     
     @api.doc("Create a new User")
     @api.expect(user_dictionary, validate=True)
-    # @auth_token_required(roles=['bibbox-admin'])
+    @auth_token_required(roles=[KeycloakRoles.admin])
     def post(self):
         kc_admin = KeycloakAdminService()
         try:
             message, status = kc_admin.create_user(request.json)
+            emitUserRefresh()
         except Exception as e:
             return {
                 "error": f"Could not create user in KeyCloak",
@@ -78,11 +80,11 @@ class Users(Resource):
 @api.route('/users/<string:user_id>')
 class User(Resource):
     @api.doc("Delete a User")
-    # @auth_token_required(roles=['bibbox-admin'])
+    @auth_token_required(roles=[KeycloakRoles.admin])
     def delete(self, user_id):
         try:
             msg, status = kc_admin.delete_user(user_id)
-
+            emitUserDeleted(user_id)
         except ValueError as e:
             return {"error": str(e)}, 400
         
@@ -92,7 +94,7 @@ class User(Resource):
         return msg, status
 
     # @api.doc("Get a User")
-    # # @auth_token_required(roles=['bibbox-admin'])
+    # @auth_token_required(roles=[KeycloakRoles.admin])
     # def get(self, user_id):
     #     try:
     #         user, status = kc_admin.get_user(user_id)
@@ -107,7 +109,7 @@ class User(Resource):
 
     # @api.doc("Update a User")
     # @api.expect(user_dictionary, validate=True)
-    # # @auth_token_required(roles=['bibbox-admin'])
+    # @auth_token_required(roles=[KeycloakRoles.admin])
     # def patch(self, user_id):
     #     try:
     #         user_dict = request.json
@@ -126,14 +128,14 @@ class User(Resource):
 @api.route('/users/<string:user_id>/roles')
 class UserRoles(Resource):
     @api.doc("Get all Roles of a User")
-    # @auth_token_required(roles=['bibbox-admin'])
+    @auth_token_required(roles=[KeycloakRoles.admin])
     def get(self, user_id):
 
         try:
             roles, status = kc_admin.get_realm_roles_of_user(user_id)
         except Exception as e:
-            print(e)
-            return {"error": "Could not get roles of user from KeyCloak"}, 500
+            return {"error": "Could not get roles of user from KeyCloak",
+                    'errormessage': str(e)}, 500
         
         return roles, status
     
@@ -188,10 +190,38 @@ class UserRoles(Resource):
         
     #     return roles, status
 
+@api.route('/users/names')
+class UserNames(Resource):
+    @api.doc("Get all Usernames")
+    @auth_token_required(roles=[KeycloakRoles.admin])
+    def get(self):
+        try:
+            names = kc_admin.get_usernames()
+        except Exception as e:
+            return {"error": "Could not get usernames from KeyCloak"}, 500
+        
+        return names, 200
+
+@api.route('/users/names/<string:username>')
+class UserNamesValidator(Resource):
+    @api.doc("Check if username is already taken")
+    @auth_token_required(roles=[KeycloakRoles.admin])
+    def get(self, username):
+        try:
+            names = kc_admin.validate_username_availability(username=username)
+        except Exception as e:
+            return {"error": "Could not get usernames from KeyCloak"}, 500
+        
+        return names, 200
+
+
+
+
 
 @api.route('/roles')
 class Roles(Resource):
     @api.doc("Get all Roles")
+    @auth_token_required(roles=[KeycloakRoles.admin])
     def get(self):
         try:
             roles = kc_admin.get_realm_roles()
@@ -206,10 +236,11 @@ class RoleMappings(Resource):
     # update the roles of all users
     @api.doc("Update the roles of multiple users")
     @api.expect(user_role_mapping, validate=True)
-    # @auth_token_required(roles=['bibbox-admin'])
+    @auth_token_required(roles=[KeycloakRoles.admin])
     def post(self):
         try:
             msg, status = kc_admin.update_multiple_user_role_mappings(request.json['user_role_mappings'])
+            emitUserRefresh()
         except Exception as e:
             return {
                 "error": f"Could not update user roles in KeyCloak",

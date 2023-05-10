@@ -1,15 +1,18 @@
-import {Component, ENVIRONMENT_INITIALIZER, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {KeycloakAdminBackendService} from '../../store/services/keycloak-admin-backend.service';
 import {UserDictionary, UserRepresentation} from '../../store/models/user.model';
-import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserRoles, UserRoleMapping} from '../../store/models/user.model';
-import {InstanceItem} from '../../store/models/instance-item.model';
+import * as userSelector from '../../store/selectors/user.selector';
 import {MatDialog} from '@angular/material/dialog';
 import {CreateUserDialogComponent} from './create-user-dialog/create-user-dialog.component';
 import {ConfirmationDialogComponent} from './confirmation-dialog/confirmation-dialog.component';
 import {UserService} from '../../store/services/user.service';
+import {AppState} from '../../store/models/app-state.model';
+import {select, Store} from '@ngrx/store';
+import {SocketioService} from '../../store/services/socketio.service';
+import {CreateUserAction, DeleteUserAction, UpdateUserRoleMappingsAction} from '../../store/actions/user.actions';
 
 @Component({
   selector: 'app-admin-panel-users',
@@ -26,15 +29,15 @@ export class AdminPanelUsersComponent implements OnInit {
   toObject = Object.keys;
   kcRoles = [
     {
-      value: environment.KEYCLOAK_ROLES.admin,
+      value: environment.KEYCLOAK_CONFIG.roles.admin,
       name: 'Admin'
     },
     {
-      value: environment.KEYCLOAK_ROLES.demo_user,
+      value: environment.KEYCLOAK_CONFIG.roles.demo_user,
       name: 'Demo User'
     },
     {
-      value: environment.KEYCLOAK_ROLES.standard_user,
+      value: environment.KEYCLOAK_CONFIG.roles.standard_user,
       name: 'Standard User'
     }
   ]
@@ -43,19 +46,30 @@ export class AdminPanelUsersComponent implements OnInit {
     private kc_admin_service: KeycloakAdminBackendService,
     private user_service: UserService,
     private fb: FormBuilder,
-    public dialog: MatDialog
-  ) { }
+    public dialog: MatDialog,
+    private store: Store<AppState>,
+  ) {
+  }
 
   ngOnInit(): void {
-    this.kc_admin_service.getUsers().subscribe((users) => {
-      this.users = users;
+    // this.kc_admin_service.getUsers().subscribe((users) => {
+    //   this.users = users;
+    //   this.createForms();
+    // });
+
+
+    this.store.pipe(select(userSelector.selectAllUsers)).subscribe((res) => {
+      this.users = res;
       this.createForms();
     });
 
+    // each time the state changes, we need to update the forms
+    this.store.select(state => state.users).subscribe((res) => {
+      this.createForms();
+    });
+
+
   }
-
-  // TODO: disable editing the role of the super admin user
-
 
   createForms(): void {
     this.userForms = this.users.map(user => {
@@ -89,22 +103,30 @@ export class AdminPanelUsersComponent implements OnInit {
 
     this.userForms.forEach((userForm) => {
       let user = this.users.find((user) => user.id === userForm.value.id);
-      user.username = userForm.value.username;
-      user.roles = [userForm.value.role];
+      user = Object.assign({}, user, {
+        username: userForm.value.username,
+        roles: [userForm.value.role]
+      });
+      //
+      // user.username = userForm.value.username;
+      // user.roles = [userForm.value.role];
       this.updatedUsers.push(user);
     });
 
     const current_user_id = this.user_service.getUserID();
     const current_user = this.updatedUsers.find((user) => user.id === current_user_id);
 
-    if (current_user.roles[0] !== environment.KEYCLOAK_ROLES.admin) {
+    if (current_user.roles[0] !== environment.KEYCLOAK_CONFIG.roles.admin) {
       const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
         width: '250px',
         data: { message: 'You cannot revoke your own admin privileges.', showCancel: false}
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        // refresh table
+        this.store.pipe(select(userSelector.selectAllUsers)).subscribe((res) => {
+          this.users = res;
+          this.createForms();
+        });
       });
       return;
     }
@@ -123,29 +145,9 @@ export class AdminPanelUsersComponent implements OnInit {
       userRoleMapping.user_role_mappings.push(userRoleObj);
     });
 
-    // alert(JSON.stringify(userRoleMapping, null, 4));
-    console.log(userRoleMapping);
-    this.kc_admin_service.setRolesForMultipleUsers(userRoleMapping).subscribe((res) => {
-      console.log(res);
-    });
+    this.store.dispatch(new UpdateUserRoleMappingsAction(userRoleMapping));
   }
 
-
-  // updateUsers(): void {
-  //
-  //   let userRoleObj = {
-  //     user_id: '',
-  //     roles: []
-  //   }
-  //
-  //   let userRoleMapping = {
-  //     user_role_mappings: []
-  //   }
-  //
-  //   this.kc_admin_service.getUsers().subscribe((res) => {
-  //     this.users = res;
-  //   });
-  // }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(CreateUserDialogComponent, {
@@ -153,6 +155,7 @@ export class AdminPanelUsersComponent implements OnInit {
       maxWidth: '90vw',
       maxHeight: '90vh',
       panelClass: 'custom-dialog-container',
+      data: {usernames: this.users.map((user) => user.username)}
     })
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -167,11 +170,9 @@ export class AdminPanelUsersComponent implements OnInit {
           'roles': [result.role]
         }
 
-        this.kc_admin_service.createUser(userDictionary).subscribe((res) => {
-          // alert(JSON.stringify(res, null, 4));
-          // console.log(res);
-          // this.kc_admin_service.getUsers().subscribe((users) => {this.updatedUsers = users});
-        });
+        // this.store.dispatch(new CreateUserAction(userDictionary));
+
+        this.kc_admin_service.createUser(userDictionary).subscribe();
 
         // update the table
       }
@@ -179,6 +180,15 @@ export class AdminPanelUsersComponent implements OnInit {
   }
 
   confirmDelete(user: UserRepresentation): void {
+    let current_user_id = this.user_service.getUserID();
+    if (user.id === current_user_id) {
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: '250px',
+        data: { message: 'You cannot delete your own account.', showCancel: false}
+      });
+      return;
+    }
+
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '250px',
       data: { message: 'Are you sure you want to delete this user: '+ user.username +'?', showCancel: true }
@@ -193,16 +203,7 @@ export class AdminPanelUsersComponent implements OnInit {
   }
 
   deleteUser(user: UserRepresentation): void {
-    // Send delete request to API
-
-    let idToDelete = user.id;
-
-    this.kc_admin_service.deleteUser(idToDelete).subscribe((res) => {
-
-    });
-
-    // update the table
-
+    this.store.dispatch(new DeleteUserAction(user.id));
   }
 
 }

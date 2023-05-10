@@ -2,8 +2,7 @@
   <button (click)="openDialog()">Add User</button>
   <button (click)="confirmUpdateUsers()"> Save Changes </button>
 </div>
-<form>
-<!--  (ngSubmit)="updateUsers()">-->
+<form class="admin-panel__user-table">
   <table>
     <thead>
     <tr>
@@ -29,30 +28,20 @@
       <td>
         <mat-form-field appearance="fill">
           <mat-label>Role</mat-label>
-          <mat-select formControlName="role">
+          <mat-select formControlName="role"> <!-- could disable the form control here, in case I want to add an edit btn -->
             <mat-option *ngFor="let role of kcRoles" [value]="role.value">
               {{ role.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </td>
-      <td>
+      <td class="admin-panel__user-table__action-buttons">
         <button (click)="confirmDelete(user.value)">
-          Delete User
+<!--          Delete User-->
+          <mat-icon>delete</mat-icon>
         </button>
       </td>
     </tr>
     </tbody>
   </table>
-<!--  <button type="submit">Save Changes</button>-->
-
 </form>
-
-
-<!--        <div formGroupName="role">-->
-<!--          <mat-radio-group [(ngModel)]="user.controls.role" formControlName="role">-->
-<!--            <mat-radio-button value="{{keycloak_roles.demo.value}}" [checked]="user.controls.role.value == keycloak_roles.demo.value"> Demo </mat-radio-button>-->
-<!--            <mat-radio-button value="{{keycloak_roles.standard.value}}" [checked]="user.controls.role.value == keycloak_roles.standard.value"> Standard </mat-radio-button>-->
-<!--            <mat-radio-button value="{{keycloak_roles.admin.value}}" [checked]="user.controls.role.value == keycloak_roles.admin.value"> Admin </mat-radio-button>-->
-<!--          </mat-radio-group>-->
-<!--        </div>-->

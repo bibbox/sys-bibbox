@@ -18,6 +18,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTabsModule} from '@angular/material/tabs';
 // import {MatGridListModule} from '@angular/material/grid-list';
 // import {MatListModule} from '@angular/material/list';
+import {MatRadioModule} from '@angular/material/radio';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -28,7 +29,7 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
+import {MatTableModule} from '@angular/material/table';
 
 // ngrx store
 import {MetaReducer, StoreModule} from '@ngrx/store';
@@ -42,6 +43,7 @@ import {ApplicationGroupReducer} from './store/reducers/application-group.reduce
 import {ActivityEffects} from './store/effects/activity.effects';
 import {InstanceEffects} from './store/effects/instance.effects';
 import {ApplicationsEffects} from './store/effects/applications.effects';
+import {UserReducer} from './store/reducers/user.reducer';
 
 // app root modules
 import { AppRoutingModule } from './app-routing.module';
@@ -61,7 +63,6 @@ import { ContactComponent } from './components/about/contact/contact.component';
 import { PartnersComponent } from './components/about/partners/partners.component';
 import { ImprintComponent } from './components/about/imprint/imprint.component';
 import { ActivitiesComponent } from './components/activities/activities.component';
-import { LoginComponent } from './components/login/login.component';
 import { InstanceDetailPageComponent } from './components/instances/instance-detail-page/instance-detail-page.component';
 import { ApplicationGroupComponent } from './components/applications/application-group/application-group.component';
 import { ApplicationTileComponent} from './components/applications/application-group/application-tile/application-tile.component';
@@ -75,11 +76,10 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { InfoComponent } from './components/info/info.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AdminPanelInstancesComponent } from './components/admin-panel-instances/admin-panel-instances.component';
-import {MatTableModule} from '@angular/material/table';
 import { AdminPanelUsersComponent } from './components/admin-panel-users/admin-panel-users.component';
-import {MatRadioModule} from '@angular/material/radio';
 import { CreateUserDialogComponent } from './components/admin-panel-users/create-user-dialog/create-user-dialog.component';
 import { ConfirmationDialogComponent } from './components/admin-panel-users/confirmation-dialog/confirmation-dialog.component';
+import {UserEffects} from './store/effects/user.effects';
 
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
@@ -95,7 +95,6 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     PartnersComponent,
     ImprintComponent,
     ActivitiesComponent,
-    LoginComponent,
     InstanceDetailPageComponent,
     ApplicationTileComponent,
     ApplicationGroupComponent,
@@ -156,9 +155,10 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
         StoreModule.forRoot({
             instances: InstanceReducer,
             applicationGroups: ApplicationGroupReducer,
-            activities: ActivityReducer
+            activities: ActivityReducer,
+            users: UserReducer,
         }, {metaReducers}),
-        EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects,]),
+        EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects, UserEffects,]),
         StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
         // StoreModule.forRoot({}, {}),
         StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),

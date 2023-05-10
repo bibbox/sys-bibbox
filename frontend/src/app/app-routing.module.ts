@@ -29,9 +29,9 @@ const routes: Routes = [
   { path: 'instances', component: InstancesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
 
   // top nav admin
-  { path: 'sys-logs', component: AdminPanelSysLogsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_ROLES.admin]}},
-  { path: 'instance-mgmt', component: AdminPanelInstancesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_ROLES.admin]}},
-  { path: 'user-mgmt', component: AdminPanelUsersComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_ROLES.admin]}},
+  { path: 'sys-logs', component: AdminPanelSysLogsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_CONFIG.roles.admin]}},
+  { path: 'instance-mgmt', component: AdminPanelInstancesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_CONFIG.roles.admin]}},
+  { path: 'user-mgmt', component: AdminPanelUsersComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_CONFIG.roles.admin]}},
 
 
   // activities need two routes, in case we want to view activities without providing an activity id

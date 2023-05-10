@@ -9,7 +9,7 @@ from backend.app.services.activity_service import ActivityService
 from backend.app.services.log_service import LogService
 from backend.app.bibbox.docker_handler import DockerHandler
 
-from backend.app.services.keycloak_service import auth_token_required
+from backend.app.services.keycloak_service import auth_token_required, KeycloakRoles
 
 api = Namespace('activities', description='Activity Resources')
 restapi.add_namespace (api, '/activities')
@@ -39,7 +39,7 @@ class ActivityListAll(Resource):
 @api.route("/syslogs")
 class SysLogs(Resource):
     @api.doc("get all logs from sys-containers as dict")
-    @auth_token_required(required_roles=['bibbox-admin'])
+    @auth_token_required(required_roles=[KeycloakRoles.admin])
     def get(self):
         logs = {}
         try:

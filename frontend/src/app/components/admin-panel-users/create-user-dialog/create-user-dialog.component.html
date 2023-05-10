@@ -4,9 +4,16 @@
       <div>
         <mat-form-field>
           <input matInput placeholder="Username" formControlName="username" required>
-          <mat-error *ngIf="userForm.get('username').invalid && userForm.get('username').touched">
-            Please enter a valid username.
+          <mat-error *ngIf="userForm.controls.username.errors?.usernameExists; else noUsernameError">
+            This username already exists.
           </mat-error>
+          <ng-container>
+            <ng-template #noUsernameError>
+              <mat-error *ngIf="userForm.get('username').invalid && userForm.get('username').touched">
+                Please enter a valid username.
+              </mat-error>
+            </ng-template>
+          </ng-container>
         </mat-form-field>
       </div>
       <div>

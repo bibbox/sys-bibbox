@@ -42,3 +42,12 @@ def emitInstanceDeleted(instance_name):
     #print('emitting instance delete info')
     emit('instance_deleted', {'id': instance_name}, broadcast=True, namespace='/socket.io') #, namespace="/socket.io")
     socketio.sleep(0)
+
+def emitUserRefresh():
+    emit('new_user_data', {'data': 'User Data has changed'}, broadcast=True, namespace='/socket.io') #, namespace="/socket.io")
+    socketio.sleep(0)
+
+
+def emitUserDeleted(user_id):
+    emit('user_deleted', {'id': user_id}, broadcast=True, namespace='/socket.io') #, namespace="/socket.io")
+    socketio.sleep(0)

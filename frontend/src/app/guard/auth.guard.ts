@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
+import {environment} from '../../environments/environment';
 import {SocketioService} from '../store/services/socketio.service';
 
 @Injectable({
@@ -10,7 +11,7 @@ export class AuthGuard extends KeycloakAuthGuard {
 
   constructor(
     protected readonly router: Router,
-    protected readonly keycloak: KeycloakService,
+    protected readonly keycloak: KeycloakService
   ) {
     super(router, keycloak);
   }
@@ -19,7 +20,6 @@ export class AuthGuard extends KeycloakAuthGuard {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean | UrlTree> {
 
-    console.log('authentication_status: ' + this.authenticated);
     if (!this.authenticated) {
       console.log('attempting to authenticate');
       await this.keycloak.login({

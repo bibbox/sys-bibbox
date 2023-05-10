@@ -10,7 +10,7 @@
 //th {
 //  background-color: #ccc;
 //}
-
+@import "src/styles-variables";
 
 table {
   border-collapse: collapse;
@@ -38,20 +38,22 @@ mat-form-field {
     font-size: 14px;
   }
 }
+
 button {
   //display: block;
   //margin: 20px auto;
-  background-color: #1f9bcf;
-  color: #fff;
-  //padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  border: 1px solid $custom_gray_medium;
+  width: 150px;
+  font-size: medium;
+  font-weight: $custom_font_weight_light;
+
+  //color: $custom_gray_dark;
+
+  //background-color: $custom_gray_medium;
+
   &:hover {
-    background-color: #0074a8;
-  }
-  &:active {
-    background-color: #1f9bcf;
+    color: $custom_gray_light;
+    background-color: $custom_blue;
   }
 }
 
@@ -79,5 +81,27 @@ button {
     flex-basis: auto;
     align-self: auto;
     order: 0;
+  }
+}
+
+.admin-panel__user-table {
+
+  .admin-panel__user-table__action-buttons {
+    text-align: center;
+
+    button {
+      padding: 8px;
+      margin: 0;
+      width: 50px;
+      border: none;
+      font-size: medium;
+      font-weight: $custom_font_weight_light;
+      background-color: $custom_blue_light;
+      color: $custom_gray_light;
+
+      &:hover {
+        background-color: $custom_blue;
+      }
+    }
   }
 }

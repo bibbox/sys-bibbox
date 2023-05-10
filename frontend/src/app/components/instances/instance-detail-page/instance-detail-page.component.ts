@@ -11,6 +11,7 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {SVG_PATHS} from '../../../commons';
 import {environment} from '../../../../environments/environment';
 import {UserService} from '../../../store/services/user.service';
+import {DeleteInstanceAction} from '../../../store/actions/instance.actions';
 
 @Component({
   selector: 'app-instance-detail-page',
@@ -123,7 +124,7 @@ export class InstanceDetailPageComponent implements OnInit {
   }
 
   canManageInstance(): boolean {
-    const isAdmin = this.userService.isRole(environment.KEYCLOAK_ROLES.admin);
+    const isAdmin = this.userService.isRole(environment.KEYCLOAK_CONFIG.roles.admin);
     const doesInstanceOwnerMatch = this.userService.getUserID() === this.instanceItem.installed_by_id;
 
     return isAdmin || doesInstanceOwnerMatch;
@@ -139,10 +140,13 @@ export class InstanceDetailPageComponent implements OnInit {
     //   return;
     // }
 
-    console.log('delete instance:' + this.instanceItem.instancename);
-    this.instanceService.deleteInstance(this.instanceItem.instancename).subscribe(
-      (res) => console.log(res)
-    );
+    // console.log('delete instance:' + this.instanceItem.instancename);
+
+    this.store.dispatch(new DeleteInstanceAction(this.instanceItem.instancename));
+
+    // this.instanceService.deleteInstance(this.instanceItem.instancename).subscribe(
+    //   (res) => console.log(res)
+    // );
     this.router.navigateByUrl('/instances').then();
   }
 
