@@ -104,8 +104,8 @@ class KeycloakAdminService():
         self.keycloak_api = KeycloakAdmin(
                                             server_url=os.getenv('KEYCLOAK_SERVER_URL'),
                                             realm_name=os.getenv('KEYCLOAK_REALM'),
-                                            username=os.getenv('KEYCLOAK_ADMIN'),
-                                            password=os.getenv('KEYCLOAK_ADMIN_PASSWORD'),
+                                            username=os.getenv('KEYCLOAK_USER'),
+                                            password=os.getenv('KEYCLOAK_PASSWORD'),
                                             client_id=os.getenv('KEYCLOAK_ADMIN_CLIENT_ID'),
                                             client_secret_key=os.getenv('KEYCLOAK_ADMIN_CLIENT_SECRET'),
                                             auto_refresh_token=['get', 'put', 'post', 'delete']
@@ -340,8 +340,8 @@ class KeycloakAdminService():
         :type username: str
         """
         # check if username matches keycloak admin username from the env file
-        if username == os.getenv('KEYCLOAK_ADMIN_USERNAME'):
-            raise ValueError('Username is reserved.')
+        # if username == os.getenv('KEYCLOAK_ADMIN_USERNAME'):
+        #     raise ValueError('Username is reserved.')
 
         if username in self.get_usernames():
             raise ValueError(f'User {username} already exists.')

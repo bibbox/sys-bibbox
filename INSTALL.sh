@@ -78,9 +78,6 @@ chmod -R 775 /opt/bibbox/sys-bibbox/frontend/src/environments
 cd /opt/bibbox/sys-bibbox/frontend/src/environments
 
 
-PORT=80
-PROTOCOL=http
-
 sed -e "s/§§BASEURL/$DOMAINNAME/g; s/§§KEYCLOAK_PORT/$PORT/g; s/§§PROTOCOL/$PROTOCOL/g" environment.ts.template > environment.ts
 sed -e "s/§§BASEURL/$DOMAINNAME/g; s/§§KEYCLOAK_PORT/$PORT/g; s/§§PROTOCOL/$PROTOCOL/g" environment.prod.ts.template > environment.prod.ts
 
@@ -120,6 +117,7 @@ If an error occurs after installing, run the following commands:
 
 sudo docker exec -it bibbox-sys-commander-backend python manage.py recreate_db
 sudo docker exec -it bibbox-sys-commander-backend python manage.py seed_db
+sudo docker exec -it bibbox-sys-commander-backend python manage.py create_default_keycloak_user
 sudo docker-compose stop
 sudo docker-compose up --build
 '
