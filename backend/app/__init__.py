@@ -51,6 +51,7 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     # SocketIO.init_app(app=app, cors_allowed_origins="*", logger=True, engineio_logger=True)
     bootstrap.init_app(app)
+
     db.init_app(app)
     db.app = app
     app_celerey.conf.update(app.config)

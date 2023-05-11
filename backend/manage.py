@@ -14,6 +14,8 @@ from backend.app.models.catalogue import Catalogue
 from backend.app.models.log import Log
 # from backend.app.models.user import User
 
+from flask.cli import AppGroup
+
 
 from passlib.apps import custom_app_context as pwd_context
 
@@ -73,7 +75,7 @@ print ("SQLSTRING= ", app.config["DB_SERVICE"])
 
 
 # @manager.command
-# @app.cli.command('init-db')
+@app.cli.command('init-db')
 def recreate_db():
     db.drop_all()
     db.create_all()
@@ -92,9 +94,10 @@ def recreate_db():
 
 
 # @manager.command
-def loadAppStore():
-    from backend.app.celerytasks.tasks import syncAppCatalogue
-    syncAppCatalogue.delay(['bibbox', 'bibbox'])
+# @app.cli.command('load-app-store')
+# def loadAppStore():
+#     from backend.app.celerytasks.tasks import syncAppCatalogue
+#     syncAppCatalogue.delay(['bibbox', 'bibbox'])
 
 
 # @manager.command
@@ -137,5 +140,5 @@ def loadAppStore():
 
 if __name__ == '__main__':
     recreate_db()
-    loadAppStore()
+    # loadAppStore()
     # create_default_keycloak_user()

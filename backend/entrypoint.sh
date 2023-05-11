@@ -28,6 +28,11 @@ if [ ! -f  DBINIT.DONE ]; then
 fi
 
 
+# test if the db is working
+# python manage.py
+
+
+
 uwsgi --ini /etc/uwsgi.ini
 
 
