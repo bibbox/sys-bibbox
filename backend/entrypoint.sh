@@ -25,6 +25,7 @@ echo "PostgreSQL started!"
 if [ ! -f  DBINIT.DONE ]; then
     python manage.py recreate_db
     python manage.py seed_db
+    python manage.py create_default_keycloak_user
     touch DBINIT.DONE
 fi
 

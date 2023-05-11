@@ -93,6 +93,17 @@ def seed_db():
 #     syncAppCatalogue.delay(['bibbox', 'bibbox'])
 
 
+@manager.command
+def create_default_keycloak_user():
+    """Create a default user for keycloak."""
+    from backend.app.services.keycloak_service import KeycloakAdminService, KeycloakRoles
+    keycloak_admin = KeycloakAdminService()
+    keycloak_admin.create_user(
+        username='admin',
+        password='admin',
+        roles=[KeycloakRoles.admin]
+    )
+
 
 # --------------------------------TEST SocketIO Implementation ------------------------------------
 

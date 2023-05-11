@@ -85,7 +85,7 @@ sed -e "s/§§BASEURL/$DOMAINNAME/g; s/§§KEYCLOAK_PORT/$PORT/g; s/§§PROTOCOL
 sed -e "s/§§BASEURL/$DOMAINNAME/g; s/§§KEYCLOAK_PORT/$PORT/g; s/§§PROTOCOL/$PROTOCOL/g" environment.prod.ts.template > environment.prod.ts
 
 # replace the realm export template
-sed -e "s/§§BASEURL/$DOMAINNAME/g; s/§§PORT/$PORT/g; s/§§PROTOCOL/$PROTOCOL/g" /opt/bibbox/sys-bibbox/keycloak/realms/realm-export.json.template > /opt/bibbox/sys-bibbox/keycloak/realms/realm-export.json
+sed -e "s/§§BASEURL/$DOMAINNAME/g;" /opt/bibbox/sys-bibbox/keycloak/realms/realm-export.json.template > /opt/bibbox/sys-bibbox/keycloak/realms/realm-export.json
 
 # compile frontend code
 cd /opt/bibbox/sys-bibbox/frontend
