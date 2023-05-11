@@ -1081,7 +1081,7 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "http://§§BASEURL/*",
-        "http://api.§§BASEURL/*"
+        "http://api.§§BASEURL/*",
         "http://keycloak.§§BASEURL/*"
       ],
       "webOrigins": [
