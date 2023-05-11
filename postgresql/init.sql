@@ -5,4 +5,3 @@ GRANT ALL PRIVILEGES ON DATABASE keycloak TO keycloak;
 
 -- bibbox
 CREATE DATABASE bibbox;
-USE bibbox;
