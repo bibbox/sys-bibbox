@@ -115,9 +115,8 @@ echo 'INSTALLATION COMPLETE'
 : '
 If an error occurs after installing, run the following commands:
 
-sudo docker exec -it bibbox-sys-commander-backend python manage.py recreate_db
-sudo docker exec -it bibbox-sys-commander-backend python manage.py seed_db
-sudo docker exec -it bibbox-sys-commander-backend python manage.py create_default_keycloak_user
+sudo docker exec -it bibbox-sys-commander-backend flask db init-db
+sudo docker exec -it bibbox-sys-commander-backend flask db create-default-keycloak-user
 sudo docker-compose stop
 sudo docker-compose up --build
 '

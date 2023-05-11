@@ -23,9 +23,8 @@ echo "PostgreSQL started!"
 # Run below commands from manage.py to initialize db and have some default data.
 # add a flag to preserve the DB at a build
 if [ ! -f  DBINIT.DONE ]; then
-    python manage.py recreate_db
-    python manage.py seed_db
-    python manage.py create_default_keycloak_user
+    flask db init-db
+    flask db create-default-keycloak-user
     touch DBINIT.DONE
 fi
 
