@@ -12,7 +12,10 @@ export class ApplicationService {
   constructor(private http: HttpClient) { }
 
   loadApplications(): Observable<ApplicationGroupItem[]> {
-    return this.http.get<ApplicationGroupItem[]>(API_APPLICATIONS_URL);
+    // to avoid proxy errors with base urls, remove the trailing / from the url
+    let applications_url = API_APPLICATIONS_URL.substring(0, API_APPLICATIONS_URL.length - 1);
+
+    return this.http.get<ApplicationGroupItem[]>(applications_url);
   }
 
   getAppInfo(url: string): Observable<AppInfo> {

@@ -19,7 +19,9 @@ export class InstanceService {
   }
 
   getInstances(): Observable<InstanceItem[]>{
-    return this.http.get<InstanceItem[]>(API_INSTANCES_URL);
+    // to avoid proxy errors with base urls, remove the trailing / from the url
+    let instances_url = API_INSTANCES_URL.substring(0, API_INSTANCES_URL.length - 1);
+    return this.http.get<InstanceItem[]>(instances_url);
   }
 
   getInstanceById(id: string): Observable<InstanceItem>{

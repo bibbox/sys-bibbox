@@ -16,7 +16,11 @@ export class ActivityService {
 
 
   getActivities(): Observable<ActivityItem[]> {
-    return this.http.get<ActivityItem[]>(API_ACTIVITY_URL);
+
+    // to avoid proxy errors with base urls, remove the trailing / from the url
+    let activity_url = API_ACTIVITY_URL.substring(0, API_ACTIVITY_URL.length - 1);
+
+    return this.http.get<ActivityItem[]>(activity_url);
   }
 
   getLogsOfActivity(activityID: number): Observable<LogItem[]> {
