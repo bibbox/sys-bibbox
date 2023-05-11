@@ -115,7 +115,7 @@ echo 'INSTALLATION COMPLETE'
 : '
 If an error occurs after installing, run the following commands:
 
-sudo docker exec -it bibbox-sys-commander-backend python manage.py
+sudo docker exec -it bibbox-sys-commander-backend python manage.py recreate_db
 
 sudo docker-compose stop
 sudo docker-compose up --build

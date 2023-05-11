@@ -12,7 +12,7 @@ from re import A
 import engineio
 
 from flask import Flask, Blueprint, url_for, render_template
-from flask_bootstrap import Bootstrap
+# from flask_bootstrap import Bootstrap
 
 from flask_restx import Resource, Api
 
@@ -31,7 +31,7 @@ from backend.settings import config, Config
 # https://flask.palletsprojects.com/en/1.1.x/patterns/appfactories/ 
 
 
-bootstrap = Bootstrap()
+# bootstrap = Bootstrap()
 app = Flask(__name__)
 
 socketio = SocketIO(app, logger=False, engineio_logger=False, cors_allowed_origins="*", namespace='/', message_queue='redis://redis:6379') #, )
@@ -50,7 +50,7 @@ def create_app(config_name):
     print ("CREATE APP IN ", config_name, " MODE")
     app.config.from_object(config[config_name])
     # SocketIO.init_app(app=app, cors_allowed_origins="*", logger=True, engineio_logger=True)
-    bootstrap.init_app(app)
+    # bootstrap.init_app(app)
 
     db.init_app(app)
     db.app = app

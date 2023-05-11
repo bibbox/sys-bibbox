@@ -7,7 +7,7 @@ import os
 from coverage import coverage
 # from flask_script import Manager, Server as _Server
 
-from backend.app import db, create_app # , socketio
+from backend.app import db, app, create_app # , socketio
 from backend.app.models.app  import BibboxApp
 from backend.app.models.activity import Activity
 from backend.app.models.catalogue import Catalogue
@@ -40,7 +40,7 @@ COV.start()
 
 # create flask application instance
 
-app = create_app ('production')
+# app = create_app ('production')
 cli = FlaskGroup(app) # new manager, as manager is deprecated in flask 2.x
 
 
