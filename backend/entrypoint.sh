@@ -23,7 +23,7 @@ echo "PostgreSQL started!"
 # Run below commands from manage.py to initialize db and have some default data.
 # add a flag to preserve the DB at a build
 if [ ! -f  DBINIT.DONE ]; then
-    python manage.py
+    python manage.py run
     touch DBINIT.DONE
 fi
 

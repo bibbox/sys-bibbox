@@ -14,7 +14,7 @@ from backend.app.models.catalogue import Catalogue
 from backend.app.models.log import Log
 # from backend.app.models.user import User
 
-from flask.cli import AppGroup
+from flask.cli import FlaskGroup
 
 
 from passlib.apps import custom_app_context as pwd_context
@@ -41,6 +41,8 @@ COV.start()
 # create flask application instance
 
 app = create_app ('production')
+cli = FlaskGroup(app) # new manager, as manager is deprecated in flask 2.x
+
 
 # manager = Manager(app)
 
@@ -75,7 +77,7 @@ print ("SQLSTRING= ", app.config["DB_SERVICE"])
 
 
 # @manager.command
-@app.cli.command('init-db')
+@cli.command()
 def recreate_db():
     db.drop_all()
     db.create_all()
@@ -139,6 +141,5 @@ def recreate_db():
 
 
 if __name__ == '__main__':
-    recreate_db()
-    # loadAppStore()
-    # create_default_keycloak_user()
+    cli()
+    
