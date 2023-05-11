@@ -887,7 +887,7 @@
     {
       "id": "d04e0beb-4fdd-4a80-8490-e3811d835127",
       "clientId": "sys-bibbox-backend",
-      "rootUrl": "http://localhost:5010",
+      "rootUrl": "http://bibbox-sys-commander-backend:5000",
       "adminUrl": "",
       "baseUrl": "",
       "surrogateAuthRequired": false,
@@ -896,7 +896,7 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://localhost/*"
+        "/*"
       ],
       "webOrigins": [
         "*"
