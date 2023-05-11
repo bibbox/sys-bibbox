@@ -1,10 +1,10 @@
-let BASEURL: string = §§BASEURL;
-let PROTOCOL: string = §§PROTOCOL;
-let KEYCLOAK_PORT: string = §§PORT;
+let BASEURL: string = "§§BASEURL";
+let PROTOCOL: string = "§§PROTOCOL";
+let KEYCLOAK_PORT: string = "5014";
 
 export const environment = {
   production: true,
-  BASEURL: BASEURL
+  BASEURL: BASEURL,
 
   KEYCLOAK_CONFIG: {
     url: 'PROTOCOL://'+ BASEURL +':KEYCLOAK_PORT/auth',

@@ -46,7 +46,7 @@ apt install docker-compose -y
 apt install npm -y
 apt install python3-pip -y
 
-printf 'n\n' | npm ci -g @angular/cli
+printf 'n\n' | npm i -g @angular/cli
 #printf 'n\n' | npm update -g @angular/cli
 
 
@@ -93,7 +93,7 @@ cd /opt/bibbox/sys-bibbox/frontend
 printf 'n\n' | npm ci
 #printf 'n\n' | npm update
 
-ng build --prod
+ng build --configuration production
 
 
 # copy config templates to the actual destination
@@ -103,8 +103,6 @@ cp /opt/bibbox/sys-bibbox/config-templates/bibbox.config /opt/bibbox/config/bibb
 
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-default.template /opt/bibbox/config/proxy-default.template
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-websocket.template /opt/bibbox/config/proxy-websocket.template
-
-
 
 
 

@@ -2,11 +2,11 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-let BASEURL: string = §§BASEURL;
+let BASEURL: string = "§§BASEURL";
 
 export const environment = {
   production: false,
-  BASEURL: BASEURL
+  BASEURL: BASEURL,
 
   KEYCLOAK_CONFIG: {
     url: 'http://'+ BASEURL +':5014/auth',
