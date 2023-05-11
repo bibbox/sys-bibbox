@@ -6,7 +6,7 @@
 
 # TODO - for production take the password from the .env
 
-RETRIES=30
+RETRIES=5
 USER=postgres
 DATABASE=bibbox
 HOST=postgres
@@ -23,7 +23,7 @@ echo "PostgreSQL started!"
 # Run below commands from manage.py to initialize db and have some default data.
 # add a flag to preserve the DB at a build
 if [ ! -f  DBINIT.DONE ]; then
-    python manage.py run
+    python manage.py recreate-db
     touch DBINIT.DONE
 fi
 
