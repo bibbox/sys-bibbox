@@ -87,7 +87,6 @@ services:
        - .env
     depends_on:
       - bibbox-sys-commander-keycloak
-      - bibbox-sys-commander-backend # wait for backend to start, not strictly necessary
 
   # bibbox-sys-commander-celery-beat:
   #   container_name:  bibbox-sys-commander-celery
@@ -193,7 +192,7 @@ services:
         - /var/lib/docker/:/var/lib/docker:ro 
         - /var/run/docker.sock:/var/run/docker.sock:ro 
         - /dev/disk/:/dev/disk:ro 
-        
+
 
   bibbox-sys-commander-keycloak:
       container_name: bibbox-sys-commander-keycloak

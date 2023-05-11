@@ -530,14 +530,14 @@
       "groups": []
     },
     {
-      "username": "admin",
+      "username": "tempadmin",
       "enabled": true,
       "createdTimestamp": 1682497835811,
       "id": "2a9cb28b-a839-4e44-b1ff-94957c5671b0",
       "credentials":[
         {
           "type": "password",
-          "value": "admin",
+          "value": "tempadmin",
           "temporary": false
         }
       ],

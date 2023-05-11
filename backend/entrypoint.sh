@@ -6,7 +6,7 @@
 
 # TODO - for production take the password from the .env
 
-RETRIES=10
+RETRIES=30
 USER=postgres
 DATABASE=bibbox
 HOST=postgres
