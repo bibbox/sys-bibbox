@@ -15,7 +15,7 @@ from backend.app.models.log import Log
 # from backend.app.models.user import User
 
 from flask.cli import FlaskGroup
-
+from flask_script import Manager, Server as _Server
 
 from passlib.apps import custom_app_context as pwd_context
 
@@ -40,11 +40,11 @@ COV.start()
 
 # create flask application instance
 
-# app = create_app ('production')
-cli = FlaskGroup(app) # new manager, as manager is deprecated in flask 2.x
+app = create_app ('production')
+# cli = FlaskGroup(app) # new manager, as manager is deprecated in flask 2.x
 
 
-# manager = Manager(app)
+manager = Manager(app)
 
 print ("=========== MANAGE.PY ENVIRONMENT ============")
 print ("FLASK_CONFIG = ", os.environ["FLASK_CONFIG"])
@@ -76,8 +76,7 @@ print ("SQLSTRING= ", app.config["DB_SERVICE"])
 #     return 1
 
 
-# @manager.command
-@cli.command()
+@manager.command
 def recreate_db():
     db.drop_all()
     db.create_all()
@@ -95,11 +94,10 @@ def recreate_db():
 #     db.session.commit()
 
 
-# @manager.command
-# @app.cli.command('load-app-store')
-# def loadAppStore():
-#     from backend.app.celerytasks.tasks import syncAppCatalogue
-#     syncAppCatalogue.delay(['bibbox', 'bibbox'])
+@manager.command
+def sync_app_catalogue():
+    from backend.app.celerytasks.tasks import syncAppCatalogue
+    syncAppCatalogue.delay(['bibbox', 'bibbox'])
 
 
 # @manager.command
@@ -141,5 +139,5 @@ def recreate_db():
 
 
 if __name__ == '__main__':
-    cli()
+    manager.run()
     
