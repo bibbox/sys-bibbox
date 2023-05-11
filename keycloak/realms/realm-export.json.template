@@ -528,6 +528,28 @@
       },
       "notBefore": 0,
       "groups": []
+    },
+    {
+      "username": "admin",
+      "enabled": true,
+      "createdTimestamp": 1682497835811,
+      "id": "2a9cb28b-a839-4e44-b1ff-94957c5671b0",
+      "credentials":[
+        {
+          "type": "password",
+          "value": "admin",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "bibbox-admin"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "manage-users",
+          "manage-realm"
+        ]
+      }
     }
   ],
   "scopeMappings": [
@@ -651,7 +673,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "XWJ1jmMgIPc8QrK0YrZ8csN1Vu6xQSI5",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -887,14 +909,14 @@
     {
       "id": "d04e0beb-4fdd-4a80-8490-e3811d835127",
       "clientId": "sys-bibbox-backend",
-      "rootUrl": "http://bibbox-sys-commander-backend:5000",
+      "rootUrl": "http://bibbox-sys-commander-backend:5000/",
       "adminUrl": "",
       "baseUrl": "",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "bZ78ujjucPztYLjQ01ToxOcvL0TUVDFA",
       "redirectUris": [
         "/*"
       ],

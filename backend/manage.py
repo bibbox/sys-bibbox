@@ -9,6 +9,11 @@ from coverage import coverage
 
 from backend.app import db, create_app # , socketio
 from backend.app.models.app  import BibboxApp
+from backend.app.models.activity import Activity
+from backend.app.models.catalogue import Catalogue
+from backend.app.models.log import Log
+# from backend.app.models.user import User
+
 
 from passlib.apps import custom_app_context as pwd_context
 
@@ -68,7 +73,7 @@ print ("SQLSTRING= ", app.config["DB_SERVICE"])
 
 
 # @manager.command
-@app.cli.command('init-db')
+# @app.cli.command('init-db')
 def recreate_db():
     db.drop_all()
     db.create_all()
@@ -87,22 +92,22 @@ def recreate_db():
 
 
 # @manager.command
-# def loadAppStore():
-#     from backend.app.celerytasks.tasks import syncAppCatalogue
-#     syncAppCatalogue.delay(['bibbox', 'bibbox'])
+def loadAppStore():
+    from backend.app.celerytasks.tasks import syncAppCatalogue
+    syncAppCatalogue.delay(['bibbox', 'bibbox'])
 
 
 # @manager.command
-@app.cli.command('create-default-keycloak-user')
-def create_default_keycloak_user():
-    """Create a default user for keycloak."""
-    from backend.app.services.keycloak_service import KeycloakAdminService, KeycloakRoles
-    keycloak_admin = KeycloakAdminService()
-    keycloak_admin.create_user(
-        username='admin',
-        password='admin',
-        roles=[KeycloakRoles.admin]
-    )
+# @app.cli.command('create-default-keycloak-user')
+# def create_default_keycloak_user():
+#     """Create a default user for keycloak."""
+#     from backend.app.services.keycloak_service import KeycloakAdminService, KeycloakRoles
+#     keycloak_admin = KeycloakAdminService()
+#     keycloak_admin.create_user(
+#         username='admin',
+#         password='admin',
+#         roles=[KeycloakRoles.admin]
+#     )
 
 
 # --------------------------------TEST SocketIO Implementation ------------------------------------
@@ -132,4 +137,5 @@ def create_default_keycloak_user():
 
 if __name__ == '__main__':
     recreate_db()
-    create_default_keycloak_user()
+    loadAppStore()
+    # create_default_keycloak_user()

@@ -6,7 +6,7 @@
 
 # TODO - for production take the password from the .env
 
-RETRIES=4
+RETRIES=10
 USER=postgres
 DATABASE=bibbox
 HOST=postgres
@@ -23,8 +23,7 @@ echo "PostgreSQL started!"
 # Run below commands from manage.py to initialize db and have some default data.
 # add a flag to preserve the DB at a build
 if [ ! -f  DBINIT.DONE ]; then
-    flask db init-db
-    flask db create-default-keycloak-user
+    python manage.py
     touch DBINIT.DONE
 fi
 
