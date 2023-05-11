@@ -1,4 +1,4 @@
-import {NgModule, isDevMode, APP_INITIALIZER} from '@angular/core';
+import {NgModule, APP_INITIALIZER} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserModule} from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
@@ -161,7 +161,6 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
         EffectsModule.forRoot([InstanceEffects, ApplicationsEffects, ActivityEffects, UserEffects,]),
         StoreDevtoolsModule.instrument({maxAge: 25, name: 'BIBBOX Store'}),
         // StoreModule.forRoot({}, {}),
-        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
         MatSlideToggleModule,
         MatTableModule,
         MatRadioModule,

@@ -60,7 +60,7 @@
 
 
 # add the keycloak proxy
-<VirtualHost *:5014>
+<VirtualHost *:80>
         ServerName keycloak.§§BASEURL
 
         ProxyPass               /       http://bibbox-sys-commander-keycloak:8080/

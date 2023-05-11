@@ -10,7 +10,7 @@ export const environment = {
 
 
   KEYCLOAK_CONFIG: {
-    url: 'http://'+ BASEURL +':5014/auth',
+    url: 'http://keycloak.'+ BASEURL +'/auth',
     realm: 'sys-bibbox',
     clientId: 'sys-bibbox-frontend',
 
