@@ -87,6 +87,7 @@ services:
        - .env
     depends_on:
       - bibbox-sys-commander-keycloak
+      - bibbox-sys-commander-backend # wait for backend to start, not strictly necessary
 
   # bibbox-sys-commander-celery-beat:
   #   container_name:  bibbox-sys-commander-celery
@@ -192,10 +193,10 @@ services:
         - /var/lib/docker/:/var/lib/docker:ro 
         - /var/run/docker.sock:/var/run/docker.sock:ro 
         - /dev/disk/:/dev/disk:ro 
-  
+        
 
   bibbox-sys-commander-keycloak:
-      container_name: bibbox-sys-commander-keycloak #change name later
+      container_name: bibbox-sys-commander-keycloak
       image: jboss/keycloak
       networks: 
       - bibbox-default-network
@@ -209,12 +210,21 @@ services:
         DB_USER: keycloak
         DB_PASSWORD: keycloak
         KEYCLOAK_IMPORT: /opt/jboss/keycloak/import/realms/realm-export.json # path to realm file in container
+        DB_WAIT_TIMEOUT: 180 # wait for postgres to initialize
+        DB_SCHEMA: public # use the public schema
+        JBOSS_CLI: "/opt/jboss/keycloak/bin/jboss-cli.sh"
       
       env_file: # we want to read some variables from the .env file as they are shared with the backend
         - .env
       
       volumes:
         - ./keycloak/realms/realm-export.json:/opt/jboss/keycloak/import/realms/realm-export.json
-      command: ["-Dkeycloak.profile.feature.upload_scripts=enabled"]
+      command: [
+        "-Dkeycloak.profile.feature.upload_scripts=enabled", 
+        "-Dkeycloak.migration.action=import", 
+        "-Dkeycloak.migration.provider=singleFile", 
+        "-Dkeycloak.migration.file=/opt/jboss/keycloak/import/realms/realm-export.json", 
+        "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
+        ]
       depends_on:
         - bibbox-sys-commander-postgres
