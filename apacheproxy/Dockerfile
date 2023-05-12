@@ -15,9 +15,6 @@ RUN mkdir -p /var/www/html/error/
 COPY error.html /var/www/html/error/error.html
 COPY robots.txt /var/www/robots.txt
 
-ADD htpasswd.conf /etc/apache2/.htpasswd
-#COPY htaccess.conf /var/www/html/sys-bibbox-client/.htaccess
-
 EXPOSE 80
 
 CMD ["httpd", "-D", "FOREGROUND"]
