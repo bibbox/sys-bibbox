@@ -91,7 +91,7 @@ sed -e "s/§§BASEURL/$DOMAINNAME/g;" /opt/bibbox/sys-bibbox/keycloak/realms/rea
 # compile frontend code
 cd /opt/bibbox/sys-bibbox/frontend
 
-printf 'n\n' | npm ci
+printf 'n\n' | npm ci -N
 #printf 'n\n' | npm update
 
 ng build --configuration production
@@ -114,8 +114,7 @@ docker network create bibbox-default-network
 docker-compose up --build -d
 
 # re init db
-# docker exec bibbox-sys-commander-backend python manage.py recreate_db
-# docker exec bibbox-sys-commander-backend python manage.py seed_db
+docker exec -it bibbox-sys-commander-backend python manage.py recreate_db
 
 
 echo 'INSTALLATION COMPLETE'
