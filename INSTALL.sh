@@ -112,10 +112,6 @@ docker network create bibbox-default-network
 
 docker-compose up --build -d
 
-# re init db
-docker exec -it bibbox-sys-commander-backend python manage.py recreate_db
-
-
 echo 'INSTALLATION COMPLETE'
 
 : '
