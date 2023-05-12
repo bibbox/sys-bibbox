@@ -26,7 +26,7 @@ const routes: Routes = [
   // top nav
   { path: 'applications', component: ApplicationsComponent, pathMatch: 'full', canActivate: [AuthGuard]},
   { path: 'instances', component: InstancesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
-  { path: 'fdp', component: ApplicationsComponent, resolve: { url: 'externalUrlRedirectResolver'}, data: {externalUrl: 'http://fdp.' + environment.BASEURL}}, 
+  { path: 'fdp', component: ApplicationsComponent, resolve: { url: 'externalUrlRedirectResolver'}, data: {externalUrl: 'http://fdp.' + environment.BASEURL}, canActivate: [AuthGuard]},
   { path: 'activities/:activity_id', component: ActivitiesComponent, pathMatch: 'full', canActivate: [AuthGuard]}, // activities need two routes, in case we want to view activities without providing an activity id
   { path: 'activities', component: ActivitiesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
 

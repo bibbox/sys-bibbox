@@ -223,7 +223,7 @@ services:
         "-Dkeycloak.migration.action=import", 
         "-Dkeycloak.migration.provider=singleFile", 
         "-Dkeycloak.migration.file=/opt/jboss/keycloak/import/realms/realm-export.json", 
-        "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
+        "-Dkeycloak.migration.strategy=IGNORE_EXISTING" # this will only import the realm if it does not exist yet, if there are changes to the realm, the container needs to be deleted and recreated (this also deletes users)
         ]
       depends_on:
         - bibbox-sys-commander-postgres
