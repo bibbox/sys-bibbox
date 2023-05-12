@@ -23,7 +23,7 @@
                 # Header set Access-Control-Allow-Origin "*"
 
                 Options Indexes FollowSymLinks MultiViews
-                AllowOverride All
+                AllowOverride None
                 # Info: deprecated since v2.4:
                 # - Order allow,deny
                 # - Allow from all
