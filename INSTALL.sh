@@ -78,11 +78,12 @@ sed -e "s/§§SERVERNAME/$DOMAINNAME/g" httpd.conf.template > httpd.conf
 chmod -R 775 /opt/bibbox/sys-bibbox/frontend/src/environments
 cd /opt/bibbox/sys-bibbox/frontend/src/environments
 
+sed -e "s/§§BASEURL/$DOMAINNAME/g; s/§§KEYCLOAK_PORT/$PORT/g; s/§§PROTOCOL/$PROTOCOL/g" environment.ts.template > environment.ts
+sed -e "s/§§BASEURL/$DOMAINNAME/g; s/§§KEYCLOAK_PORT/$PORT/g; s/§§PROTOCOL/$PROTOCOL/g" environment.prod.ts.template > environment.prod.ts
+
 cd /opt/bibbox/sys-bibbox/fdp-configs
 sed -e "s/§§BASEURL/$DOMAINNAME/g" fdp.env.template > fdp.env
 
-sed -e "s/§§BASEURL/$DOMAINNAME/g; s/§§KEYCLOAK_PORT/$PORT/g; s/§§PROTOCOL/$PROTOCOL/g" environment.ts.template > environment.ts
-sed -e "s/§§BASEURL/$DOMAINNAME/g; s/§§KEYCLOAK_PORT/$PORT/g; s/§§PROTOCOL/$PROTOCOL/g" environment.prod.ts.template > environment.prod.ts
 
 # replace the realm export template
 sed -e "s/§§BASEURL/$DOMAINNAME/g;" /opt/bibbox/sys-bibbox/keycloak/realms/realm-export.json.template > /opt/bibbox/sys-bibbox/keycloak/realms/realm-export.json
