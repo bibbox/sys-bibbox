@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
     { link: 'applications', label: 'Store'},
     { link: 'instances', label: 'Instances' },
     { link: 'activities', label: 'Activities' },
+    { link: 'fdp', label: 'FDP' },
     //{ link: 'sys-logs', label: 'Sys-Logs'},
   ];
 

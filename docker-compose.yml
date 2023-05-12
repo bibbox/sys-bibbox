@@ -227,3 +227,47 @@ services:
         ]
       depends_on:
         - bibbox-sys-commander-postgres
+  bibbox-sys-commander-master-fdp:
+    image: fairdata/fairdatapoint:1.13.2
+    container_name: bibbox-sys-commander-master-fdp
+    restart: unless-stopped
+    networks:
+      - bibbox-default-network
+    ports:
+      - "8080:80"
+    volumes:
+      - ./fdp-configs/application.yml:/fdp/application.yml:ro
+    links:
+      - bibbox-sys-commander-master-fdp-blazegraph:blazegraph
+      - bibbox-sys-commander-master-fdp-mongo:mongo
+    env_file:
+      - fdp-configs/fdp.env.template
+
+
+  bibbox-sys-commander-master-fdp-client:
+    image: fairdata/fairdatapoint-index-client:1.13
+    container_name: bibbox-sys-commander-master-fdp-client
+    ports:
+      - "8088:80"
+    environment:
+      - FDP_HOST=fdp
+    links:
+      - bibbox-sys-commander-master-fdp:fdp
+    networks:
+      - bibbox-default-network
+
+  bibbox-sys-commander-master-fdp-mongo:
+    image: mongo:4.0.12
+    container_name: bibbox-sys-commander-master-fdp-mongo
+    volumes:
+      - ./data/mongo/data:/data/db
+    networks:
+      - bibbox-default-network
+
+  bibbox-sys-commander-master-fdp-blazegraph:
+    image: metaphacts/blazegraph-basic:2.2.0-20160908.003514-6
+    container_name: bibbox-sys-commander-master-fdp-blazegraph
+    volumes:
+      - ./data/blazegraph:/blazegraph-data
+    networks:
+      - bibbox-default-network
