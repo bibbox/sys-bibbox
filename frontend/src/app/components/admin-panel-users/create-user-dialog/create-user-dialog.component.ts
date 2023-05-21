@@ -44,6 +44,7 @@ export class CreateUserDialogComponent {
       username: ['', [
         Validators.required,
         this.validatorService.noWhitespaceValidator,
+        this.validatorService.isAlphanumericValidator,
         this.usernameExistsValidator,
         Validators.maxLength(this.usernameMaxLength),
         Validators.minLength(this.usernameMinLength)

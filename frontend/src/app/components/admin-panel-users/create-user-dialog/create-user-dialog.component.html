@@ -9,20 +9,27 @@
           </mat-error>
           <ng-container>
             <ng-template #usernameError1>
-              <mat-error *ngIf="userForm.controls.username.errors?.maxlength; else usernameError2">
-                Max. username length is {{usernameMaxLength}} chars.
+              <mat-error *ngIf="userForm.controls.username.errors?.isAlphanumeric; else usernameError2">
+                Only alphanumeric chars allowed.
               </mat-error>
             </ng-template>
           </ng-container>
           <ng-container>
             <ng-template #usernameError2>
-              <mat-error *ngIf="userForm.controls.username.hasError('minlength') && userForm.get('username').touched; else usernameError3">
-                Min. username length is {{usernameMinLength}} chars.
+              <mat-error *ngIf="userForm.controls.username.errors?.maxlength; else usernameError3">
+                Max. username length is {{usernameMaxLength}} chars.
               </mat-error>
             </ng-template>
           </ng-container>
           <ng-container>
             <ng-template #usernameError3>
+              <mat-error *ngIf="userForm.controls.username.hasError('minlength') && userForm.get('username').touched; else usernameError4">
+                Min. username length is {{usernameMinLength}} chars.
+              </mat-error>
+            </ng-template>
+          </ng-container>
+          <ng-container>
+            <ng-template #usernameError4>
               <mat-error *ngIf="userForm.get('username').invalid && userForm.get('username').touched">
                 Please enter a valid username.
               </mat-error>
