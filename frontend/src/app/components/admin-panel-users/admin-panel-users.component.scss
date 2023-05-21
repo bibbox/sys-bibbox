@@ -39,20 +39,34 @@ mat-form-field {
   }
 }
 
+//button {
+//  //display: block;
+//  //margin: 20px auto;
+//  border: 1px solid $custom_gray_medium;
+//  width: 150px;
+//  font-size: medium;
+//  font-weight: $custom_font_weight_light;
+//
+//  //color: $custom_gray_dark;
+//
+//  //background-color: $custom_gray_medium;
+//
+//  &:hover {
+//    color: $custom_gray_light;
+//    background-color: $custom_blue;
+//  }
+//}
+
 button {
-  //display: block;
-  //margin: 20px auto;
-  border: 1px solid $custom_gray_medium;
-  width: 150px;
+  padding: 8px;
+  margin: 10px;
+  border: none;
   font-size: medium;
   font-weight: $custom_font_weight_light;
-
-  //color: $custom_gray_dark;
-
-  //background-color: $custom_gray_medium;
+  background-color: $custom_blue_light;
+  color: $custom_gray_light;
 
   &:hover {
-    color: $custom_gray_light;
     background-color: $custom_blue;
   }
 }

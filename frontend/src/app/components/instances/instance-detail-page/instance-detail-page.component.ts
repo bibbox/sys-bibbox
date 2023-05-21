@@ -54,6 +54,7 @@ export class InstanceDetailPageComponent implements OnInit {
     description_long: ['', ]
   });
 
+
   constructor(
     private store: Store<AppState>,
     private route: ActivatedRoute,
@@ -160,6 +161,12 @@ export class InstanceDetailPageComponent implements OnInit {
 
   saveInstanceChanges(): void {
     console.log('save instance changes');
+
+    if (this.canManageInstance() === false) {
+      this.snackbar.open('You are not allowed to edit this instance', 'OK', {duration: 4000});
+      return;
+    }
+
     // this.snackbar.open(JSON.stringify(this.instanceDetailForm.value) + this.instanceDetailForm.valid, 'OK', {duration: 4000});
     this.snackbar.open('Changes saved', 'OK', {duration: 4000});
 

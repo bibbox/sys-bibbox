@@ -45,17 +45,17 @@
     .actions {
       display: flex;
       justify-content: space-evenly;
-      button {
-        padding: 5px 10px;
-        border-radius: 3px;
-        background-color: #ddd;
-        cursor: pointer;
-        width: 20px;
-        height: 20px;
-        &:hover {
-          background-color: #ccc;
-        }
-      }
+      //button {
+      //  padding: 5px 10px;
+      //  border-radius: 3px;
+      //  background-color: #ddd;
+      //  cursor: pointer;
+      //  width: 20px;
+      //  height: 20px;
+      //  &:hover {
+      //    background-color: #ccc;
+      //  }
+      //}
     }
   }
 

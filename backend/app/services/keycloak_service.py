@@ -1,4 +1,4 @@
-from keycloak import KeycloakOpenID, KeycloakAdmin #, KeycloakOpenIDConnection
+from keycloak import KeycloakOpenID, KeycloakAdmin, KeycloakGetError#, KeycloakOpenIDConnection
 from functools import wraps
 from flask import request
 # from backend.app import app
@@ -141,6 +141,9 @@ class KeycloakAdminService():
                 }],
             }
 
+            if user_representation['username']:
+                user_representation['username'] = user_representation['username'].lower()
+
             if None in user_representation.values():
                 raise ValueError('Missing required key-value pair(s) in user dictionary')
             
@@ -151,7 +154,7 @@ class KeycloakAdminService():
             for key in optional_fields:
                 if key in user_dict:
                     user_representation[key] = user_dict[key]
-            self.keycloak_api.create_user(user_representation)
+            self.keycloak_api.create_user(user_representation, exist_ok=False)
 
 
             user_id = self.get_user_by_username(user_representation['username'])['id']
@@ -159,12 +162,18 @@ class KeycloakAdminService():
             # assign realm roles, if none are provided, assign bibbox-standard
             self.assign_realm_roles(user_id, user_dict.get('roles', ['bibbox-standard']))
 
+        except KeycloakGetError as ex:
+            raise ex
 
         except Exception as ex:
 
             # if user was created, but realm roles could not be assigned, delete user again
-            if user_id:
-                self.delete_user(user_id)
+            
+            try:
+                if user_id:
+                    self.delete_user(user_id)
+            except Exception as ex2:
+                raise ex2
 
             raise ex
         

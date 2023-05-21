@@ -1,0 +1,4 @@
+@import "src/styles-variables";
+button:disabled:hover {
+  background-color: $custom_gray_light;
+}

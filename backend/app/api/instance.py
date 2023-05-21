@@ -28,11 +28,11 @@ instancemodel = api.model('Model', {
 INSTANCEPATH = "/opt/bibbox/instances/"
 
 
-def instanceDesc ():
-    path = INSTANCEPATH + instanceDescr['instancename'] + "/instance.json"
-    with open(path) as f: 
-        idescr = json.load(f)
-    return idescr
+# def instanceDesc ():
+#     path = INSTANCEPATH + instanceDescr['instancename'] + "/instance.json"
+#     with open(path) as f: 
+#         idescr = json.load(f)
+#     return idescr
 
 # @api.route('/ping')
 # @api.doc(params={'murks': 'test'})
@@ -81,7 +81,7 @@ class Ping(Resource):
 
 
 
-@api.route('/')
+@api.route('')
 @api.doc("Get a list of all Instances")
 class InstanceList(Resource):
     @auth_token_required()

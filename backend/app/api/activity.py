@@ -18,7 +18,7 @@ restapi.add_namespace (api, '/activities')
 activity_service = ActivityService()
 log_service = LogService()
 
-@api.route("/")
+@api.route("")
 class ActivityListAll(Resource):
     @api.doc("get all activities")
     @auth_token_required()
@@ -49,6 +49,33 @@ class SysLogs(Resource):
             print(ex)
             logs = {'error': ex}
         return logs, 200
+
+@api.route("/syslogs/<string:container_name>")
+class SysLogs(Resource):
+    @api.doc("get logs from one sys-container")
+    @auth_token_required(required_roles=[KeycloakRoles.admin])
+    def get(self, container_name):
+        logs = {}
+        try:
+            dh = DockerHandler()
+            logs = dh.docker_getSysContainerLogs(container_name)
+        except Exception as ex:
+            logs = {'error': ex}
+        return logs, 200
+
+@api.route("/syslogs/names")
+class SysLogs(Resource):
+    @api.doc("get names of all sys-containers")
+    @auth_token_required(required_roles=[KeycloakRoles.admin])
+    def get(self):
+        logs = {}
+        try:
+            dh = DockerHandler()
+            logs['names'] = dh.docker_getContainerNames('sys-bibbox')
+        except Exception as ex:
+            logs = {'error': ex}
+        return logs, 200
+
 
 @api.route("/ping")
 class Ping(Resource):

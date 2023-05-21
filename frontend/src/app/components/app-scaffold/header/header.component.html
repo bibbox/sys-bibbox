@@ -20,10 +20,13 @@
   </div>
   </span>
   <span class="app-scaffold-header__right_aligned">
-    <div *ngIf="username" class="app-scaffold-header__login_info">
-      User: {{username}}
-    </div>
+<!--    <div *ngIf="username" class="app-scaffold-header__login_info">-->
+<!--      User: {{username}}-->
+<!--    </div>-->
     <app-activity-menu-overlay *ngIf="loggedIn" class="app-scaffold-header__activity-menu-overlay"></app-activity-menu-overlay>
+    <mat-icon *ngIf="username" class="app-scaffold-header__profile-icon" matTooltip="User: {{ username }}" matTooltipPosition="above">
+      account_circle
+    </mat-icon>
     <button
       *ngIf="loggedIn"
       class="app-scaffold-header__login-logout-button"

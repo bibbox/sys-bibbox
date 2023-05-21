@@ -66,6 +66,13 @@
       justify-self: flex-start;
     }
 
+    .app-scaffold-header__profile-icon {
+      font-size: x-large;
+      font-weight: $custom_font_weight_light;
+      align-self: center;
+      justify-self: flex-start;
+    }
+
     .app-scaffold-header__activity-menu-overlay {
       flex-grow: 0;
     }

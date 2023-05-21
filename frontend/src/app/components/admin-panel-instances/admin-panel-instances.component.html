@@ -23,6 +23,7 @@
       <th>Instance Name</th>
       <th>App Name</th>
       <th>Installed By</th>
+      <th>Installer ID</th>
       <th>Time of Installation</th>
       <th>Stopped Since</th>
       <th>State</th>
@@ -37,6 +38,7 @@
       <td>{{ instanceItem.instancename }}</td>
       <td>{{ instanceItem.app.name }}</td>
       <td>{{ instanceItem.installed_by_name }}</td>
+      <td>{{ instanceItem.installed_by_id}}</td>
       <td>{{ convertToDate(instanceItem.time_of_installation) }}</td>
 
 <!--      check if instance.last_stop_time exists -->
