@@ -58,7 +58,7 @@ export class CreateUserDialogComponent {
         Validators.required,
         this.isRoleInKcRolesValidator
       ]],
-      email: ['', []],
+      email: ['', [Validators.email]],
       firstName: ['', []],
       lastName: ['', []],
     });

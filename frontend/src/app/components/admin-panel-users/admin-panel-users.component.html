@@ -17,15 +17,22 @@
     </thead>
     <tbody>
     <tr *ngFor="let user of userForms; let i = index" [formGroup]="user">
-      <td>{{ user.controls.id.value }}</td>
-      <td>{{ user.controls.username.value }}</td>
-<!--      <td>-->
-<!--        <input type="text" formControlName="username">-->
-<!--      </td>-->
-      <td>{{ user.controls.firstName.value }}</td>
-      <td>{{ user.controls.lastName.value }}</td>
-      <td>{{ user.controls.email.value }}</td>
-      <td>
+      <td class="admin-panel__user-table__cell">
+        <div class="admin-panel__user-table__cell-content">{{ user.controls.id.value }}</div>
+      </td>
+      <td class="admin-panel__user-table__cell">
+        <div class="admin-panel__user-table__cell-content">{{ user.controls.username.value }}</div>
+      </td>
+      <td class="admin-panel__user-table__cell">
+        <div class="admin-panel__user-table__cell-content">{{ user.controls.firstName.value }}</div>
+      </td>
+      <td class="admin-panel__user-table__cell">
+        <div class="admin-panel__user-table__cell-content">{{ user.controls.lastName.value }}</div>
+      </td>
+      <td class="admin-panel__user-table__cell">
+        <div class="admin-panel__user-table__cell-content">{{ user.controls.email.value }}</div>
+      </td>
+      <td class="admin-panel__user-table__cell">
         <mat-form-field appearance="fill">
           <mat-label>Role</mat-label>
           <mat-select formControlName="role"> <!-- could disable the form control here, in case I want to add an edit btn -->
@@ -37,7 +44,6 @@
       </td>
       <td class="admin-panel__user-table__action-buttons">
         <button (click)="confirmDelete(user.value)">
-<!--          Delete User-->
           <mat-icon>delete</mat-icon>
         </button>
       </td>
