@@ -18,7 +18,7 @@ restapi.add_namespace (api, '/activities')
 activity_service = ActivityService()
 log_service = LogService()
 
-@api.route("")
+@api.route("/")
 class ActivityListAll(Resource):
     @api.doc("get all activities")
     @auth_token_required()

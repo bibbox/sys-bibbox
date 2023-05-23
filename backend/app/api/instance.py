@@ -81,7 +81,7 @@ class Ping(Resource):
 
 
 
-@api.route('')
+@api.route('/')
 @api.doc("Get a list of all Instances")
 class InstanceList(Resource):
     @auth_token_required()

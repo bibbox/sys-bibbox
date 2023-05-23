@@ -42,7 +42,7 @@ class ActiveCatalogue(Resource):
     def get(self):
         return appCatalogue.activeCatalogue ()  
 
-@api.route("")
+@api.route("/")
 class AppsInActiveCataloge(Resource):
     @auth_token_required()
     def get(self):
