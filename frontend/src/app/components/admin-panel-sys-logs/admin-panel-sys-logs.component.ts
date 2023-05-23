@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, Renderer2} from '@angular/core';
 import {ActivityService} from '../../store/services/activity.service';
 import {ChangeDetectorRef } from '@angular/core';
-import {interval, Subscription} from 'rxjs';
+import {interval, Subscription, TimeInterval} from 'rxjs';
 import {startWith, switchMap} from 'rxjs/operators';
 import {LogItem, SysContainerLogs, SysContainerNames} from '../../store/models/activity.model';
 
@@ -14,8 +14,11 @@ export class AdminPanelSysLogsComponent implements OnInit, OnDestroy {
 
   sysLogs = {};
   containerNames: string[];
-  timeInterval: Subscription = interval(4000).subscribe();
   activeContainerScrollHeight = 0;
+
+  timeInterval: any;
+  refreshIntervals: { [container: string]: any} = {};
+  refresh_period: number = 5000;
 
   constructor(
     private as: ActivityService,
@@ -26,9 +29,11 @@ export class AdminPanelSysLogsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadContainerNames();
   }
+
   ngOnDestroy(): void {
-    this.timeInterval.unsubscribe();
-    this.sysLogs = [];
+    for (const containerName in this.refreshIntervals) {
+      this.clearRefreshInterval(containerName);
+    }
   }
 
   loadContainerNames(): void {
@@ -55,30 +60,48 @@ export class AdminPanelSysLogsComponent implements OnInit, OnDestroy {
     )
   }
 
+  clearRefreshInterval(containerName: string): void {
+    const interval = this.refreshIntervals[containerName];
+    if (interval) {
+      clearInterval(interval);
+      delete this.refreshIntervals[containerName];
+    }
+  }
+
   periodicallyRefresh(containerName: string): void {
-    const refresh_period = 5000;
+    // this.stopPeriodicRefresh();
+
     // Initial call to loadContainerLogs
     this.loadContainerLogs(containerName);
 
+    // clear interval if it exists
+    this.clearRefreshInterval(containerName);
+
     // Set interval to refresh every 5 seconds
-    setInterval(() => {
+    const interval = setInterval(() => {
       this.loadContainerLogs(containerName);
-    }, refresh_period);
+    }, this.refresh_period);
+
+    // Save the interval in the refreshIntervals object
+    this.refreshIntervals[containerName] = interval;
+  }
+
+  stopPeriodicRefresh(containername: string): void {
+    this.clearRefreshInterval(containername);
   }
 
 
-
-  loadSysContainerLogs(): void {
-    this.timeInterval = interval(5000)
-      .pipe(
-        startWith(0),
-        switchMap(() => this.as.getSysLogs())
-      ).subscribe((res) => {
-          this.sysLogs = res;
-          this.containerNames = Object.keys(this.sysLogs);
-        }
-      );
-  }
+  // loadSysContainerLogs(): void {
+  //   this.timeInterval = interval(5000)
+  //     .pipe(
+  //       startWith(0),
+  //       switchMap(() => this.as.getSysLogs())
+  //     ).subscribe((res) => {
+  //         this.sysLogs = res;
+  //         this.containerNames = Object.keys(this.sysLogs);
+  //       }
+  //     );
+  // }
 
   setScrollHeight(h: number): void {
     this.activeContainerScrollHeight = h;

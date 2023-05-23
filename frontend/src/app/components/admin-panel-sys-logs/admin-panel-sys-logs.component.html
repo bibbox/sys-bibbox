@@ -21,7 +21,9 @@
 
 <mat-accordion>
   <mat-expansion-panel hideToggle *ngFor="let container of containerNames" class="sys-container-panel"
-                       (opened)="periodicallyRefresh(container); setScrollHeight(scrollContainer.scrollHeight)">
+                       (opened)="periodicallyRefresh(container); setScrollHeight(scrollContainer.scrollHeight)"
+                       (closed)="stopPeriodicRefresh(container)">
+  >
     <mat-expansion-panel-header class="sys-container-panel__header">
       {{ container }}
     </mat-expansion-panel-header>
