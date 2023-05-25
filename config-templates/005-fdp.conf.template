@@ -1,4 +1,4 @@
-<VirtualHost *:80>
+<VirtualHost *:443>
         ServerName fdp.§§BASEURL
         ProxyRequests           Off
         ProxyPreserveHost       On
