@@ -107,7 +107,7 @@
 #</VirtualHost>
 
 # for testing, could be removed in final product
-<VirtualHost *:80>
+<VirtualHost *:443>
         ServerName api.§§BASEURL
 
         ProxyPass               /       http://bibbox-sys-commander-backend:5000/
@@ -120,7 +120,7 @@
 
 
 # add the keycloak proxy
-<VirtualHost *:80>
+<VirtualHost *:443>
         ServerName keycloak.§§BASEURL
 
         ProxyPass               /       http://bibbox-sys-commander-keycloak:8080/
