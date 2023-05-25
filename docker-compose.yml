@@ -220,7 +220,10 @@ services:
         DB_WAIT_TIMEOUT: 180 # wait for postgres to initialize
         DB_SCHEMA: public # use the public schema
         JBOSS_CLI: "/opt/jboss/keycloak/bin/jboss-cli.sh"
-      
+        PROXY_ADDRESS_FORWARDING: "true"
+        REDIRECT_SOCKET: "proxy-https"
+        KEYCLOAK_FRONTEND_URL: https://keycloak.demo.bibbox.org/auth
+
       env_file: # we want to read some variables from the .env file as they are shared with the backend
         - .env
       
