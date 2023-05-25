@@ -2,7 +2,7 @@
 """User Route for Demo application."""
 
 from flask import Blueprint, g, abort, request, jsonify,  url_for
-from flask_restplus import Namespace, Api, Resource, fields
+from flask_restx import Namespace, Api, Resource, fields
 from flask_httpauth import HTTPBasicAuth
 from functools import wraps 
 
@@ -30,7 +30,7 @@ api = Namespace('users',
                 security='apiKey',
                 authorizations = authorization)
 
-restapi.add_namespace (api, '/users')
+# restapi.add_namespace (api, '/users')
 
 user_service = UserService()
 auth = HTTPBasicAuth()

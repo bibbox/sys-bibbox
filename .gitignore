@@ -26,6 +26,11 @@ backend/logs
 
 CLIFunctions.sh
 
+frontend/node_modules
+frontend/.angular/
+
+
+
 # ignore all files which get created from templates
 apacheproxy/httpd.conf
 frontend/src/environments/environment.ts
@@ -33,3 +38,13 @@ frontend/src/environments/environment.prod.ts
 config-templates/000-default.conf
 config-templates/100-error.conf
 config-templates/bibbox.config
+
+
+
+# dist
+frontend/dist
+
+
+# dev
+**/dummy_kc_file.py
+**/kc_snipplets.txt

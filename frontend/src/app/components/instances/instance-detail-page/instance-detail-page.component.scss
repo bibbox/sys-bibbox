@@ -52,11 +52,6 @@
       flex-direction: row;
       justify-content: right;
       align-content: flex-end;
-
-      //float: right;
-      //padding-left: 30px;
-      //margin-top: 15px;
-      //margin-bottom: 20px
     }
   }
 
@@ -82,15 +77,18 @@
   }
 
   .running {
-    background: rgb(140, 210, 90)
+    //background: rgb(140, 210, 90)
+    background: $custom_color_info
   }
 
   .in_operation {
-    background: #ebd67a;
+    //background: #ebd67a;
+    background: $custom_color_warn
   }
 
   .stopped {
-    background: rgb(222, 65, 65)
+    //background: rgb(222, 65, 65)
+    background: $custom_color_error
   }
 
   input [type=text],
@@ -99,30 +97,6 @@
     border: solid 1px lightgray;
     background: white;
     text-align: left
-  }
-
-  button {
-    border: 1px $custom_gray_medium+CC solid;
-    align-self: center;
-    justify-self: center;
-    svg {
-      height: 20px;
-      width: 20px;
-
-      path {
-        fill: black;
-        height: 20px;
-        width: 20px
-      }
-    }
-  }
-
-  button:hover {
-    svg {
-      path {
-         fill: white
-      }
-    }
   }
 
   label {
@@ -327,6 +301,7 @@
     .description-form-field-input {
       flex-grow: 1;
       min-height: 80px;
+      padding: 5px;
     }
   }
 }
@@ -348,6 +323,55 @@ input.ng-valid[required], input.ng-valid {
   background: #e4ede4
 }
 
-.button-disabled {
-  background: $custom_gray_lightaccent;
+button {
+  align-self: center;
+  justify-self: center;
+
+  border: $custom_blue_light solid 1px;
+
+  mat-icon {
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+    align-self: center;
+    justify-self: center;
+  }
+
+  svg {
+    height: 20px;
+    width: 20px;
+
+    path {
+      height: 20px;
+      width: 20px
+    }
+  }
+
+  &:hover {
+    background-color: $custom_blue;
+
+    svg {
+      path {
+        fill: white;
+      }
+    }
+  }
+
+  &:disabled {
+    background-color: $custom_gray_lightaccent;
+    color: $custom_gray_medium;
+    border: $custom_color_error solid 1px;
+
+    svg {
+      height: 20px;
+      width: 20px;
+
+      path {
+        fill: $custom_gray_medium;
+        height: 20px;
+        width: 20px
+      }
+    }
+  }
+
 }

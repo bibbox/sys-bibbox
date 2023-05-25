@@ -1,5 +1,5 @@
 <div class="instances">
-  <div class="application-search">
+  <div class="instances-search">
     <div class="input-group">
       <input
         [formControl]="filterFormControl"
@@ -13,7 +13,19 @@
           <i class="fas fa-search"></i>
         </span>
       </span>
+
     </div>
+
+    <mat-slide-toggle
+      class="instances-search__slide-toggle"
+      [checked]="false"
+      [disabled]="false"
+      [color]="slideThemePalette"
+      (change)="filterOnlyOwnInstances()"
+    >
+      Only show my instances <!-- https://stackoverflow.com/questions/41440998/how-can-i-use-custom-theme-palettes-in-angular -->
+    </mat-slide-toggle>
+
     <br>
   </div>
   <div class="instances_results">

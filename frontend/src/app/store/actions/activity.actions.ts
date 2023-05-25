@@ -14,13 +14,17 @@ export class LoadActivitiesAction implements Action {
 
 export class LoadActivitiesSuccessAction implements Action {
   readonly type = ActivityActionTypes.LOAD_ACTIVITIES_SUCCESS;
-  constructor(public payload: ActivityItem[]) {}
+  constructor(public payload: ActivityItem[]) {
+  //  console.log('LoadActivitiesSuccessAction');
+  }
 }
 
 
 export class LoadActivitiesFailureAction implements Action {
   readonly type = ActivityActionTypes.LOAD_ACTIVITIES_FAILURE;
-  constructor(public payload: Error) {}
+  constructor(public payload: Error) {
+  //  console.log('LoadActivitiesFailureAction');
+  }
 }
 
 export type ActivityAction =

@@ -2,10 +2,31 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+let BASEURL: string = 'localhost';
+
 export const environment = {
   production: false,
-  BASEURL: 'silicolabv4.bibboxlocal'
-  // SOCKET_IO_URL: 'http://silicolabv4.bibboxlocal/socket.io'
+  BASEURL: BASEURL,
+
+
+  KEYCLOAK_CONFIG: {
+    url: 'http://keycloak.'+ BASEURL +'/auth',
+    realm: 'sys-bibbox',
+    clientId: 'sys-bibbox-frontend',
+
+    non_protected_paths: [
+      '/logout',
+      'https://raw.githubusercontent.com/',
+    ],
+
+    roles : {
+      admin: 'bibbox-admin',
+      demo_user: 'bibbox-demo',
+      standard_user: 'bibbox-standard',
+    },
+
+    max_instances_per_demo_user: 0,
+  },
 };
 
 /*

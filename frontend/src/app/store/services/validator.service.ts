@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import {AbstractControl, FormGroup, ValidationErrors} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {InstanceService} from './instance.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +27,11 @@ export class ValidatorService {
   noWhitespaceValidator(control: AbstractControl): {[key: string]: any} | null {
     const isSpace = (control.value || '').match(/\s/g);
     return isSpace ? {whitespace: true} : null;
+  }
+
+
+  isAlphanumericValidator(control: AbstractControl) {
+    const isAlphanumeric = (control.value || '').match(/^[a-zA-Z0-9]+$/);
+    return isAlphanumeric ? null : {isAlphanumeric: true};
   }
 }

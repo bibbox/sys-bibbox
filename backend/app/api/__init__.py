@@ -5,6 +5,6 @@
 
 """
 
-from backend.app.api import  apps, instance, default, user, activity
+from backend.app.api import  apps, instance, default, keycloak, user, activity
 
 

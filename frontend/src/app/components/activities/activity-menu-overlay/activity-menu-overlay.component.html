@@ -6,7 +6,7 @@
     </ng-container>
     <img *ngIf="!activeActivities && lastActivityStatus === 'FAILURE'" src="assets/error.png" alt="activity status" class="activity-overlay__button-status-image">
     <img *ngIf="!activeActivities && lastActivityStatus === 'SUCCESS'" src="assets/done.png" alt="activity status" class="activity-overlay__button-status-image">
-    <i *ngIf="!activityList.length" class="fas fa-question-circle fa-2x activity-overlay__button-status-image"></i>
+<!--    <img *ngIf="!(activityList.length)" id="noActivities" class="fas fa-question-circle fa-2x activity-overlay__button-status-image"/>-->
   </div>
   <mat-menu #activityMenuOverlay="matMenu" class="activity-overlay__menu">
     <div

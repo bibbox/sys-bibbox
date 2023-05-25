@@ -4,6 +4,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../store/models/app-state.model';
 import * as applicationGroupActions from '../../store/actions/applications.actions';
 import * as instanceActions from '../../store/actions/instance.actions';
+import * as activityActions from '../../store/actions/activity.actions';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,10 @@ import * as instanceActions from '../../store/actions/instance.actions';
 export class AppComponent implements OnInit{
 
   constructor(private socketService: SocketioService,
-              private store: Store<AppState>) { }
+              private store: Store<AppState>
+  ) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new applicationGroupActions.LoadApplicationGroupsAction());
-    this.store.dispatch(new instanceActions.LoadInstancesAction());
   }
 
 }

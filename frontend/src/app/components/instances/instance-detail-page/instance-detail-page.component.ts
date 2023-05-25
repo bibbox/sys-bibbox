@@ -7,10 +7,11 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as InstanceSelector from '../../../store/selectors/instance.selector';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {InstanceService} from '../../../store/services/instance.service';
-import {DeleteInstanceAction} from '../../../store/actions/instance.actions';
 import {FormBuilder, Validators} from '@angular/forms';
 import {SVG_PATHS} from '../../../commons';
 import {environment} from '../../../../environments/environment';
+import {UserService} from '../../../store/services/user.service';
+import {DeleteInstanceAction} from '../../../store/actions/instance.actions';
 import {Location} from '@angular/common';
 
 @Component({
@@ -24,11 +25,14 @@ export class InstanceDetailPageComponent implements OnInit {
   instanceItem: InstanceItem;
   instanceNameFromUrl: string;
   baseurl = environment.BASEURL;
+  cannotManageInstanceTooltip: string = 'Only admins and instance owners can manage instances.';
+  time_of_installation: Date;
+  time_of_last_stop: Date;
 
   @ViewChild('scrollContainer') container: ElementRef;
   scrollTop: number = null;
 
-  instanceLinks = []; // external Links to Github repo
+  instanceLinks = []; // external Links to GitHub repo
   instanceContainerLogs = {}; // dictionary -> key: containerName, value: logs of container
 
   svgPaths = SVG_PATHS;
@@ -50,6 +54,7 @@ export class InstanceDetailPageComponent implements OnInit {
     description_long: ['', ]
   });
 
+
   constructor(
     private store: Store<AppState>,
     private route: ActivatedRoute,
@@ -57,6 +62,7 @@ export class InstanceDetailPageComponent implements OnInit {
     private snackbar: MatSnackBar,
     private instanceService: InstanceService,
     private fb: FormBuilder,
+    private userService: UserService,
     private _location: Location
   ) {
     // redirect if state is empty -> caused by hard reloading current view
@@ -77,6 +83,15 @@ export class InstanceDetailPageComponent implements OnInit {
     this.instance$.subscribe(
       (instanceItem) => {
         this.instanceItem = instanceItem;
+
+        if (this.instanceItem.time_of_installation) {
+          this.time_of_installation = new Date(parseInt(this.instanceItem.time_of_installation) * 1000);
+        }
+        if (this.instanceItem.last_stop_time) {
+          this.time_of_last_stop = new Date(parseInt(this.instanceItem.last_stop_time) * 1000);
+        }
+
+
         this.loadGithubLinks();
         this.loadContainerLogs();
         this.updateForm();
@@ -113,11 +128,30 @@ export class InstanceDetailPageComponent implements OnInit {
     ];
   }
 
+  canManageInstance(): boolean {
+    const isAdmin = this.userService.isRole(environment.KEYCLOAK_CONFIG.roles.admin);
+    const doesInstanceOwnerMatch = this.userService.getUserID() === this.instanceItem.installed_by_id;
+
+    return isAdmin || doesInstanceOwnerMatch;
+  }
+
+
   deleteInstance(): void {
-    console.log('delete instance:' + this.instanceItem.instancename);
-    this.instanceService.deleteInstance(this.instanceItem.instancename).subscribe(
-      (res) => console.log(res)
-    );
+    // const isAdmin = this.userService.isRole(KEYCLOAK_ROLES.admin);
+    // const doesInstanceOwnerMatch = this.userService.getUserID() === this.instanceItem.installed_by;
+    //
+    // if (!(isAdmin || doesInstanceOwnerMatch)) {
+    //   this.snackbar.open('You are not allowed to delete this instance', 'OK', {duration: 4000});
+    //   return;
+    // }
+
+    // console.log('delete instance:' + this.instanceItem.instancename);
+
+    this.store.dispatch(new DeleteInstanceAction(this.instanceItem.instancename));
+
+    // this.instanceService.deleteInstance(this.instanceItem.instancename).subscribe(
+    //   (res) => console.log(res)
+    // );
     this.router.navigateByUrl('/instances').then();
   }
 
@@ -127,7 +161,14 @@ export class InstanceDetailPageComponent implements OnInit {
 
   saveInstanceChanges(): void {
     console.log('save instance changes');
-    this.snackbar.open(JSON.stringify(this.instanceDetailForm.value) + this.instanceDetailForm.valid, 'OK', {duration: 4000});
+
+    if (this.canManageInstance() === false) {
+      this.snackbar.open('You are not allowed to edit this instance', 'OK', {duration: 4000});
+      return;
+    }
+
+    // this.snackbar.open(JSON.stringify(this.instanceDetailForm.value) + this.instanceDetailForm.valid, 'OK', {duration: 4000});
+    this.snackbar.open('Changes saved', 'OK', {duration: 4000});
 
     if (this.instanceDetailForm.valid) {
       this.instanceService.updateInstanceDescription(this.instanceItem.instancename, JSON.stringify(this.instanceDetailForm.value))

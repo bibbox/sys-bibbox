@@ -8,7 +8,7 @@
     <span class="instance-details-controls" *ngIf="tabIndex == 0">
       <ng-container *ngIf="instanceItem.state === 'ERROR'"> <!--  -->
         <span class="status in_operation"></span>
-        <button (click)="deleteInstance()">
+        <button (click)="deleteInstance()" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.delete"></path>
           </svg>
@@ -17,13 +17,13 @@
       </ng-container>
       <ng-container *ngIf="instanceItem.state === 'STOPPED'"> <!--  -->
         <span class="status stopped"></span>
-        <button (click)="manageInstance('start')">
+        <button (click)="manageInstance('start')" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.start"></path>
           </svg>
           <span class="text"> Start </span>
         </button>
-        <button (click)="deleteInstance()">
+        <button (click)="deleteInstance()" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.delete"></path>
           </svg>
@@ -33,13 +33,13 @@
 
       <ng-container *ngIf="instanceItem.state === 'RUNNING'"> <!--  -->
         <span class="status running"></span>
-        <button (click)="manageInstance('stop')">
+        <button (click)="manageInstance('stop')" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.stop"></path>
           </svg>
           <span class="text"> Stop </span>
         </button>
-        <button (click)="manageInstance('restart')">
+        <button (click)="manageInstance('restart')" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
           <svg viewBox="0 0 1000 1000">
             <path [attr.d]="svgPaths.restart"></path>
           </svg>
@@ -47,7 +47,7 @@
         </button>
       </ng-container>
 
-      <ng-container *ngIf="instanceItem.state === ('RESTARTING' || 'STOPPING' || 'DELETING' || 'STARTING')"> <!--  -->
+      <ng-container *ngIf="['RESTARTING', 'STOPPING', 'DELETING', 'STARTING'].includes(instanceItem.state)"> <!--  -->
         <span class="status in_operation"></span>
         <button disabled class="button-disabled" (click)="manageInstance('start')">
           <svg viewBox="0 0 1000 1000">
@@ -57,7 +57,7 @@
         </button>
 
       </ng-container>
-      <ng-container *ngIf="instanceItem.state === ('JUSTBORN' || 'INSTALLING')"> <!--  -->
+      <ng-container *ngIf="['JUSTBORN', 'INSTALLING'].includes(instanceItem.state)"> <!--  -->
         Currently installing...
       </ng-container>
     </span>
@@ -94,6 +94,22 @@
             <div class="detail-item">
               <span class="description"> Instance: </span>
               /opt/bibbox/instances/{{instanceItem.instancename}}
+            </div>
+            <div *ngIf="instanceItem.installed_by_name" class="detail-item">
+              <span class="description"> Installed by: </span>
+              {{instanceItem.installed_by_name}}
+            </div>
+            <div *ngIf="instanceItem.installed_by_id" class="detail-item">
+              <span class="description"> Installed by ID: </span>
+              {{instanceItem.installed_by_id}}
+            </div>
+            <div *ngIf="instanceItem.time_of_installation" class="detail-item">
+              <span class="description"> Time of Installation: </span>
+              {{time_of_installation.toLocaleString("de-DE")}}
+            </div>
+            <div *ngIf="instanceItem.state === 'STOPPED' && instanceItem.last_stop_time" class="detail-item">
+              <span class="description"> Stopped Since: </span>
+              {{time_of_last_stop.toLocaleString("de-DE")}}
             </div>
             <div class="detail-item">
               <span class="description"> Proxy: </span>
@@ -132,7 +148,8 @@
               <textarea matInput matTextareaAutosize
                         formControlName="description_short"
                         [value]="instanceDetailForm.controls['description_short'].value"
-                        class="description-form-field-input">
+                        class="description-form-field-input"
+              >
               </textarea>
             </div>
             <div class="description-form-field">
@@ -140,29 +157,28 @@
               <textarea matInput matTextareaAutosize
                         formControlName="description_long"
                         [value]="instanceDetailForm.controls['description_long'].value"
-                        class="description-form-field-input">
+                        class="description-form-field-input"
+              >
               </textarea>
             </div>
           </div>
         </ng-container>
         <div class="save-button">
-          <button
-            (click)="backClicked()"
-          > Back </button>
-<!--          <button-->
-<!--            (click)="saveInstanceChanges()"-->
-<!--            [disabled]="!instanceDetailForm.valid"-->
-<!--            [style.background-color]="instanceDetailForm.invalid ? 'rgb(200, 100, 100)' : '#ffffff'"-->
-<!--          > Save </button>-->
+          <button (click)="backClicked()">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+
           <button
             *ngIf="instanceDetailForm.invalid"
-            disabled
-            class="button-disabled"
-          > Save </button>
+            [disabled] = "true"
+            [matTooltip]="instanceDetailForm.invalid ? 'Missing required fields' : null"
+          > <mat-icon>save</mat-icon> Save </button>
           <button
             *ngIf="instanceDetailForm.valid"
+            [disabled]="!canManageInstance()"
+            [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null"
             (click)="saveInstanceChanges()"
-          > Save </button>
+          > <mat-icon>save</mat-icon> Save </button>
         </div>
       </ng-template>
     </mat-tab>

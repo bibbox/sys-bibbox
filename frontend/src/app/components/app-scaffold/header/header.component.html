@@ -1,9 +1,13 @@
 <div class="app-scaffold-header">
-  <div class="app-scaffold-header__branding">
-    <img src="assets/silicolab_logo.png" alt="silicolab_logo.svg" class="app-scaffold-header__navbar-icon"/>
-    <span class="app-scaffold-header__branding-text"> {{title}}</span>
-  </div>
-  <div class="app-scaffold-header__nav-buttons">
+
+  <span class="app-scaffold-header__left_aligned" >
+    <div class="app-scaffold-header__branding">
+      <img src="assets/silicolab_logo.png" alt="silicolab_logo.svg" class="app-scaffold-header__navbar-icon"/>
+      <span class="app-scaffold-header__branding-text"> {{title}}</span>
+    </div>
+  </span>
+  <span class="app-scaffold-header__center_aligned">
+    <div *ngIf="loggedIn" class="app-scaffold-header__nav-buttons">
     <button
       class="app-scaffold-header__nav-button"
       id="{{item.label}}"
@@ -14,5 +18,34 @@
       {{item.label}}
     </button>
   </div>
-  <app-activity-menu-overlay class="app-scaffold-header__activity-menu-overlay"></app-activity-menu-overlay>
+  </span>
+  <span class="app-scaffold-header__right_aligned">
+<!--    <div *ngIf="username" class="app-scaffold-header__login_info">-->
+<!--      User: {{username}}-->
+<!--    </div>-->
+    <app-activity-menu-overlay *ngIf="loggedIn" class="app-scaffold-header__activity-menu-overlay"></app-activity-menu-overlay>
+    <mat-icon *ngIf="username" class="app-scaffold-header__profile-icon" matTooltip="User: {{ username }}" matTooltipPosition="above">
+      account_circle
+    </mat-icon>
+    <button
+      *ngIf="loggedIn"
+      class="app-scaffold-header__login-logout-button"
+      type="button"
+      id="Logout-Button"
+      title="Logout"
+      (click)="initiateLogout()"
+    >
+      <i class="fa fa-sign-out" aria-hidden="true"></i>
+    </button>
+    <button
+      *ngIf="!loggedIn"
+      class="app-scaffold-header__login-logout-button"
+      type="button"
+      id="Login-Button"
+      title="Login"
+      (click)="initiateLogin()"
+    >
+      <i class="fa fa-sign-in" aria-hidden="true"></i>
+    </button>
+  </span>
 </div>

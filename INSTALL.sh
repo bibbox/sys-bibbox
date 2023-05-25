@@ -38,8 +38,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" bash_completion
 
-nvm install 14.16.0
-nvm use v14.16.0
+nvm install v16.19.0
+nvm use v16.19.0
 
 apt-get update
 #apt-get install docker.io -y
@@ -47,11 +47,7 @@ apt install docker-compose -y
 apt install npm -y
 apt install python3-pip -y
 
-#nvm install 14.16.0 -y
-#printf 'n\n' | npm i -g @angular/cl
-#npm audit fix
-#printf 'n\n' | npm i -g
-
+printf 'n\n' | npm i -g @angular/cli
 #printf 'n\n' | npm update -g @angular/cli
 
 
@@ -82,20 +78,24 @@ sed -e "s/§§SERVERNAME/$DOMAINNAME/g" httpd.conf.template > httpd.conf
 
 chmod -R 775 /opt/bibbox/sys-bibbox/frontend/src/environments
 cd /opt/bibbox/sys-bibbox/frontend/src/environments
-sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.ts.template > environment.ts
-sed -e "s/§§BASEURL/$DOMAINNAME/g" environment.prod.ts.template > environment.prod.ts
+
+sed -e "s/§§BASEURL/$DOMAINNAME/g;" environment.ts.template > environment.ts
+sed -e "s/§§BASEURL/$DOMAINNAME/g;" environment.prod.ts.template > environment.prod.ts
 
 cd /opt/bibbox/sys-bibbox/fdp-configs
 sed -e "s/§§BASEURL/$DOMAINNAME/g" fdp.env.template > fdp.env
 
+
+# replace the realm export template
+sed -e "s/§§BASEURL/$DOMAINNAME/g;" /opt/bibbox/sys-bibbox/keycloak/realms/realm-export.json.template > /opt/bibbox/sys-bibbox/keycloak/realms/realm-export.json
+
 # compile frontend code
 cd /opt/bibbox/sys-bibbox/frontend
 
-printf 'n\n' | npm i
-#printf 'n\n' | npm audit fix
+printf 'n\n' | npm ci -N
 #printf 'n\n' | npm update
 
-ng build --prod
+ng build --configuration production
 
 
 # copy config templates to the actual destination
@@ -108,7 +108,6 @@ cp /opt/bibbox/sys-bibbox/config-templates/005-fdp.conf /opt/bibbox/proxy/sites/
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-default.template /opt/bibbox/config/proxy-default.template
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-websocket.template /opt/bibbox/config/proxy-websocket.template
 
-cp /opt/bibbox/sys-bibbox/config-templates/htaccess.conf /opt/bibbox/sys-bibbox/frontend/dist/sys-bibbox-client/.htaccess
 
 docker network create bibbox-default-network
 
@@ -136,7 +135,7 @@ echo 'INSTALLATION COMPLETE'
 If an error occurs after installing, run the following commands:
 
 sudo docker exec -it bibbox-sys-commander-backend python manage.py recreate_db
-sudo docker exec -it bibbox-sys-commander-backend python manage.py seed_db
+
 sudo docker-compose stop
 sudo docker-compose up --build
 '

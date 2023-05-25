@@ -5,6 +5,7 @@ import {select, Store} from '@ngrx/store';
 import {AppState} from '../../store/models/app-state.model';
 import {FormControl} from '@angular/forms';
 import {filter} from 'rxjs/operators';
+import {LoadApplicationGroupsAction} from '../../store/actions/applications.actions';
 
 @Component({
   selector: 'app-applications',
@@ -18,6 +19,8 @@ export class ApplicationsComponent implements OnInit {
   filterFormControl = new FormControl('');
 
   constructor(private store: Store<AppState>) {
+    this.store.dispatch(new LoadApplicationGroupsAction());
+
     this.store.pipe(select(applicationGroupSelector.loadApplicationGroups)).subscribe((res) => {
       this.appGroups = res;
       this.filter('');

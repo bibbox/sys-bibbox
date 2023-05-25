@@ -4,6 +4,8 @@ import {select, Store} from '@ngrx/store';
 import {AppState} from '../../store/models/app-state.model';
 import * as instanceSelector from '../../store/selectors/instance.selector';
 import {FormControl} from '@angular/forms';
+import {ThemePalette} from '@angular/material/core';
+import {UserService} from '../../store/services/user.service';
 
 @Component({
   selector: 'app-instances',
@@ -14,8 +16,12 @@ export class InstancesComponent implements OnInit {
   instanceItems: InstanceItem[] = [];
   filterFormControl = new FormControl('');
   filteredInstances: InstanceItem[] = [];
+  slideThemePalette: ThemePalette = 'primary';
+  showOnlyOwnedInstances = false;
 
-  constructor(private store: Store<AppState>) {
+
+  constructor(private store: Store<AppState>,
+              private userService: UserService,) {
     this.store.pipe(select(instanceSelector.selectAllInstances)).subscribe((res) => {
       this.instanceItems = res;
       this.filterInstances(this.filterFormControl.value);
@@ -32,6 +38,19 @@ export class InstancesComponent implements OnInit {
         item.app.name.toLowerCase().indexOf(newFilterValue.toLowerCase()) !== -1 ||
         item.instancename.toLowerCase().indexOf(newFilterValue.toLowerCase()) !== -1;
     });
+
+    // Filter only own instances
+    if (this.showOnlyOwnedInstances) {
+      const userID = this.userService.getUserID();
+      this.filteredInstances = this.filteredInstances.filter((item) => {
+        return item.installed_by_id === userID;
+      });
+    }
+  }
+
+  filterOnlyOwnInstances(): void {
+    this.showOnlyOwnedInstances = !this.showOnlyOwnedInstances;
+    this.filterInstances(this.filterFormControl.value);
   }
 
 }

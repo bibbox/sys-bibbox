@@ -2,13 +2,15 @@
 """User Route for App Catalogues"""
 
 from flask import Blueprint, request, jsonify
-from flask_restplus import Namespace, Api, Resource, fields, reqparse
+from flask_restx import Namespace, Api, Resource, fields, reqparse
 
 from backend.app import app, db, restapi
 from backend.app.bibbox.app  import AppCatalogue
 from backend.app.models.app import BibboxApp
 from backend.app.models.catalogue import Catalogue
 from backend.app.services.catalogue_service import CatalogueService
+
+from backend.app.services.keycloak_service import auth_token_required
 
 catalogue_service = CatalogueService()
 appCatalogue = AppCatalogue ()
@@ -29,17 +31,20 @@ installparameter = api.model('InstallParameter', {
 
 @api.route("/catalogues")
 class Catalogues(Resource):
+    @auth_token_required()
     def get(self):
         cat = appCatalogue.availableCatalogues ()
         return cat
 
 @api.route("/catalogues/active")
 class ActiveCatalogue(Resource):
+    @auth_token_required()
     def get(self):
         return appCatalogue.activeCatalogue ()  
 
 @api.route("/")
 class AppsInActiveCataloge(Resource):
+    @auth_token_required()
     def get(self):
         activeCatalogeName = appCatalogue.activeCatalogue ()   
         apps = appCatalogue.appDescriptions (activeCatalogeName)
@@ -50,6 +55,7 @@ class AppsInActiveCataloge(Resource):
 @api.param('appid', 'app id')
 @api.route("/envparameter")
 class InstallParameter(Resource):
+    @auth_token_required()
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('version')
@@ -64,6 +70,7 @@ class InstallParameter(Resource):
 @api.param('appid', 'app id')
 @api.route("/info")
 class AppInfo (Resource):
+    @auth_token_required()
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('version')
@@ -78,26 +85,27 @@ class AppInfo (Resource):
 
 
 
-#@api.param('testparam', 'test')
-@api.doc(
+# #@api.param('testparam', 'test')
+# @api.doc(
 
-)
-@api.route("/test", doc={"description": 'testdescription for the endpoint'})
-class TestClass (Resource):
-    @api.doc(
-        'get test stuff',     
-        responses={
-            200: 'Success',
-            400: 'Validation Error',
-            418: "I'm a teapot"
-        },
-        params={
-            "testparam": "a Testparam"
-        }
-    )
-    def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('testparam')
-        args = parser.parse_args()
-        tp = args['testparam']
-        return {1: dir(api.doc())}
+# )
+# @api.route("/test", doc={"description": 'testdescription for the endpoint'})
+# class TestClass (Resource):
+#     @api.doc(
+#         'get test stuff',     
+#         responses={
+#             200: 'Success',
+#             400: 'Validation Error',
+#             418: "I'm a teapot"
+#         },
+#         params={
+#             "testparam": "a Testparam"
+#         }
+#     )
+
+#     def get(self):
+#         parser = reqparse.RequestParser()
+#         parser.add_argument('testparam')
+#         args = parser.parse_args()
+#         tp = args['testparam']
+#         return {1: dir(api.doc())}

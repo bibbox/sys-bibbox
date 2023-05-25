@@ -12,53 +12,50 @@ from re import A
 import engineio
 
 from flask import Flask, Blueprint, url_for, render_template
-from flask_restplus import Resource, Api
-from flask_bootstrap import Bootstrap
+# from flask_bootstrap import Bootstrap
 
-from flask_restplus import Resource, Api
+from flask_restx import Resource, Api
 
 from flask_swagger_ui import get_swaggerui_blueprint
-
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_cors import CORS
+from flask_socketio import SocketIO
 
 from celery import Celery
 from celery.signals import after_setup_logger
 
 from backend.settings import config, Config
 
-from flask_cors import CORS
-from flask_socketio import SocketIO
+
 # review and restructure tha Application Context
 # https://flask.palletsprojects.com/en/1.1.x/patterns/appfactories/ 
 
 
-bootstrap = Bootstrap()
+# bootstrap = Bootstrap()
 app = Flask(__name__)
 
 socketio = SocketIO(app, logger=False, engineio_logger=False, cors_allowed_origins="*", namespace='/', message_queue='redis://redis:6379') #, )
-
 db = SQLAlchemy()
-
-
 apiblueprint = Blueprint('api', __name__)
 restapi = Api (apiblueprint)
 
 
+# 
 app_celerey = Celery(__name__, broker=Config.CELERY_BROKER_URL)
 
 def create_app(config_name):
     # TODO: enforce stricter CORS
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
-
-    print ("CREATE APP IN ", config_name, " MODE")
     
+    print ("CREATE APP IN ", config_name, " MODE")
     app.config.from_object(config[config_name])
     # SocketIO.init_app(app=app, cors_allowed_origins="*", logger=True, engineio_logger=True)
-    bootstrap.init_app(app)
+    # bootstrap.init_app(app)
+
     db.init_app(app)
     db.app = app
     app_celerey.conf.update(app.config)
+
 
     TaskBase = app_celerey.Task
     class ContextTask(TaskBase):
