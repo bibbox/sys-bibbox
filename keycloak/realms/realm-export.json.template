@@ -1080,9 +1080,9 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://§§BASEURL/*",
-        "http://api.§§BASEURL/*",
-        "http://keycloak.§§BASEURL/*"
+        "https://§§BASEURL/*",
+        "https://api.§§BASEURL/*",
+        "https://keycloak.§§BASEURL/*"
       ],
       "webOrigins": [
         "*",
