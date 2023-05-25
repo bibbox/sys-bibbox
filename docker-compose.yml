@@ -25,25 +25,25 @@ services:
       - EMAIL=${EMAIL:-backoffice.bibbox@gmail.com}
     hostname: ${DOMAINNAME:-demo.bibbox.org}
 
-  #  bibbox-sys-commander-nginx:
-  #    container_name: bibbox-sys-commander-nginx
-  #    restart: unless-stopped
-  #    networks:
-  #    - bibbox-default-network
-  #    image: nginx
-  #    links:
-  #        -  bibbox-sys-commander-backend:backend
-  #    build:
-  #      context:    ./nginx
-  #      dockerfile: Dockerfile
-  #    volumes:
-  #      - ./client/dist:/usr/share/nginx/html
-  #      - ./proxy-configs/nginx.conf:/etc/nginx/nginx.conf
-  #      - /opt/bibbox:/opt/bibbox
-  #    ports:
-  #      - "8080:80"
-  #    depends_on:
-  #      -  bibbox-sys-commander-backend
+#  bibbox-sys-commander-nginx:
+#    container_name: bibbox-sys-commander-nginx
+#    restart: unless-stopped
+#    networks:
+#    - bibbox-default-network
+#    image: nginx
+#    links:
+#        -  bibbox-sys-commander-backend:backend
+#    build:
+#      context:    ./nginx
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./client/dist:/usr/share/nginx/html
+#      - ./proxy-configs/nginx.conf:/etc/nginx/nginx.conf
+#      - /opt/bibbox:/opt/bibbox
+#    ports:
+#      - "8080:80"
+#    depends_on:
+#      -  bibbox-sys-commander-backend
 
   bibbox-sys-commander-backend:
     container_name: bibbox-sys-commander-backend
@@ -203,9 +203,9 @@ services:
         DB_WAIT_TIMEOUT: 180 # wait for postgres to initialize
         DB_SCHEMA: public # use the public schema
         JBOSS_CLI: "/opt/jboss/keycloak/bin/jboss-cli.sh"
- #       PROXY_ADDRESS_FORWARDING: "true"
- #       REDIRECT_SOCKET: "proxy-https"
- #       KEYCLOAK_FRONTEND_URL: e.g. https://keycloak.demo.bibbox.org/auth
+        PROXY_ADDRESS_FORWARDING: "true"
+        REDIRECT_SOCKET: "proxy-https"
+        KEYCLOAK_FRONTEND_URL: https://keycloak.demo.bibbox.org/auth
 
       env_file: # we want to read some variables from the .env file as they are shared with the backend
         - .env
