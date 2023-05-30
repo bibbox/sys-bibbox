@@ -65,7 +65,7 @@ export class CreateUserDialogComponent {
   }
 
   usernameExistsValidator = (control: AbstractControl): ValidationErrors | null => {
-    if (this.data.usernames.includes(control.value)) {
+    if (this.data.usernames.includes(control.value.toLowerCase())) {
       return {usernameExists: true};
     }
     return null;
