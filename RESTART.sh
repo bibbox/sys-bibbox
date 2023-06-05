@@ -17,6 +17,10 @@ docker exec -it bibbox-sys-commander-apacheproxy certbot --expand --apache -d ke
 
 
 
+
+docker exec -it bibbox-sys-commander-apacheproxy certbot --expand --apache -d fdp.${DOMAINNAME:-demo.bibbox.org} -n --email ${EMAIL:-backoffice.bibbox@gmail.com} --agree-tos
+
+
 cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/sites/000-default-le-ssl.conf
 
 for proxy_conf_file in /opt/bibbox/proxy/sites/005*
