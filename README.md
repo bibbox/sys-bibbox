@@ -1,4 +1,4 @@
-[![Build Status Docker](https://github.com/bibbox/sys-bibbox/actions/workflows/docker-image.yml/badge.svg)](https://github.com/bibbox/sys-bibbox/actions)
+[![Publish Docker image](https://github.com/bibbox/sys-bibbox/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/bibbox/sys-bibbox/actions/workflows/docker-publish.yml)
 [![Build Status Node.js](https://github.com/bibbox/sys-bibbox/actions/workflows/node.js.yml/badge.svg)](https://github.com/bibbox/sys-bibbox/actions)
 <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/bibbox/sys-bibbox">
 <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/bibbox/sys-bibbox">
