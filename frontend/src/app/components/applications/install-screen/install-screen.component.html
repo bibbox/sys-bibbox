@@ -40,7 +40,16 @@
         <span class="field-description"> Subdomain of your application URL. <b>The application ID can not be changed after the installation.</b></span>
       </div>
     </div>
+    <div class="install-form-item">
+      <div class="error-messages">
 
+        <div *ngIf="installForm.controls.instance_name.hasError('maxlength')">
+          <mat-error>
+            Application Name too long! max 48 chars.
+          </mat-error>
+        </div>
+
+      </div>
     <div class="install-form-item">
       <div class="error-messages"></div>
       <div class="install-item-body">
