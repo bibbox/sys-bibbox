@@ -61,7 +61,7 @@ export class InstallScreenComponent implements OnInit {
           [
             Validators.required,
             this.validatorService.noWhitespaceValidator,
-            Validators.pattern(/^[a-z0-9]+([-_][a-z0-9]+)*$/),
+            Validators.pattern(/^(?!0)[a-z0-9]+([-_][a-z0-9]+)*$/),
             Validators.maxLength(48)
           ],
           [
