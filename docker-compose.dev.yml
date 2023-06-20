@@ -10,7 +10,9 @@ services:
     restart: unless-stopped
     networks:
       - bibbox-default-network
-    image: bibbox/bibbox-sys-commander-apacheproxy:latest
+    build:
+      context:    ./apacheproxy
+      dockerfile: Dockerfile
     volumes:
       - /opt/bibbox/proxy/sites:/usr/local/apache2/conf/sites
       - /opt/bibbox/sys-bibbox/frontend/dist/sys-bibbox-client:/var/www/html/sys-bibbox-client
@@ -47,7 +49,9 @@ services:
       -  bibbox-sys-commander-redis:redis
       -  bibbox-sys-commander-celery:celery
       -  bibbox-sys-commander-postgres:postgres
-    image: bibbox/bibbox-sys-commander-backend:latest
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
     ports:
       - "5010:5000"
     volumes:
@@ -65,7 +69,9 @@ services:
     links:
       -  bibbox-sys-commander-redis:redis
       -  bibbox-sys-commander-postgres:postgres
-    image: bibbox/bibbox-sys-commander-backend:latest
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
     command: "celery -A celery_worker.app_celerey worker -l INFO"
     volumes:
       - ./data/celery:/queue
@@ -77,7 +83,9 @@ services:
 
   bibbox-sys-commander-celery-monitor:
     container_name: bibbox-sys-commander-celery-monitor
-    image: bibbox/bibbox-sys-commander-backend:latest
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
     networks:
       - bibbox-default-network
     links:
@@ -100,7 +108,9 @@ services:
     restart: unless-stopped
     networks:
       - bibbox-default-network
-    image: bibbox/bibbox-sys-commander-postgres:latest
+    build:
+      context:   ./postgresql
+      dockerfile: Dockerfile
     ports:
       - "5432:5432"
     volumes:
@@ -152,4 +162,3 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /dev/disk/:/dev/disk:ro
-
