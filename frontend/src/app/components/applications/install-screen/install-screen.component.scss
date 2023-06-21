@@ -97,9 +97,14 @@
     .install-submit {
       text-align: center;
 
-      .app-install-submit .app-install-cancel {
-        border: 1px $custom_gray_lightaccent solid;
+      .app-install-submit {
+        border: 1px $custom_gray_medium solid;
       }
+      .app-install-cancel {
+        border: 1px $custom_gray_medium solid;
+
+      }
+
 
       .app-install-submit-invalid {
         background: $custom_color_error+CC;
