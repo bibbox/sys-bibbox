@@ -1,59 +1,55 @@
 version: '3'
 
 networks:
-    bibbox-default-network:
-      external: true
+  bibbox-default-network:
+    external: true
 services:
 
   bibbox-sys-commander-apacheproxy:
     container_name: bibbox-sys-commander-apacheproxy
     restart: unless-stopped
     networks:
-    - bibbox-default-network
-    build:
-      context:    ./apacheproxy
-      dockerfile: Dockerfile
+      - bibbox-default-network
+    image: bibbox/bibbox-sys-commander-apacheproxy:latest
     volumes:
       - /opt/bibbox/proxy/sites:/usr/local/apache2/conf/sites
       - /opt/bibbox/sys-bibbox/frontend/dist/sys-bibbox-client:/var/www/html/sys-bibbox-client
     ports:
       - "80:80"
 
-#  bibbox-sys-commander-nginx:
-#    container_name: bibbox-sys-commander-nginx
-#    restart: unless-stopped
-#    networks:
-#    - bibbox-default-network
-#    image: nginx
-#    links:
-#        -  bibbox-sys-commander-backend:backend
-#    build:
-#      context:    ./nginx
-#      dockerfile: Dockerfile
-#    volumes:
-#      - ./client/dist:/usr/share/nginx/html
-#      - ./proxy-configs/nginx.conf:/etc/nginx/nginx.conf
-#      - /opt/bibbox:/opt/bibbox
-#    ports:
-#      - "8080:80"
-#    depends_on:
-#      -  bibbox-sys-commander-backend
+  #  bibbox-sys-commander-nginx:
+  #    container_name: bibbox-sys-commander-nginx
+  #    restart: unless-stopped
+  #    networks:
+  #    - bibbox-default-network
+  #    image: nginx
+  #    links:
+  #        -  bibbox-sys-commander-backend:backend
+  #    build:
+  #      context:    ./nginx
+  #      dockerfile: Dockerfile
+  #    volumes:
+  #      - ./client/dist:/usr/share/nginx/html
+  #      - ./proxy-configs/nginx.conf:/etc/nginx/nginx.conf
+  #      - /opt/bibbox:/opt/bibbox
+  #    ports:
+  #      - "8080:80"
+  #    depends_on:
+  #      -  bibbox-sys-commander-backend
 
 
   bibbox-sys-commander-backend:
     container_name: bibbox-sys-commander-backend
     restart: unless-stopped
     networks:
-    - bibbox-default-network
+      - bibbox-default-network
     links:
-        -  bibbox-sys-commander-redis:redis
-        -  bibbox-sys-commander-celery:celery
-        -  bibbox-sys-commander-postgres:postgres
-    build:
-      context:    ./backend
-      dockerfile: Dockerfile
+      -  bibbox-sys-commander-redis:redis
+      -  bibbox-sys-commander-celery:celery
+      -  bibbox-sys-commander-postgres:postgres
+    image: bibbox/bibbox-sys-commander-backend:latest
     ports:
-        - "5010:5000"  
+      - "5010:5000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/bibbox:/opt/bibbox
@@ -70,13 +66,11 @@ services:
     container_name:  bibbox-sys-commander-celery
     restart: unless-stopped
     networks:
-    - bibbox-default-network
+      - bibbox-default-network
     links:
-        -  bibbox-sys-commander-redis:redis
-        -  bibbox-sys-commander-postgres:postgres
-    build:
-      context:    ./backend
-      dockerfile: Dockerfile
+      -  bibbox-sys-commander-redis:redis
+      -  bibbox-sys-commander-postgres:postgres
+    image: bibbox/bibbox-sys-commander-backend:latest
     command: "celery -A celery_worker.app_celerey worker -l INFO"
     volumes:
       - ./data/celery:/queue
@@ -84,7 +78,7 @@ services:
       - /opt/bibbox:/opt/bibbox
       - ./backend:/usr/src/bibbox-sys-commander/backend
     env_file:
-       - .env
+      - .env
     depends_on:
       - bibbox-sys-commander-keycloak
 
@@ -108,19 +102,16 @@ services:
   #   env_file:
   #      - .env
 
-
   bibbox-sys-commander-celery-monitor:
     container_name: bibbox-sys-commander-celery-monitor
-    build:
-      context:    ./backend
-      dockerfile: Dockerfile
+    image: bibbox/bibbox-sys-commander-backend:latest
     networks:
-    - bibbox-default-network
+      - bibbox-default-network
     links:
-        -  bibbox-sys-commander-redis:redis
+      -  bibbox-sys-commander-redis:redis
     restart: unless-stopped
     ports:
-        - "5011:5555"    
+      - "5011:5555"
     entrypoint: celery flower
     #command:  -celery A celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0
     command:  --app celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0
@@ -132,37 +123,35 @@ services:
       - /opt/bibbox:/opt/bibbox
 
   bibbox-sys-commander-postgres:
-      container_name:  bibbox-sys-commander-postgres
-      restart: unless-stopped
-      networks:
-       - bibbox-default-network
-      build:
-        context:   ./postgresql
-        dockerfile: Dockerfile
-      ports:
-        - "5432:5432" 
-      volumes:
-        - ./data/postgresql/data:/var/lib/postgresql/data
-      env_file:
-        - .env
+    container_name:  bibbox-sys-commander-postgres
+    restart: unless-stopped
+    networks:
+      - bibbox-default-network
+    image: bibbox/bibbox-sys-commander-postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgresql/data:/var/lib/postgresql/data
+    env_file:
+      - .env
 
   bibbox-sys-commander-redis:
-      container_name: bibbox-sys-commander-redis
-      image: redis
-      networks:
-        - bibbox-default-network
-      restart: unless-stopped
-      ports:
-        - "6379:6379" 
-      volumes:
-        - ./data/redis/data:/data
-      env_file:
-        - .env
+    container_name: bibbox-sys-commander-redis
+    image: redis
+    networks:
+      - bibbox-default-network
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis/data:/data
+    env_file:
+      - .env
 
 
   bibbox-sys-commander-adminer:
-      container_name:  bibbox-sys-commander-adminer
-      networks:
+    container_name:  bibbox-sys-commander-adminer
+    networks:
       - bibbox-default-network
       image: adminer
       restart: unless-stopped
@@ -170,12 +159,12 @@ services:
         - bibbox-sys-commander-postgres:postgres
         # - bibbox-sys-commander-keycloak-postgres:postgres
       ports:
-        - "5012:8080" 
+        - "5012:8080"
       environment:
         ADMINER_DEFAULT_DB_DRIVER: pgsql
         ADMINER_DEFAULT_DB_HOST: postgres
         ADMINER_DEFAULT_DB_NAME: bibbox
-  
+
 
   bibbox-sys-commander-cadvisor:      
       container_name: bibbox-sys-commander-cadvisor
@@ -197,7 +186,7 @@ services:
   bibbox-sys-commander-keycloak:
       container_name: bibbox-sys-commander-keycloak
       image: jboss/keycloak
-      networks: 
+      networks:
       - bibbox-default-network
       restart: unless-stopped
       ports:
@@ -215,19 +204,19 @@ services:
         PROXY_ADDRESS_FORWARDING: "true"
         REDIRECT_SOCKET: "proxy-https"
         KEYCLOAK_FRONTEND_URL: https://keycloak.demo.bibbox.org/auth
-      
+
       env_file: # we want to read some variables from the .env file as they are shared with the backend
         - .env
-      
+
       volumes:
         - ./keycloak/realms/realm-export.json:/opt/jboss/keycloak/import/realms/realm-export.json
         - ./keycloak/themes/custom/:/opt/jboss/keycloak/themes/custom
         - ./keycloak/disable-theme-cache.cli:/opt/jboss/startup-scripts/disable-theme-cache.cli
       command: [
-        "-Dkeycloak.profile.feature.upload_scripts=enabled", 
-        "-Dkeycloak.migration.action=import", 
-        "-Dkeycloak.migration.provider=singleFile", 
-        "-Dkeycloak.migration.file=/opt/jboss/keycloak/import/realms/realm-export.json", 
+        "-Dkeycloak.profile.feature.upload_scripts=enabled",
+        "-Dkeycloak.migration.action=import",
+        "-Dkeycloak.migration.provider=singleFile",
+        "-Dkeycloak.migration.file=/opt/jboss/keycloak/import/realms/realm-export.json",
         "-Dkeycloak.migration.strategy=IGNORE_EXISTING" # this will only import the realm if it does not exist yet, if there are changes to the realm, the container needs to be deleted and recreated (this also deletes users)
         ]
       depends_on:
