@@ -1,4 +1,5 @@
-@import '~@angular/material/theming';
+@import '../node_modules/@angular/material/theming';
+
 
 $toolbar-breakpoint: 600px;
 
@@ -19,14 +20,15 @@ $label-margin-bottom: 0;
 
 // base colors
 $custom_blue: #176fb6; //#6496b4
+$custom_blue_light: #62acd8;
 $custom_gray_light: #f0f1f4;
 $custom_gray_lightaccent: #E3E4E7;
 $custom_gray_medium: #a8a9ab;
 $custom_gray_dark: #555555;
 
 // notification colors
-$success-colors: mat-palette($mat-green, 400);
-$warning-colors: mat-palette($mat-amber, 400);
+//$success-colors: mat-palette($mat-green, 400);
+//$warning-colors: mat-palette($mat-amber, 400);
 
 // // log colors
 $custom_color_info: #26b726;

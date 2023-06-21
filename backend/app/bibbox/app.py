@@ -32,29 +32,29 @@ class AppCatalogue():
       # read the acive catalogue Config File, don't store it as instance variable
       return 'bibbox'  
 
-  def appNames  (self, catalogueName):
-      """
-      This function returns all app names from the actively used catalogue.
-      This function also spawns a celery worker, which asynchronously updates the app catalogue
-      in the database with the data from the respective app-repositories.
+#   def appNames  (self, catalogueName):
+#       """
+#       This function returns all app names from the actively used catalogue.
+#       This function also spawns a celery worker, which asynchronously updates the app catalogue
+#       in the database with the data from the respective app-repositories.
 
-      :param catalogueName: name of the catalogue to retreive appNames from
-      :returns: sorted list of appNames from the catalogue
-      """
+#       :param catalogueName: name of the catalogue to retreive appNames from
+#       :returns: sorted list of appNames from the catalogue
+#       """
 
-      syncAppCatalogue.delay ( self.availableCatalogues() )
-      c = catalogue_service.catalogue (catalogueName)      
-      appDescr = {}
-      if c:
-          apps = simplejson.loads(c.content)  
-          appDescr = {}
-          for app_groups in apps:
-            for group_member in app_groups ['group_members']:
-                app_name =  group_member ['app_name']
-                appDescr[app_name]  = 'https://github.com/bibbox/' + app_name 
+#       syncAppCatalogue.delay ( self.availableCatalogues() )
+#       c = catalogue_service.catalogue (catalogueName)      
+#       appDescr = {}
+#       if c:
+#           apps = simplejson.loads(c.content)  
+#           appDescr = {}
+#           for app_groups in apps:
+#             for group_member in app_groups ['group_members']:
+#                 app_name =  group_member ['app_name']
+#                 appDescr[app_name]  = 'https://github.com/bibbox/' + app_name 
 
-      appNames = sorted (list(appDescr))
-      return  appNames 
+#       appNames = sorted (list(appDescr))
+#       return  appNames 
 
   def appDescriptions  (self, catalogueName):
       """

@@ -30,7 +30,7 @@ api = Namespace('users',
                 security='apiKey',
                 authorizations = authorization)
 
-restapi.add_namespace (api, '/users')
+# restapi.add_namespace (api, '/users')
 
 user_service = UserService()
 auth = HTTPBasicAuth()

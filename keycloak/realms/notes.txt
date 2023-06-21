@@ -1,0 +1,4 @@
+we want to dynamically replace the rootUrl of the bibbox-frontend client in the realm-export.json
+
+§§BASEURL should be the base url of the bibbox-frontend client, e.g. silicolabv4.bibbox.org
+

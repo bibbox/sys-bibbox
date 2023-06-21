@@ -1,15 +1,36 @@
 //@import "src/styles.css";
+@import "src/styles-variables";
 
 .instances {
   display: flex;
   flex-direction: column;
-  .application-search {
+  .instances-search {
     display: flex;
     flex-direction: column;
     align-self: center;
-    min-width: 220px;
-    width: 20vw;
+    min-width: 300px;
     padding-bottom: 20px;
+
+    .input-group-append {
+      display: flex;
+    }
+
+    .instances-search__slide-toggle{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-weight: $custom_font_weight_normal;
+      padding: 10px;
+
+      .mat-slide-toggle-bar {
+        background-color: $custom_gray_lightaccent;
+        color: $custom_gray_lightaccent;
+        .mat-slide-toggle-thumb {
+          background-color: $custom_blue;
+          color: $custom_blue;
+        }
+      }
+    }
   }
 
   .instances_results {

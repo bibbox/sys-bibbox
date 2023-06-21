@@ -15,3 +15,13 @@ export interface LogItem {
   type: string;
   activity_id: number;
 }
+
+export interface SysContainerNames {
+  names: string[];
+}
+
+export interface SysContainerLogs {
+  name: string,
+  tail: number,
+  logs: string[];
+}

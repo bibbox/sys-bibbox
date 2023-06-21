@@ -22,9 +22,9 @@ export class ApplicationTileComponent implements OnInit {
       data: this.application,
     });
 
-    dialogRef.afterClosed().subscribe(value => {
-      console.log(`Dialog sent: ${value}`);
-    });
+    // dialogRef.afterClosed().subscribe(value => {
+    //   console.log(`Dialog sent: ${value}`);
+    // });
   }
 
 }

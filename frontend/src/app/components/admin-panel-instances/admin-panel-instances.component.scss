@@ -1,0 +1,81 @@
+@import "src/styles-variables";
+
+.admin-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+
+  .instances-search {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-self: center;
+    min-width: 300px;
+    max-width: 600px;
+    padding-bottom: 20px;
+
+    .input-group-append {
+      display: flex;
+    }
+  }
+
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    th {
+      background-color: #eee;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px;
+    }
+    td {
+      text-align: center;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      img {
+        display: block;
+        margin: auto;
+      }
+    }
+    tbody tr:hover {
+      background-color: #f5f5f5;
+    }
+    .actions {
+      display: flex;
+      justify-content: space-evenly;
+      //button {
+      //  padding: 5px 10px;
+      //  border-radius: 3px;
+      //  background-color: #ddd;
+      //  cursor: pointer;
+      //  width: 20px;
+      //  height: 20px;
+      //  &:hover {
+      //    background-color: #ccc;
+      //  }
+      //}
+    }
+  }
+
+  .admin-panel__instance_state_svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .running {
+    color: $custom_color_info;
+  }
+  .ongoing {
+    color: $custom_color_warn;
+  }
+  .stopped {
+    color: $custom_color_error;
+  }
+
+
+}
+
+
+

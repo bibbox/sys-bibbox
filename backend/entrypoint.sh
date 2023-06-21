@@ -6,7 +6,7 @@
 
 # TODO - for production take the password from the .env
 
-RETRIES=4
+RETRIES=15
 USER=postgres
 DATABASE=bibbox
 HOST=postgres
@@ -24,9 +24,14 @@ echo "PostgreSQL started!"
 # add a flag to preserve the DB at a build
 if [ ! -f  DBINIT.DONE ]; then
     python manage.py recreate_db
-    python manage.py seed_db
+    python manage.py sync_app_catalogue
     touch DBINIT.DONE
 fi
+
+
+# test if the db is working
+# python manage.py
+
 
 
 uwsgi --ini /etc/uwsgi.ini

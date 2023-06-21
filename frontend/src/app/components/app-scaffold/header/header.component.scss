@@ -3,43 +3,48 @@
   display: flex;
   flex-direction: row;
   padding: 10px 20px 0 20px;
+  justify-content: space-between;
 
-  .app-scaffold-header__branding {
-    flex-grow: 0;
-    justify-content: start;
-    align-self: center;
-    align-items: center;
-    justify-items: center;
-    width: 20vw;
-    display: flex;
+  .app-scaffold-header__left_aligned {
+    width: 25vw;
+    .app-scaffold-header__branding {
+      flex-grow: 0;
+      justify-content: flex-start;
+      align-self: center;
+      align-items: center;
+      justify-items: center;
+      display: flex;
 
-    .app-scaffold-header__navbar-icon {
-      max-height: 50px;
-      height: 50px;
-      width: auto;
-    }
+      .app-scaffold-header__navbar-icon {
+        max-height: 50px;
+        height: 50px;
+        width: auto;
+      }
 
-    .app-scaffold-header__branding-text {
-      margin-left: 15px;
-      font-weight: $custom_font_weight_light;
-      font-size: x-large;
-      color: $custom_blue;
+      .app-scaffold-header__branding-text {
+        margin-left: 15px;
+        font-weight: $custom_font_weight_light;
+        font-size: x-large;
+        color: $custom_blue;
+      }
     }
   }
 
+  .app-scaffold-header__center_aligned {
+    // width: 50vw;
+    .app-scaffold-header__nav-buttons{
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 70px;
 
-  .app-scaffold-header__nav-buttons{
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 70px;
-
-    .app-scaffold-header__nav-button {
-      border: none;
-      width: 110px;
-      font-size: large;
-      font-weight: $custom_font_weight_light;
+      .app-scaffold-header__nav-button {
+        border: none;
+        //width: 110px;
+        font-size: large;
+        font-weight: $custom_font_weight_light;
+      }
     }
   }
   .app-scaffold-header__nav-buttons .active {
@@ -47,11 +52,37 @@
     background: $custom_blue;
   }
 
-  .app-scaffold-header__activity-menu-overlay {
+  .app-scaffold-header__right_aligned {
     flex-grow: 0;
     display: flex;
     justify-content: flex-end;
-    width: 20vw;
-  }
+    align-items: center;
+    width: 25vw;
 
+    .app-scaffold-header__login_info {
+      font-size: large;
+      font-weight: $custom_font_weight_light;
+      align-self: center;
+      justify-self: flex-start;
+    }
+
+    .app-scaffold-header__profile-icon {
+      font-size: x-large;
+      font-weight: $custom_font_weight_light;
+      align-self: center;
+      justify-self: flex-start;
+    }
+
+    .app-scaffold-header__activity-menu-overlay {
+      flex-grow: 0;
+    }
+
+
+
+    .app-scaffold-header__login-logout-button{
+      font-size: large;
+      font-weight: $custom_font_weight_light;
+      height: 50px;
+    }
+  }
 }

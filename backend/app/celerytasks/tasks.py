@@ -5,7 +5,7 @@ import logging
 import requests
 import simplejson
 
-from flask import current_app, render_template
+from flask import current_app
 from backend.app import app_celerey
 from backend.app import db
 
@@ -36,12 +36,13 @@ def rawgithubprefix (github_organization, appid, version):
         return "https://raw.githubusercontent.com/" + github_organization +  "/" + appid + "/" + version + "/"
 
 def loadAndCheckJsonFromGit (url):
-    #print ("read info from - ", url)
+    print ("read info from - ", url)
     try:
         download = requests.get(url).content
         #print (download)
-    except Exception:
-        raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection!')
+    except Exception as e:
+        raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection! Error: ' + str(e))
+    
     try:
         json_as_dict = simplejson.loads(download)
     except Exception:
@@ -50,7 +51,7 @@ def loadAndCheckJsonFromGit (url):
     return json_again
     
 
-@app_celerey.task(bind=True, name='tasks.syncAppCatalogue', base=Singleton) # without singleton, we get recurring queuePool size overflow errors
+@app_celerey.task(bind=True, name='tasks.syncAppCatalogue', base=Singleton, lock_expiry=60) # without singleton, we get recurring queuePool size overflow errors
 def syncAppCatalogue (self, catalogueNames):
     
     cataloguesInDB = catalogue_service.all_as_dict()
