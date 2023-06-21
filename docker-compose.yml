@@ -158,12 +158,12 @@ services:
     links:
       - bibbox-sys-commander-postgres:postgres
         # - bibbox-sys-commander-keycloak-postgres:postgres
-      ports:
-        - "5012:8080"
-      environment:
-        ADMINER_DEFAULT_DB_DRIVER: pgsql
-        ADMINER_DEFAULT_DB_HOST: postgres
-        ADMINER_DEFAULT_DB_NAME: bibbox
+    ports:
+      - "5012:8080"
+    environment:
+      ADMINER_DEFAULT_DB_DRIVER: pgsql
+      ADMINER_DEFAULT_DB_HOST: postgres
+      ADMINER_DEFAULT_DB_NAME: bibbox
 
 
   bibbox-sys-commander-cadvisor:      
