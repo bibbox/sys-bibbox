@@ -153,10 +153,10 @@ services:
     container_name:  bibbox-sys-commander-adminer
     networks:
       - bibbox-default-network
-      image: adminer
-      restart: unless-stopped
-      links:
-        - bibbox-sys-commander-postgres:postgres
+    image: adminer
+    restart: unless-stopped
+    links:
+      - bibbox-sys-commander-postgres:postgres
         # - bibbox-sys-commander-keycloak-postgres:postgres
       ports:
         - "5012:8080"
