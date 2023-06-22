@@ -311,6 +311,8 @@ def installInstance (self, instanceDescr):
                     logger.info(line)
                 for line in std_info["std_error"]:
                     logger.error(line)
+                if len(std_info["std_error"]):
+                    raise Exception("Creation of the certificate for {} failed.".format(sub_domain))
 
             command_array=['ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/']
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
@@ -321,6 +323,9 @@ def installInstance (self, instanceDescr):
                 logger.info(line)
             for line in stderror:
                 logger.error(line)
+            if len(std_info["std_error"]):
+
+                raise Exception("Creation of the symbolic link to  ../sites-enabled for {} failed.".format(instanceDescr['instancename']))
 
             command_array=['certbot', '--expand', '--apache'] + sub_domains + ['-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
@@ -331,12 +336,23 @@ def installInstance (self, instanceDescr):
                 logger.info(line)
             for line in stderror:
                 logger.error(line)
+            if len(std_info["std_error"]):
+                raise Exception("Creation of the certificate for {} failed.".format(sub_domain))
 
 
         except Exception as ex:
             #print ("ERROR in the generation of the Proxy File" )
             logger.error("Creation of the {} proxy file failed. Exception: {}".format('005-' + instanceDescr['instancename'] + ".conf", ex))
-            raise
+            try:
+                fh.removeProxyConfigFile(instanceDescr['instancename'])
+            except Exception as ex:
+                print ("Deletion of the proxy file of {} failed. Exception: {}".format(instanceDescr['instancename'], ex))
+                logger.error("Deletion of the proxy file of {} failed. Exception: {}".format(instanceDescr['instancename'], ex))
+                raise
+            else:
+                print ("Successfully deleted the proxy file of {}.".format(instanceDescr['instancename']))
+                logger.info("Successfully deleted the proxy file of {}.".format(instanceDescr['instancename']))
+        raise
 
         else:
             #print ("Successfully created the proxy file" )
