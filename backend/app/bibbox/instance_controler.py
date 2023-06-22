@@ -352,7 +352,7 @@ def installInstance (self, instanceDescr):
             else:
                 print ("Successfully deleted the proxy file of {}.".format(instanceDescr['instancename']))
                 logger.info("Successfully deleted the proxy file of {}.".format(instanceDescr['instancename']))
-        raise
+            raise
 
         else:
             #print ("Successfully created the proxy file" )

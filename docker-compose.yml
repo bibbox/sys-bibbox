@@ -212,7 +212,6 @@ services:
         PROXY_ADDRESS_FORWARDING: "true"
         REDIRECT_SOCKET: "proxy-https"
         KEYCLOAK_FRONTEND_URL: https://keycloak.demo.bibbox.org/auth
-
       env_file: # we want to read some variables from the .env file as they are shared with the backend
         - .env
 
