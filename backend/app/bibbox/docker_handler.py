@@ -26,8 +26,8 @@ class DockerHandler():
         docker_command.extend(command_array)
         process = subprocess.Popen(docker_command,
                                    shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
-        std_out=["stdout:"]
-        std_error=["stderr:"]
+        std_out=[]
+        std_error=[]
         while True:
             line = process.stdout.readline()
             lineerror = process.stderr.readline()
