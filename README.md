@@ -87,6 +87,11 @@ sudo bash INSTALL.sh
 ### cadvisor
 `http://127.0.0.1:5013`
 
+## Cumtomization
+### Login Theme:
+In order to customize the lgin theme customize the theme files in `keycloak/themes/custom/login`.
+### Landing Description
+Simply chang the html text in the `frontend/src/assets/landing.html` file. The changes will automatoically be loaded.
 
 ## Structure
 
@@ -108,3 +113,4 @@ Adminer can be used to access and manage databases.
 ##### cadvisor
 cadvisor (Container Advisor) provides resource usage and performance characteristics of the running containers. 
 ##### keycloak
+
