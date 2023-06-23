@@ -19,6 +19,7 @@ services:
       - /opt/bibbox/sys-bibbox/frontend/dist/sys-bibbox-client:/var/www/html/sys-bibbox-client
     ports:
       - "80:80"
+      - "443:443"
 
   #  bibbox-sys-commander-nginx:
   #    container_name: bibbox-sys-commander-nginx

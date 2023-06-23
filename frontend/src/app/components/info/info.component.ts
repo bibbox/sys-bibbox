@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../../store/services/user.service';
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-info',
@@ -10,15 +11,20 @@ import {UserService} from '../../store/services/user.service';
 export class InfoComponent implements OnInit {
 
   isLoggedin = false;
+  public htmlStr: any;
 
   constructor(
     private router: Router,
     private userService: UserService,
+    private _sanitizer: DomSanitizer
   ) {
   }
 
   ngOnInit(): void {
     // this.checkLogin().then(r => this.redirectIfLoggedIn())
+    this.htmlStr = this._sanitizer.bypassSecurityTrustHtml(
+      '<iframe  src="assets/landing.html"></iframe>',
+    );
   }
 
   async checkLogin(): Promise<void> {
@@ -30,4 +36,5 @@ export class InfoComponent implements OnInit {
       this.router.navigate(['/instances']);
     }
   }
+
 }
