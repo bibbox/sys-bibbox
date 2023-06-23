@@ -307,25 +307,22 @@ def installInstance (self, instanceDescr):
 
                 std_info = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
                                command_array=command_array)
+                failed=False
                 for line in std_info["std_out"]:
                     logger.info(line)
                 for line in std_info["std_error"]:
                     logger.error(line)
-                if len(std_info["std_error"]):
+                    if line != "Saving debug log to /var/log/letsencrypt/letsencrypt.log":
+                        failed=True
+                if failed:
                     raise Exception("Creation of the certificate for {} failed.".format(sub_domain))
+
 
             command_array=['ln', '-s', "../sites-available/005-{instacename}.conf".format(instacename=instanceDescr['instancename']), '/etc/apache2/sites-enabled/']
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
             stdout, stderror = dh.docker_exec(instance_name='bibbox-sys-commander-apacheproxy',
                                               command_array=command_array)
 
-            for line in stdout:
-                logger.info(line)
-            for line in stderror:
-                logger.error(line)
-            if len(std_info["std_error"]):
-
-                raise Exception("Creation of the symbolic link to  ../sites-enabled for {} failed.".format(instanceDescr['instancename']))
 
             command_array=['certbot', '--expand', '--apache'] + sub_domains + ['-n', '--email', '${EMAIL:-backoffice.bibbox@gmail.com}', '--agree-tos']
             logger.info("subprocess: {command}".format(command=" ".join(command_array)))
@@ -334,10 +331,14 @@ def installInstance (self, instanceDescr):
 
             for line in stdout:
                 logger.info(line)
-            for line in stderror:
+            for line in std_info["std_error"]:
                 logger.error(line)
-            if len(std_info["std_error"]):
+                if line != "Saving debug log to /var/log/letsencrypt/letsencrypt.log":
+                    failed=True
+
+            if failed:
                 raise Exception("Creation of the certificate for {} failed.".format(sub_domain))
+
 
 
         except Exception as ex:
