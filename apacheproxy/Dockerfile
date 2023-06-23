@@ -33,6 +33,8 @@ RUN apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y systemctl && \
     a2enmod remoteip &&\
     a2enmod headers &&\
+    a2enmod ssl &&\
+    a2enmod rewrite &&\
     systemctl restart apache2 && \
 #    service apache2 restart && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install certbot && \
@@ -42,6 +44,7 @@ RUN apt-get -y update && \
 #RUN certbot --apache -d ${DOMAINNAME:-demo.bibbox.org} -n --email ${EMAIL:-backoffice.bibbox@gmail.com} --agree-tos
 
 # COPY htaccess.conf /var/www/html/sys-bibbox-client/.htaccess
+
 
 EXPOSE 80
 EXPOSE 443
