@@ -87,7 +87,7 @@ sudo bash INSTALL.sh
 ### cadvisor
 `http://127.0.0.1:5013`
 
-## Cumtomization
+## Customization
 ### Login Theme:
 In order to customize the lgin theme customize the theme files in `keycloak/themes/custom/login`.
 ### Landing Description
