@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 networks:
   bibbox-default-network:
@@ -16,6 +16,7 @@ services:
       - /opt/bibbox/sys-bibbox/frontend/dist/sys-bibbox-client:/var/www/html/sys-bibbox-client
     ports:
       - "80:80"
+      - "443:443"
 
   #  bibbox-sys-commander-nginx:
   #    container_name: bibbox-sys-commander-nginx
@@ -37,7 +38,6 @@ services:
   #    depends_on:
   #      -  bibbox-sys-commander-backend
 
-
   bibbox-sys-commander-backend:
     container_name: bibbox-sys-commander-backend
     restart: unless-stopped
@@ -57,10 +57,12 @@ services:
     env_file:
       - .env
     depends_on:
-      -  bibbox-sys-commander-redis
-      -  bibbox-sys-commander-celery
-      -  bibbox-sys-commander-postgres
-      -  bibbox-sys-commander-keycloak
+      bibbox-sys-commander-redis:
+        condition: service_started
+      bibbox-sys-commander-celery:
+        condition: service_started
+      bibbox-sys-commander-postgres:
+        condition: service_healthy
 
   bibbox-sys-commander-celery:
     container_name:  bibbox-sys-commander-celery
@@ -80,7 +82,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - bibbox-sys-commander-keycloak
+      bibbox-sys-commander-keycloak:
+        condition: service_started  
 
   # bibbox-sys-commander-celery-beat:
   #   container_name:  bibbox-sys-commander-celery
@@ -116,7 +119,8 @@ services:
     #command:  -celery A celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0
     command:  --app celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0
     depends_on:
-      - bibbox-sys-commander-redis
+      bibbox-sys-commander-redis:
+        condition: service_started
     volumes:
       - ./data/celery:/queue
       - ./backend:/usr/src/bibbox-sys-commander/backend
@@ -225,7 +229,9 @@ services:
         "-Dkeycloak.migration.strategy=IGNORE_EXISTING" # this will only import the realm if it does not exist yet, if there are changes to the realm, the container needs to be deleted and recreated (this also deletes users)
         ]
       depends_on:
-        - bibbox-sys-commander-postgres
+        bibbox-sys-commander-postgres:
+          condition: service_healthy
+
   bibbox-sys-commander-master-fdp:
     image: fairdata/fairdatapoint:1.13.2
     container_name: bibbox-sys-commander-master-fdp
