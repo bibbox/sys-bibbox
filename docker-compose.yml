@@ -211,7 +211,7 @@ services:
       volumes:
         - ./keycloak/realms/realm-export.json:/opt/jboss/keycloak/import/realms/realm-export.json
         - ./keycloak/themes/custom/:/opt/jboss/keycloak/themes/custom
-        - ./keycloak/disable-theme-cache.cli:/opt/jboss/startup-scripts/disable-theme-cache.cli
+        #- ./keycloak/disable-theme-cache.cli:/opt/jboss/startup-scripts/disable-theme-cache.cli
       command: [
         "-Dkeycloak.profile.feature.upload_scripts=enabled",
         "-Dkeycloak.migration.action=import",
