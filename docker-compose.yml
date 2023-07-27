@@ -134,6 +134,11 @@ services:
       - ./data/postgresql/data:/var/lib/postgresql/data
     env_file:
       - .env
+    healthcheck:
+       test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${DB_NAME}'"]
+       interval: 10s
+       timeout: 5s
+       retries: 5
 
   bibbox-sys-commander-redis:
     container_name: bibbox-sys-commander-redis
