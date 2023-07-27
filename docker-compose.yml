@@ -86,26 +86,6 @@ services:
       bibbox-sys-commander-keycloak:
         condition: service_started  
 
-  # bibbox-sys-commander-celery-beat:
-  #   container_name:  bibbox-sys-commander-celery
-  #   restart: unless-stopped
-  #   networks:
-  #   - bibbox-default-network
-  #   links:
-  #       -  bibbox-sys-commander-redis:redis
-  #       -  bibbox-sys-commander-postgres:postgres
-  #   build:
-  #     context:    ./backend
-  #     dockerfile: Dockerfile
-  #   command: "celery beat -A celery_beat.app_celerey --loglevel=info"
-  #   volumes:
-  #     - ./data/celery:/queue
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - /opt/bibbox:/opt/bibbox
-  #     - ./backend:/usr/src/bibbox-sys-commander/backend
-  #   env_file:
-  #      - .env
-
   bibbox-sys-commander-celery-monitor:
     container_name: bibbox-sys-commander-celery-monitor
     image: bibbox/bibbox-sys-commander-backend:latest
