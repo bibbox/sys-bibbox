@@ -41,7 +41,7 @@ services:
   bibbox-sys-commander-backend:
     container_name: bibbox-sys-commander-backend
     restart: unless-stopped
-    command: bash -c 'while ! curl --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/auth/realms/master; do sleep 5; done; exec /usr/src/bibbox-sys-commander/entrypoint.sh'
+    #command: bash -c 'while ! curl --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/auth/realms/master; do sleep 5; done; exec /usr/src/bibbox-sys-commander/entrypoint.sh'
     networks:
       - bibbox-default-network
     links:
@@ -61,7 +61,7 @@ services:
       bibbox-sys-commander-redis:
         condition: service_started
       bibbox-sys-commander-celery:
-        condition: service_started
+        condition: service_healthy
       bibbox-sys-commander-postgres:
         condition: service_healthy
 
@@ -82,6 +82,11 @@ services:
       - ./backend:/usr/src/bibbox-sys-commander/backend
     env_file:
       - .env
+    healthcheck:
+       test: ["CMD-SHELL", "sh -c 'curl --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/auth/realms/master'"]
+       interval: 10s
+       timeout: 5s
+       retries: 5
     depends_on:
       bibbox-sys-commander-keycloak:
         condition: service_started  
