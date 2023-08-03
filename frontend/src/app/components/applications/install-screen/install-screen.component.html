@@ -63,8 +63,26 @@
       <div class="error-messages"> </div>
       <div class="install-item-body">
         <label> {{envparam.display_name}} </label>
-        <input type="{{envparam.type}}" name="{{envparam.id}}" formControlName="{{envparam.id}}" placeholder="{{envparam.default_value}}">
+        <ng-container [ngSwitch]="envparam.type">
+          <!--*ngSwitchCase="'text'"-->
+          <input *ngSwitchDefault
+                 [type]="envparam.type"
+                 name="{{envparam.name}}"
+                 formControlName="{{envparam.name}}"
+                 id="{{envparam.id}}"
+                 placeholder="{{envparam.default_value}}">
+          <input *ngSwitchCase="'radio'"
+                 type="radio"
+                 [id]="envparam.id"
+                 [name]="envparam.name"
+                 [formControl]="envParamForm.get(envparam.name)"
+                 [value]="envparam.default_value"
+                 [checked]="entered_values[envparam.name] === envparam.id"
+                 (click)="onRadioChange(envparam.id,envparam.name)" >
+        </ng-container>
         <span class="field-description">{{envparam.description}}</span>
+<!--        <input type="{{envparam.type}}" name="{{envparam.name}}" formControlName="{{envparam.name}}" id="{{envparam.id}}"  placeholder="{{envparam.default_value}}"[value]="envparam.default_value"  [(ngModel)]="envparam.default_value"  > <!-- [checked]="envparam.id === envparam.name"  [checked]="true" [value]="envparam.default_value"  [(ngModel)]="envparam.default_value" (ngModelChange)="entered_values.set(envparam.name, envparam.default_value)"  [(ngModel)]="entered_values[envparam.name]"-->
+<!--        <span class="field-description">{{envparam.description}}</span> -->
       </div>
     </div>
 
