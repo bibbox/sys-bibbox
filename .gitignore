@@ -48,3 +48,6 @@ frontend/dist
 # dev
 **/dummy_kc_file.py
 **/kc_snipplets.txt
+
+#Ignore cusomizeable files
+frontend/src/assets/landing.html
