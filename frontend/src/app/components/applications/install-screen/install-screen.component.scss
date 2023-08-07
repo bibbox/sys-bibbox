@@ -82,12 +82,26 @@
 
         }
         .field-description {
-          width: 100%;
+          width: 60%;
           margin-left: 20%;
-          margin-right: 20%;
+          margin-right: 00%;
           padding: 0 5px;
           margin-bottom: 20px
         }
+
+        input[type='radio']:checked,
+        input[type='radio']:not(:checked) {
+          display: inline-block;
+          height: 50%;
+          width: 5%;
+          max-width: 100%;
+          padding: 0px;
+          margin-right: -20%;
+          border-radius: 0px;
+          border: solid 1px lightgray;
+          text-align: left;
+        }
+
       }
     }
 

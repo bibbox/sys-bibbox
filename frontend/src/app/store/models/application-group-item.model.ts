@@ -38,6 +38,7 @@ export interface AppInfo {
 
 export interface EnvironmentParameters {
   id: string;
+  name: string;
   display_name: string;
   type: string;
   default_value: string;
