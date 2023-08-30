@@ -1,3 +1,11 @@
+<VirtualHost *:80>
+   ServerName fdp.§§BASEURL
+   Redirect / https://fdp.§§BASEURL/
+RewriteEngine on
+RewriteCond %{SERVER_NAME} =fdp.§§BASEURL
+RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+</VirtualHost>
+
 <VirtualHost *:443>
         ServerName fdp.§§BASEURL
         ProxyRequests           Off
