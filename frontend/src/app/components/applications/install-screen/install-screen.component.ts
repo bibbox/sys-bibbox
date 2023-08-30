@@ -49,6 +49,7 @@ export class InstallScreenComponent implements OnInit {
   environmentParameters: EnvironmentParameters[] = [];
   installForm: FormGroup;
   envParamForm: FormGroup;
+  entered_values:Record<string, string> = {};
 
   ngOnInit(): void {
     this.appItem = history.state[0];
@@ -89,15 +90,24 @@ export class InstallScreenComponent implements OnInit {
 
 
   initEnvParamFormFields(): void {
+    let increment=0;
     for (const envParam of this.environmentParameters) {
-      this.envParamForm.addControl(
-        envParam.id.valueOf(),
-        this.formBuilder.control('', [
-          Validators.required,
-          Validators.minLength(Number(envParam.min_length)),
-          Validators.maxLength(Number(envParam.max_length))]
-        )
-      );
+      envParam.name = envParam.id.valueOf()
+      if(!this.envParamForm.contains(envParam.name)){
+
+        this.entered_values[envParam.name]=envParam.default_value;
+        //Validators.required,
+          this.envParamForm.addControl(
+            envParam.id.valueOf(),
+            this.formBuilder.control('', [ Validators.minLength(Number(envParam.min_length)),
+              Validators.maxLength(Number(envParam.max_length))]
+            )
+          );
+      }else{
+        increment++;
+        envParam.id = `${envParam.id.valueOf()}${increment}`
+
+      }
     }
   }
 
@@ -108,6 +118,12 @@ export class InstallScreenComponent implements OnInit {
   install(): void {
     if (this.installForm.valid && this.envParamForm.valid) {
       // console.log('install');
+      // If nothing entered use default values
+      for (const envParamName in this.envParamForm.controls){
+        if (this.envParamForm.controls[envParamName].value == ""){
+          this.envParamForm.controls[envParamName].setValue(this.entered_values[envParamName]);
+        }
+      }
       const payload = {
         displayname_short : this.installForm.value.instance_name,
         app : {
@@ -120,7 +136,7 @@ export class InstallScreenComponent implements OnInit {
         installed_by_name: this.userService.getUsername()
       };
 
-      // console.log(this.installForm.value.instance_id, JSON.stringify(payload));
+      console.log(this.installForm.value.instance_id, JSON.stringify(payload));
 
       this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
       // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
@@ -137,7 +153,9 @@ export class InstallScreenComponent implements OnInit {
     }
   }
 
-
+  onRadioChange(selectedValue: string, inputName:string) {
+    this.entered_values[inputName] = selectedValue;
+  }
   asyncInstanceNameValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return this.instanceService.checkIfInstanceExists(this.installForm.controls.instance_id.value)
