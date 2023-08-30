@@ -87,11 +87,13 @@ sudo bash INSTALL.sh
 ### cadvisor
 `http://127.0.0.1:5013`
 
-## Cumtomization
+## Customization
 ### Login Theme:
-In order to customize the lgin theme customize the theme files in `keycloak/themes/custom/login`.
+In order to customize the login theme use the theme files in `keycloak/themes/custom/login`.
 ### Landing Description
-Simply chang the html text in the `frontend/src/assets/landing.html` file. The changes will automatoically be loaded.
+Simply change the html text in the `frontend/src/assets/landing.html` file. The changes will automatoically be loaded.
+After installation, this text can still be changed under the following path: `/opt/bibbox/sys-bibbox/frontend/dist/sys-bibbox-client/assets/landing.html`.
+
 
 ## Structure
 
