@@ -21,7 +21,7 @@ export class InfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.checkLogin().then(r => this.redirectIfLoggedIn())
+    this.checkLogin().then(r => this.redirectIfLoggedIn())
     this.htmlStr = this._sanitizer.bypassSecurityTrustHtml(
       '<iframe width="100%" height="800" src="assets/landing.html"></iframe>',
     );
