@@ -23,3 +23,4 @@ class Ping(Resource):
     def get(self):
         return {"msg": "Hello - This message is coming from BIBBOX backend!"}, 200
 
+
