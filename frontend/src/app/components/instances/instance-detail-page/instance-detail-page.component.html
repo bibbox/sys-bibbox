@@ -68,8 +68,8 @@
       <ng-template matTabContent>
         <br><br><br>
         <span class="instance-details-info-primary">
-          <span class="instance-details-info-primary-item"> <span class="label-short">ID: </span> <span class="value"> {{instanceItem.instancename}} </span> </span>
-          <span class="instance-details-info-primary-item"> <span class="label-short">App: </span> <span class="value"> {{instanceItem.app.name}} {{instanceItem.app.version}} </span> </span>
+          <span class="instance-details-info-primary-item"> <span class="label-short">Instance ID: </span> <span class="value"> {{instanceItem.instancename}} </span> </span>
+          <span class="instance-details-info-primary-item"> <span class="label-short">App: </span> <span class="value"> {{instanceItem.app.name}} </span> </span>
           <span class="instance-details-info-primary-item"> <span class="label-short">Version: </span> <span class="value"> {{instanceItem.app.version}} </span> </span>
         </span>
         <div class="instance-details-info">
@@ -92,17 +92,17 @@
               </div>
             </div>
             <div class="detail-item">
-              <span class="description"> Instance: </span>
+              <span class="description"> Instance path: </span>
               /opt/bibbox/instances/{{instanceItem.instancename}}
             </div>
             <div *ngIf="instanceItem.installed_by_name" class="detail-item">
               <span class="description"> Installed by: </span>
               {{instanceItem.installed_by_name}}
             </div>
-            <div *ngIf="instanceItem.installed_by_id" class="detail-item">
+            <!--<div *ngIf="instanceItem.installed_by_id" class="detail-item">
               <span class="description"> Installed by ID: </span>
               {{instanceItem.installed_by_id}}
-            </div>
+            </div>-->
             <div *ngIf="instanceItem.time_of_installation" class="detail-item">
               <span class="description"> Time of Installation: </span>
               {{time_of_installation.toLocaleString("de-DE")}}
@@ -144,7 +144,7 @@
           <br><br>
           <div class="descriptions">
             <div class="description-form-field">
-              <label class="value">Short Description</label>
+              <label class="value">Description</label>
               <textarea matInput matTextareaAutosize
                         formControlName="description_short"
                         [value]="instanceDetailForm.controls['description_short'].value"
@@ -152,7 +152,7 @@
               >
               </textarea>
             </div>
-            <div class="description-form-field">
+            <!--<div class="description-form-field">
               <label class="value">Long Description</label>
               <textarea matInput matTextareaAutosize
                         formControlName="description_long"
@@ -160,7 +160,7 @@
                         class="description-form-field-input"
               >
               </textarea>
-            </div>
+            </div>-->
           </div>
         </ng-container>
         <div class="save-button">
