@@ -10,7 +10,7 @@
       <div class="error-messages">
         <div *ngIf="installForm.controls.instance_id.hasError('nameAlreadyExists')">
           <mat-error>
-            InstanceID already exists.
+            Instance ID already exists.
           </mat-error>
         </div>
 <!--        <div *ngIf="installForm.controls.instance_id.hasError('minlength')">-->
@@ -20,22 +20,22 @@
 <!--        </div>-->
         <div *ngIf="installForm.controls.instance_id.hasError('maxlength')">
           <mat-error>
-            InstanceID too long! max 48 chars.
+            Instance ID too long! max 48 chars.
           </mat-error>
         </div>
         <div *ngIf="installForm.controls.instance_id.hasError('required') && installForm.controls.instance_id.dirty">
           <mat-error>
-            InstanceID cannot be empty!
+            Instance ID cannot be empty!
           </mat-error>
         </div>
         <div *ngIf="installForm.controls.instance_id.hasError('pattern')">
           <mat-error>
-            InstanceID does not match RegEx constraints! Can only contain lowercase alphanumeric chars.
+            Instance ID does not match RegEx constraints! Can only contain lowercase alphanumeric chars.
           </mat-error>
         </div>
       </div>
       <div class="install-item-body">
-        <label for="instance_id"> Application ID</label>
+        <label for="instance_id"> Instance ID</label>
         <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id">
         <span class="field-description"> Subdomain of your application URL. <b>The application ID can not be changed after the installation.</b></span>
       </div>
@@ -45,7 +45,7 @@
 
         <div *ngIf="installForm.controls.instance_name.hasError('maxlength')">
           <mat-error>
-            Application Name too long! max 48 chars.
+            Instance Name too long! max 48 chars.
           </mat-error>
         </div>
 
@@ -53,7 +53,7 @@
     <div class="install-form-item">
       <div class="error-messages"></div>
       <div class="install-item-body">
-        <label for="instance_name"> Application Name</label>
+        <label for="instance_name"> Instance Name</label>
         <input type="text" value="" name="instance_name" required id="instance_name" formControlName="instance_name" > <!-- (ngModelChange)="test('a')" -->
         <span class="field-description">Full name of your application, can be changed later on.</span>
       </div>
