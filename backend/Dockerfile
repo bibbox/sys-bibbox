@@ -11,7 +11,8 @@ RUN apt-get update
 
 RUN apt-get install -y --force-yes \
     nasm \
-    yasm
+    yasm \
+    postgresql-client
 
 #
 # FLASK SERVER
