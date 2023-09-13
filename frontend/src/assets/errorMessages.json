@@ -1,0 +1,7 @@
+{
+  "400": "Bad Request - The server cannot or will not process the request due to an apparent client error.",
+  "401": "Unauthorized - No valid authentication credentials for the target resource.",
+  "500": "Internal Server Error - Unexpected condition was encountered.",
+  "502": "Bad Gateway - Received an invalid response from the upstream server.",
+  "503": "Service Unavailable - The server cannot handle the request."
+}

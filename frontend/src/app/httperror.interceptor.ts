@@ -2,10 +2,10 @@ import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest}
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-
+import * as jsonErrorMessages from '../assets/errorMessages.json';
 
 export class HttperrorInterceptor implements HttpInterceptor {
-
+  errorMessages: any = jsonErrorMessages;
   constructor(private snackBar: MatSnackBar) {
   }
 
@@ -20,7 +20,14 @@ export class HttperrorInterceptor implements HttpInterceptor {
             errorMessage = `Error: ${error.error.message}`;
           } else {
             // server-side error
-            errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+
+            if (error.status in this.errorMessages){
+              //Use user friendly Message if available
+              errorMessage = `Error Code: ${error.status}: ${this.errorMessages[error.status]}`;
+            }else{
+              errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+            }
+
           }
           this.snackBar.open(errorMessage, 'OK');
           return throwError(errorMessage);
