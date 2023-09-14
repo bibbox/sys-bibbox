@@ -136,7 +136,7 @@ services:
         context:   ./postgresql
         dockerfile: Dockerfile
       ports:
-        - "5432:5432" 
+        - "5432:5432"
       volumes:
         - ./data/postgresql/data:/var/lib/postgresql/data
       env_file:
