@@ -62,6 +62,7 @@ import { ApplicationsComponent } from './components/applications/applications.co
 import { ContactComponent } from './components/about/contact/contact.component';
 import { PartnersComponent } from './components/about/partners/partners.component';
 import { ImprintComponent } from './components/about/imprint/imprint.component';
+import { CitationComponent } from './components/about/citation/citation.component';
 import { ActivitiesComponent } from './components/activities/activities.component';
 import { InstanceDetailPageComponent } from './components/instances/instance-detail-page/instance-detail-page.component';
 import { ApplicationGroupComponent } from './components/applications/application-group/application-group.component';

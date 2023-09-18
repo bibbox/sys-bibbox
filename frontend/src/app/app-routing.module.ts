@@ -6,6 +6,7 @@ import {InstancesComponent} from './components/instances/instances.component';
 import {ContactComponent} from './components/about/contact/contact.component';
 import {PartnersComponent} from './components/about/partners/partners.component';
 import {ImprintComponent} from './components/about/imprint/imprint.component';
+import {CitationComponent} from './components/about/citation/citation.component';
 import {ActivitiesComponent} from './components/activities/activities.component';
 import {InstanceDetailPageComponent} from './components/instances/instance-detail-page/instance-detail-page.component';
 import {NotFoundComponent} from './components/not-found/not-found.component';
@@ -46,6 +47,7 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent, pathMatch: 'full'},
   { path: 'partners', component: PartnersComponent, pathMatch: 'full'},
   { path: 'imprint', component: ImprintComponent, pathMatch: 'full'},
+  { path: 'citation', component: CitationComponent, pathMatch: 'full'},
 
   // info page which is displayed if the user is not logged in
   { path: 'info', component: InfoComponent, pathMatch: 'full'},
