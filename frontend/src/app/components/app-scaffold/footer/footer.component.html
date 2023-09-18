@@ -7,11 +7,19 @@
     </div>
   </div>
 
-  <div class="app-scaffold-footer__nav-buttons">
-    <button class="app-scaffold-footer__nav-button" *ngFor="let item of bottomNavigation" [routerLink]="[item.link]" routerLinkActive="active">
-      {{item.label}}
-    </button>
+  <div class="app-scaffold-footer__nav__framework">
+    <div class="app-scaffold-footer__nav-buttons">
+      <button class="app-scaffold-footer__nav-button" *ngFor="let item of bottomNavigation" [routerLink]="[item.link]" routerLinkActive="active">
+        {{item.label}}
+      </button>
+    </div> 
+    <div class="app-scaffold-footer__citation">
+      <p>If you use BIBBOX in research, please cite this article: <strong>Müller, Heimo, et al. <a href="https://doi.org/10.1016/j.nbt.2023.06.001" target="_blank"><span style="color: blue;">"BIBBOX, a FAIR toolbox and App Store for Life Science Research."</span></a> New Biotechnology (2023).</strong></p>
+    </div>
   </div>
+
+  
+
 
   <div class="app-scaffold-footer__logos">
     <a href="https://heap-exposome.eu" target="_blank" rel="noopener noreferrer">
