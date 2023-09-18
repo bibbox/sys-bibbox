@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 networks:
   bibbox-default-network:
@@ -16,6 +16,7 @@ services:
       - /opt/bibbox/sys-bibbox/frontend/dist/sys-bibbox-client:/var/www/html/sys-bibbox-client
     ports:
       - "80:80"
+      - "443:443"
 
   #  bibbox-sys-commander-nginx:
   #    container_name: bibbox-sys-commander-nginx
@@ -37,10 +38,10 @@ services:
   #    depends_on:
   #      -  bibbox-sys-commander-backend
 
-
   bibbox-sys-commander-backend:
     container_name: bibbox-sys-commander-backend
     restart: unless-stopped
+    #command: bash -c 'while ! curl --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/auth/realms/master; do sleep 5; done; exec /usr/src/bibbox-sys-commander/entrypoint.sh'
     networks:
       - bibbox-default-network
     links:
@@ -57,10 +58,12 @@ services:
     env_file:
       - .env
     depends_on:
-      -  bibbox-sys-commander-redis
-      -  bibbox-sys-commander-celery
-      -  bibbox-sys-commander-postgres
-      -  bibbox-sys-commander-keycloak
+      bibbox-sys-commander-redis:
+        condition: service_started
+      bibbox-sys-commander-celery:
+        condition: service_healthy
+      bibbox-sys-commander-postgres:
+        condition: service_healthy
 
   bibbox-sys-commander-celery:
     container_name:  bibbox-sys-commander-celery
@@ -71,7 +74,7 @@ services:
       -  bibbox-sys-commander-redis:redis
       -  bibbox-sys-commander-postgres:postgres
     image: bibbox/bibbox-sys-commander-backend:latest
-    command: "celery -A celery_worker.app_celerey worker -l INFO"
+    command: bash -c 'while ! curl --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/auth/realms/master; do sleep 2; done; celery -A celery_worker.app_celerey worker -l INFO'
     volumes:
       - ./data/celery:/queue
       - /var/run/docker.sock:/var/run/docker.sock
@@ -79,28 +82,14 @@ services:
       - ./backend:/usr/src/bibbox-sys-commander/backend
     env_file:
       - .env
+    healthcheck:
+       test: ["CMD-SHELL", "sh -c 'curl --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/auth/realms/master'"]
+       interval: 10s
+       timeout: 5s
+       retries: 5
     depends_on:
-      - bibbox-sys-commander-keycloak
-
-  # bibbox-sys-commander-celery-beat:
-  #   container_name:  bibbox-sys-commander-celery
-  #   restart: unless-stopped
-  #   networks:
-  #   - bibbox-default-network
-  #   links:
-  #       -  bibbox-sys-commander-redis:redis
-  #       -  bibbox-sys-commander-postgres:postgres
-  #   build:
-  #     context:    ./backend
-  #     dockerfile: Dockerfile
-  #   command: "celery beat -A celery_beat.app_celerey --loglevel=info"
-  #   volumes:
-  #     - ./data/celery:/queue
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - /opt/bibbox:/opt/bibbox
-  #     - ./backend:/usr/src/bibbox-sys-commander/backend
-  #   env_file:
-  #      - .env
+      bibbox-sys-commander-keycloak:
+        condition: service_started  
 
   bibbox-sys-commander-celery-monitor:
     container_name: bibbox-sys-commander-celery-monitor
@@ -116,7 +105,8 @@ services:
     #command:  -celery A celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0
     command:  --app celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0
     depends_on:
-      - bibbox-sys-commander-redis
+      bibbox-sys-commander-redis:
+        condition: service_started
     volumes:
       - ./data/celery:/queue
       - ./backend:/usr/src/bibbox-sys-commander/backend
@@ -134,6 +124,11 @@ services:
       - ./data/postgresql/data:/var/lib/postgresql/data
     env_file:
       - .env
+    healthcheck:
+       test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${DB_NAME}'"]
+       interval: 10s
+       timeout: 5s
+       retries: 5
 
   bibbox-sys-commander-redis:
     container_name: bibbox-sys-commander-redis
@@ -211,7 +206,7 @@ services:
       volumes:
         - ./keycloak/realms/realm-export.json:/opt/jboss/keycloak/import/realms/realm-export.json
         - ./keycloak/themes/custom/:/opt/jboss/keycloak/themes/custom
-        - ./keycloak/disable-theme-cache.cli:/opt/jboss/startup-scripts/disable-theme-cache.cli
+        #- ./keycloak/disable-theme-cache.cli:/opt/jboss/startup-scripts/disable-theme-cache.cli
       command: [
         "-Dkeycloak.profile.feature.upload_scripts=enabled",
         "-Dkeycloak.migration.action=import",
@@ -220,7 +215,9 @@ services:
         "-Dkeycloak.migration.strategy=IGNORE_EXISTING" # this will only import the realm if it does not exist yet, if there are changes to the realm, the container needs to be deleted and recreated (this also deletes users)
         ]
       depends_on:
-        - bibbox-sys-commander-postgres
+        bibbox-sys-commander-postgres:
+          condition: service_healthy
+
   bibbox-sys-commander-master-fdp:
     image: fairdata/fairdatapoint:1.13.2
     container_name: bibbox-sys-commander-master-fdp
@@ -241,6 +238,7 @@ services:
   bibbox-sys-commander-master-fdp-client:
     image: fairdata/fairdatapoint-index-client:1.13
     container_name: bibbox-sys-commander-master-fdp-client
+    restart: unless-stopped
     ports:
       - "8088:80"
     environment:
@@ -253,6 +251,7 @@ services:
   bibbox-sys-commander-master-fdp-mongo:
     image: mongo:4.0.12
     container_name: bibbox-sys-commander-master-fdp-mongo
+    restart: unless-stopped
     volumes:
       - ./data/mongo/data:/data/db
     networks:
@@ -261,6 +260,7 @@ services:
   bibbox-sys-commander-master-fdp-blazegraph:
     image: metaphacts/blazegraph-basic:2.2.0-20160908.003514-6
     container_name: bibbox-sys-commander-master-fdp-blazegraph
+    restart: unless-stopped
     volumes:
       - ./data/blazegraph:/blazegraph-data
     networks:
