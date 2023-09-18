@@ -238,6 +238,7 @@ services:
   bibbox-sys-commander-master-fdp-client:
     image: fairdata/fairdatapoint-index-client:1.13
     container_name: bibbox-sys-commander-master-fdp-client
+    restart: unless-stopped
     ports:
       - "8088:80"
     environment:
@@ -250,6 +251,7 @@ services:
   bibbox-sys-commander-master-fdp-mongo:
     image: mongo:4.0.12
     container_name: bibbox-sys-commander-master-fdp-mongo
+    restart: unless-stopped
     volumes:
       - ./data/mongo/data:/data/db
     networks:
@@ -258,6 +260,7 @@ services:
   bibbox-sys-commander-master-fdp-blazegraph:
     image: metaphacts/blazegraph-basic:2.2.0-20160908.003514-6
     container_name: bibbox-sys-commander-master-fdp-blazegraph
+    restart: unless-stopped
     volumes:
       - ./data/blazegraph:/blazegraph-data
     networks:
