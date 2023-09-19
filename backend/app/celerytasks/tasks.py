@@ -47,7 +47,6 @@ def loadAndCheckJsonFromGit (url):
     if response.status_code != 200:
         raise Exception('An error has occurred: '+download)
 
-
     try:
         json_as_dict = simplejson.loads(download)
     except Exception:
