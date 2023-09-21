@@ -312,7 +312,7 @@ def installInstance (self, instanceDescr):
                     logger.info(line)
                 for line in std_info["std_error"]:
                     logger.error(line)
-                    if line != "Saving debug log to /var/log/letsencrypt/letsencrypt.log":
+                    if not (line == "Saving debug log to /var/log/letsencrypt/letsencrypt.log" or line == "stderr:"):
                         failed=True
                 if failed:
                     raise Exception("Creation of the certificate for {} failed.".format(sub_domain))
@@ -333,7 +333,7 @@ def installInstance (self, instanceDescr):
                 logger.info(line)
             for line in std_info["std_error"]:
                 logger.error(line)
-                if line != "Saving debug log to /var/log/letsencrypt/letsencrypt.log":
+                if not (line == "Saving debug log to /var/log/letsencrypt/letsencrypt.log" or line == "stderr:"):
                     failed=True
 
             if failed:
