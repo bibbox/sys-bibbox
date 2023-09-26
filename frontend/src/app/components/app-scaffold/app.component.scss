@@ -1,18 +1,45 @@
 #header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   flex-grow: 0;
   margin-bottom: 50px;
   max-width: 100%;
   display: block;
+  z-index: 3;
 }
 
 #content {
+  position: relative;
   flex-grow: 1;
   align-self: center;
   align-content: center;
-  width: 80vw;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100vh;
+  padding-top: 130px;
   padding-bottom: 100px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+:host-context(.layout-width-full) {
+  #content {
+    max-width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+:host-context(.layout-width-wide) {
+  #content {
+    max-width: 1600px;
+  }
 }
 
 #footer {
+  position: relative;
   flex-grow: 0;
+  z-index: 2;
 }

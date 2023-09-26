@@ -1,5 +1,21 @@
 <!--<p>TODO: Overview über BIBBOX geben.</p>-->
 
 <div class="bibbox-info">
-  <div [innerHTML]="htmlStr"></div>
+  <div class="info-left">
+    <div class="login-wrapper">
+      <h1 class="gapS">Welcome to BIBBOX</h1>
+
+      <p class="gapM">Please click the button below, to log in using an existing account.</p>
+
+      <p class="gapL"><button class="gradient" (click)="initiateLogin()"><app-login-icon></app-login-icon>Log in</button></p>
+
+      <div class="login-help">
+        <h2 class="gapZ fontXS bold">Don't have an account yet?</h2>
+        
+        <p class="fontXS">Click <a routerLink="/contact">here</a> to contact your BIBBOX admin.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-right gradient" [innerHTML]="htmlStr"></div>
 </div>

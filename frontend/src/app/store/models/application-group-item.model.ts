@@ -14,6 +14,8 @@ export interface ApplicationItem {
   tags: string[];
   versions: IVersions[];
   icon_url: string;
+  isNew?: boolean;
+  isFair?: boolean;
 }
 
 export interface IVersions {

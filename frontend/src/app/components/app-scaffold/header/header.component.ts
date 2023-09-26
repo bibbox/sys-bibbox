@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import {APP_TITLE_LONG} from '../../../commons';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import {APP_TITLE, APP_SUB_TITLE} from '../../../commons';
 import {environment} from '../../../../environments/environment';
 import {KeycloakService} from 'keycloak-angular';
 import {Router} from '@angular/router';
 import {UserService} from '../../../store/services/user.service';
 import {SocketioService} from '../../../store/services/socketio.service';
 import {KeycloakAdminBackendService} from '../../../store/services/keycloak-admin-backend.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -13,19 +14,19 @@ import {KeycloakAdminBackendService} from '../../../store/services/keycloak-admi
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  title = APP_TITLE_LONG;
-
+  title = APP_TITLE;
+  subtitle = APP_SUB_TITLE;
 
   navigation = [
     { link: 'applications', label: 'Store'},
     { link: 'instances', label: 'Instances' },
     { link: 'activities', label: 'Activities' },
-    { link: 'fdp', label: 'FDP' },
-    //{ link: 'sys-logs', label: 'Sys-Logs'},
+    { link: 'fdp', label: 'FDP' }
   ];
 
   loggedIn = false;
-  username = '';
+  userFullname = '';
+  isScrolled = false;
 
   constructor(
     private ksService: KeycloakService,
@@ -33,14 +34,15 @@ export class HeaderComponent implements OnInit {
     private userService: UserService,
     private socketioService: SocketioService,
     private kc_admin_service: KeycloakAdminBackendService,
+    @Inject(DOCUMENT) private document: Document
   ) {
   }
 
   ngOnInit(): void {
-    this.userService.isLoggedIn().then(r => {
+    this.userService.isLoggedIn().then(async r => {
       this.loggedIn = r;
       if (r) {
-        this.username = this.userService.getUsername();
+        this.userFullname = await this.userService.getFullOrUsername();
         this.socketioService.addInstanceUpdatesListener();
         this.socketioService.addActivityUpdatesListener();
       }
@@ -52,7 +54,7 @@ export class HeaderComponent implements OnInit {
       // is admin user -> add admin tabs to navigation
       this.navigation.push(
         { link: 'sys-logs', label: 'Sys-Logs'},
-        { link: 'instance-mgmt', label: 'Dashboard'},
+        // { link: 'instance-mgmt', label: 'Dashboard'},
         { link: 'user-mgmt', label: 'Users'},
       );
 
@@ -61,6 +63,17 @@ export class HeaderComponent implements OnInit {
       this.kc_admin_service.refreshStoreUsers();
     }
 
+    this.checkScroll();
+  }
+
+  @HostListener('window:scroll', [])
+  checkScroll() {
+    if (document.body.scrollTop > 0 || document.documentElement.scrollTop > 0) {
+      this.isScrolled = true;
+    }
+    else {
+      this.isScrolled = false;
+    }
   }
 
   initiateLogout(): void {

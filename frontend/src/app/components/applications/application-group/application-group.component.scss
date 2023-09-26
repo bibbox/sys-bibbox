@@ -1,10 +1,11 @@
 @import "src/styles-variables";
+
 .application-group {
   margin-bottom: 20px;
   padding-bottom: 30px;
   display: flex;
   flex-flow: row wrap;
-  align-content: flex-start;
+  gap: 20px;
 }
 
 .application-group:last-child {

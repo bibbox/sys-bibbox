@@ -4,10 +4,12 @@
       <img src="assets/loading.gif" alt="activity status" class="activity-overlay__button-status-image loading">
       <label class="activity-overlay__button-active-activities-label">{{activeActivities}}</label>
     </ng-container>
-    <img *ngIf="!activeActivities && lastActivityStatus === 'FAILURE'" src="assets/error.png" alt="activity status" class="activity-overlay__button-status-image">
-    <img *ngIf="!activeActivities && lastActivityStatus === 'SUCCESS'" src="assets/done.png" alt="activity status" class="activity-overlay__button-status-image">
+    
+    <app-cross-icon *ngIf="!activeActivities && lastActivityStatus === 'FAILURE'"></app-cross-icon>
+    <app-check-icon *ngIf="!activeActivities && lastActivityStatus !== 'FAILURE'"></app-check-icon>
 <!--    <img *ngIf="!(activityList.length)" id="noActivities" class="fas fa-question-circle fa-2x activity-overlay__button-status-image"/>-->
   </div>
+
   <mat-menu #activityMenuOverlay="matMenu" class="activity-overlay__menu">
     <div
           *ngFor="let activity of activityList | slice:0:10"
@@ -40,7 +42,9 @@
           </span>
       </div>
     </div>
+
     <div *ngIf="!activityList.length" class="activity-overlay__menu-item-empty"> nothing to show here </div>
+
     <div [routerLink]="['/activities/']" class="activity-overlay__menu-item-last"> Show history </div>
 
     <!--  <button mat-menu-item>-->

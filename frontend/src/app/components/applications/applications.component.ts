@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {ApplicationGroupItem, ApplicationItem} from '../../store/models/application-group-item.model';
 import * as applicationGroupSelector from '../../store/selectors/application-group.selector';
 import {select, Store} from '@ngrx/store';
@@ -6,6 +6,7 @@ import {AppState} from '../../store/models/app-state.model';
 import {FormControl} from '@angular/forms';
 import {filter} from 'rxjs/operators';
 import {LoadApplicationGroupsAction} from '../../store/actions/applications.actions';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-applications',
@@ -18,16 +19,30 @@ export class ApplicationsComponent implements OnInit {
   filteredAppGroups: ApplicationGroupItem[] = [];
   filterFormControl = new FormControl('');
 
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<AppState>, @Inject(DOCUMENT) private document: Document) {
     this.store.dispatch(new LoadApplicationGroupsAction());
 
     this.store.pipe(select(applicationGroupSelector.loadApplicationGroups)).subscribe((res) => {
-      this.appGroups = res;
+      this.appGroups = res.map(group => ({
+        group_name: group.group_name,
+        group_members: group.group_members.map(member => ({
+          ...member,
+          isNew: member.decoration === 'new',
+          isFair: member.decoration === 'FAIR'
+        }))
+      }));
+
       this.filter('');
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.document.body.classList.add('layout-width-wide');
+  }
+
+  ngOnDestroy(): void {
+    this.document.body.classList.remove('layout-width-wide');
+  }
 
   filter(newFilterValue: string): void {
     newFilterValue = newFilterValue.toLowerCase().trim();

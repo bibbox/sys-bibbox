@@ -1,4 +1,4 @@
-@import '../node_modules/@angular/material/theming';
+// @import '../node_modules/@angular/material/theming';
 
 
 $toolbar-breakpoint: 600px;
@@ -20,11 +20,12 @@ $label-margin-bottom: 0;
 
 // base colors
 $custom_blue: #176fb6; //#6496b4
-$custom_blue_light: #62acd8;
+$custom_blue_light: #90e1ee;
 $custom_gray_light: #f0f1f4;
 $custom_gray_lightaccent: #E3E4E7;
 $custom_gray_medium: #a8a9ab;
 $custom_gray_dark: #555555;
+$custom_gray_medium: #EFEFEF;
 
 // notification colors
 //$success-colors: mat-palette($mat-green, 400);
@@ -35,6 +36,10 @@ $custom_color_info: #26b726;
 $custom_color_warn: #e3d519;
 $custom_color_error: #f08080;
 
+// // badge colors
+$custom_color_new: #34AB1D;
+$custom_color_fair: #176FB6;
+
 //
 //// fonts
 //$material-icons-font-path: '~material-icons/iconfont/';
@@ -43,4 +48,5 @@ $custom_color_error: #f08080;
 // // font weights
 $custom_font_weight_light: 300 !default;
 $custom_font_weight_normal: 400 !default;
-$custom_font_weight_bold: 500 !default;
+$custom_font_weight_medium: 500 !default;
+$custom_font_weight_bold: 600 !default;

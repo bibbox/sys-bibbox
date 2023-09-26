@@ -6,32 +6,24 @@
 //@import "~roboto-fontface/css/roboto/sass/roboto-fontface";
 //@import "~material-icons/iconfont/material-icons.css";
 
+* {
+  font-family: "Roboto", "Helvetica Neue", sans-serif;
+  font-weight: normal;
+  font-size: 12pt;
+  line-height: 125%;
+  box-sizing: border-box;
+  color: $custom_gray_dark;
+  margin: 0;
+  padding: 0;
+}
+
 html, body {
   min-height: 100%;
   background: $custom_gray_light; //url("assets/furley_bg.png") repeat scroll;
 }
-body {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
 
-button {
-  padding: 10px 15px;
-  margin: 10px;
-  border-radius: 5px;
-  border: none;
-  background: inherit;
-  box-shadow: none;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  -webkit-transition: all 0.2s ease-in-out;
-  // border: 1px solid $custom_gray_lightaccent;
-}
 
-button:hover {
-  color: white;
-  background: $custom_blue;
-}
-
+/* APP */
 
 .app-loading {
   position: relative;
@@ -41,7 +33,6 @@ button:hover {
   justify-content: center;
   height: 100%;
 }
-
 .app-loading .spinner {
   height: 200px;
   width: 200px;
@@ -54,7 +45,6 @@ button:hover {
   right: 0;
   margin: auto;
 }
-
 .app-loading .spinner .path {
   stroke-dasharray: 1, 200;
   stroke-dashoffset: 0;
@@ -91,4 +81,148 @@ button:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+
+/* BUTTON */
+
+button, .button {
+  display: inline-flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 5px 20px;
+  border-radius: 10px;
+  font-size: 14pt;
+  border: none;
+  background-color: white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.2s ease-out, color 0.2s ease-out, opacity 0.2s ease-out;
+  -webkit-appearance: none;
+
+  svg {
+    display: block;
+    height: 22px;
+    margin-right: 8px;
+    fill: $custom_blue;
+    transition: fill 0.2s ease-out;
+  }
+
+  &:hover {
+    color: white !important;
+    background-color: $custom_blue !important;
+
+    svg {
+      fill: white !important;
+    }
+  }
+
+  &.gradient {
+    color: white !important;
+
+    svg {
+      fill: white !important;
+    }
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+}
+
+
+/* BACKGROUND */
+
+.gradient {
+  background: #176fb6;
+  background: linear-gradient(135deg, $custom_blue 0%, $custom_blue_light 100%);
+}
+
+
+/* COLOR */
+
+.blue {
+  color: $custom_blue;
+}
+
+
+/* DEFAULTS */
+
+h1, h2, h3, h4, h5 {
+  color: $custom_blue !important;
+}
+h1 {
+  font-size: 24pt;
+  margin-bottom: 30px;
+}
+h2 {
+  font-size: 18pt;
+  margin-bottom: 25px;
+}
+h3 {
+  font-size: 15pt;
+  margin-bottom: 20px;
+}
+h4 {
+  font-size: 12pt;
+  margin-bottom: 20px;
+}
+h5 {
+  font-size: 10pt;
+  margin-bottom: 20px;
+}
+p {
+  margin-bottom: 20px;
+
+  a {
+    font-weight: 500;
+  }
+}
+strong, .bold {
+  font-weight: 500;
+  font-size: inherit;
+  color: inherit;
+}
+
+
+/* FONTS */
+
+.fontXS {
+  font-size: 11pt;
+}
+.fontS {
+  font-size: 12pt;
+}
+.fontM {
+  font-size: 14pt;
+}
+.fontL {
+  font-size: 18pt;
+}
+.condensed {
+  font-family: "Roboto Condensed", "Helvetica Neue", sans-serif;
+}
+
+
+/* GAPS */
+
+.gapZ {
+  margin-bottom: 0;
+}
+.gapXXS {
+  margin-bottom: 5px;
+}
+.gapXS {
+  margin-bottom: 10px;
+}
+.gapS {
+  margin-bottom: 20px;
+}
+.gapM {
+  margin-bottom: 30px;
+}
+.gapL {
+  margin-bottom: 50px;
 }

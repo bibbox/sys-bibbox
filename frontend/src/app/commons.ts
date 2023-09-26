@@ -3,8 +3,8 @@
 
 import {environment} from '../environments/environment';
 
-export const APP_TITLE_LONG = 'FAIR-Toolbox based on BIBBOX v4.0';
-export const APP_TITLE_SHORT = 'FAIR-Toolbox';
+export const APP_TITLE = 'FAIR-TOOLBOX';
+export const APP_SUB_TITLE = 'based on BIBBOX v4.0';
 
 // paths of api endpoints, to which we send requests to
 export const API_INSTANCES_URL = 'http://' + environment.BASEURL + '/api/v1/instances/';

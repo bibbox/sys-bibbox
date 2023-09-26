@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../../store/services/user.service';
-import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { DomSanitizer } from "@angular/platform-browser";
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-info',
@@ -16,25 +17,33 @@ export class InfoComponent implements OnInit {
   constructor(
     private router: Router,
     private userService: UserService,
-    private _sanitizer: DomSanitizer
+    private _sanitizer: DomSanitizer,
+    @Inject(DOCUMENT) private document: Document
   ) {
   }
 
-  ngOnInit(): void {
-    this.checkLogin().then(r => this.redirectIfLoggedIn())
+  async ngOnInit(): Promise<void> {
+    await this.checkLogin();
+    this.document.body.classList.add('layout-width-full');
+
+    if(this.isLoggedin) {
+      this.document.body.classList.add('white-header');
+    }
+
     this.htmlStr = this._sanitizer.bypassSecurityTrustHtml(
-      '<iframe width="100%" height="800" src="assets/landing.html"></iframe>',
+      '<iframe width="100%" height="400" src="assets/landing.html"></iframe>',
     );
+  }
+
+  ngOnDestroy(): void {
+    this.document.body.classList.remove('layout-width-full', 'white-header');
   }
 
   async checkLogin(): Promise<void> {
     this.isLoggedin = await this.userService.isLoggedIn();
   }
 
-  redirectIfLoggedIn(): void {
-    if (this.isLoggedin) {
-      this.router.navigate(['/instances']);
-    }
+  initiateLogin(): void {
+    this.userService.login();
   }
-
 }

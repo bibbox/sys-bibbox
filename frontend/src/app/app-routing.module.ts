@@ -27,7 +27,7 @@ const routes: Routes = [
   // top nav
   { path: 'applications', component: ApplicationsComponent, pathMatch: 'full', canActivate: [AuthGuard]},
   { path: 'instances', component: InstancesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
-  { path: 'fdp', component: ApplicationsComponent, resolve: { url: 'externalUrlRedirectResolver'}, data: {externalUrl: 'http://fdp.' + environment.BASEURL}, canActivate: [AuthGuard]},
+  { path: 'fdp', component: ApplicationsComponent, resolve: { url: 'externalUrlRedirectResolver' }, data: { externalUrl: 'http://fdp.' + environment.BASEURL }, canActivate: [AuthGuard] },
   { path: 'activities/:activity_id', component: ActivitiesComponent, pathMatch: 'full', canActivate: [AuthGuard]}, // activities need two routes, in case we want to view activities without providing an activity id
   { path: 'activities', component: ActivitiesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
 
@@ -50,7 +50,7 @@ const routes: Routes = [
   { path: 'citation', component: CitationComponent, pathMatch: 'full'},
 
   // info page which is displayed if the user is not logged in
-  { path: 'info', component: InfoComponent, pathMatch: 'full'},
+  { path: 'info', component: InfoComponent, pathMatch: 'full', },
 
   // { path: 'login', component: LoginComponent, pathMatch: 'full'},
   { path: '**', component: NotFoundComponent, canActivate: [AuthGuard]}, // -> 404 page
@@ -66,7 +66,7 @@ const routes: Routes = [
   providers: [
     {
       provide: 'externalUrlRedirectResolver',
-      useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
+      useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot, ) =>
       {
         //window.location.href = (route.data as any).externalUrl;
         // Open in new tab instead of same window

@@ -80,6 +80,11 @@ import { AdminPanelInstancesComponent } from './components/admin-panel-instances
 import { AdminPanelUsersComponent } from './components/admin-panel-users/admin-panel-users.component';
 import { CreateUserDialogComponent } from './components/admin-panel-users/create-user-dialog/create-user-dialog.component';
 import { ConfirmationDialogComponent } from './components/admin-panel-users/confirmation-dialog/confirmation-dialog.component';
+import { LoginIconComponent } from './components/icons/login-icon/login-icon.component';
+import { LogoutIconComponent } from './components/icons/logout-icon/logout-icon.component';
+import { UserIconComponent } from './components/icons/user-icon/user-icon.component';
+import { CheckIconComponent } from './components/icons/check-icon/check-icon.component';
+import { CrossIconComponent } from './components/icons/cross-icon/cross-icon.component';
 import {UserEffects} from './store/effects/user.effects';
 
 
@@ -111,6 +116,11 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     AdminPanelUsersComponent,
     CreateUserDialogComponent,
     ConfirmationDialogComponent,
+    LoginIconComponent,
+    LogoutIconComponent,
+    UserIconComponent,
+    CheckIconComponent,
+    CrossIconComponent
   ],
     imports: [
         // angular

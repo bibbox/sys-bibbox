@@ -1,12 +1,16 @@
 <div class="application-tile" (click)="openInstallScreenDialog()">
-  <span *ngIf="application.decoration" class="decoration">
-    <img *ngIf="application.decoration == 'new'" src="../../../../../assets/new.png" alt="new">
-    <img *ngIf="application.decoration == 'announced'" src="../../../../../assets/announced.png" alt="announced">
-    <img *ngIf="application.decoration == 'FAIR'" src="../../../../../assets/FAIR.png" alt="FAIR">
-  </span>
-  <span class="icon">
+
+  <div class="icon">
     <img src="{{application.icon_url}}" alt="{{application.icon_url}}">
-    <span class="name"> {{application.app_display_name}} </span>
-  </span>
-  <span class="description"> {{application.short_description}} </span>
+  </div>
+  
+  <div class="description">
+    <p class="name gapXXS">{{application.app_display_name}}</p>
+    <p class="text gapZ">{{application.short_description}}</p>
+
+    <div *ngIf="application.isNew || application.isFair" class="badges">
+      <span *ngIf="application.isNew" class="new">NEW</span>
+      <span *ngIf="application.isFair" class="fair">FAIR</span>
+    </div>
+  </div>
 </div>

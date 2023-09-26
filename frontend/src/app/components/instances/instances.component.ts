@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {InstanceItem} from '../../store/models/instance-item.model';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../store/models/app-state.model';
@@ -6,6 +6,7 @@ import * as instanceSelector from '../../store/selectors/instance.selector';
 import {FormControl} from '@angular/forms';
 import {ThemePalette} from '@angular/material/core';
 import {UserService} from '../../store/services/user.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-instances',
@@ -21,7 +22,10 @@ export class InstancesComponent implements OnInit {
 
 
   constructor(private store: Store<AppState>,
-              private userService: UserService,) {
+      private userService: UserService,
+      @Inject(DOCUMENT) private document: Document
+    ) {
+
     this.store.pipe(select(instanceSelector.selectAllInstances)).subscribe((res) => {
       this.instanceItems = res;
       this.filterInstances(this.filterFormControl.value);
@@ -29,6 +33,11 @@ export class InstancesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.document.body.classList.add('layout-width-wide');
+  }
+
+  ngOnDestroy(): void {
+    this.document.body.classList.remove('layout-width-wide');
   }
 
   filterInstances(newFilterValue: string): void {
