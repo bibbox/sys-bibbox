@@ -1,12 +1,19 @@
 <div class="application-tile" (click)="openInstallScreenDialog()">
-
   <div class="icon">
-    <img src="{{application.icon_url}}" alt="{{application.icon_url}}">
+    <img src="{{application.icon_url}}" alt="{{application.app_display_name}}" />
   </div>
   
   <div class="description">
     <p class="name gapXXS">{{application.app_display_name}}</p>
-    <p class="text gapZ">{{application.short_description}}</p>
+    <p class="text gapZ">
+      {{description}}<span *ngIf="shortenDescription && !showFullDescription">...</span>
+      <span class="arrow-wrapper" *ngIf="shortenDescription && !showFullDescription" (click)="toggleShowFully($event)">
+        <app-arrow-down-icon class="arrow" [width]="12" [height]="12"></app-arrow-down-icon>
+      </span>
+      <span class="arrow-wrapper" *ngIf="shortenDescription && showFullDescription" (click)="toggleShowFully($event)">
+        <app-arrow-up-icon class="arrow" [width]="12" [height]="12"></app-arrow-up-icon>
+      </span>
+    </p>
 
     <div *ngIf="application.isNew || application.isFair" class="badges">
       <span *ngIf="application.isNew" class="new">NEW</span>

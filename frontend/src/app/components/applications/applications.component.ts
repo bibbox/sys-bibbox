@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {ApplicationGroupItem, ApplicationItem} from '../../store/models/application-group-item.model';
+import {ApplicationGroupItem} from '../../store/models/application-group-item.model';
 import * as applicationGroupSelector from '../../store/selectors/application-group.selector';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../store/models/app-state.model';
@@ -7,6 +7,7 @@ import {FormControl} from '@angular/forms';
 import {filter} from 'rxjs/operators';
 import {LoadApplicationGroupsAction} from '../../store/actions/applications.actions';
 import { DOCUMENT } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-applications',
@@ -17,9 +18,11 @@ import { DOCUMENT } from '@angular/common';
 export class ApplicationsComponent implements OnInit {
   appGroups: ApplicationGroupItem[] = [];
   filteredAppGroups: ApplicationGroupItem[] = [];
+  searchFormControl = new FormControl('');
   filterFormControl = new FormControl('');
+  sortFormControl = new FormControl('category');
 
-  constructor(private store: Store<AppState>, @Inject(DOCUMENT) private document: Document) {
+  constructor(private store: Store<AppState>, @Inject(DOCUMENT) private document: Document, private dialog: MatDialog) {
     this.store.dispatch(new LoadApplicationGroupsAction());
 
     this.store.pipe(select(applicationGroupSelector.loadApplicationGroups)).subscribe((res) => {
@@ -32,7 +35,7 @@ export class ApplicationsComponent implements OnInit {
         }))
       }));
 
-      this.filter('');
+      this.filter();
     });
   }
 
@@ -44,20 +47,51 @@ export class ApplicationsComponent implements OnInit {
     this.document.body.classList.remove('layout-width-wide');
   }
 
-  filter(newFilterValue: string): void {
-    newFilterValue = newFilterValue.toLowerCase().trim();
+  filter(): void {
+    const searchterm = this.searchFormControl.value.toLowerCase().trim();
+    const filter = this.filterFormControl.value;
+
     this.filteredAppGroups = [];
+    
     this.appGroups.forEach((appGroup) => {
-      const tempGroupItems = appGroup.group_members.filter((item) => {
-        return !newFilterValue
-          || item.app_display_name.toLowerCase().indexOf(newFilterValue) !== -1
-          || item.tags.some(value => value.toLowerCase().indexOf(newFilterValue) !== -1);
-      });
-      const tempGroup: ApplicationGroupItem = {group_name: appGroup.group_name, group_members: tempGroupItems};
-      if (tempGroup.group_members.length) {
-        this.filteredAppGroups.push(tempGroup);
+      const tempGroupItems = appGroup.group_members
+        .filter((item) => !filter || (filter === 'new' && item.isNew) || (filter === 'FAIR' && item.isFair))
+        .filter((item) => !searchterm || item.app_display_name.toLowerCase().indexOf(searchterm) !== -1 || item.tags.some(value => value.toLowerCase().indexOf(searchterm) !== -1));
+
+      if(this.sortFormControl.value === 'category') {
+        const tempGroup: ApplicationGroupItem = {group_name: appGroup.group_name, group_members: tempGroupItems};
+
+        if (tempGroup.group_members.length) {
+          this.filteredAppGroups.push(tempGroup);
+        }
+      }
+      else if(this.sortFormControl.value === 'app') {
+        if(this.filteredAppGroups.length === 0) {
+          const tempGroup: ApplicationGroupItem = {group_name: appGroup.group_name, group_members: tempGroupItems, hideCategory: true};
+          this.filteredAppGroups.push(tempGroup);
+        }
+        else {
+          this.filteredAppGroups[0].group_members.push(...tempGroupItems);
+        }
       }
     });
+
+    if(this.sortFormControl.value === 'app') {
+      this.filteredAppGroups[0].group_members = this.filteredAppGroups[0].group_members.sort((a, b) => {
+        if(a.app_display_name.toLowerCase() < b.app_display_name.toLowerCase())
+          return -1;
+        else if(a.app_display_name.toLowerCase() > b.app_display_name.toLowerCase())
+          return 1;
+
+        return 0;
+      });
+    }
+  }
+
+  searchByTag = (tag: string) => {
+    this.dialog?.closeAll();
+    this.searchFormControl?.setValue(tag);
+    this.filter();
   }
 }
 

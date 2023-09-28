@@ -1,5 +1,5 @@
 <div class="activity-overlay">
-  <div [matMenuTriggerFor]="activityMenuOverlay" class="activity-overlay__button"> <!-- *ngSwitchCase="activeActivities" -->
+  <!-- <div [matMenuTriggerFor]="activityMenuOverlay" class="activity-overlay__button">
     <ng-container *ngIf="activeActivities">
       <img src="assets/loading.gif" alt="activity status" class="activity-overlay__button-status-image loading">
       <label class="activity-overlay__button-active-activities-label">{{activeActivities}}</label>
@@ -7,10 +7,9 @@
     
     <app-cross-icon *ngIf="!activeActivities && lastActivityStatus === 'FAILURE'"></app-cross-icon>
     <app-check-icon *ngIf="!activeActivities && lastActivityStatus !== 'FAILURE'"></app-check-icon>
-<!--    <img *ngIf="!(activityList.length)" id="noActivities" class="fas fa-question-circle fa-2x activity-overlay__button-status-image"/>-->
-  </div>
+  </div> -->
 
-  <mat-menu #activityMenuOverlay="matMenu" class="activity-overlay__menu">
+  <!-- <mat-menu #activityMenuOverlay="matMenu" class="activity-overlay__menu">
     <div
           *ngFor="let activity of activityList | slice:0:10"
           [routerLink]="['/activities/', activity.id]"
@@ -46,19 +45,6 @@
     <div *ngIf="!activityList.length" class="activity-overlay__menu-item-empty"> nothing to show here </div>
 
     <div [routerLink]="['/activities/']" class="activity-overlay__menu-item-last"> Show history </div>
-
-    <!--  <button mat-menu-item>-->
-    <!--    <mat-icon>dialpad</mat-icon>-->
-    <!--    <span>Redial</span>-->
-    <!--  </button>-->
-    <!--  <button mat-menu-item>-->
-    <!--    <mat-icon>voicemail</mat-icon>-->
-    <!--    <span>Check voice mail</span>-->
-    <!--  </button>-->
-    <!--  <button mat-menu-item>-->
-    <!--    <mat-icon>notifications_off</mat-icon>-->
-    <!--    <span>Disable alerts</span>-->
-    <!--  </button>-->
-  </mat-menu>
+  </mat-menu> -->
 </div>
 

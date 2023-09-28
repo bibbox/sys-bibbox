@@ -36,7 +36,7 @@
         width: auto;
       }
 
-      > div {
+      > span {
         display: flex;
         flex-flow: column nowrap;
         align-items: flex-start;
@@ -84,7 +84,7 @@
           transition: border-color 0.2s ease-out;
 
           &:hover {
-            border-bottom-color: $custom_gray_dark;
+            border-bottom-color: $custom_gray_darkest;
           }
 
           &.active {

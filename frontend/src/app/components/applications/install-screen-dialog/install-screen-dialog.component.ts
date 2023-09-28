@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {AppInfo, ApplicationItem, IVersions} from '../../../store/models/application-group-item.model';
+import {AppInfo, AppInstallDialogProps, ApplicationItem, IVersions} from '../../../store/models/application-group-item.model';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {FormControl, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
@@ -17,21 +17,23 @@ import {environment} from '../../../../environments/environment';
 })
 export class InstallScreenDialogComponent implements OnInit {
 
-  versionFormControl = new FormControl('', Validators.required);
-  selectedVersion: IVersions;
+  applicationItem: ApplicationItem;
+  searchByTag: (tag: string) => void;
+  versionFormControl = new FormControl(null, Validators.required);
   appInfo: AppInfo | null;
   disableInstallButton: boolean;
   maxInstancesTooltip: string = 'Cannot install instance. You have reached the maximum number of instances installable as a demo user. ('+ environment.KEYCLOAK_CONFIG.max_instances_per_demo_user +')';
 
-
   constructor(
-    @Inject(MAT_DIALOG_DATA) public applicationItem: ApplicationItem,
+    @Inject(MAT_DIALOG_DATA) public props: AppInstallDialogProps,
     private router: Router,
     private appService: ApplicationService,
     private userService: UserService,
     private instanceService: InstanceService,
   ) {
-    this.selectedVersion = this.applicationItem.versions[0];
+    this.applicationItem = props.application;
+    this.searchByTag = props.searchByTag;
+
     this.appInfo = {
       name: '',
       short_name: '',
@@ -41,27 +43,37 @@ export class InstallScreenDialogComponent implements OnInit {
       catalog_url: '',
       application_url: '',
       tags: [],
-      application_documentation_url: ''
+      application_documentation_url: '',
+      icon_url: this.applicationItem.icon_url,
+      versionOptions: structuredClone(this.applicationItem.versions).map(item => ({ ...item, selectLabel: item.app_version })),
+      install_guide_url: ''
     };
-    this.loadAppInfo().then();
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.loadAppInfo().then(() => {
+      this.appInfo.versionOptions[0].app_version = this.appInfo.version;
+      this.appInfo.versionOptions[0].selectLabel = `${this.appInfo.version} (latest)`;
+      this.versionFormControl.setValue(this.appInfo.versionOptions[0]);
+    });
+
     this.maxInstancesReached();
   }
 
-  ngOnInit(): void {
-  }
-
   async loadAppInfo(): Promise<void> {
-    await this.appService.getAppInfo(this.selectedVersion.appinfo)
+    await this.appService.getAppInfo((this.versionFormControl.value || this.applicationItem.versions[0])?.appinfo)
       .toPromise()
-      .then(
-        res => this.appInfo = res
-      );
+      .then(res => this.appInfo = {
+        ...this.appInfo,
+        ...res,
+        install_guide_url: this.getRepoUrl(this.applicationItem.app_name, res.version)
+      });
   }
 
   openInstallScreen(): void {
     this.router.navigateByUrl(
-      'install/' + this.applicationItem.app_name + '/' + this.selectedVersion.app_version,
-      {state: [{...this.applicationItem}, this.selectedVersion]}
+      'install/' + this.applicationItem.app_name + '/' + this.versionFormControl.value.app_version,
+      {state: [{...this.applicationItem}, this.versionFormControl.value]}
     ).then();
   }
 
@@ -76,5 +88,9 @@ export class InstallScreenDialogComponent implements OnInit {
         }
       );
     }
+  }
+
+  getRepoUrl(appName: string, version: string) {
+    return `https://github.com/bibbox/${appName}/tree/${version}/INSTALL-APP.md`
   }
 }

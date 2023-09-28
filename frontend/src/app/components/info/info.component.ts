@@ -12,6 +12,7 @@ import { DOCUMENT } from '@angular/common';
 export class InfoComponent implements OnInit {
 
   isLoggedin = false;
+  userFullname: string = '';
   public htmlStr: any;
 
   constructor(
@@ -41,9 +42,17 @@ export class InfoComponent implements OnInit {
 
   async checkLogin(): Promise<void> {
     this.isLoggedin = await this.userService.isLoggedIn();
+
+    if(this.isLoggedin) {
+      this.userFullname = await this.userService.getFullOrUsername();
+    }
   }
 
   initiateLogin(): void {
     this.userService.login();
+  }
+
+  switchAccounts(): void {
+    this.userService.switchAccount();
   }
 }

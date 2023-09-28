@@ -44,6 +44,10 @@ export class UserService {
     this.kcService.logout(document.location.origin + '/');
   }
 
+  switchAccount(): void {
+    this.kcService.logout(document.location.origin + '/instances');
+  }
+
   login(): void {
     this.kcService.login({ redirectUri: document.location.origin + '/instances' });
   }

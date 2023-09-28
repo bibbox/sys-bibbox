@@ -11,6 +11,7 @@ export class ApplicationGroupComponent implements OnInit {
   constructor() { }
 
   @Input() applicationGroup: ApplicationGroupItem;
+  @Input() searchByTag: (tag: string) => void;
 
   ngOnInit(): void {
   }

@@ -85,6 +85,11 @@ import { LogoutIconComponent } from './components/icons/logout-icon/logout-icon.
 import { UserIconComponent } from './components/icons/user-icon/user-icon.component';
 import { CheckIconComponent } from './components/icons/check-icon/check-icon.component';
 import { CrossIconComponent } from './components/icons/cross-icon/cross-icon.component';
+import { ArrowDownIconComponent } from './components/icons/arrow-down-icon/arrow-down-icon.component';
+import { ArrowUpIconComponent } from './components/icons/arrow-up-icon/arrow-up-icon.component';
+import { CrossClearIconComponent } from './components/icons/cross-clear-icon/cross-clear-icon.component';
+import { InstallIconComponent } from './components/icons/install-icon/install-icon.component';
+import { SearchIconComponent } from './components/icons/search-icon/search-icon.component';
 import {UserEffects} from './store/effects/user.effects';
 
 
@@ -120,7 +125,12 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     LogoutIconComponent,
     UserIconComponent,
     CheckIconComponent,
-    CrossIconComponent
+    CrossIconComponent,
+    ArrowDownIconComponent,
+    ArrowUpIconComponent,
+    CrossClearIconComponent,
+    InstallIconComponent,
+    SearchIconComponent
   ],
     imports: [
         // angular

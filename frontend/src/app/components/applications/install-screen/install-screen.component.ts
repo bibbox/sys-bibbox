@@ -71,10 +71,15 @@ export class InstallScreenComponent implements OnInit {
             this.asyncInstanceNameValidator()
           ]
         ],
-        instance_name: ['',
+        instance_title: ['',
           [
             Validators.required,
             Validators.maxLength(48)
+          ]
+        ],
+        instance_subtitle: ['',
+          [
+            Validators.maxLength(100)
           ]
         ],
       });
