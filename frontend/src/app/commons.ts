@@ -1,6 +1,7 @@
 // strings
 
 
+import { Toolbar } from 'ngx-editor';
 import {environment} from '../environments/environment';
 
 export const APP_TITLE = 'FAIR-TOOLBOX';
@@ -38,6 +39,16 @@ export const ACTIVITY_STATES = {
 };
 
 
+export const toolbar: Toolbar = [
+  ['bold', 'italic'],
+  ['underline', 'strike'],
+  ['code', 'blockquote'],
+  ['ordered_list', 'bullet_list'],
+  [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+  ['link', 'image'],
+  ['text_color', 'background_color'],
+  ['align_left', 'align_center', 'align_right', 'align_justify'],
+];
 
 // proxy.conf.json
 // "/api/*": {

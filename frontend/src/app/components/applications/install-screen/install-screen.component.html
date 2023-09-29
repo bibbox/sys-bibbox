@@ -8,15 +8,22 @@
   
         <div class="title-wrapper">
           <p class="fontL blue gapZ">{{appItem.app_display_name}}</p>
-          <p class="fontXS gapZ">Version: <strong>{{appItem.versions[0].app_version}}</strong></p>
+          <p class="fontXS gapZ">Version: <strong>{{selectedVersion.app_version}}</strong></p>
         </div>
       </div>
 
-      <button class="app-install-cancel" type="button" (click)="cancel()">Cancel</button>
+      <button class="app-install-cancel" type="button" (click)="cancel()">
+        <app-back-icon></app-back-icon>Cancel
+      </button>
     </div>
 
     <div class="app-install-text">
-      <span>Please fill out the form below to install an instance of the application. Fields marked with * are required.</span>
+      <p class="gapS">
+        <a class="button" href="{{installGuideUrl}}" target="_blank">
+          <app-guide-icon></app-guide-icon>Installation guide
+        </a>
+      </p>
+      <p class="gapZ">Please fill out the form below to install an instance of the application. Fields marked with * are required.</p>
     </div>
 
     <div class="install-form-item">
@@ -49,7 +56,7 @@
       <div class="install-item-body">
         <label for="instance_id">Instance ID *</label>
         <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id">
-        <span class="field-description"> Subdomain of your application URL. <b>The application ID can not be changed after the installation.</b></span>
+        <span class="field-description">Subdomain of your application instance URL, only lowercase letters and numbers. <strong>Cannot be changed after the installation.</strong></span>
       </div>
     </div>
 
@@ -75,16 +82,16 @@
         <div class="install-form-item">
           <div class="error-messages"></div>
           <div class="install-item-body">
-            <label for="instance_subtitle">Instancesub title</label>
-            <input type="text" value="" name="instance_subtitle" required id="instance_subtitle" formControlName="instance_subtitle" > <!-- (ngModelChange)="test('a')" -->
+            <label for="instance_subtitle">Instance subtitle</label>
+            <input type="text" value="" name="instance_subtitle" id="instance_subtitle" formControlName="instance_subtitle" > <!-- (ngModelChange)="test('a')" -->
             <span class="field-description">Optional subtitle of your application instance, can be changed later on.</span>
           </div>
         </div>
 
-        <div class="install-form-item" [formGroup]="envParamForm" *ngFor="let envparam of environmentParameters; let i = index">
+        <div [formGroup]="envParamForm" *ngFor="let envparam of environmentParameters; let i = index" [ngClass]="{ 'install-form-item': true, 'radio': envparam.type === 'radio', 'stick-to-top': envparam.display_name.length === 0 }">
           <div class="error-messages"> </div>
           <div class="install-item-body">
-            <label> {{envparam.display_name}} </label>
+            <label>{{envparam.display_name}}<span *ngIf="envparam.display_name.length > 0"> *</span></label>
             <ng-container [ngSwitch]="envparam.type">
               <!--*ngSwitchCase="'text'"-->
               <input *ngSwitchDefault
@@ -105,6 +112,15 @@
             </ng-container>
             <span class="field-description">{{envparam.description}}</span>
           </div>
+        </div>
+      </div>
+
+      <div class="install-form-item">
+        <div class="error-messages"></div>
+        <div class="install-item-body">
+          <label for="instance_subtitle">Instance information</label>
+            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+            <ngx-editor [editor]="editor" formControlName="instance_information" [placeholder]="''"></ngx-editor>
         </div>
       </div>
     </div>

@@ -66,14 +66,14 @@ export class InstallScreenDialogComponent implements OnInit {
       .then(res => this.appInfo = {
         ...this.appInfo,
         ...res,
-        install_guide_url: this.getRepoUrl(this.applicationItem.app_name, res.version)
+        install_guide_url: this.getInstallGuideUrl(this.applicationItem.app_name, res.version)
       });
   }
 
   openInstallScreen(): void {
     this.router.navigateByUrl(
       'install/' + this.applicationItem.app_name + '/' + this.versionFormControl.value.app_version,
-      {state: [{...this.applicationItem}, this.versionFormControl.value]}
+      {state: [{...this.applicationItem}, this.versionFormControl.value, this.appInfo.install_guide_url]}
     ).then();
   }
 
@@ -90,7 +90,7 @@ export class InstallScreenDialogComponent implements OnInit {
     }
   }
 
-  getRepoUrl(appName: string, version: string) {
+  getInstallGuideUrl(appName: string, version: string) {
     return `https://github.com/bibbox/${appName}/tree/${version}/INSTALL-APP.md`
   }
 }

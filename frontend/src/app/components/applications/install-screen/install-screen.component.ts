@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import { Editor } from 'ngx-editor';
 import {ApplicationItem, EnvironmentParameters, IVersions} from '../../../store/models/application-group-item.model';
 import {ApplicationService} from '../../../store/services/application.service';
 import {
@@ -18,13 +19,14 @@ import {map} from 'rxjs/operators';
 import {AddInstanceAction} from '../../../store/actions/instance.actions';
 import {ValidatorService} from '../../../store/services/validator.service';
 import {UserService} from '../../../store/services/user.service';
+import { toolbar } from '../../../commons';
 
 @Component({
   selector: 'app-install-screen',
   templateUrl: './install-screen.component.html',
   styleUrls: ['./install-screen.component.scss']
 })
-export class InstallScreenComponent implements OnInit {
+export class InstallScreenComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
@@ -46,14 +48,18 @@ export class InstallScreenComponent implements OnInit {
 
   appItem: ApplicationItem;
   selectedVersion: IVersions;
+  installGuideUrl: string;
   environmentParameters: EnvironmentParameters[] = [];
   installForm: FormGroup;
   envParamForm: FormGroup;
-  entered_values:Record<string, string> = {};
+  entered_values: Record<string, string> = {};
+  editor: Editor;
+  toolbar = toolbar;
 
   ngOnInit(): void {
     this.appItem = history.state[0];
     this.selectedVersion = history.state[1];
+    this.installGuideUrl = history.state[2];
     this.loadEnvParams();
 
     this.installForm = this.formBuilder.group(
@@ -82,8 +88,15 @@ export class InstallScreenComponent implements OnInit {
             Validators.maxLength(100)
           ]
         ],
+        instance_information: ['']
       });
     this.envParamForm = this.formBuilder.group({});
+
+    this.editor = new Editor();
+  }
+
+  ngOnDestroy(): void {
+    this.editor?.destroy();
   }
 
   loadEnvParams(): void {
@@ -108,7 +121,7 @@ export class InstallScreenComponent implements OnInit {
               Validators.maxLength(Number(envParam.max_length))]
             )
           );
-      }else{
+      } else{
         increment++;
         envParam.id = `${envParam.id.valueOf()}${increment}`
 

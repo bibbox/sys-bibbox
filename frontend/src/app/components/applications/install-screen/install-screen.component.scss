@@ -56,6 +56,32 @@
         display: flex;
         flex-flow: column nowrap;
         width: calc(50% - 30px);
+
+        &.stick-to-top {
+          margin-top: -30px;
+        }
+
+        &.radio {
+          width: 100%;
+
+          .install-item-body {
+            display: flex;
+            flex-flow: row wrap;
+
+            label {
+              width: 100%;
+            }
+  
+            .field-description {
+              width: auto;
+              margin-left: 5px;
+              margin-top: 0;
+              font-weight: $custom_font_weight_normal;
+            }
+
+          }
+
+        }
       }
     }
 
@@ -94,26 +120,15 @@
 
         label {
           width: 100%;
-          margin-bottom: 5px;
+          margin-bottom: 10px;
           padding-right: 30px;
           font-weight: $custom_font_weight_medium;
           color: $custom_blue;
         }
         .field-description {
           width: 100%;
-          margin-top: 10px
-        }
-        input[type='radio']:checked,
-        input[type='radio']:not(:checked) {
-          display: inline-block;
-          height: 50%;
-          width: 5%;
-          max-width: 100%;
-          padding: 0px;
-          margin-right: -20%;
-          border-radius: 0px;
-          border: solid 1px lightgray;
-          text-align: left;
+          margin-top: 10px;
+          font-weight: $custom_font_weight_light;
         }
       }
     }

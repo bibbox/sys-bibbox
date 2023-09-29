@@ -30,6 +30,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTableModule} from '@angular/material/table';
+import { NgxEditorModule } from 'ngx-editor';
 
 // ngrx store
 import {MetaReducer, StoreModule} from '@ngrx/store';
@@ -90,6 +91,8 @@ import { ArrowUpIconComponent } from './components/icons/arrow-up-icon/arrow-up-
 import { CrossClearIconComponent } from './components/icons/cross-clear-icon/cross-clear-icon.component';
 import { InstallIconComponent } from './components/icons/install-icon/install-icon.component';
 import { SearchIconComponent } from './components/icons/search-icon/search-icon.component';
+import { BackIconComponent } from './components/icons/back-icon/back-icon.component';
+import { GuideIconComponent } from './components/icons/guide-icon/guide-icon.component';
 import {UserEffects} from './store/effects/user.effects';
 
 
@@ -130,7 +133,9 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     ArrowUpIconComponent,
     CrossClearIconComponent,
     InstallIconComponent,
-    SearchIconComponent
+    SearchIconComponent,
+    BackIconComponent,
+    GuideIconComponent
   ],
     imports: [
         // angular
@@ -185,6 +190,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
         MatSlideToggleModule,
         MatTableModule,
         MatRadioModule,
+        NgxEditorModule
     ],
   bootstrap: [AppComponent],
   providers: [
