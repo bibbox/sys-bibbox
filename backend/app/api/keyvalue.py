@@ -9,6 +9,7 @@ from flask_restx import Namespace, Api, Resource, fields, reqparse
 from backend.app import app, db, restapi
 from backend.app.services.keycloak_service import auth_token_required
 from backend.app.services.keyvalue_service import KeyValueService
+from backend.app.services.keycloak_service import KeycloakRoles
 from backend.app.models.keyvalue import KeyValue
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import exc
@@ -29,7 +30,7 @@ keyvaluemodel = api.model('Model', {
 class KeyValues(Resource):
 
     @api.doc("Get value for key")
-    #@auth_token_required()
+    @auth_token_required()
     def get (self, key):
         #print ("looking for value with key = ", key)
         keyvalue = keyvalue_service.get_value_by_key(key)
@@ -39,7 +40,8 @@ class KeyValues(Resource):
         return jsonify(keyvalue.as_dict())
 
     @api.doc("Create a key value pair")
-    #@auth_token_required(roles=[KeycloakRoles.admin])
+    @api.expect(keyvaluemodel, validate=True)
+    @auth_token_required(roles=[KeycloakRoles.admin])
     def post (self, key):
         try:
             # Check if 'keys' and 'value' are present in the JSON request
@@ -74,7 +76,8 @@ class KeyValues(Resource):
             return {'error': str(e)}, 500
 
     @api.doc("Update a key value pair")
-    #@auth_token_required(roles=[KeycloakRoles.admin])
+    @api.expect(keyvaluemodel, validate=True)
+    @auth_token_required(roles=[KeycloakRoles.admin])
     def put(self, key):
         try:
             # Check if 'keys' and 'value' are present in the JSON request
@@ -106,6 +109,7 @@ class KeyValues(Resource):
             return {'error': str(e)}, 500
 
     @api.doc("Delete a key value pair")
+    @auth_token_required(roles=[KeycloakRoles.admin])
     def delete(self, key):
         try:
             keys = str(key)
