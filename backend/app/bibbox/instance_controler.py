@@ -152,7 +152,7 @@ def installInstance (self, instanceDescr):
     # logger service for creating custom logger
     logger_serv = DBLoggerService(activity_id, f"[INSTALL] {instanceDescr['instancename']}")
     logger = logger_serv.getLogger()
-
+    #logger.info("User {} is installing a new instance of {} as {}.".format(,,instanceDescr['instancename'] ))
     # set timestamp of installation
     # timestamp is in unix time format, more resistent to timezone changes
     instanceDescr['time_of_installation'] = int(time.time()) # wrap in int to remove microseconds
