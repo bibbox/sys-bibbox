@@ -231,20 +231,28 @@ class KeycloakAdminService():
                   user_representation[key] = user_dict[key]
 
           # cannot change username to an already existing username
-          if user_representation['username'] in [user['username'] for user in self.get_users()]:
+          if user_representation['username'] in [user['username'] for user in self.get_users() if user['id'] != user_id ]:
               raise ValueError(f'User with username {user_representation["username"]} already exists.')
-          
+          if 'password' in user_dict:
+            # Update User Password
+            self.keycloak_api.set_user_password(user_id=user_id, password=user_dict['password'], temporary=True)
 
-          optional_credentials_dict = {
-              'password': user_dict.get('password', None),
-              'temporary': False,
-              'type': 'password'
-          }
 
-          if None not in optional_credentials_dict.values():
-              user_representation['credentials'] = [optional_credentials_dict]
-          
-          
+
+        # optional_credentials_dict = {
+          #     'password': user_dict.get('password', None),
+          #     'temporary': False,
+          #     'type': 'password'
+          # }
+
+          # if None not in optional_credentials_dict.values():
+          #     user_representation['credentials'] = [optional_credentials_dict]
+          #
+
+          # assign realm roles, if none are provided, assign bibbox-standard
+          self.assign_realm_roles(user_id, user_dict.get('roles', ['bibbox-standard']))
+
+
           self.keycloak_api.update_user(user_id, user_representation)
 
         except Exception as ex:
@@ -262,7 +270,18 @@ class KeycloakAdminService():
         :type user_id: str
         :return: user object
         """
+        #self.keycloak_api.get_user_id("username-keycloak")
         return self.keycloak_api.get_user(user_id)
+
+    def get_user_by_id(self, user_id: str):
+        """
+        Returns a user from the keycloak realm.
+
+        :param user_id: id of the user to be returned
+        :type user_id: str
+        :return: user object
+        """
+        return self.get_user(user_id),200
 
     def get_user_by_username(self, username: str):
         """

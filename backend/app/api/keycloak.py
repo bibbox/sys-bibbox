@@ -93,34 +93,35 @@ class User(Resource):
         
         return msg, status
 
-    # @api.doc("Get a User")
-    # @auth_token_required(roles=[KeycloakRoles.admin])
-    # def get(self, user_id):
-    #     try:
-    #         user, status = kc_admin.get_user(user_id)
-    #     except Exception as e:
-    #         return {
-    #             "error": f"Could not get user from KeyCloak",
-    #             "exception" : str(e)
-    #         }, 500
+    @api.doc("Get a User")
+    @auth_token_required(roles=[KeycloakRoles.admin])
+    def get(self, user_id):
+        try:
+            user, status = kc_admin.get_user_by_id(user_id)
+        except Exception as e:
+            return {
+                "error": f"Could not get user from KeyCloak",
+                "exception" : str(e)
+            }, 500
         
-    #     return user, status
+        return user, status
 
 
-    # @api.doc("Update a User")
-    # @api.expect(user_dictionary, validate=True)
-    # @auth_token_required(roles=[KeycloakRoles.admin])
-    # def patch(self, user_id):
-    #     try:
-    #         user_dict = request.json
-    #         user, status = kc_admin.update_user(user_id, user_dict)
-    #     except Exception as e:
-    #         return {
-    #             "error": f"Could not update user in KeyCloak",
-    #             "exception" : str(e)
-    #         }, 500
+    @api.doc("Update a User")
+    @api.expect(user_dictionary, validate=True)
+    @auth_token_required(roles=[KeycloakRoles.admin])
+    def patch(self, user_id):
+        try:
+            user_dict = request.json
+            user, status = kc_admin.update_user(user_id, user_dict)
+            emitUserRefresh()
+        except Exception as e:
+            return {
+                "error": f"Could not update user in KeyCloak",
+                "exception" : str(e)
+            }, 500
         
-    #     return user, status
+        return user, status
 
 
 
