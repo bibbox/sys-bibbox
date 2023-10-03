@@ -40,6 +40,7 @@ class KeyValues(Resource):
         return jsonify(keyvalue.as_dict())
 
     @api.doc("Create a key value pair")
+    @api.expect(keyvaluemodel, validate=True)
     @auth_token_required(roles=[KeycloakRoles.admin])
     def post (self, key):
         try:
@@ -75,6 +76,7 @@ class KeyValues(Resource):
             return {'error': str(e)}, 500
 
     @api.doc("Update a key value pair")
+    @api.expect(keyvaluemodel, validate=True)
     @auth_token_required(roles=[KeycloakRoles.admin])
     def put(self, key):
         try:
