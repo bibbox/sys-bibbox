@@ -119,9 +119,12 @@ class Instance(Resource):
         instanceDescr = request.json
         instanceDescr['instancename'] = str(id)
         instanceDescr['state'] = 'JUSTBORN'
-        instanceDescr['displayname_long'] = ''    
-        instanceDescr['description_short'] = ''   
-        instanceDescr['description_long'] = ''  
+        if 'displayname_long' not in instanceDescr:
+            instanceDescr['displayname_long'] = ''
+        if 'description_short' not in instanceDescr:
+            instanceDescr['description_short'] = ''
+        if 'description_long' not in instanceDescr:
+            instanceDescr['description_long'] = ''
         
         # test if version does anything
         if 'version' in instanceDescr:
