@@ -71,21 +71,18 @@
             label {
               width: 100%;
             }
-  
             .field-description {
               width: auto;
               margin-left: 5px;
               margin-top: 0;
               font-weight: $custom_font_weight_normal;
             }
-
           }
-
         }
       }
     }
 
-    .app-install-text{
+    .app-install-text {
       width: 100%;
       margin-bottom: 50px;
     }
@@ -97,12 +94,6 @@
       color: $custom_blue;
       margin-bottom: 25px
     }
-
-    //.full-width {
-    //  width: 100%;
-    //  display: inline-block;
-    //  text-align: center
-    //}
 
     .install-form-item {
       display: flex;
@@ -123,6 +114,7 @@
           margin-bottom: 10px;
           padding-right: 30px;
           font-weight: $custom_font_weight_medium;
+          font-size: 13pt;
           color: $custom_blue;
         }
         .field-description {

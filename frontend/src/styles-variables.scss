@@ -21,6 +21,7 @@ $label-margin-bottom: 0;
 // base colors
 $custom_blue: #176fb6; //#6496b4
 $custom_blue_light: #90e1ee;
+$custom_gray_extralight: #F7F8F9;
 $custom_gray_light: #CCCCCC;
 $custom_gray_lightaccent: #F0F1F4;
 $custom_gray_medium: #EFEFEF;
@@ -32,9 +33,9 @@ $custom_gray_darkest: #555555;
 //$warning-colors: mat-palette($mat-amber, 400);
 
 // // log colors
-$custom_color_info: #26b726;
-$custom_color_warn: #e3d519;
-$custom_color_error: #f08080;
+$custom_color_info: #34AB1D;
+$custom_color_warn: #888888;
+$custom_color_error: #EE7B7B;
 
 // // badge colors
 $custom_color_new: #34AB1D;

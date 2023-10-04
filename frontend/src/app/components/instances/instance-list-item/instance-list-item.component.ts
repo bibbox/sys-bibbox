@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {InstanceItem} from '../../../store/models/instance-item.model';
 import {environment} from '../../../../environments/environment';
 import { UserService } from '../../../store/services/user.service';
@@ -6,26 +6,45 @@ import { InstanceService } from '../../../store/services/instance.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/models/app-state.model';
 import { DeleteInstanceAction } from '../../../store/actions/instance.actions';
-import { ApplicationItem } from '../../../store/models/application-group-item.model';
 
 @Component({
-  selector: 'app-instance-tile',
-  templateUrl: './instance-tile.component.html',
-  styleUrls: ['./instance-tile.component.scss'],
-  encapsulation: ViewEncapsulation.ShadowDom
+  selector: 'app-instance-list-item',
+  templateUrl: './instance-list-item.component.html',
+  styleUrls: ['./instance-list-item.component.scss']
 })
-export class InstanceTileComponent implements OnInit {
+export class InstanceListItemComponent implements OnInit {
 
   constructor(private store: Store<AppState>, private instanceService: InstanceService, private userService: UserService) { }
 
   @Input() instance: InstanceItem;
-  @Input() applications: ApplicationItem[];
   instanceUrl: string;
   repositoryUrl: string;
   installGuideUrl: string;
   isOpen = false;
+  sanitizedDescription: string;
+  description: string;
+  shortenDescription = false;
+  showFullDescription = false;
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
+    this.sanitizedDescription = this.instance.description_short;
+    this.sanitizedDescription = this.sanitizedDescription.replace(/<li>/gi, "\n");
+    this.sanitizedDescription = this.sanitizedDescription.replace(/<\/ul>/gi, "\n");
+    this.sanitizedDescription = this.sanitizedDescription.replace(/<\/p>/gi, "\n");
+    this.sanitizedDescription = this.sanitizedDescription.replace(/<a.*href="(.*?)".*>(.*?)<\/a>/gi, " $2 ($1) ");
+    this.sanitizedDescription = this.sanitizedDescription.replace(/<br\s*[\/]?>/gi, "\n");
+    this.sanitizedDescription = this.sanitizedDescription.replace(/<[^>]+>/g, "");
+
+    console.log(this.instance.description_short, this.sanitizedDescription);
+
+    if(this.sanitizedDescription.length > 60) {
+      this.description = this.sanitizedDescription.substring(0, 60);
+      this.shortenDescription = true;
+    }
+    else {
+      this.description = this.sanitizedDescription;
+    }
+
     this.getInstanceUrl();
 
     this.repositoryUrl = this.getRepositoryUrl(this.instance.app.name, this.instance.app.version);
@@ -54,22 +73,7 @@ export class InstanceTileComponent implements OnInit {
   }
 
   deleteInstance(): void {
-    // const isAdmin = this.userService.isRole(KEYCLOAK_ROLES.admin);
-    // const doesInstanceOwnerMatch = this.userService.getUserID() === this.instanceItem.installed_by;
-    //
-    // if (!(isAdmin || doesInstanceOwnerMatch)) {
-    //   this.snackbar.open('You are not allowed to delete this instance', 'OK', {duration: 4000});
-    //   return;
-    // }
-
-    // console.log('delete instance:' + this.instanceItem.instancename);
-
     this.store.dispatch(new DeleteInstanceAction(this.instance.instancename));
-
-    // this.instanceService.deleteInstance(this.instanceItem.instancename).subscribe(
-    //   (res) => console.log(res)
-    // );
-    // this.router.navigateByUrl('/instances').then();
   }
 
   manageInstance(operation: string): void {
@@ -82,5 +86,17 @@ export class InstanceTileComponent implements OnInit {
 
   getInstallGuideUrl(appName: string, version: string) {
     return `${this.getRepositoryUrl(appName, version)}/INSTALL-APP.md`;
+  }
+
+  toggleShowFully(e): void {
+    e.stopPropagation();
+    this.showFullDescription = !this.showFullDescription;
+
+    if(this.showFullDescription) {
+      this.description = this.sanitizedDescription;
+    }
+    else {
+      this.description = this.sanitizedDescription?.substring(0, 60);
+    }
   }
 }

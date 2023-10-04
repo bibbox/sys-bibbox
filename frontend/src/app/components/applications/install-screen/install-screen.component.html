@@ -119,8 +119,9 @@
         <div class="error-messages"></div>
         <div class="install-item-body">
           <label for="instance_subtitle">Instance information</label>
-            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
-            <ngx-editor [editor]="editor" formControlName="instance_information" [placeholder]="''"></ngx-editor>
+          <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+          <ngx-editor [editor]="editor" formControlName="instance_information" [placeholder]="''"></ngx-editor>
+          <span class="field-description">Additional information regarding the application instance that will be visible in the instance list, can be changed later on.</span>
         </div>
       </div>
     </div>
@@ -129,10 +130,6 @@
       <button class="gradient" type="button" (click)="install()" [disabled]="installForm.invalid || envParamForm.invalid">
         <app-install-icon></app-install-icon>Install
       </button>
-
-      <!-- <ng-container *ngIf="installForm.invalid || envParamForm.invalid">
-        <button class="app-install-submit-invalid" type="button" disabled>Install</button>
-      </ng-container> -->
     </div>
   </form>
 </div>

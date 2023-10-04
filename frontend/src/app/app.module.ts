@@ -59,6 +59,7 @@ import { AppComponent } from './components/app-scaffold/app.component';
 import { HeaderComponent } from './components/app-scaffold/header/header.component';
 import { FooterComponent } from './components/app-scaffold/footer/footer.component';
 import { InstancesComponent } from './components/instances/instances.component';
+import { InstanceGroupComponent } from './components/instances/instance-group/instance-group.component';
 import { ApplicationsComponent } from './components/applications/applications.component';
 import { ContactComponent } from './components/about/contact/contact.component';
 import { PartnersComponent } from './components/about/partners/partners.component';
@@ -69,6 +70,7 @@ import { InstanceDetailPageComponent } from './components/instances/instance-det
 import { ApplicationGroupComponent } from './components/applications/application-group/application-group.component';
 import { ApplicationTileComponent} from './components/applications/application-group/application-tile/application-tile.component';
 import { InstanceTileComponent } from './components/instances/instance-tile/instance-tile.component';
+import { InstanceListItemComponent } from './components/instances/instance-list-item/instance-list-item.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InstallScreenComponent } from './components/applications/install-screen/install-screen.component';
 import { InstallScreenDialogComponent } from './components/applications/install-screen-dialog/install-screen-dialog.component';
@@ -93,6 +95,17 @@ import { InstallIconComponent } from './components/icons/install-icon/install-ic
 import { SearchIconComponent } from './components/icons/search-icon/search-icon.component';
 import { BackIconComponent } from './components/icons/back-icon/back-icon.component';
 import { GuideIconComponent } from './components/icons/guide-icon/guide-icon.component';
+import { DocsIconComponent } from './components/icons/docs-icon/docs-icon.component';
+import { RestartIconComponent } from './components/icons/restart-icon/restart-icon.component';
+import { StopIconComponent } from './components/icons/stop-icon/stop-icon.component';
+import { PulseIconComponent } from './components/icons/pulse-icon/pulse-icon.component';
+import { GithubIconComponent } from './components/icons/github-icon/github-icon.component';
+import { ListIconComponent } from './components/icons/list-icon/list-icon.component';
+import { CliIconComponent } from './components/icons/cli-icon/cli-icon.component';
+import { ErrorIconComponent } from './components/icons/error-icon/error-icon.component';
+import { LaunchIconComponent } from './components/icons/launch-icon/launch-icon.component';
+import { DeleteIconComponent } from './components/icons/delete-icon/delete-icon.component';
+import { SaveIconComponent } from './components/icons/save-icon/save-icon.component';
 import {UserEffects} from './store/effects/user.effects';
 
 
@@ -104,6 +117,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     HeaderComponent,
     FooterComponent,
     InstancesComponent,
+    InstanceGroupComponent,
     ApplicationsComponent,
     ContactComponent,
     PartnersComponent,
@@ -114,6 +128,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     ApplicationGroupComponent,
     ApplicationTileComponent,
     InstanceTileComponent,
+    InstanceListItemComponent,
     NotFoundComponent,
     InstallScreenComponent,
     InstallScreenDialogComponent,
@@ -135,7 +150,18 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     InstallIconComponent,
     SearchIconComponent,
     BackIconComponent,
-    GuideIconComponent
+    GuideIconComponent,
+    DocsIconComponent,
+    RestartIconComponent,
+    StopIconComponent,
+    PulseIconComponent,
+    GithubIconComponent,
+    ListIconComponent,
+    CliIconComponent,
+    ErrorIconComponent,
+    LaunchIconComponent,
+    DeleteIconComponent,
+    SaveIconComponent
   ],
     imports: [
         // angular

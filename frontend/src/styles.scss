@@ -137,15 +137,64 @@ strong, .bold {
   font-size: inherit;
   color: inherit;
 }
+table {
+  border-collapse: collapse;
+
+  thead {
+    tr {
+      th {
+        font-family: "Roboto Condensed", "Helvetica Neue", sans-serif;
+        font-weight: 600;
+        padding: 0 10px 5px 10px;
+        text-align: left;
+        border-bottom: solid 2px $custom_gray_darkest;
+      }
+    }
+  }
+  tbody {
+    > * {
+      td {
+        padding: 20px;
+        border-bottom: solid 1px $custom_gray_light;
+        vertical-align: middle;
+
+        &:first-child {
+          padding-left: 10px
+        }
+        &:last-child {
+          padding-right: 10px
+        }
+      }
+
+      &:last-child {
+        td {
+          border-bottom: none;
+        }
+      }
+
+      &:nth-child(even) {
+        td {
+          background-color: $custom_gray_extralight;
+        }
+      }
+    }
+  }
+}
 
 
 /* FONTS */
 
+.fontXXS {
+  font-size: 10pt;
+}
 .fontXS {
   font-size: 11pt;
 }
 .fontS {
   font-size: 12pt;
+}
+.fontMS {
+  font-size: 13pt;
 }
 .fontM {
   font-size: 14pt;
@@ -155,6 +204,9 @@ strong, .bold {
 }
 .condensed {
   font-family: "Roboto Condensed", "Helvetica Neue", sans-serif;
+}
+.text-center {
+  text-align: center;
 }
 
 
@@ -203,7 +255,7 @@ strong, .bold {
 
 button, .button {
   display: inline-flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
   min-height: 40px;
@@ -378,5 +430,101 @@ input[type=radio], input[type=checkbox] {
 
   .NgxEditor__Content {
     min-height: 120px;
+    padding: 15px;
+  }
+}
+
+
+/* ACCORDION */
+
+.mat-accordion {
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 0 5px 5px 5px;
+  gap: 10px;
+
+  .mat-expansion-panel {
+    margin: 0 !important;
+    background-color: white;
+    border-radius: 7px !important;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+
+    .mat-expansion-panel-header {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      padding: 15px 25px;
+      transition: background-color 0.25s ease-out;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      
+      span {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
+        color: $custom_blue;
+        font-weight: $custom_font_weight_medium;
+        font-size: 13pt;
+        margin-right: 0;
+
+        .arrow {
+          width: 16px;
+          height: 16px;
+          fill: $custom_gray_dark;
+  
+          &.active {
+            display: none;
+          }
+        }
+      }
+
+      &:hover {
+        background-color: $custom_gray_medium;
+      }
+    }
+
+    &.mat-expanded {
+      .mat-expansion-panel-header {
+        span {
+          .arrow {
+            display: none;
+
+            &.active {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+
+    .mat-expansion-panel-body {
+      padding: 10px 25px 25px 25px;
+
+      .command {
+        display: block;
+        width: 100%;
+        background-color: $custom_gray_darkest;
+        color: white;
+        padding: 3px 15px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+      .logs {
+        width: 100%;
+        background-color: $custom_gray_extralight;
+        border: solid 1px $custom_gray_light;
+        border-radius: 5px;
+        padding: 10px 20px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 350px;
+
+        .log-entry {
+          width: 100%;
+          word-break: break-all;
+        }
+      }
+    }
   }
 }

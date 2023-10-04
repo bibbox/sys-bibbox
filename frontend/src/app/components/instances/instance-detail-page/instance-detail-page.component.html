@@ -1,202 +1,211 @@
 <div id="instance-details" *ngIf="instance$ | async" xmlns="http://www.w3.org/1999/html">
   <div class="instance-details-header">
     <div class="instance-details-title">
-      <img src="https://raw.githubusercontent.com/bibbox/{{instanceItem.app.name}}/master/icon.png" alt="application-icon">
-      <h1>{{instanceDetailForm.controls['displayname_short'].value}}</h1>
-      <h3>{{instanceDetailForm.controls['displayname_long'].value}}</h3>
+      <div class="icon-wrapper">
+        <img src="https://raw.githubusercontent.com/bibbox/{{instanceItem.app.name}}/master/icon.png" alt="{{instanceDetailForm.controls['displayname_short'].value}}" />
+      </div>
+
+      <div class="title-wrapper">
+        <p class="fontL blue gapZ">{{instanceDetailForm.controls['displayname_short'].value}}</p>
+        <p class="fontXS gapZ">{{instanceDetailForm.controls['displayname_long'].value}}</p>
+      </div>
     </div>
-    <span class="instance-details-controls" *ngIf="tabIndex == 0">
-      <ng-container *ngIf="instanceItem.state === 'ERROR'"> <!--  -->
-        <span class="status in_operation"></span>
-        <button (click)="deleteInstance()" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
-          <svg viewBox="0 0 1000 1000">
-            <path [attr.d]="svgPaths.delete"></path>
-          </svg>
-          <span class="text"> Delete </span>
-        </button>
-      </ng-container>
-      <ng-container *ngIf="instanceItem.state === 'STOPPED'"> <!--  -->
-        <span class="status stopped"></span>
-        <button (click)="manageInstance('start')" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
-          <svg viewBox="0 0 1000 1000">
-            <path [attr.d]="svgPaths.start"></path>
-          </svg>
-          <span class="text"> Start </span>
-        </button>
-        <button (click)="deleteInstance()" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
-          <svg viewBox="0 0 1000 1000">
-            <path [attr.d]="svgPaths.delete"></path>
-          </svg>
-          <span class="text"> Delete </span>
-        </button>
-      </ng-container>
 
-      <ng-container *ngIf="instanceItem.state === 'RUNNING'"> <!--  -->
-        <span class="status running"></span>
-        <button (click)="manageInstance('stop')" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
-          <svg viewBox="0 0 1000 1000">
-            <path [attr.d]="svgPaths.stop"></path>
-          </svg>
-          <span class="text"> Stop </span>
-        </button>
-        <button (click)="manageInstance('restart')" [disabled]="!canManageInstance()" [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null">
-          <svg viewBox="0 0 1000 1000">
-            <path [attr.d]="svgPaths.restart"></path>
-          </svg>
-          <span class="text"> Restart </span>
-        </button>
-      </ng-container>
+    <div class="instance-details-controls">
+      <div [ngClass]="['instance-details-controls__state', instanceItem.state.toLowerCase()]">
+        <span class="instance-details-controls__state-indicator"></span>
+        <p class="instance-details-controls__state-text gapZ">{{instanceItem.state.toLowerCase()}}</p>
+      </div>
 
-      <ng-container *ngIf="['RESTARTING', 'STOPPING', 'DELETING', 'STARTING'].includes(instanceItem.state)"> <!--  -->
-        <span class="status in_operation"></span>
-        <button disabled class="button-disabled" (click)="manageInstance('start')">
-          <svg viewBox="0 0 1000 1000">
-            <path [attr.d]="svgPaths.start"></path>
-          </svg>
-          <span class="text"> Start </span>
-        </button>
+      <div *ngIf="['RUNNING', 'ERROR', 'STOPPED'].includes(instanceItem.state) && (canManageInstance() || instanceItem.state === 'RUNNING')"
+        [ngClass]="{'instance-details-controls__actions': true, 'standalone': !canManageInstance()}">
 
-      </ng-container>
-      <ng-container *ngIf="['JUSTBORN', 'INSTALLING'].includes(instanceItem.state)"> <!--  -->
-        Currently installing...
-      </ng-container>
-    </span>
+        <a *ngIf="instanceItem.state === 'RUNNING'" class="button" href="{{instanceUrl}}" target="_blank" title="Launch">
+          <app-launch-icon class="button-icon" [width]="16" [height]="16"></app-launch-icon>Launch
+        </a>
+        <a *ngIf="instanceItem.state === 'ERROR'" class="button" [routerLink]="['/instances/', instanceItem.instancename]" [state]="{index: 1}" title="Error">
+          <app-error-icon class="button-icon" [width]="18" [height]="18"></app-error-icon>Error
+        </a>
+        <a *ngIf="instanceItem.state === 'STOPPED'" class="button" [routerLink]="" (click)="manageInstance('start')" title="Start">
+          <app-pulse-icon class="button-icon" [width]="18" [height]="18"></app-pulse-icon>Start
+        </a>
+  
+        <div *ngIf="canManageInstance()" class="toggle" (click)="toggle()">
+          <app-arrow-down-icon *ngIf="!isActionsOpen" class="arrow"></app-arrow-down-icon>
+          <app-arrow-up-icon *ngIf="isActionsOpen" class="arrow"></app-arrow-up-icon>
+        </div>
+  
+        <div *ngIf="canManageInstance() && isActionsOpen" class="submenu">
+          <ul>
+            <li *ngIf="instanceItem.state !== 'STOPPED'" (click)="manageInstance('stop')">
+              <app-stop-icon class="action-icon" [width]="16" [height]="16"></app-stop-icon>Stop
+            </li>
+            <li *ngIf="instanceItem.state !== 'STOPPED'" (click)="manageInstance('restart')">
+              <app-restart-icon class="action-icon" [width]="16" [height]="16"></app-restart-icon>Restart
+            </li>
+            <li *ngIf="instanceItem.state === 'STOPPED'" (click)="deleteInstance()">
+              <app-delete-icon class="action-icon" [width]="16" [height]="16"></app-delete-icon>Uninstall
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <button class="app-install-cancel" type="button" (click)="backClicked()">
+        <app-back-icon></app-back-icon>Cancel
+      </button>
+    </div>
   </div>
 
   <mat-tab-group animationDuration="0ms" mat-align-tabs="center" [(selectedIndex)]="tabIndex" id="tab-nav">
     <mat-tab label="Dashboard">
+      <ng-template mat-tab-label>
+        <app-list-icon class="tab-icon" [width]="18" [height]="18"></app-list-icon>
+        <span class="condensed fontMS">Details</span>
+      </ng-template>
+
       <ng-template matTabContent>
-        <br><br><br>
-        <span class="instance-details-info-primary">
-          <span class="instance-details-info-primary-item"> <span class="label-short">ID: </span> <span class="value"> {{instanceItem.instancename}} </span> </span>
-          <span class="instance-details-info-primary-item"> <span class="label-short">App: </span> <span class="value"> {{instanceItem.app.name}} {{instanceItem.app.version}} </span> </span>
-          <span class="instance-details-info-primary-item"> <span class="label-short">Version: </span> <span class="value"> {{instanceItem.app.version}} </span> </span>
-        </span>
         <div class="instance-details-info">
-          <div class="container-box">
-            <div class="detail-item" *ngFor="let link of instanceLinks">
-              <img src="assets/external_ref.png" alt="ext. link icon">
-              <span class="description"> {{link.label}} </span>
-              <span class="link">
-                <a href="{{link.url}}" target="_blank" rel="noopener noreferrer">
-                  {{link.url}}
-                </a>
-              </span>
+          <div class="instance-details-info-left">
+            <div class="instance-details-info-left-top">
+              <p><strong>Instance ID</strong>{{instanceItem.instancename}}</p>
+              <p><strong>Store app</strong>{{instanceItem.app.name}}</p>
+              <p><strong>Application name</strong>{{instanceItem.app.name}}</p>
+              <p><strong>Version</strong>{{instanceItem.app.version}}</p>
             </div>
+            
+            <table class="instance-details-info-left-bottom">
+              <tbody>
+                <tr>
+                  <th><span><app-guide-icon class="link-icon" [width]="18" [height]="18"></app-guide-icon>Documentation</span></th>
+                  <td>
+                    <a href="{{instanceLinks.documentation}}" target="_blank" rel="noopener noreferrer">
+                      {{instanceLinks.documentation}}
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <th><span><app-docs-icon class="link-icon" [width]="18" [height]="18"></app-docs-icon>Install guide</span></th>
+                  <td>
+                    <a href="{{instanceLinks.installGuide}}" target="_blank" rel="noopener noreferrer">
+                      {{instanceLinks.installGuide}}
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <th><span><app-github-icon class="link-icon" [width]="18" [height]="18"></app-github-icon>Repository</span></th>
+                  <td>
+                    <a href="{{instanceLinks.repository}}" target="_blank" rel="noopener noreferrer">
+                      {{instanceLinks.repository}}
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="container-box">
-            <div class="detail-item">
-              <span class="description"> Containers: </span>
-              <div class="container-names">
-                <span *ngFor="let container of this.instanceItem.container_names"> {{container}} </span>
-              </div>
-            </div>
-            <div class="detail-item">
-              <span class="description"> Instance: </span>
-              /opt/bibbox/instances/{{instanceItem.instancename}}
-            </div>
-            <div *ngIf="instanceItem.installed_by_name" class="detail-item">
-              <span class="description"> Installed by: </span>
-              {{instanceItem.installed_by_name}}
-            </div>
-            <div *ngIf="instanceItem.installed_by_id" class="detail-item">
-              <span class="description"> Installed by ID: </span>
-              {{instanceItem.installed_by_id}}
-            </div>
-            <div *ngIf="instanceItem.time_of_installation" class="detail-item">
-              <span class="description"> Time of Installation: </span>
-              {{time_of_installation.toLocaleString("de-DE")}}
-            </div>
-            <div *ngIf="instanceItem.state === 'STOPPED' && instanceItem.last_stop_time" class="detail-item">
-              <span class="description"> Stopped Since: </span>
-              {{time_of_last_stop.toLocaleString("de-DE")}}
-            </div>
-            <div class="detail-item">
-              <span class="description"> Proxy: </span>
-              /opt/bibbox/proxy/sites/005-{{instanceItem.instancename}}.conf
-            </div>
-            <div class="detail-item">
-              <span class="description"> URLs: </span>
-              <div class="container-names">
-                <span *ngFor="let URL of this.instanceItem.proxy">
-                  {{URL.DISPLAYNAME}}:
-                  <a href="http://{{URL.URLPREFIX}}.{{baseurl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">
-                    {{URL.URLPREFIX}}.{{baseurl}}
-                  </a>
-                </span>
-              </div>
-            </div>
+
+          <div class="instance-details-info-right">
+            <table>
+              <tbody>
+                <tr>
+                  <th>Containers:</th>
+                  <td>
+                    <p class="gapZ" *ngFor="let container of this.instanceItem.container_names">{{container}}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Instance:</th>
+                  <td>/opt/bibbox/instances/{{instanceItem.instancename}}</td>
+                </tr>
+                <tr>
+                  <th>Installed by:</th>
+                  <td>{{instanceItem.installed_by_name}}</td>
+                </tr>
+                <tr>
+                  <th>Install time:</th>
+                  <td>{{time_of_installation.toLocaleString("de-DE")}}</td>
+                </tr>
+                <tr>
+                  <th>Proxy:</th>
+                  <td>/opt/bibbox/proxy/sites/005-{{instanceItem.instancename}}.conf</td>
+                </tr>
+                <tr>
+                  <th>URLs:</th>
+                  <td>
+                    <span *ngFor="let URL of this.instanceItem.proxy">
+                      {{URL.DISPLAYNAME}}:
+                      <a href="http://{{URL.URLPREFIX}}.{{baseurl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">
+                        {{URL.URLPREFIX}}.{{baseurl}}
+                      </a>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <br><br><br><br>
         <ng-container [formGroup]="instanceDetailForm">
-          <div class="instance-names">
-            <div class="instance-names-item">
-              <label class="value">Short name</label>
+          <div class="instance-details-text">
+            <p class="gapZ">Fields marked with * are required.</p>
+          </div>
+
+          <div class="columns">
+            <div class="instance-details-item">
+              <label class="value">Instance title *</label>
               <input type="text" class="instance-names-item-input right" formControlName="displayname_short" [value]="instanceDetailForm.controls['displayname_short'].value">
+              <span class="field-description">Title of your application instance.</span>
             </div>
-            <div class="instance-names-item">
-              <label class="value">Long name</label>
+
+            <div class="instance-details-item">
+              <label class="value">Instance subtitle</label>
               <input type="text" class="instance-names-item-input right" formControlName="displayname_long" [value]="instanceDetailForm.controls['displayname_long'].value">
+              <span class="field-description">Optional subtitle of your application instance.</span>
             </div>
           </div>
-          <br><br>
-          <div class="descriptions">
-            <div class="description-form-field">
-              <label class="value">Short Description</label>
-              <textarea matInput matTextareaAutosize
-                        formControlName="description_short"
-                        [value]="instanceDetailForm.controls['description_short'].value"
-                        class="description-form-field-input"
-              >
-              </textarea>
-            </div>
-            <div class="description-form-field">
-              <label class="value">Long Description</label>
-              <textarea matInput matTextareaAutosize
-                        formControlName="description_long"
-                        [value]="instanceDetailForm.controls['description_long'].value"
-                        class="description-form-field-input"
-              >
-              </textarea>
-            </div>
+
+          <div class="instance-details-item">
+            <label class="value">Instance information</label>
+            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+            <ngx-editor [editor]="editor" formControlName="description_short" [placeholder]="''"></ngx-editor>
+            <span class="field-description">Additional information regarding the application instance that will be visible in the instance list, can be changed later on.</span>
           </div>
         </ng-container>
-        <div class="save-button">
-          <button (click)="backClicked()">
-            <mat-icon>arrow_back</mat-icon> Back
-          </button>
 
-          <button
-            *ngIf="instanceDetailForm.invalid"
-            [disabled] = "true"
-            [matTooltip]="instanceDetailForm.invalid ? 'Missing required fields' : null"
-          > <mat-icon>save</mat-icon> Save </button>
-          <button
-            *ngIf="instanceDetailForm.valid"
-            [disabled]="!canManageInstance()"
-            [matTooltip]="!canManageInstance() ? cannotManageInstanceTooltip : null"
+        <div *ngIf="canManageInstance()" class="save-button">
+          <button *ngIf="canManageInstance()"
+            class="gradient"
+            type="button"
             (click)="saveInstanceChanges()"
-          > <mat-icon>save</mat-icon> Save </button>
+            [disabled]="instanceDetailForm.invalid">
+            <app-save-icon></app-save-icon>Save
+          </button>
         </div>
       </ng-template>
     </mat-tab>
 
-
     <mat-tab label="Logs">
+      <ng-template mat-tab-label>
+        <app-cli-icon class="tab-icon" [width]="18" [height]="18"></app-cli-icon>
+        <span class="condensed fontMS">Logs</span>
+      </ng-template>
+
       <ng-template matTabContent>
-        <br><br><br>
-        <ng-container *ngFor="let container of this.instanceItem.container_names; index as i">
-          <div class="instance-details-log-item">
-            <span class="instance-details-log-containername">{{container}}</span><br>
-            <span class="instance-details-log-command">$ docker logs {{container}} --tail 200</span><br>
-            <div class="instance-details-log-container">  <!--#scrollContainer [scrollTop]="scrollContainer.scrollHeight">-->
-              <div *ngFor="let log_entry of instanceContainerLogs[container]" class="instance-details-log-container-entry">{{log_entry}}</div>
+        <mat-accordion>
+          <mat-expansion-panel hideToggle *ngFor="let container of this.instanceItem.container_names"
+                               (opened)="periodicallyRefresh(container); setScrollHeight(scrollContainer.scrollHeight)"
+                               (closed)="stopPeriodicRefresh(container)">
+            <mat-expansion-panel-header>
+              {{container}}
+              <app-arrow-down-icon class="arrow" [width]="16" [height]="16"></app-arrow-down-icon>
+              <app-arrow-up-icon class="arrow active" [width]="16" [height]="16"></app-arrow-up-icon>
+            </mat-expansion-panel-header>
+            
+            <span class="command">$ docker logs {{container}} --tail 200</span>
+            <div class="logs" #scrollContainer [scrollTop]="scrollContainer.scrollHeight">
+              <div *ngFor="let log_entry of instanceContainerLogs[container]" class="log-entry">{{log_entry}}</div>
             </div>
-          </div>
-          <br><br><br>
-        </ng-container>
+          </mat-expansion-panel>
+        </mat-accordion>
       </ng-template>
     </mat-tab>
   </mat-tab-group>

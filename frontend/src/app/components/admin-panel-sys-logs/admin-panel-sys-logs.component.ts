@@ -1,9 +1,6 @@
-import {Component, ElementRef, OnDestroy, OnInit, Renderer2} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ActivityService} from '../../store/services/activity.service';
-import {ChangeDetectorRef } from '@angular/core';
-import {interval, Subscription, TimeInterval} from 'rxjs';
-import {startWith, switchMap} from 'rxjs/operators';
-import {LogItem, SysContainerLogs, SysContainerNames} from '../../store/models/activity.model';
+import {SysContainerLogs, SysContainerNames} from '../../store/models/activity.model';
 
 @Component({
   selector: 'app-sys-logs',
@@ -19,6 +16,9 @@ export class AdminPanelSysLogsComponent implements OnInit, OnDestroy {
   timeInterval: any;
   refreshIntervals: { [container: string]: any} = {};
   refresh_period: number = 5000;
+
+  @ViewChild('scrollContainer') container: ElementRef;
+  scrollTop: number = null;
 
   constructor(
     private as: ActivityService,
@@ -53,9 +53,12 @@ export class AdminPanelSysLogsComponent implements OnInit, OnDestroy {
         if (index !== -1) {
           this.containerNames[index] = containerName; // Update with the new value if needed
         }
+        
         // Scroll to the bottom of the log container element
-        const logContainer = this.elementRef.nativeElement.querySelector('.sys-container-log-item__container');
-        this.renderer.setProperty(logContainer, 'scrollTop', logContainer.scrollHeight);
+        setTimeout(() => {
+          const logContainer = this.elementRef.nativeElement.querySelector('.logs');
+          this.renderer.setProperty(logContainer, 'scrollTop', logContainer.scrollHeight);
+        }, 0);
       }
     )
   }
@@ -89,19 +92,6 @@ export class AdminPanelSysLogsComponent implements OnInit, OnDestroy {
   stopPeriodicRefresh(containername: string): void {
     this.clearRefreshInterval(containername);
   }
-
-
-  // loadSysContainerLogs(): void {
-  //   this.timeInterval = interval(5000)
-  //     .pipe(
-  //       startWith(0),
-  //       switchMap(() => this.as.getSysLogs())
-  //     ).subscribe((res) => {
-  //         this.sysLogs = res;
-  //         this.containerNames = Object.keys(this.sysLogs);
-  //       }
-  //     );
-  // }
 
   setScrollHeight(h: number): void {
     this.activeContainerScrollHeight = h;

@@ -143,25 +143,20 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
         }
       }
       const payload = {
-        displayname_short : this.installForm.value.instance_name,
+        displayname_short : this.installForm.value.instance_title,
+        displayname_long : this.installForm.value.instance_subtitle,
         app : {
           organization : 'bibbox',
           name         : this.installForm.value.app_name,
           version      : this.installForm.value.version,
+          test: 123
         },
         parameters  : this.envParamForm.value,
         installed_by_id : this.userService.getUserID(),
         installed_by_name: this.userService.getUsername()
       };
 
-      console.log(this.installForm.value.instance_id, JSON.stringify(payload));
-
       this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
-      // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
-      //   .toPromise()
-      //   .then(
-      //     res => console.log(res)
-      //   );
       this.router.navigateByUrl('/instances').then();
     }
     else {

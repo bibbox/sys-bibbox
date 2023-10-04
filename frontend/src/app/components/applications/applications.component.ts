@@ -23,6 +23,11 @@ export class ApplicationsComponent implements OnInit {
   sortFormControl = new FormControl('category');
 
   constructor(private store: Store<AppState>, @Inject(DOCUMENT) private document: Document, private dialog: MatDialog) {
+  }
+
+  ngOnInit(): void {
+    this.document.body.classList.add('layout-width-wide');
+
     this.store.dispatch(new LoadApplicationGroupsAction());
 
     this.store.pipe(select(applicationGroupSelector.loadApplicationGroups)).subscribe((res) => {
@@ -37,10 +42,6 @@ export class ApplicationsComponent implements OnInit {
 
       this.filter();
     });
-  }
-
-  ngOnInit(): void {
-    this.document.body.classList.add('layout-width-wide');
   }
 
   ngOnDestroy(): void {

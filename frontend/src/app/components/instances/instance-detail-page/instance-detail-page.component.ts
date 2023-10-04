@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {InstanceItem} from '../../../store/models/instance-item.model';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/models/app-state.model';
@@ -8,18 +8,21 @@ import * as InstanceSelector from '../../../store/selectors/instance.selector';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {InstanceService} from '../../../store/services/instance.service';
 import {FormBuilder, Validators} from '@angular/forms';
-import {SVG_PATHS} from '../../../commons';
+import {SVG_PATHS, toolbar} from '../../../commons';
 import {environment} from '../../../../environments/environment';
 import {UserService} from '../../../store/services/user.service';
 import {DeleteInstanceAction} from '../../../store/actions/instance.actions';
 import {Location} from '@angular/common';
+import { Editor } from 'ngx-editor';
+import { ApplicationService } from '../../../store/services/application.service';
+import { AppInfo } from '../../../store/models/application-group-item.model';
 
 @Component({
   selector: 'app-instance-detail-page',
   templateUrl: './instance-detail-page.component.html',
   styleUrls: ['./instance-detail-page.component.scss']
 })
-export class InstanceDetailPageComponent implements OnInit {
+export class InstanceDetailPageComponent implements OnInit, OnDestroy {
   tabIndex = 0; // 0: Dashboard, 1: Logs
   instance$: Observable<InstanceItem>;
   instanceItem: InstanceItem;
@@ -28,11 +31,20 @@ export class InstanceDetailPageComponent implements OnInit {
   cannotManageInstanceTooltip: string = 'Only admins and instance owners can manage instances.';
   time_of_installation: Date;
   time_of_last_stop: Date;
+  isActionsOpen: boolean;
+  editor: Editor;
+  toolbar = toolbar;
+  gotNames: boolean = false;
+  appInfo: AppInfo | null;
+  activeContainerScrollHeight = 0;
+  timeInterval: any;
+  refreshIntervals: { [container: string]: any} = {};
+  refresh_period: number = 5000;
 
   @ViewChild('scrollContainer') container: ElementRef;
   scrollTop: number = null;
 
-  instanceLinks = []; // external Links to GitHub repo
+  instanceLinks = {}; // external Links to GitHub repo
   instanceContainerLogs = {}; // dictionary -> key: containerName, value: logs of container
 
   svgPaths = SVG_PATHS;
@@ -63,7 +75,9 @@ export class InstanceDetailPageComponent implements OnInit {
     private instanceService: InstanceService,
     private fb: FormBuilder,
     private userService: UserService,
-    private _location: Location
+    private _location: Location,
+    private elementRef: ElementRef,
+    private renderer: Renderer2
   ) {
     // redirect if state is empty -> caused by hard reloading current view
     if (this.router.getCurrentNavigation().extras.state === undefined){
@@ -77,7 +91,7 @@ export class InstanceDetailPageComponent implements OnInit {
     // }
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.instanceNameFromUrl = this.route.snapshot.paramMap.get('instance_name');
     this.instance$ = this.store.pipe(select(InstanceSelector.selectCurrentInstance, this.instanceNameFromUrl));
     this.instance$.subscribe(
@@ -91,20 +105,33 @@ export class InstanceDetailPageComponent implements OnInit {
           this.time_of_last_stop = new Date(parseInt(this.instanceItem.last_stop_time) * 1000);
         }
 
-
         this.loadGithubLinks();
         this.loadContainerLogs();
         this.updateForm();
       });
+
+      // await this.loadAppInfo().then(() => {
+        
+      // });
+
+      this.editor = new Editor();
+  }
+
+  ngOnDestroy(): void {
+    this.editor?.destroy();
   }
 
   updateForm(): void {
-    this.instanceDetailForm.patchValue({
-      displayname_long: this.instanceItem.displayname_long,
-      displayname_short: this.instanceItem.displayname_short,
-      description_long: this.instanceItem.description_long,
-      description_short: this.instanceItem.description_short
-    });
+    if(!this.gotNames) {
+      this.instanceDetailForm.patchValue({
+        displayname_long: this.instanceItem.displayname_long,
+        displayname_short: this.instanceItem.displayname_short,
+        description_long: this.instanceItem.description_long,
+        description_short: this.instanceItem.description_short
+      });
+
+      this.gotNames = true;
+    }
   }
 
   loadGithubLinks(): void {
@@ -115,17 +142,11 @@ export class InstanceDetailPageComponent implements OnInit {
       versionBranch = 'master';
     }
     // get instance links
-    this.instanceLinks = [
-      { label: 'GitHub Repository:',
-        url: 'https://www.github.com/bibbox/'
-          + this.instanceItem.app.name},
-      { label: 'Install Instructions:',
-        url: 'https://www.github.com/bibbox/'
-          + this.instanceItem.app.name
-          + '/blob/'
-          + versionBranch
-          + '/INSTALL-APP.md', }
-    ];
+    this.instanceLinks = {
+      documentation: '',
+      repository: 'https://www.github.com/bibbox/',
+      installGuide: 'https://www.github.com/bibbox/' + this.instanceItem.app.name + '/blob/' + versionBranch + '/INSTALL-APP.md'
+    };
   }
 
   canManageInstance(): boolean {
@@ -160,15 +181,13 @@ export class InstanceDetailPageComponent implements OnInit {
   }
 
   saveInstanceChanges(): void {
-    console.log('save instance changes');
-
     if (this.canManageInstance() === false) {
       this.snackbar.open('You are not allowed to edit this instance', 'OK', {duration: 4000});
       return;
     }
 
     // this.snackbar.open(JSON.stringify(this.instanceDetailForm.value) + this.instanceDetailForm.valid, 'OK', {duration: 4000});
-    this.snackbar.open('Changes saved', 'OK', {duration: 4000});
+    this.snackbar.open('Changes saved', 'OK', {duration: 20000});
 
     if (this.instanceDetailForm.valid) {
       this.instanceService.updateInstanceDescription(this.instanceItem.instancename, JSON.stringify(this.instanceDetailForm.value))
@@ -178,15 +197,59 @@ export class InstanceDetailPageComponent implements OnInit {
     }
   }
 
+  backClicked(): void {
+    this._location.back();
+  }
+
+  toggle() {
+    this.isActionsOpen = !this.isActionsOpen;
+  }
+
   loadContainerLogs(): void {
     this.instanceService.getInstanceContainerLogs(this.instanceItem.instancename).subscribe(
       (res: JSON) => {
         this.instanceContainerLogs = res;
       }
     );
+
+    // Scroll to the bottom of the log container element
+    setTimeout(() => {
+      const logContainer = this.elementRef.nativeElement.querySelector('.logs');
+      this.renderer.setProperty(logContainer, 'scrollTop', logContainer.scrollHeight);
+    }, 0);
   }
 
-  backClicked(): void {
-    this._location.back();
+  clearRefreshInterval(containerName: string): void {
+    const interval = this.refreshIntervals[containerName];
+    if (interval) {
+      clearInterval(interval);
+      delete this.refreshIntervals[containerName];
+    }
+  }
+
+  periodicallyRefresh(containerName: string): void {
+    // this.stopPeriodicRefresh();
+
+    // Initial call to loadContainerLogs
+    this.loadContainerLogs();
+
+    // clear interval if it exists
+    this.clearRefreshInterval(containerName);
+
+    // Set interval to refresh every 5 seconds
+    const interval = setInterval(() => {
+      this.loadContainerLogs();
+    }, this.refresh_period);
+
+    // Save the interval in the refreshIntervals object
+    this.refreshIntervals[containerName] = interval;
+  }
+
+  stopPeriodicRefresh(containername: string): void {
+    this.clearRefreshInterval(containername);
+  }
+
+  setScrollHeight(h: number): void {
+    this.activeContainerScrollHeight = h;
   }
 }

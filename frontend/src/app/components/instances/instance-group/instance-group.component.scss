@@ -1,0 +1,31 @@
+@import "src/styles-variables";
+
+.instance-group {
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 20px;
+}
+
+.instance-group:last-child {
+  border-bottom: 0
+}
+
+.instance-group-name {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 15px;
+  color: $custom_blue;
+  font-weight: $custom_font_weight_normal;
+
+  &.running {
+    color: $custom_color_info !important;
+  }
+  &.stopped {
+    color: $custom_color_warn !important;
+  }
+  &.error {
+    color: $custom_color_error !important;
+  }
+}

@@ -1,34 +1,50 @@
 <div class="instances">
   <div class="instances-search">
-    <div class="input-group">
+    <div>
       <input
-        [formControl]="filterFormControl"
-        placeholder="Search for instances"
-        (input)="filterInstances(this.filterFormControl.value)"
-        class="form-control py-2 border-right-0 border"
+        [formControl]="searchFormControl"
+        placeholder="Search by name or tag"
+        (input)="filterInstances()"
         type="search"
       />
-      <span class="input-group-append">
-        <span class="input-group-text bg-white">
-          <i class="fas fa-search"></i>
-        </span>
-      </span>
 
+      <select [formControl]="statusFormControl" (change)="filterInstances()">
+        <option [value]="''">Any status</option>
+        <option [value]="'RUNNING'">Running</option>
+        <option [value]="'ERROR'">Error</option>
+        <option [value]="'STOPPED'">Stopped</option>
+      </select>
+
+      <select [formControl]="showOnlyOwnedInstances" (change)="filterInstances()">
+        <option [value]="'false'">Installed by anyone</option>
+        <option [value]="'true'">Installed by me</option>
+      </select>
     </div>
 
-    <!-- <mat-slide-toggle
-      class="instances-search__slide-toggle"
-      [checked]="false"
-      [disabled]="false"
-      [color]="slideThemePalette"
-      (change)="filterOnlyOwnInstances()"
-    >
-      Only show my instances
-    </mat-slide-toggle> -->
+    <div>
+      <select [formControl]="showAsList">
+        <option [value]="'false'">Show as tiles</option>
+        <option [value]="'true'">Show as list</option>
+      </select>
+    </div>
+  </div>
 
-    <br>
+  <div *ngIf="showAsList.value === 'false'" class="instances_results">
+    <app-instance-group *ngFor="let group of filteredInstanceGroups" [group]="group"></app-instance-group>
   </div>
-  <div class="instances_results">
-    <app-instance-tile *ngFor="let instance of filteredInstances" [instance]="instance"></app-instance-tile>
-  </div>
+
+  <table *ngIf="showAsList.value === 'true'" class="instances_results">
+    <thead>
+      <tr>
+        <th>Instance title and subtitle</th>
+        <th>Instance information</th>
+        <th class="text-center">Instance status</th>
+        <th class="text-center">External links</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <app-instance-list-item *ngFor="let instance of filteredInstanceList" [instance]="instance"></app-instance-list-item>
+    </tbody>
+  </table>
 </div>

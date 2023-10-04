@@ -1,3 +1,9 @@
+export interface InstanceGroupItem {
+  group_name: string;
+  group_members: InstanceItem[];
+  hideCategory?: boolean;
+}
+
 export interface InstanceItem {
   instancename: string;
   installed_by_id?: string; //currently optional to support old instances
