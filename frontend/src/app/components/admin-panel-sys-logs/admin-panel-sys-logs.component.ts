@@ -53,11 +53,11 @@ export class AdminPanelSysLogsComponent implements OnInit, OnDestroy {
         if (index !== -1) {
           this.containerNames[index] = containerName; // Update with the new value if needed
         }
-        
+
         // Scroll to the bottom of the log container element
         setTimeout(() => {
           const logContainer = this.elementRef.nativeElement.querySelector('.logs');
-          this.renderer.setProperty(logContainer, 'scrollTop', logContainer.scrollHeight);
+          this.renderer.setProperty(logContainer, 'scrollTop', logContainer?.scrollHeight || 0);
         }, 0);
       }
     )

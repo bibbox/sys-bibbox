@@ -19,9 +19,9 @@ export class ActivityMenuOverlayComponent implements OnInit {
   activityList: ActivityItem[] = [];
   activeActivities: 0;
   lastActivityStatus: string;
+  showOverlay: boolean = false;
 
   constructor(
-    private activityService: ActivityService,
     private store: Store<AppState>
   ) {
       this.store.pipe(select(activitySelector.selectAllActivities)).subscribe((res) => {
@@ -43,7 +43,6 @@ export class ActivityMenuOverlayComponent implements OnInit {
         this.activeActivities += 1;
       }
     });
-    // console.log('active activities: ', this.activeActivities);
   }
 
   sortActivities(): void {
@@ -55,5 +54,9 @@ export class ActivityMenuOverlayComponent implements OnInit {
       this.lastActivityStatus = this.activityList.reduce(
         (prev, current) => (prev.finished_time > current.finished_time) ? prev : current).result;
     }
+  }
+
+  toggleOverlay(): void {
+    this.showOverlay = !this.showOverlay;
   }
 }

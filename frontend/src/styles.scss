@@ -138,6 +138,7 @@ strong, .bold {
   color: inherit;
 }
 table {
+  width: 100%;
   border-collapse: collapse;
 
   thead {
@@ -145,9 +146,16 @@ table {
       th {
         font-family: "Roboto Condensed", "Helvetica Neue", sans-serif;
         font-weight: 600;
-        padding: 0 10px 5px 10px;
+        padding: 0 20px 5px 20px;
         text-align: left;
         border-bottom: solid 2px $custom_gray_darkest;
+        
+        &:first-child {
+          padding-left: 10px
+        }
+        &:last-child {
+          padding-right: 10px
+        }
       }
     }
   }
@@ -525,6 +533,35 @@ input[type=radio], input[type=checkbox] {
           word-break: break-all;
         }
       }
+    }
+  }
+}
+
+/* MESSAGE */
+
+.mat-snack-bar-container {
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  margin: 0 !important;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+  transform: translateX(-50%) !important;
+  z-index: 5;
+
+  button {
+    background-color: $custom_blue;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-out;
+
+    span {
+      color: white;
+    }
+
+    &:hover {
+      background-color: $custom_gray_darkest;
     }
   }
 }

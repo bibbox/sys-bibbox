@@ -1,6 +1,12 @@
 @import "src/styles-variables";
 
 .app-scaffold-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  flex-grow: 0;
+  display: block;
+  z-index: 3;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;

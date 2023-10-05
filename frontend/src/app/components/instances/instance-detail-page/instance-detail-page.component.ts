@@ -186,8 +186,7 @@ export class InstanceDetailPageComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // this.snackbar.open(JSON.stringify(this.instanceDetailForm.value) + this.instanceDetailForm.valid, 'OK', {duration: 4000});
-    this.snackbar.open('Changes saved', 'OK', {duration: 20000});
+    this.snackbar.open('Changes saved', 'OK', {duration: 4000});
 
     if (this.instanceDetailForm.valid) {
       this.instanceService.updateInstanceDescription(this.instanceItem.instancename, JSON.stringify(this.instanceDetailForm.value))
@@ -215,7 +214,10 @@ export class InstanceDetailPageComponent implements OnInit, OnDestroy {
     // Scroll to the bottom of the log container element
     setTimeout(() => {
       const logContainer = this.elementRef.nativeElement.querySelector('.logs');
-      this.renderer.setProperty(logContainer, 'scrollTop', logContainer.scrollHeight);
+
+      if(!!logContainer) {
+        this.renderer.setProperty(logContainer, 'scrollTop', logContainer?.scrollHeight || 0);
+      }
     }, 0);
   }
 

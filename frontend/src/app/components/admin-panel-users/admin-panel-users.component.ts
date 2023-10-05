@@ -25,22 +25,11 @@ export class AdminPanelUsersComponent implements OnInit {
   userForms: FormGroup[];
   updatedUsers: UserRepresentation[] = [];
 
-
-  toObject = Object.keys;
-  kcRoles = [
-    {
-      value: environment.KEYCLOAK_CONFIG.roles.admin,
-      name: 'Admin'
-    },
-    {
-      value: environment.KEYCLOAK_CONFIG.roles.demo_user,
-      name: 'Demo User'
-    },
-    {
-      value: environment.KEYCLOAK_CONFIG.roles.standard_user,
-      name: 'Standard User'
-    }
-  ]
+  kcRoles = {
+    [environment.KEYCLOAK_CONFIG.roles.admin]: 'Admin',
+    [environment.KEYCLOAK_CONFIG.roles.demo_user]: 'Demo User',
+    [environment.KEYCLOAK_CONFIG.roles.standard_user]: 'Standard User'
+  };
 
   constructor(
     private kc_admin_service: KeycloakAdminBackendService,
@@ -202,8 +191,11 @@ export class AdminPanelUsersComponent implements OnInit {
     });
   }
 
+  edit(user: UserRepresentation): void {
+    // this.store.dispatch(new DeleteUserAction(user.id));
+  }
+
   deleteUser(user: UserRepresentation): void {
     this.store.dispatch(new DeleteUserAction(user.id));
   }
-
 }

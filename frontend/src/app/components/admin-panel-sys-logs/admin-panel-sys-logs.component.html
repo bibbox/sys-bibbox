@@ -1,4 +1,6 @@
-<mat-accordion>
+<p *ngIf="!containerNames?.length" class="text-center">No logs found</p>
+
+<mat-accordion *ngIf="!!containerNames?.length">
   <mat-expansion-panel hideToggle *ngFor="let container of containerNames"
                        (opened)="periodicallyRefresh(container); setScrollHeight(scrollContainer.scrollHeight)"
                        (closed)="stopPeriodicRefresh(container)">

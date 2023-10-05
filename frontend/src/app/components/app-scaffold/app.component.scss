@@ -1,15 +1,3 @@
-#header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  flex-grow: 0;
-  margin-bottom: 50px;
-  max-width: 100%;
-  display: block;
-  z-index: 3;
-}
-
 #content {
   position: relative;
   flex-grow: 1;
@@ -37,10 +25,4 @@
   #content {
     max-width: 1600px;
   }
-}
-
-#footer {
-  position: relative;
-  flex-grow: 0;
-  z-index: 2;
 }

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, Renderer2} from '@angular/core';
 import {ACTIVITY_STATES, SVG_PATHS} from '../../commons';
 import {ActivityService} from '../../store/services/activity.service';
 import {ActivityItem, LogItem} from '../../store/models/activity.model';
@@ -36,20 +36,23 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     private activityService: ActivityService,
     private router: Router,
     private route: ActivatedRoute,
-    private store: Store<AppState>) {
+    private store: Store<AppState>,
+    private elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {
 
-      this.route.params.subscribe(params =>
-        this.focussedActivityID = params.activity_id
-      );
+    this.route.params.subscribe(params =>
+      this.focussedActivityID = params.activity_id
+    );
 
-      this.store.pipe(select(activitySelector.selectAllActivities)).subscribe((res) => {
-        this.activityList = res;
-        this.sortActivityList();
-      });
+    this.store.pipe(select(activitySelector.selectAllActivities)).subscribe((res) => {
+      this.activityList = res;
+      this.sortActivityList();
+    });
 
-      if (this.focussedActivityID !== undefined){
-        this.getLogsOfActivity(this.focussedActivityID);
-      }
+    if (this.focussedActivityID !== undefined) {
+      this.getLogsOfActivity(this.focussedActivityID);
+    }
   }
 
   ngOnInit(): void {
@@ -66,7 +69,16 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         startWith(0),
         switchMap(() => this.activityService.getLogsOfActivity(activityID))
       ).subscribe((res: LogItem[]) => this.activityLogs = res);
-    this.activityService.getLogsOfActivity(activityID).subscribe((res) => this.activityLogs = res);
+
+    this.activityService.getLogsOfActivity(activityID).subscribe((res) => {
+      this.activityLogs = res;
+
+      // Scroll to the bottom of the log container element
+      setTimeout(() => {
+        const logContainer = this.elementRef.nativeElement.querySelector('.logs');
+        this.renderer.setProperty(logContainer, 'scrollTop', logContainer?.scrollHeight || 0);
+      }, 0);
+    });
   }
 
   unsubscribeFromLogs(): void {

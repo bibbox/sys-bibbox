@@ -190,7 +190,9 @@
       </ng-template>
 
       <ng-template matTabContent>
-        <mat-accordion>
+        <p *ngIf="!instanceItem.container_names?.length" class="text-center">No logs found</p>
+
+        <mat-accordion *ngIf="!!instanceItem.container_names?.length">
           <mat-expansion-panel hideToggle *ngFor="let container of this.instanceItem.container_names"
                                (opened)="periodicallyRefresh(container); setScrollHeight(scrollContainer.scrollHeight)"
                                (closed)="stopPeriodicRefresh(container)">

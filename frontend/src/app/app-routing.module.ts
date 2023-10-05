@@ -15,7 +15,6 @@ import {AdminPanelSysLogsComponent} from './components/admin-panel-sys-logs/admi
 import {AuthGuard} from './guard/auth.guard';
 import {InfoComponent} from './components/info/info.component';
 import {environment} from '../environments/environment';
-import {AdminPanelInstancesComponent} from './components/admin-panel-instances/admin-panel-instances.component';
 import {AdminPanelUsersComponent} from './components/admin-panel-users/admin-panel-users.component';
 
 const routes: Routes = [
@@ -33,7 +32,6 @@ const routes: Routes = [
 
   // top nav admin
   { path: 'sys-logs', component: AdminPanelSysLogsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_CONFIG.roles.admin]}},
-  { path: 'instance-mgmt', component: AdminPanelInstancesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_CONFIG.roles.admin]}},
   { path: 'user-mgmt', component: AdminPanelUsersComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_CONFIG.roles.admin]}},
 
 

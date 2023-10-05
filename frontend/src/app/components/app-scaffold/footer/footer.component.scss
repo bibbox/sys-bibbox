@@ -1,5 +1,8 @@
 @import "src/styles-variables";
 .app-scaffold-footer {
+  position: relative;
+  flex-grow: 0;
+  z-index: 2;
   display: flex;
   flex-flow: column nowrap;
   font-size: 12px;

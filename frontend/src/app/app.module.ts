@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {initializeKeycloak} from './keycloak-init.factory';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 // design design modules
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -64,7 +65,6 @@ import { ApplicationsComponent } from './components/applications/applications.co
 import { ContactComponent } from './components/about/contact/contact.component';
 import { PartnersComponent } from './components/about/partners/partners.component';
 import { ImprintComponent } from './components/about/imprint/imprint.component';
-import { CitationComponent } from './components/about/citation/citation.component';
 import { ActivitiesComponent } from './components/activities/activities.component';
 import { InstanceDetailPageComponent } from './components/instances/instance-detail-page/instance-detail-page.component';
 import { ApplicationGroupComponent } from './components/applications/application-group/application-group.component';
@@ -78,8 +78,6 @@ import { ActivityMenuOverlayComponent } from './components/activities/activity-m
 import { AdminPanelSysLogsComponent } from './components/admin-panel-sys-logs/admin-panel-sys-logs.component';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { InfoComponent } from './components/info/info.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { AdminPanelInstancesComponent } from './components/admin-panel-instances/admin-panel-instances.component';
 import { AdminPanelUsersComponent } from './components/admin-panel-users/admin-panel-users.component';
 import { CreateUserDialogComponent } from './components/admin-panel-users/create-user-dialog/create-user-dialog.component';
 import { ConfirmationDialogComponent } from './components/admin-panel-users/confirmation-dialog/confirmation-dialog.component';
@@ -106,6 +104,8 @@ import { ErrorIconComponent } from './components/icons/error-icon/error-icon.com
 import { LaunchIconComponent } from './components/icons/launch-icon/launch-icon.component';
 import { DeleteIconComponent } from './components/icons/delete-icon/delete-icon.component';
 import { SaveIconComponent } from './components/icons/save-icon/save-icon.component';
+import { EditIconComponent } from './components/icons/edit-icon/edit-icon.component';
+import { PlusIconComponent } from './components/icons/plus-icon/plus-icon.component';
 import {UserEffects} from './store/effects/user.effects';
 
 
@@ -135,7 +135,6 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     ActivityMenuOverlayComponent,
     AdminPanelSysLogsComponent,
     InfoComponent,
-    AdminPanelInstancesComponent,
     AdminPanelUsersComponent,
     CreateUserDialogComponent,
     ConfirmationDialogComponent,
@@ -161,7 +160,9 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     ErrorIconComponent,
     LaunchIconComponent,
     DeleteIconComponent,
-    SaveIconComponent
+    EditIconComponent,
+    SaveIconComponent,
+    PlusIconComponent
   ],
     imports: [
         // angular

@@ -53,6 +53,7 @@ export class InstancesComponent implements OnInit {
         }
       }
 
+      console.log(this.instanceItems);
       this.filterInstances();
     });
   }
