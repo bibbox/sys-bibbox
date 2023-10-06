@@ -7,6 +7,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/models/app-state.model';
 import { DeleteInstanceAction } from '../../../store/actions/instance.actions';
 import { ApplicationItem } from '../../../store/models/application-group-item.model';
+import { MatDialog } from '@angular/material/dialog';
+import { InstanceDeleteDialogComponent } from '../instance-delete-dialog/instance-delete-dialog.component';
 
 @Component({
   selector: 'app-instance-tile',
@@ -16,7 +18,7 @@ import { ApplicationItem } from '../../../store/models/application-group-item.mo
 })
 export class InstanceTileComponent implements OnInit {
 
-  constructor(private store: Store<AppState>, private instanceService: InstanceService, private userService: UserService) { }
+  constructor(private store: Store<AppState>, private instanceService: InstanceService, private userService: UserService, public dialog: MatDialog) { }
 
   @Input() instance: InstanceItem;
   @Input() applications: ApplicationItem[];
@@ -42,8 +44,13 @@ export class InstanceTileComponent implements OnInit {
     }
   }
 
-  toggle() {
-    this.isOpen = !this.isOpen;
+  toggle(open?: boolean) {
+    if(typeof open === 'undefined') {
+      this.isOpen = !this.isOpen;
+    }
+    else {
+      this.isOpen = open;
+    }
   }
 
   canManageInstance(): boolean {
@@ -54,6 +61,8 @@ export class InstanceTileComponent implements OnInit {
   }
 
   deleteInstance(): void {
+    this.toggle(false);
+
     // const isAdmin = this.userService.isRole(KEYCLOAK_ROLES.admin);
     // const doesInstanceOwnerMatch = this.userService.getUserID() === this.instanceItem.installed_by;
     //
@@ -64,7 +73,11 @@ export class InstanceTileComponent implements OnInit {
 
     // console.log('delete instance:' + this.instanceItem.instancename);
 
-    this.store.dispatch(new DeleteInstanceAction(this.instance.instancename));
+
+    const dialogRef = this.dialog.open(InstanceDeleteDialogComponent, {
+      data: this.instance.instancename,
+      panelClass: 'slim'
+    });
 
     // this.instanceService.deleteInstance(this.instanceItem.instancename).subscribe(
     //   (res) => console.log(res)
@@ -73,6 +86,8 @@ export class InstanceTileComponent implements OnInit {
   }
 
   manageInstance(operation: string): void {
+    this.toggle(false);
+
     this.instanceService.manageInstance(this.instance.instancename, operation).subscribe((res) => console.log(res));
   }
 

@@ -110,21 +110,18 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
   initEnvParamFormFields(): void {
     let increment=0;
     for (const envParam of this.environmentParameters) {
-      envParam.name = envParam.id.valueOf()
-      if(!this.envParamForm.contains(envParam.name)){
+      envParam.name = envParam.id.valueOf();
 
-        this.entered_values[envParam.name]=envParam.default_value;
+      if(!this.envParamForm.contains(envParam.name)) {
+        this.entered_values[envParam.name] = envParam.default_value;
         //Validators.required,
           this.envParamForm.addControl(
             envParam.id.valueOf(),
-            this.formBuilder.control('', [ Validators.minLength(Number(envParam.min_length)),
-              Validators.maxLength(Number(envParam.max_length))]
-            )
+            this.formBuilder.control('', [Validators.minLength(10), Validators.maxLength(Number(envParam.max_length))])
           );
-      } else{
+      } else {
         increment++;
-        envParam.id = `${envParam.id.valueOf()}${increment}`
-
+        envParam.id = `${envParam.id.valueOf()}${increment}`;
       }
     }
   }

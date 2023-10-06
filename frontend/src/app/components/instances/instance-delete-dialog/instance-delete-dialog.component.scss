@@ -1,11 +1,11 @@
 @import "src/styles-variables";
 
-.user-delete-overlay {
+.app-instance-delete-overlay {
   display: flex;
   flex-flow: column nowrap;
   width: 100%;
 
-  .user-delete-overlay__header {
+  .app-instance-delete-overlay__header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -28,16 +28,16 @@
     }
   }
 
-  .user-delete-overlay__body {
+  .app-instance-delete-overlay__body {
     display: flex;
     width: 100%;
     flex-flow: column nowrap;
   }
 
-  .user-delete-overlay__footer {
+  .app-instance-delete-overlay__footer {
     margin-top: 30px;
     
-    .user-delete-overlay__delete-button {
+    .app-instance-delete-overlay__delete-button {
       display: flex;
       justify-content: center;
       gap: 20px;

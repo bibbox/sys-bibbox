@@ -149,7 +149,7 @@ table {
         padding: 0 20px 5px 20px;
         text-align: left;
         border-bottom: solid 2px $custom_gray_darkest;
-        
+
         &:first-child {
           padding-left: 10px
         }
@@ -418,6 +418,11 @@ input[type=radio], input[type=checkbox] {
   overflow-x: hidden;
   overflow-y: auto;
   z-index: 5;
+}
+.cdk-overlay-pane.slim {
+  .cdk-dialog-container {
+    max-width: 450px;
+  }
 }
 
 

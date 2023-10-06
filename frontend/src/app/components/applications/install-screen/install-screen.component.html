@@ -13,7 +13,7 @@
       </div>
 
       <button class="app-install-cancel" type="button" (click)="cancel()">
-        <app-back-icon></app-back-icon>Cancel
+        <app-back-icon></app-back-icon>Go back
       </button>
     </div>
 
@@ -27,6 +27,11 @@
     </div>
 
     <div class="install-form-item">
+      <div class="install-item-body">
+        <label for="instance_id">Instance ID *</label>
+        <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id">
+        <span class="field-description">Subdomain of your application instance URL, only lowercase letters and numbers. <strong>Cannot be changed after the installation.</strong></span>
+      </div>
       <div class="error-messages">
         <div *ngIf="installForm.controls.instance_id.hasError('nameAlreadyExists')">
           <mat-error>
@@ -52,44 +57,35 @@
           </mat-error>
         </div>
       </div>
-
-      <div class="install-item-body">
-        <label for="instance_id">Instance ID *</label>
-        <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id">
-        <span class="field-description">Subdomain of your application instance URL, only lowercase letters and numbers. <strong>Cannot be changed after the installation.</strong></span>
-      </div>
     </div>
 
     <div class="install-form-item">
-      <div class="error-messages">
-        <div *ngIf="installForm.controls.instance_title.hasError('maxlength')">
-          <mat-error>
-            Instance title too long! Max 48 chars.
-          </mat-error>
-        </div>
-      </div>
-
       <div class="columns">
         <div class="install-form-item">
-          <div class="error-messages"></div>
           <div class="install-item-body">
             <label for="instance_title">Instance title *</label>
             <input type="text" value="" name="instance_title" required id="instance_title" formControlName="instance_title" > <!-- (ngModelChange)="test('a')" -->
             <span class="field-description">Title of your application instance, can be changed later on.</span>
           </div>
+          <div *ngIf="installForm.controls.instance_title.invalid && installForm.controls.instance_title.touched" class="error-messages">
+            <div *ngIf="installForm.controls.instance_title.hasError('maxlength')">
+              <mat-error>
+                Instance title too long! Max 48 chars.
+              </mat-error>
+            </div>
+          </div>
         </div>
         
         <div class="install-form-item">
-          <div class="error-messages"></div>
           <div class="install-item-body">
             <label for="instance_subtitle">Instance subtitle</label>
             <input type="text" value="" name="instance_subtitle" id="instance_subtitle" formControlName="instance_subtitle" > <!-- (ngModelChange)="test('a')" -->
             <span class="field-description">Optional subtitle of your application instance, can be changed later on.</span>
           </div>
+          <div *ngIf="installForm.controls.instance_subtitle.invalid && installForm.controls.instance_subtitle.touched" class="error-messages"></div>
         </div>
 
         <div [formGroup]="envParamForm" *ngFor="let envparam of environmentParameters; let i = index" [ngClass]="{ 'install-form-item': true, 'radio': envparam.type === 'radio', 'stick-to-top': envparam.display_name.length === 0 }">
-          <div class="error-messages"> </div>
           <div class="install-item-body">
             <label>{{envparam.display_name}}<span *ngIf="envparam.display_name.length > 0"> *</span></label>
             <ng-container [ngSwitch]="envparam.type">
@@ -112,17 +108,25 @@
             </ng-container>
             <span class="field-description">{{envparam.description}}</span>
           </div>
+          <div *ngIf="envParamForm.controls[envparam.name].invalid && envParamForm.controls[envparam.name].touched" class="error-messages">
+            <mat-error *ngIf="envParamForm.controls[envparam.name].hasError('minlength')">
+              Input too short! min {{envparam.min_length}} chars.
+            </mat-error>
+            <mat-error *ngIf="envParamForm.controls[envparam.name].hasError('maxlength')">
+              Input too long! max {{envparam.max_length}} chars.
+            </mat-error>
+          </div>
         </div>
       </div>
 
       <div class="install-form-item">
-        <div class="error-messages"></div>
         <div class="install-item-body">
           <label for="instance_subtitle">Instance information</label>
           <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
           <ngx-editor [editor]="editor" formControlName="instance_information" [placeholder]="''"></ngx-editor>
           <span class="field-description">Additional information regarding the application instance that will be visible in the instance list, can be changed later on.</span>
         </div>
+        <div *ngIf="installForm.controls.instance_information.invalid && installForm.controls.instance_information.touched" class="error-messages"></div>
       </div>
     </div>
 

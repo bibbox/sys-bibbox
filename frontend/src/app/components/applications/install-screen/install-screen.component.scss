@@ -103,6 +103,11 @@
 
       .error-messages {
         flex-grow: 1;
+        margin-top: 10px;
+
+        ::ng-deep .mat-error {
+          color: $custom_color_error;
+        }
       }
       .install-item-body {
         display: flex;

@@ -35,7 +35,6 @@ export interface UserRoles {
   roles: string[];
 }
 
-
 export interface CreateUserSuccessResponse {
   message: string;
   userRepresentation: UserRepresentation;
@@ -49,6 +48,11 @@ export interface UpdateRoleMappingSuccessResponse {
 export interface DeleteUserSuccessResponse {
   message: string;
   userID: string;
+}
+
+export interface UserCreateDialogProps {
+  usernames: string[];
+  userToEdit: UserRepresentation | null;
 }
 
 

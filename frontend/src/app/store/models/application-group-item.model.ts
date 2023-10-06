@@ -11,6 +11,11 @@ export interface AppInstallDialogProps {
   searchByTag: (tag: string) => void;
 }
 
+export interface AppInstallDialogProps {
+  application: ApplicationItem;
+  searchByTag: (tag: string) => void;
+}
+
 export interface ApplicationItem {
   app_name: string;
   app_display_name: string;

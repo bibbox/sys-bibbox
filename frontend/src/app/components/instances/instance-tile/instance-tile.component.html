@@ -35,10 +35,10 @@
       </a>
 
       <div>
-        <a *ngIf="instance.state === 'RUNNING'" class="condensed" href="{{instanceUrl}}" target="_blank" title="Launch">
+        <a *ngIf="instance.state === 'RUNNING'" class="condensed" href="{{instanceUrl}}" target="_blank" title="Launch" (click)="toggle(false)">
           <app-launch-icon class="button-icon" [width]="16" [height]="16"></app-launch-icon>Launch
         </a>
-        <a *ngIf="instance.state === 'ERROR'" class="condensed" [routerLink]="['/instances/', instance.instancename]" [state]="{index: 1}" title="Error">
+        <a *ngIf="instance.state === 'ERROR'" class="condensed" [routerLink]="['/instances/', instance.instancename]" [state]="{index: 1}" title="Error" (click)="toggle(false)">
           <app-error-icon class="button-icon" [width]="18" [height]="18"></app-error-icon>Error
         </a>
         <a *ngIf="instance.state === 'STOPPED'" class="condensed" [routerLink]="" (click)="manageInstance('start')" title="Start">

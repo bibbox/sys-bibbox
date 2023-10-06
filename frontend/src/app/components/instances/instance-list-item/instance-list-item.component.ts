@@ -6,6 +6,8 @@ import { InstanceService } from '../../../store/services/instance.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/models/app-state.model';
 import { DeleteInstanceAction } from '../../../store/actions/instance.actions';
+import { MatDialog } from '@angular/material/dialog';
+import { InstanceDeleteDialogComponent } from '../instance-delete-dialog/instance-delete-dialog.component';
 
 @Component({
   selector: 'app-instance-list-item',
@@ -14,7 +16,7 @@ import { DeleteInstanceAction } from '../../../store/actions/instance.actions';
 })
 export class InstanceListItemComponent implements OnInit {
 
-  constructor(private store: Store<AppState>, private instanceService: InstanceService, private userService: UserService) { }
+  constructor(private store: Store<AppState>, private instanceService: InstanceService, private userService: UserService, public dialog: MatDialog) { }
 
   @Input() instance: InstanceItem;
   instanceUrl: string;
@@ -34,8 +36,6 @@ export class InstanceListItemComponent implements OnInit {
     this.sanitizedDescription = this.sanitizedDescription.replace(/<a.*href="(.*?)".*>(.*?)<\/a>/gi, " $2 ($1) ");
     this.sanitizedDescription = this.sanitizedDescription.replace(/<br\s*[\/]?>/gi, "\n");
     this.sanitizedDescription = this.sanitizedDescription.replace(/<[^>]+>/g, "");
-
-    console.log(this.instance.description_short, this.sanitizedDescription);
 
     if(this.sanitizedDescription.length > 60) {
       this.description = this.sanitizedDescription.substring(0, 60);
@@ -61,8 +61,13 @@ export class InstanceListItemComponent implements OnInit {
     }
   }
 
-  toggle() {
-    this.isOpen = !this.isOpen;
+  toggle(open?: boolean) {
+    if(typeof open === 'undefined') {
+      this.isOpen = !this.isOpen;
+    }
+    else {
+      this.isOpen = open;
+    }
   }
 
   canManageInstance(): boolean {
@@ -73,10 +78,17 @@ export class InstanceListItemComponent implements OnInit {
   }
 
   deleteInstance(): void {
-    this.store.dispatch(new DeleteInstanceAction(this.instance.instancename));
+    this.toggle(false);
+
+    const dialogRef = this.dialog.open(InstanceDeleteDialogComponent, {
+      data: this.instance.instancename,
+      panelClass: 'slim'
+    });
   }
 
   manageInstance(operation: string): void {
+    this.toggle(false);
+
     this.instanceService.manageInstance(this.instance.instancename, operation).subscribe((res) => console.log(res));
   }
 

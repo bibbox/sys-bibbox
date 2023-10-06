@@ -15,30 +15,30 @@
   </thead>
 
   <tbody>
-    <tr *ngFor="let user of userForms; let i = index" [formGroup]="user">
+    <tr *ngFor="let user of users; let i = index">
       <td class="admin-panel__user-table__cell">
-        <div class="admin-panel__user-table__cell-content">{{ user.controls.username.value }}</div>
+        <div class="admin-panel__user-table__cell-content">{{ user.username }}</div>
       </td>
 
       <td class="admin-panel__user-table__cell">
-        <div class="admin-panel__user-table__cell-content">{{ user.controls.firstName.value }}</div>
+        <div class="admin-panel__user-table__cell-content">{{ user.firstName }}</div>
       </td>
 
       <td class="admin-panel__user-table__cell">
-        <div class="admin-panel__user-table__cell-content">{{ user.controls.lastName.value }}</div>
+        <div class="admin-panel__user-table__cell-content">{{ user.lastName }}</div>
       </td>
 
       <td class="admin-panel__user-table__cell">
-        {{kcRoles[user.controls.role.value]}}
+        {{kcRoles[user.roles[0]]}}
       </td>
 
       <td class="admin-panel__user-table__cell">
-        <div class="admin-panel__user-table__cell-content">{{ user.controls.email.value }}</div>
+        <div class="admin-panel__user-table__cell-content">{{ user.email }}</div>
       </td>
 
       <td class="admin-panel__user-table__action-buttons text-center">
-        <button (click)="edit(user.value)" title="Edit user"><app-edit-icon class="button-icon" [width]="18" [height]="18"></app-edit-icon></button>
-        <button (click)="confirmDelete(user.value)" title="Delete user"><app-delete-icon class="button-icon" [width]="18" [height]="18"></app-delete-icon></button>
+        <button (click)="editUser(user)" title="Edit user"><app-edit-icon class="button-icon" [width]="18" [height]="18"></app-edit-icon></button>
+        <button (click)="confirmDelete(user)" title="Delete user"><app-delete-icon class="button-icon" [width]="18" [height]="18"></app-delete-icon></button>
       </td>
     </tr>
   </tbody>

@@ -71,6 +71,7 @@ import { ApplicationGroupComponent } from './components/applications/application
 import { ApplicationTileComponent} from './components/applications/application-group/application-tile/application-tile.component';
 import { InstanceTileComponent } from './components/instances/instance-tile/instance-tile.component';
 import { InstanceListItemComponent } from './components/instances/instance-list-item/instance-list-item.component';
+import { InstanceDeleteDialogComponent } from './components/instances/instance-delete-dialog/instance-delete-dialog.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InstallScreenComponent } from './components/applications/install-screen/install-screen.component';
 import { InstallScreenDialogComponent } from './components/applications/install-screen-dialog/install-screen-dialog.component';
@@ -129,6 +130,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     ApplicationTileComponent,
     InstanceTileComponent,
     InstanceListItemComponent,
+    InstanceDeleteDialogComponent,
     NotFoundComponent,
     InstallScreenComponent,
     InstallScreenDialogComponent,

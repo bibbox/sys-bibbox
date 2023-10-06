@@ -158,6 +158,8 @@ export class InstanceDetailPageComponent implements OnInit, OnDestroy {
 
 
   deleteInstance(): void {
+    this.toggle(false);
+    
     // const isAdmin = this.userService.isRole(KEYCLOAK_ROLES.admin);
     // const doesInstanceOwnerMatch = this.userService.getUserID() === this.instanceItem.installed_by;
     //
@@ -177,6 +179,8 @@ export class InstanceDetailPageComponent implements OnInit, OnDestroy {
   }
 
   manageInstance(operation: string): void {
+    this.toggle(false);
+
     this.instanceService.manageInstance(this.instanceItem.instancename, operation).subscribe((res) => console.log(res));
   }
 
@@ -200,8 +204,13 @@ export class InstanceDetailPageComponent implements OnInit, OnDestroy {
     this._location.back();
   }
 
-  toggle() {
-    this.isActionsOpen = !this.isActionsOpen;
+  toggle(isOpen?: boolean) {
+    if(typeof isOpen === 'undefined') {
+      this.isActionsOpen = !this.isActionsOpen;
+    }
+    else {
+      this.isActionsOpen = isOpen;
+    }
   }
 
   loadContainerLogs(): void {
