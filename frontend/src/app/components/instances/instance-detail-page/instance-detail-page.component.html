@@ -78,24 +78,24 @@
                 <tr>
                   <th><span><app-guide-icon class="link-icon" [width]="18" [height]="18"></app-guide-icon>Documentation</span></th>
                   <td>
-                    <a href="{{instanceLinks.documentation}}" target="_blank" rel="noopener noreferrer">
-                      {{instanceLinks.documentation}}
+                    <a href="{{instanceItem.app.application_documentation_url}}" target="_blank" rel="noopener noreferrer">
+                      {{instanceItem.app.application_documentation_url}}
                     </a>
                   </td>
                 </tr>
                 <tr>
                   <th><span><app-docs-icon class="link-icon" [width]="18" [height]="18"></app-docs-icon>Install guide</span></th>
                   <td>
-                    <a href="{{instanceLinks.installGuide}}" target="_blank" rel="noopener noreferrer">
-                      {{instanceLinks.installGuide}}
+                    <a href="{{instanceItem.app.install_guide_url}}" target="_blank" rel="noopener noreferrer">
+                      {{instanceItem.app.install_guide_url}}
                     </a>
                   </td>
                 </tr>
                 <tr>
                   <th><span><app-github-icon class="link-icon" [width]="18" [height]="18"></app-github-icon>Repository</span></th>
                   <td>
-                    <a href="{{instanceLinks.repository}}" target="_blank" rel="noopener noreferrer">
-                      {{instanceLinks.repository}}
+                    <a href="{{instanceItem.app.repository_url}}" target="_blank" rel="noopener noreferrer">
+                      {{instanceItem.app.repository_url}}
                     </a>
                   </td>
                 </tr>

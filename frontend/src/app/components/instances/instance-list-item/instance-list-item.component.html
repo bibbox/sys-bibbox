@@ -35,9 +35,9 @@
 
 <td class="text-center">
   <div class="instance-list-item__links">
-    <a class="button" href="{{installGuideUrl}}" target="_blank" title="Install guide"><app-guide-icon class="link-icon" [width]="18" [height]="18"></app-guide-icon></a>
-    <a class="button" href="/" target="_blank" title="Documentation"><app-docs-icon class="link-icon" [width]="18" [height]="18"></app-docs-icon></a>
-    <a class="button" href="{{repositoryUrl}}" target="_blank" title="Repository"><app-github-icon class="link-icon" [width]="18" [height]="18"></app-github-icon></a>
+    <a class="button" href="{{instance.app.install_guide_url || '#'}}" target="_blank" title="Install guide"><app-guide-icon class="link-icon" [width]="18" [height]="18"></app-guide-icon></a>
+    <a class="button" href="{{instance.app.application_documentation_url || '#'}}" target="_blank" title="Documentation"><app-docs-icon class="link-icon" [width]="18" [height]="18"></app-docs-icon></a>
+    <a class="button" href="{{instance.app.repository_url || '#'}}" target="_blank" title="Repository"><app-github-icon class="link-icon" [width]="18" [height]="18"></app-github-icon></a>
   </div>
 </td>
 

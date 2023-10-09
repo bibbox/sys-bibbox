@@ -51,6 +51,7 @@ export interface AppInfo {
   icon_url?: string;
   versionOptions?: IVersions[];
   install_guide_url?: string;
+  instance_information?: string;
 }
 
 export interface EnvironmentParameters {

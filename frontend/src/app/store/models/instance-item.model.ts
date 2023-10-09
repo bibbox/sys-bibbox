@@ -33,4 +33,7 @@ export interface IApp {
   organization: string;
   name: string;
   version: string;
+  application_documentation_url?: string;
+  repository_url?: string;
+  install_guide_url?: string;
 }

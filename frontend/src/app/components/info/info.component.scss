@@ -34,8 +34,30 @@
 }
 .info-right {
   display: flex;
-  align-items: center;
+  flex-flow: column nowrap;
+  justify-content: center;
   flex-shrink: 1;
   flex-grow: 1;
   padding: 100px;
+  color: white;
+
+  .info-controls {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    gap: 20px;
+    margin-bottom: 15px;
+  }
+
+  .info-editor {
+    width: 100%;
+  }
+
+  .info-text {
+    width: 100%;
+
+    &, * {
+      color: white;
+    }
+  }
 }

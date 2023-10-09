@@ -17,9 +17,9 @@
 
     <div class="instance-tile__body">
       <div class="instance-tile__body-links">
-        <a href="{{installGuideUrl}}" target="_blank" title="Install guide"><app-guide-icon class="link-icon" [width]="18" [height]="18"></app-guide-icon></a>
-        <a href="/" target="_blank" title="Documentation"><app-docs-icon class="link-icon" [width]="18" [height]="18"></app-docs-icon></a>
-        <a href="{{repositoryUrl}}" target="_blank" title="Repository"><app-github-icon class="link-icon" [width]="18" [height]="18"></app-github-icon></a>
+        <a href="{{instance.app.install_guide_url || '#'}}" target="_blank" title="Install guide"><app-guide-icon class="link-icon" [width]="18" [height]="18"></app-guide-icon></a>
+        <a href="{{instance.app.application_documentation_url || '#'}}" target="_blank" title="Documentation"><app-docs-icon class="link-icon" [width]="18" [height]="18"></app-docs-icon></a>
+        <a href="{{instance.app.repository_url || '#'}}" target="_blank" title="Repository"><app-github-icon class="link-icon" [width]="18" [height]="18"></app-github-icon></a>
       </div>
 
       <div class="instance-tile__body-inner" [innerHTML]="instance.description_short"></div>

@@ -46,7 +46,8 @@ export class InstallScreenDialogComponent implements OnInit {
       application_documentation_url: '',
       icon_url: this.applicationItem.icon_url,
       versionOptions: structuredClone(this.applicationItem.versions).map(item => ({ ...item, selectLabel: item.app_version })),
-      install_guide_url: ''
+      install_guide_url: '',
+      instance_information: ''
     };
   }
 
@@ -66,14 +67,21 @@ export class InstallScreenDialogComponent implements OnInit {
       .then(res => this.appInfo = {
         ...this.appInfo,
         ...res,
-        install_guide_url: this.getInstallGuideUrl(this.applicationItem.app_name, res.version)
+        install_guide_url: this.getInstallGuideUrl(this.applicationItem.app_name, res.version),
+        instance_information: res.instance_information || ''
       });
   }
 
   openInstallScreen(): void {
     this.router.navigateByUrl(
       'install/' + this.applicationItem.app_name + '/' + this.versionFormControl.value.app_version,
-      {state: [{...this.applicationItem}, this.versionFormControl.value, this.appInfo.install_guide_url]}
+      {state: [
+        {...this.applicationItem},
+        this.versionFormControl.value,
+        this.appInfo.install_guide_url,
+        this.appInfo.application_documentation_url,
+        this.appInfo.instance_information
+      ]}
     ).then();
   }
 

@@ -1,8 +1,10 @@
 import {Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {InstanceItem} from '../../../store/models/instance-item.model';
 import {select, Store} from '@ngrx/store';
-import {AppState} from '../../../store/models/app-state.model';
+import {Location} from '@angular/common';
+import { Editor } from 'ngx-editor';
 import {Observable} from 'rxjs';
+import {InstanceItem} from '../../../store/models/instance-item.model';
+import {AppState} from '../../../store/models/app-state.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as InstanceSelector from '../../../store/selectors/instance.selector';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -12,9 +14,6 @@ import {SVG_PATHS, toolbar} from '../../../commons';
 import {environment} from '../../../../environments/environment';
 import {UserService} from '../../../store/services/user.service';
 import {DeleteInstanceAction} from '../../../store/actions/instance.actions';
-import {Location} from '@angular/common';
-import { Editor } from 'ngx-editor';
-import { ApplicationService } from '../../../store/services/application.service';
 import { AppInfo } from '../../../store/models/application-group-item.model';
 
 @Component({
@@ -44,7 +43,6 @@ export class InstanceDetailPageComponent implements OnInit, OnDestroy {
   @ViewChild('scrollContainer') container: ElementRef;
   scrollTop: number = null;
 
-  instanceLinks = {}; // external Links to GitHub repo
   instanceContainerLogs = {}; // dictionary -> key: containerName, value: logs of container
 
   svgPaths = SVG_PATHS;
@@ -110,10 +108,6 @@ export class InstanceDetailPageComponent implements OnInit, OnDestroy {
         this.updateForm();
       });
 
-      // await this.loadAppInfo().then(() => {
-        
-      // });
-
       this.editor = new Editor();
   }
 
@@ -141,12 +135,6 @@ export class InstanceDetailPageComponent implements OnInit, OnDestroy {
     if (this.instanceItem.app.version === 'latest') {
       versionBranch = 'master';
     }
-    // get instance links
-    this.instanceLinks = {
-      documentation: '',
-      repository: 'https://www.github.com/bibbox/',
-      installGuide: 'https://www.github.com/bibbox/' + this.instanceItem.app.name + '/blob/' + versionBranch + '/INSTALL-APP.md'
-    };
   }
 
   canManageInstance(): boolean {

@@ -6,6 +6,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../models/app-state.model';
 import {InstanceService} from './instance.service';
 import {ActivityService} from './activity.service';
+import {KeyValueService} from './keyvalue.service';
 import {KeycloakAdminBackendService} from './keycloak-admin-backend.service';
 import {KeycloakService} from 'keycloak-angular';
 import {DeleteUserSuccessAction} from '../actions/user.actions';

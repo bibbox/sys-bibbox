@@ -1,25 +1,34 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Editor } from 'ngx-editor';
 import {UserService} from '../../store/services/user.service';
-import { DomSanitizer } from "@angular/platform-browser";
 import { DOCUMENT } from '@angular/common';
+import { KeyValueService } from '../../store/services/keyvalue.service';
+import { KeyValueItem } from '../../store/models/keyvalue.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { toolbar } from '../../commons';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-info',
   templateUrl: './info.component.html',
-  styleUrls: ['./info.component.scss']
+  styleUrls: ['./info.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class InfoComponent implements OnInit {
 
   isLoggedin = false;
   userFullname: string = '';
-  public htmlStr: any;
+  editMode: boolean = false;
+  htmlStr = new FormControl('');
+  editor: Editor;
+  toolbar = toolbar;
+  keyValueId: string;
 
   constructor(
-    private router: Router,
     private userService: UserService,
-    private _sanitizer: DomSanitizer,
-    @Inject(DOCUMENT) private document: Document
+    private snackbar: MatSnackBar,
+    @Inject(DOCUMENT) private document: Document,
+    private keyvalueService: KeyValueService
   ) {
   }
 
@@ -31,9 +40,14 @@ export class InfoComponent implements OnInit {
       this.document.body.classList.add('white-header');
     }
 
-    this.htmlStr = this._sanitizer.bypassSecurityTrustHtml(
-      '<iframe width="100%" height="400" src="assets/landing.html"></iframe>',
-    );
+    (await this.keyvalueService.getValueByKey('info')).subscribe((keyValueItem: KeyValueItem) => {
+      this.htmlStr.setValue(keyValueItem?.values || '');
+      this.keyValueId = String(keyValueItem?.id);
+    });
+
+    // this.htmlStr = this._sanitizer.bypassSecurityTrustHtml(
+    //   '<iframe width="100%" height="400" src="assets/landing.html"></iframe>',
+    // );
   }
 
   ngOnDestroy(): void {
@@ -54,5 +68,29 @@ export class InfoComponent implements OnInit {
 
   switchAccounts(): void {
     this.userService.switchAccount();
+  }
+
+  editText(edit: boolean): void {
+    if(edit) {
+      this.editor = new Editor();
+    }
+    else if(!!this.editor) {
+      this.editor.destroy();
+    }
+
+    this.editMode = edit;
+  }
+
+  saveText(): void {
+    this.keyvalueService.updateValueByKey('info', {
+      id: this.keyValueId,
+      keys: 'info',
+      values: this.htmlStr.value,
+      value: this.htmlStr.value
+    }).subscribe();
+    
+    this.editText(false);
+
+    this.snackbar.open('Text saved', 'OK', {duration: 4000});
   }
 }

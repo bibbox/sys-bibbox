@@ -5,8 +5,6 @@ import { UserService } from '../../../store/services/user.service';
 import { InstanceService } from '../../../store/services/instance.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/models/app-state.model';
-import { DeleteInstanceAction } from '../../../store/actions/instance.actions';
-import { ApplicationItem } from '../../../store/models/application-group-item.model';
 import { MatDialog } from '@angular/material/dialog';
 import { InstanceDeleteDialogComponent } from '../instance-delete-dialog/instance-delete-dialog.component';
 
@@ -21,17 +19,11 @@ export class InstanceTileComponent implements OnInit {
   constructor(private store: Store<AppState>, private instanceService: InstanceService, private userService: UserService, public dialog: MatDialog) { }
 
   @Input() instance: InstanceItem;
-  @Input() applications: ApplicationItem[];
   instanceUrl: string;
-  repositoryUrl: string;
-  installGuideUrl: string;
   isOpen = false;
 
   ngOnInit(): void {
     this.getInstanceUrl();
-
-    this.repositoryUrl = this.getRepositoryUrl(this.instance.app.name, this.instance.app.version);
-    this.installGuideUrl = this.getInstallGuideUrl(this.instance.app.name, this.instance.app.version);
   }
 
   getInstanceUrl(): void {
@@ -89,13 +81,5 @@ export class InstanceTileComponent implements OnInit {
     this.toggle(false);
 
     this.instanceService.manageInstance(this.instance.instancename, operation).subscribe((res) => console.log(res));
-  }
-
-  getRepositoryUrl(appName: string, version: string) {
-    return `https://github.com/bibbox/${appName}/tree/${version}`;
-  }
-
-  getInstallGuideUrl(appName: string, version: string) {
-    return `${this.getRepositoryUrl(appName, version)}/INSTALL-APP.md`;
   }
 }

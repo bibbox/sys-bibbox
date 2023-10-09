@@ -5,7 +5,6 @@ import { UserService } from '../../../store/services/user.service';
 import { InstanceService } from '../../../store/services/instance.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/models/app-state.model';
-import { DeleteInstanceAction } from '../../../store/actions/instance.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { InstanceDeleteDialogComponent } from '../instance-delete-dialog/instance-delete-dialog.component';
 
@@ -20,8 +19,6 @@ export class InstanceListItemComponent implements OnInit {
 
   @Input() instance: InstanceItem;
   instanceUrl: string;
-  repositoryUrl: string;
-  installGuideUrl: string;
   isOpen = false;
   sanitizedDescription: string;
   description: string;
@@ -46,9 +43,6 @@ export class InstanceListItemComponent implements OnInit {
     }
 
     this.getInstanceUrl();
-
-    this.repositoryUrl = this.getRepositoryUrl(this.instance.app.name, this.instance.app.version);
-    this.installGuideUrl = this.getInstallGuideUrl(this.instance.app.name, this.instance.app.version);
   }
 
   getInstanceUrl(): void {
@@ -90,14 +84,6 @@ export class InstanceListItemComponent implements OnInit {
     this.toggle(false);
 
     this.instanceService.manageInstance(this.instance.instancename, operation).subscribe((res) => console.log(res));
-  }
-
-  getRepositoryUrl(appName: string, version: string) {
-    return `https://github.com/bibbox/${appName}/tree/${version}`;
-  }
-
-  getInstallGuideUrl(appName: string, version: string) {
-    return `${this.getRepositoryUrl(appName, version)}/INSTALL-APP.md`;
   }
 
   toggleShowFully(e): void {

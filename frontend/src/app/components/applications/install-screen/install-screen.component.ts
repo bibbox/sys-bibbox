@@ -49,6 +49,7 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
   appItem: ApplicationItem;
   selectedVersion: IVersions;
   installGuideUrl: string;
+  applicationDocumentationUrl: string;
   environmentParameters: EnvironmentParameters[] = [];
   installForm: FormGroup;
   envParamForm: FormGroup;
@@ -60,6 +61,7 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
     this.appItem = history.state[0];
     this.selectedVersion = history.state[1];
     this.installGuideUrl = history.state[2];
+    this.applicationDocumentationUrl = history.state[3];
     this.loadEnvParams();
 
     this.installForm = this.formBuilder.group(
@@ -88,7 +90,7 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
             Validators.maxLength(100)
           ]
         ],
-        instance_information: ['']
+        instance_information: [history.state[4] || '']
       });
     this.envParamForm = this.formBuilder.group({});
 
@@ -140,17 +142,20 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
         }
       }
       const payload = {
-        displayname_short : this.installForm.value.instance_title,
-        displayname_long : this.installForm.value.instance_subtitle,
-        app : {
-          organization : 'bibbox',
-          name         : this.installForm.value.app_name,
-          version      : this.installForm.value.version,
-          test: 123
+        displayname_short: this.installForm.value.instance_title,
+        displayname_long: this.installForm.value.instance_subtitle,
+        description_short: this.installForm.value.instance_information,
+        app: {
+          organization: 'bibbox',
+          name: this.installForm.value.app_name,
+          version: this.installForm.value.version,
+          application_documentation_url: this.applicationDocumentationUrl,
+          repository_url: this.getRepositoryUrl(this.installForm.value.app_name, this.installForm.value.version),
+          install_guide_url: this.installGuideUrl
         },
-        parameters  : this.envParamForm.value,
-        installed_by_id : this.userService.getUserID(),
-        installed_by_name: this.userService.getUsername()
+        parameters: this.envParamForm.value,
+        installed_by_id: this.userService.getUserID(),
+        installed_by_name: this.userService.getFullOrUsername()
       };
 
       this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
@@ -166,6 +171,7 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
   onRadioChange(selectedValue: string, inputName:string) {
     this.entered_values[inputName] = selectedValue;
   }
+
   asyncInstanceNameValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return this.instanceService.checkIfInstanceExists(this.installForm.controls.instance_id.value)
@@ -185,6 +191,9 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
     };
   }
 
+  getRepositoryUrl(appName: string, version: string) {
+    return `https://github.com/bibbox/${appName}/tree/${version}`;
+  }
 }
 
 

@@ -11,6 +11,7 @@ export const APP_SUB_TITLE = 'based on BIBBOX v4.0';
 export const API_INSTANCES_URL = 'http://' + environment.BASEURL + '/api/v1/instances/';
 export const API_APPLICATIONS_URL = 'http://' + environment.BASEURL + '/api/v1/apps/';
 export const API_ACTIVITY_URL = 'http://' + environment.BASEURL + '/api/v1/activities/';
+export const API_KEYVALUE_URL = 'http://' + environment.BASEURL + '/api/v1/keyvalue/';
 export const SOCKET_IO_URL = 'http://' + environment.BASEURL + '/socket.io';
 export const API_KEYCLOAK_URL = 'http://' + environment.BASEURL + '/api/v1/kc/';
 
