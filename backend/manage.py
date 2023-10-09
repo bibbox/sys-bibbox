@@ -97,7 +97,7 @@ def recreate_db():
 @manager.command
 def sync_app_catalogue():
     from backend.app.celerytasks.tasks import syncAppCatalogue
-    syncAppCatalogue.delay(['bibbox', 'bibbox'])
+    syncAppCatalogue.delay(['bibbox'])
 
 
 # @manager.command
