@@ -30,7 +30,6 @@ keyvaluemodel = api.model('Model', {
 class KeyValues(Resource):
 
     @api.doc("Get value for key")
-    @auth_token_required()
     def get (self, key):
         #print ("looking for value with key = ", key)
         keyvalue = keyvalue_service.get_value_by_key(key)
