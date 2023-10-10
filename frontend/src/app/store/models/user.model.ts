@@ -19,7 +19,7 @@ export interface RoleRepresentation {
 
 export interface UserDictionary {
   username: string;
-  password: string;
+  password?: string;
   roles: string[];
   email?: string;
   firstName?: string;

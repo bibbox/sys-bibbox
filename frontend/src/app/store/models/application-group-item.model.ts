@@ -21,7 +21,7 @@ export interface ApplicationItem {
   app_display_name: string;
   short_description: string;
   installable: boolean;
-  decoration: string;
+  decoration: string | string[];
   tags: string[];
   versions: IVersions[];
   icon_url: string;

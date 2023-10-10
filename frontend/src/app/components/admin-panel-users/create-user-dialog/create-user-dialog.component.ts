@@ -47,6 +47,7 @@ export class CreateUserDialogComponent {
     this.isEditMode = !!this.props.userToEdit;
 
     this.userForm = this.fb.group({
+      id: [this.props.userToEdit?.id || ''],
       username: [this.props.userToEdit?.username || '', [
         Validators.required,
         this.validatorService.noWhitespaceValidator,

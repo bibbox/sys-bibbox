@@ -1,6 +1,6 @@
 @import "src/styles-variables";
 
-:host {
+app-instance-tile {
   width: calc(25% - 15px);
   background-color: white;
   border-radius: 10px;
@@ -202,7 +202,12 @@
 
         > a {
           cursor: pointer;
+          border-right: none;
           flex-grow: 1;
+
+          &:last-child {
+            border-bottom-right-radius: 10px;
+          }
         }
 
         .toggle {
@@ -213,6 +218,7 @@
           cursor: pointer;
           background-color: white;
           border-bottom-right-radius: 10px;
+          border-left: solid 2px $custom_gray_medium;
           transition: background-color 0.2s ease-out;
 
           .arrow {

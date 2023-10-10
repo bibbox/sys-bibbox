@@ -21,7 +21,7 @@ export class InstallScreenDialogComponent implements OnInit {
   searchByTag: (tag: string) => void;
   versionFormControl = new FormControl(null, Validators.required);
   appInfo: AppInfo | null;
-  disableInstallButton: boolean;
+  disableInstallButton: boolean = true;
   maxInstancesTooltip: string = 'Cannot install instance. You have reached the maximum number of instances installable as a demo user. ('+ environment.KEYCLOAK_CONFIG.max_instances_per_demo_user +')';
 
   constructor(
@@ -95,6 +95,9 @@ export class InstallScreenDialogComponent implements OnInit {
           this.disableInstallButton = (res.length >= environment.KEYCLOAK_CONFIG.max_instances_per_demo_user);
         }
       );
+    }
+    else {
+      this.disableInstallButton = false;
     }
   }
 

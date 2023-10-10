@@ -12,7 +12,7 @@ import { InstanceDeleteDialogComponent } from '../instance-delete-dialog/instanc
   selector: 'app-instance-tile',
   templateUrl: './instance-tile.component.html',
   styleUrls: ['./instance-tile.component.scss'],
-  encapsulation: ViewEncapsulation.ShadowDom
+  encapsulation: ViewEncapsulation.None
 })
 export class InstanceTileComponent implements OnInit {
 

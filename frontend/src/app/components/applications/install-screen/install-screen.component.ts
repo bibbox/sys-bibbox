@@ -132,9 +132,9 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/applications').then();
   }
 
-  install(): void {
+  async install(): Promise<void> {
     if (this.installForm.valid && this.envParamForm.valid) {
-      // console.log('install');
+      
       // If nothing entered use default values
       for (const envParamName in this.envParamForm.controls){
         if (this.envParamForm.controls[envParamName].value == ""){
@@ -155,7 +155,7 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
         },
         parameters: this.envParamForm.value,
         installed_by_id: this.userService.getUserID(),
-        installed_by_name: this.userService.getFullOrUsername()
+        installed_by_name: await this.userService.getFullOrUsername()
       };
 
       this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));

@@ -122,7 +122,7 @@
                 </tr>
                 <tr>
                   <th>Install time:</th>
-                  <td>{{time_of_installation.toLocaleString("de-DE")}}</td>
+                  <td>{{time_of_installation?.toLocaleString("de-DE")}}</td>
                 </tr>
                 <tr>
                   <th>Proxy:</th>
@@ -171,12 +171,13 @@
           </div>
         </ng-container>
 
-        <div *ngIf="canManageInstance()" class="save-button">
-          <button *ngIf="canManageInstance()"
+        <div class="save-button">
+          <button
             class="gradient"
             type="button"
             (click)="saveInstanceChanges()"
-            [disabled]="instanceDetailForm.invalid">
+            [disabled]="!canManageInstance() || instanceDetailForm.invalid"
+            [title]="!canManageInstance() ? 'Only Admins and instance owners can edit the instance' : null">
             <app-save-icon></app-save-icon>Save
           </button>
         </div>

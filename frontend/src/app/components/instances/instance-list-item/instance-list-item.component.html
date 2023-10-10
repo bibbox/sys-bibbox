@@ -62,12 +62,12 @@
         <app-pulse-icon class="button-icon" [width]="18" [height]="18"></app-pulse-icon>Start
       </a>
 
-      <div class="toggle" (click)="toggle()">
+      <div *ngIf="canManageInstance()" class="toggle" (click)="toggle()">
         <app-arrow-down-icon *ngIf="!isOpen" class="arrow"></app-arrow-down-icon>
         <app-arrow-up-icon *ngIf="isOpen" class="arrow"></app-arrow-up-icon>
       </div>
 
-      <div *ngIf="isOpen" class="submenu">
+      <div *ngIf="canManageInstance() && isOpen" class="submenu">
         <ul>
           <li *ngIf="instance.state !== 'STOPPED'" (click)="manageInstance('stop')">
             <app-stop-icon class="action-icon" [width]="16" [height]="16"></app-stop-icon>Stop

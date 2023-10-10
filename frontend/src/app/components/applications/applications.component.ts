@@ -4,7 +4,6 @@ import * as applicationGroupSelector from '../../store/selectors/application-gro
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../store/models/app-state.model';
 import {FormControl} from '@angular/forms';
-import {filter} from 'rxjs/operators';
 import {LoadApplicationGroupsAction} from '../../store/actions/applications.actions';
 import { DOCUMENT } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -35,8 +34,8 @@ export class ApplicationsComponent implements OnInit {
         group_name: group.group_name,
         group_members: group.group_members.map(member => ({
           ...member,
-          isNew: member.decoration === 'new',
-          isFair: member.decoration === 'FAIR'
+          isNew: typeof member.decoration === 'string' ? member.decoration === 'new' : member.decoration.includes('new'),
+          isFair: typeof member.decoration === 'string' ? member.decoration === 'FAIR' : member.decoration.includes('FAIR')
         }))
       }));
 

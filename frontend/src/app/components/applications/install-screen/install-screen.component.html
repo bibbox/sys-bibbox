@@ -73,6 +73,12 @@
                 Instance title too long! Max 48 chars.
               </mat-error>
             </div>
+            
+            <div *ngIf="installForm.controls.instance_title.hasError('required') && installForm.controls.instance_title.dirty">
+              <mat-error>
+                Instance title cannot be empty!
+              </mat-error>
+            </div>
           </div>
         </div>
         

@@ -1,28 +1,24 @@
-<!--<p> imprint works </p>-->
-<div class="portlet-body imprint" >
-  <div class="subscribe-action"></div>
-  <div class="imprint-centered-block" >
-  <div class="h2" align="center">
-    <span>Imprint</span>
-  </div>
-  <p><strong>Medical University Graz<br></strong>Neue Stiftingtalstraße 6<br>8010 Graz</p>
+<h1 class="text-center">Imprint</h1>
 
+<div class="imprint-text-wrapper">
+  <div *ngIf="isLoggedin && isAdmin" class="imprint-controls">
+    <button *ngIf="!editMode" (click)="editText(true)">
+      <app-edit-icon [width]="20" [height]="20"></app-edit-icon>Edit text
+    </button>
 
+    <button *ngIf="editMode" (click)="saveText()">
+      <app-save-icon [width]="20" [height]="20"></app-save-icon>Save text
+    </button>
 
-  <p><strong>E-Mail: </strong> <a href="mailto:heimo.mueller@medunigraz.at">heimo.mueller@medunigraz.at</a></p>
-
-
-
-  <p><strong>Implementation</strong> by <a href="https://www.medunigraz.at/forschungszentren-institute/diagnostik-forschungszentrum-fuer-molekulare-biomedizin/forschung/genetische-und-umweltbedingte-krankheitsmechanismen/team-mueller">Team Müller</a> at Medical University Graz
-    </p>
-    <br>
-    <p>In course of the projects:
-    </p>
-    <ul>
-      <li><strong>CY-Biobank</strong> grant agreement Nr. 857122</li>
-      <li><strong>HEAP</strong> grant agreement Nr. 874662</li>
-    </ul>
-
+    <button *ngIf="editMode" (click)="editText(false)">
+      <app-cross-clear-icon [width]="16" [height]="16"></app-cross-clear-icon>Cancel
+    </button>
   </div>
 
+  <div *ngIf="editMode" class="imprint-editor">
+    <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+    <ngx-editor [editor]="editor" [formControl]="htmlStr" [placeholder]="''"></ngx-editor>
+  </div>
+
+  <div *ngIf="!editMode"  class="imprint-text" [innerHTML]="htmlStr.value|safeHtml"></div>
 </div>

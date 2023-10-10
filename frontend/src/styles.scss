@@ -118,12 +118,11 @@ h3 {
   margin-bottom: 20px;
 }
 h4 {
-  font-size: 12pt;
-  margin-bottom: 20px;
+  font-size: 13pt;
+  margin-bottom: 5px;
 }
 h5 {
-  font-size: 10pt;
-  margin-bottom: 20px;
+  font-size: 11pt;
 }
 p {
   margin-bottom: 20px;
@@ -132,10 +131,22 @@ p {
     font-weight: 500;
   }
 }
-strong, .bold {
+strong, b, .bold {
   font-weight: 500;
   font-size: inherit;
   color: inherit;
+}
+ul {
+  padding-left: 25px;
+  margin-bottom: 20px;
+
+  li {
+    p {
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 table {
   width: 100%;
@@ -307,6 +318,10 @@ button, .button {
     &:hover {
       opacity: 0.75;
     }
+  }
+
+  &:disabled {
+    opacity: 0.6 !important;
   }
 }
 

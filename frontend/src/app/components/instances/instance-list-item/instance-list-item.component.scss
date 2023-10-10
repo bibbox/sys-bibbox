@@ -164,9 +164,12 @@
 
       .button {
         box-shadow: none;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
         font-size: 12pt;
+        
+        &:not(:last-child) {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
       }
       .toggle {
         display: flex;

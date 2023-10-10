@@ -45,31 +45,35 @@ export class AdminPanelUsersComponent implements OnInit {
       data: {usernames: this.users.map((user) => user.username)}
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-
-        let userDictionary: UserDictionary = {
-          'username': result.username,
-          'password': result.password,
-          'email': result.email,
-          'firstName': result.firstName,
-          'lastName': result.lastName,
-          'roles': [result.role]
-        }
-
-        // this.store.dispatch(new CreateUserAction(userDictionary));
-
-        this.kc_admin_service.createUser(userDictionary).subscribe();
-
-        // update the table
-      }
-    })
+    dialogRef.afterClosed().subscribe(this.handleUserResult);
   }
 
   editUser(user: UserRepresentation): void {
     const dialogRef = this.dialog.open(CreateUserDialogComponent, {
       data: { usernames: this.users.map((user) => user.username), userToEdit: user }
     });
+
+    dialogRef.afterClosed().subscribe(this.handleUserResult);
+  }
+
+  handleUserResult = result => {
+    if (result) {
+      const userDictionary: UserDictionary = {
+        'username': result.username,
+        'email': result.email,
+        'password': result.password,
+        'firstName': result.firstName,
+        'lastName': result.lastName,
+        'roles': [result.role]
+      };
+
+      if(!!result.id) {
+        this.kc_admin_service.updateUser(result.id, userDictionary).subscribe();
+      }
+      else {
+        this.kc_admin_service.createUser(userDictionary).subscribe();
+      }
+    }
   }
 
   confirmDelete(user: UserRepresentation): void {

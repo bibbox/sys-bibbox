@@ -19,17 +19,17 @@
   </div>
 
   <div class="info-right gradient">
-    <div *ngIf="isLoggedin" class="info-controls">
+    <div *ngIf="isLoggedin && isAdmin" class="info-controls">
       <button *ngIf="!editMode" (click)="editText(true)">
-        <app-edit-icon></app-edit-icon>Edit text
+        <app-edit-icon [width]="20" [height]="20"></app-edit-icon>Edit text
       </button>
 
       <button *ngIf="editMode" (click)="saveText()">
-        <app-save-icon></app-save-icon>Save text
+        <app-save-icon [width]="20" [height]="20"></app-save-icon>Save text
       </button>
 
       <button *ngIf="editMode" (click)="editText(false)">
-        <app-cross-clear-icon></app-cross-clear-icon>Cancel
+        <app-cross-clear-icon [width]="16" [height]="16"></app-cross-clear-icon>Cancel
       </button>
     </div>
 
@@ -38,6 +38,6 @@
       <ngx-editor [editor]="editor" [formControl]="htmlStr" [placeholder]="''"></ngx-editor>
     </div>
 
-    <div *ngIf="!editMode"  class="info-text" [innerHTML]="htmlStr.value"></div>
+    <div *ngIf="!editMode"  class="info-text" [innerHTML]="htmlStr.value|safeHtml"></div>
   </div>
 </div>

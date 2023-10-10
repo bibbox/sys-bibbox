@@ -1,19 +1,24 @@
-<div class="portlet-body">
-  <div class="subscribe-action"></div>
-  <div class="h2">
-    <span>Contact</span>
+<h1 class="text-center">Contact</h1>
+
+<div class="contact-text-wrapper">
+  <div *ngIf="isLoggedin && isAdmin" class="contact-controls">
+    <button *ngIf="!editMode" (click)="editText(true)">
+      <app-edit-icon [width]="20" [height]="20"></app-edit-icon>Edit text
+    </button>
+
+    <button *ngIf="editMode" (click)="saveText()">
+      <app-save-icon [width]="20" [height]="20"></app-save-icon>Save text
+    </button>
+
+    <button *ngIf="editMode" (click)="editText(false)">
+      <app-cross-clear-icon [width]="16" [height]="16"></app-cross-clear-icon>Cancel
+    </button>
   </div>
-  <div class="asset-full-content clearfix show-asset-title">
-    <div class="asset-content">
-      <div class="journal-content-article">
-        <p>BIBBOX Team Graz</p>
-        <p><a href="mailto:paul.torke@medunigraz.at" target="">Paul Torke &lt;paul.torke@medunigraz.at&gt;</a></p>
-        <p><a href="mailto:emilian.jungwirth@medunigraz.at" target="">Emilian Jungwirth &lt;emilian.jungwirth@medunigraz.at&gt;</a></p>
-        <p><a href="mailto:markus.plass@medunigraz.at" target="">Markus Plass &lt;markus.plass@medunigraz.at&gt;</a></p>
-        <p><a href="mailto:heimo.mueller@meduni-graz.at" target="">Heimo Müller &lt;heimo.mueller@medunigraz.at&gt;</a></p>
-        <br><br>
-        <p><a href="https://bibbox.org" rel="noopener noreferrer" target="_blank">http//bibbox.org</a></p>
-      </div>
-    </div>
+
+  <div *ngIf="editMode" class="contact-editor">
+    <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+    <ngx-editor [editor]="editor" [formControl]="htmlStr" [placeholder]="''"></ngx-editor>
   </div>
+
+  <div *ngIf="!editMode"  class="contact-text" [innerHTML]="htmlStr.value|safeHtml"></div>
 </div>

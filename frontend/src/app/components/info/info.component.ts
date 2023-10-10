@@ -7,6 +7,7 @@ import { KeyValueItem } from '../../store/models/keyvalue.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { toolbar } from '../../commons';
 import { FormControl } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-info',
@@ -23,6 +24,8 @@ export class InfoComponent implements OnInit {
   editor: Editor;
   toolbar = toolbar;
   keyValueId: string;
+  keyExistsYet: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -41,13 +44,13 @@ export class InfoComponent implements OnInit {
     }
 
     (await this.keyvalueService.getValueByKey('info')).subscribe((keyValueItem: KeyValueItem) => {
+      if(!!keyValueItem?.values) {
+        this.keyExistsYet = true;
+      }
+
       this.htmlStr.setValue(keyValueItem?.values || '');
       this.keyValueId = String(keyValueItem?.id);
     });
-
-    // this.htmlStr = this._sanitizer.bypassSecurityTrustHtml(
-    //   '<iframe width="100%" height="400" src="assets/landing.html"></iframe>',
-    // );
   }
 
   ngOnDestroy(): void {
@@ -59,6 +62,7 @@ export class InfoComponent implements OnInit {
 
     if(this.isLoggedin) {
       this.userFullname = await this.userService.getFullOrUsername();
+      this.isAdmin = await this.userService.isRole(environment.KEYCLOAK_CONFIG.roles.admin);
     }
   }
 
@@ -82,12 +86,21 @@ export class InfoComponent implements OnInit {
   }
 
   saveText(): void {
-    this.keyvalueService.updateValueByKey('info', {
+    const payload = {
       id: this.keyValueId,
       keys: 'info',
       values: this.htmlStr.value,
       value: this.htmlStr.value
-    }).subscribe();
+    };
+
+    if(this.keyExistsYet) {
+      this.keyvalueService.updateValueByKey('info', payload).subscribe();
+    }
+    else {
+      this.keyvalueService.createValueByKey('info', payload).subscribe(() => {
+        this.keyExistsYet = true;
+      });
+    }
     
     this.editText(false);
 

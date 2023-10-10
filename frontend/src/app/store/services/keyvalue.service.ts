@@ -20,4 +20,10 @@ export class KeyValueService {
     header.set('Content-Type', 'application/json'); // ; charset=utf-8
     return this.http.put<any>(API_KEYVALUE_URL + key, value, {headers: header});
   }
+
+  createValueByKey(key: string, value: KeyValueItem): Observable<KeyValueItem> {
+    const header = new HttpHeaders();
+    header.set('Content-Type', 'application/json'); // ; charset=utf-8
+    return this.http.post<any>(API_KEYVALUE_URL + key, value, {headers: header});
+  }
 }
