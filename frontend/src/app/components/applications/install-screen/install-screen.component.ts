@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import { Editor } from 'ngx-editor';
 import {ApplicationItem, EnvironmentParameters, IVersions} from '../../../store/models/application-group-item.model';
@@ -30,7 +30,6 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
     private appService: ApplicationService,
     private instanceService: InstanceService,
@@ -95,6 +94,11 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
     this.envParamForm = this.formBuilder.group({});
 
     this.editor = new Editor();
+
+    setTimeout(() => {
+      console.log('now', window?.scrollTo);
+      window.scrollTo(0, 0);
+    }, 500);
   }
 
   ngOnDestroy(): void {

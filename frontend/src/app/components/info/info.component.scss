@@ -1,3 +1,5 @@
+@import "src/styles-variables";
+
 :host-context(#content) {
     width: 100% !important;
 }
@@ -59,5 +61,57 @@
     &, * {
       color: white !important;
     }
+  }
+}
+
+
+@media only screen and (max-width: $custom_responsive_size_xl) {
+  .info-left {
+    max-width: 450px;
+  }
+  .info-right {
+    padding: 70px;
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_l) {
+  .info-left {
+    max-width: 400px;
+  }
+  .info-right {
+    padding: 50px;
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_ml) {
+  .info-left {
+    max-width: 350px;
+  }
+  .info-right {
+    padding: 25px;
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_m) {
+  .bibbox-info {
+    flex-flow: column nowrap;
+    padding-top: 60px;
+  }
+  .info-left {
+    max-width: none;
+    padding-top: 20px;
+  }
+  .info-right {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+  .info-left {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .info-right {
+    padding: 25px 15px;
   }
 }

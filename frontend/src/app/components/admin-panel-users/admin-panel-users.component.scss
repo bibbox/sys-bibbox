@@ -7,6 +7,8 @@
 }
 .admin-panel__user-table {
   .admin-panel__user-table__action-buttons {
+    white-space: nowrap;
+    
     button {
       padding: 5px;
       margin-right: 15px;

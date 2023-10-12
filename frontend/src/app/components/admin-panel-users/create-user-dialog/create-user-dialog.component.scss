@@ -96,3 +96,14 @@
     }
   }
 }
+
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+  .user-dialog-overlay {
+    .user-dialog-overlay__body {
+      .user-dialog-overlay__body-column {
+        width: 100%;
+      }
+    }
+  }
+}

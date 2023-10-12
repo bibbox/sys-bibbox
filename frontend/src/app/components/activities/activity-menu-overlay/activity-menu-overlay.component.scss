@@ -59,9 +59,11 @@
   right: 0;
   width: calc(100vw - 30px);
   max-width: 500px;
+  max-height: calc(100vh - 100px);
   border-radius: 5px;
   background-color: white;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
 
   &::before {
     content: '';
@@ -166,6 +168,24 @@
     &:hover {
       color: white;
       background-color: $custom_blue;
+    }
+  }
+}
+
+
+@media only screen and (max-width: $custom_responsive_size_s) {
+  .activity-overlay__menu {
+    width: calc(100vw - 30px);
+    max-height: calc(100vh - 70px);
+    max-width: none;
+    right: -45px;
+
+    &::before {
+      right: 60px;
+    }
+
+    .activity-overlay__menu-item {
+      padding: 5px 10px;
     }
   }
 }

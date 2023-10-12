@@ -1,3 +1,5 @@
+@import "src/styles-variables";
+
 .instances {
   display: flex;
   flex-direction: column;
@@ -22,8 +24,29 @@
     }
   }
 
-  #instances-results {
+  .instances-results {
     display: flex;
     flex-flow: column wrap;
+
+    ::ng-deep > app-instance-group:last-child .instance-group {
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+  .instances {
+    .instances-search {
+      flex-flow: column nowrap;
+
+      > div {
+        width: 100%;
+
+        input, select {
+          width: 100%;
+        }
+      }
+    }
   }
 }

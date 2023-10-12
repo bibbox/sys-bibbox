@@ -1,4 +1,5 @@
 @import "src/styles-variables";
+
 .app-scaffold-footer {
   position: relative;
   flex-grow: 0;
@@ -49,6 +50,7 @@
         column-gap: 30px;
         list-style: none;
         margin-bottom: 0;
+        padding-left: 0;
   
         > li {
           > a {
@@ -91,6 +93,45 @@
       a {
         white-space: nowrap;
         color: $custom_blue;
+      }
+    }
+  }
+}
+
+
+@media only screen and (max-width: $custom_responsive_size_ml) {
+  .app-scaffold-footer {
+    .app-scaffold-footer-inner, .app-scaffold-footer__citation {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_m) {
+  .app-scaffold-footer {
+    .app-scaffold-footer-inner {
+      grid-template-columns: 1fr;
+      row-gap: 25px;
+
+      .app-scaffold-footer__copyright, .app-scaffold-footer__logos {
+        display: flex;
+        justify-content: center;
+      }
+      .app-scaffold-footer__logos {
+        column-gap: 15px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_s) {
+  .app-scaffold-footer {
+    .app-scaffold-footer__citation {
+      p {
+        a {
+          white-space: break-spaces;
+        }
       }
     }
   }

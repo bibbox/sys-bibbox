@@ -1,4 +1,5 @@
 @import "src/styles-variables";
+
 #instance-details {
   flex-direction: column;
   display: flex;
@@ -40,14 +41,14 @@
     .instance-details-controls {
       display: flex;
       flex-direction: row;
-      justify-content: right;
+      justify-content: flex-end;
       align-content: flex-end;
+      column-gap: 20px;
 
       .instance-details-controls__state {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
-        margin-right: 20px;
 
         .instance-details-controls__state-indicator {
           width: 16px;
@@ -95,7 +96,6 @@
         background-color: white;
         border-radius: 10px;
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-        margin-right: 20px;
   
         .button {
           box-shadow: none;
@@ -182,35 +182,40 @@
     }
   }
 
-  ::ng-deep .mat-tab-label-container {
-    border-bottom: solid 1px $custom_gray_light;
+  ::ng-deep .mat-tab-header {
+    .mat-tab-header-pagination {
+      display: none !important;
+    }
+    .mat-tab-label-container {
+      border-bottom: solid 1px $custom_gray_light;
 
-    .mat-tab-label {
-      opacity: 1;
-      border-bottom: solid 2px transparent;
-      transition: border-color 0.2s ease-out;
+      .mat-tab-label {
+        opacity: 1;
+        border-bottom: solid 2px transparent;
+        transition: border-color 0.2s ease-out;
 
-      .mat-tab-label-content {
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: center;
-        justify-content: center;
+        .mat-tab-label-content {
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+          justify-content: center;
 
-        .tab-icon {
-          width: 18px;
-          height: 18px;
-          fill: $custom_blue;
-          margin-right: 6px;
+          .tab-icon {
+            width: 18px;
+            height: 18px;
+            fill: $custom_blue;
+            margin-right: 6px;
+          }
+        }
+
+        &.mat-tab-label-active {
+          border-bottom: solid 2px $custom_blue;
         }
       }
 
-      &.mat-tab-label-active {
-        border-bottom: solid 2px $custom_blue;
+      .mat-ripple-element {
+        display: none;
       }
-    }
-
-    .mat-ripple-element {
-      display: none;
     }
   }
   ::ng-deep .mat-tab-body-content {
@@ -318,7 +323,7 @@
     .instance-details-item {
       display: flex;
       flex-flow: column nowrap;
-      width: calc(50% - 30px);
+      width: calc(50% - 25px);
     }
   }
 
@@ -359,5 +364,103 @@
   input.ng-valid[required], input.ng-valid {
     border-color: #26b726;
     background: #e4ede4
+  }
+}
+
+
+@media only screen and (max-width: $custom_responsive_size_ml) {
+  #instance-details {
+    .instance-details-header {
+      flex-flow: column nowrap;
+      row-gap: 25px;
+      align-items: center;
+    }
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_m) {
+  #instance-details {
+    .instance-details-info {
+      flex-flow: column nowrap;
+
+      .instance-details-info-left {
+        border-right: none;
+        border-bottom: solid 1px $custom_gray_light;
+        width: 100%;
+      }
+      .instance-details-info-right {
+        width: 100%;
+      }
+
+      table {
+        tbody {
+          tr {
+            th {
+              width: 180px;
+            }
+          }
+        }
+      }
+    }
+
+    .columns {
+      flex-flow: column nowrap;
+      row-gap: 30px;
+
+      .instance-details-item {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_s) {
+  #instance-details {
+    .instance-details-header {
+      .instance-details-title {
+        flex-flow: column nowrap;
+        align-items: center;
+        row-gap: 10px;
+
+        .title-wrapper {
+          margin-left: 0;
+
+          p {
+            text-align: center;
+          }
+        }
+      }
+      .instance-details-controls {
+        flex-flow: column nowrap;
+        align-items: center;
+        row-gap: 20px;
+      }
+    }
+    .instance-details-info {
+      .instance-details-info-left, .instance-details-info-right {
+        padding: 15px;
+      }
+
+      table {
+        tbody {
+          tr {
+            display: flex;
+            flex-flow: column nowrap;
+            margin-bottom: 15px;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+
+            th {
+              padding: 0;
+            }
+            td {
+              padding: 0
+            }
+          }
+        }
+      }
+    }
   }
 }

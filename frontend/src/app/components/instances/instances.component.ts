@@ -70,7 +70,7 @@ export class InstancesComponent implements OnInit {
       this.filteredInstanceList.push(...items[i].group_members);
     }
 
-    this.filteredInstanceGroups = items;
+    this.filteredInstanceGroups = items.filter(group => group.group_members.length > 0);
   }
 
   instanceMatchesFilters(instance: InstanceItem): boolean {

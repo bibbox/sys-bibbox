@@ -29,22 +29,24 @@
     </div>
   </div>
 
-  <div *ngIf="showAsList.value === 'false'" class="instances_results">
+  <div *ngIf="showAsList.value === 'false'" class="instances-results">
     <app-instance-group *ngFor="let group of filteredInstanceGroups" [group]="group"></app-instance-group>
   </div>
 
-  <table *ngIf="showAsList.value === 'true'" class="instances_results">
-    <thead>
-      <tr>
-        <th>Instance title and subtitle</th>
-        <th>Instance information</th>
-        <th class="text-center">Instance status</th>
-        <th class="text-center">External links</th>
-        <th class="text-center">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <app-instance-list-item *ngFor="let instance of filteredInstanceList" [instance]="instance"></app-instance-list-item>
-    </tbody>
-  </table>
+  <div *ngIf="showAsList.value === 'true'" class="table-wrapper">
+    <table class="instances_results">
+      <thead>
+        <tr>
+          <th>Instance title and subtitle</th>
+          <th>Instance information</th>
+          <th class="text-center">Instance status</th>
+          <th class="text-center">External links</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <app-instance-list-item *ngFor="let instance of filteredInstanceList" [instance]="instance"></app-instance-list-item>
+      </tbody>
+    </table>
+  </div>
 </div>

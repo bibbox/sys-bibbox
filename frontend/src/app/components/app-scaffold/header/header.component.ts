@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit {
   loggedIn = false;
   userFullname = '';
   isScrolled = false;
+  isMobileMenuVisible = false;
 
   constructor(
     private ksService: KeycloakService,
@@ -82,5 +83,16 @@ export class HeaderComponent implements OnInit {
 
   initiateLogin(): void {
     this.userService.login();
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuVisible = !this.isMobileMenuVisible;
+
+    if(this.isMobileMenuVisible) {
+      this.document.body.classList.add('mobile-menu-open');
+    }
+    else {
+      this.document.body.classList.remove('mobile-menu-open');
+    }
   }
 }

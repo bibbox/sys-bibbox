@@ -107,6 +107,7 @@ import { DeleteIconComponent } from './components/icons/delete-icon/delete-icon.
 import { SaveIconComponent } from './components/icons/save-icon/save-icon.component';
 import { EditIconComponent } from './components/icons/edit-icon/edit-icon.component';
 import { PlusIconComponent } from './components/icons/plus-icon/plus-icon.component';
+import { BurgerIconComponent } from './components/icons/burger-icon/burger-icon.component';
 import {UserEffects} from './store/effects/user.effects';
 import {SafeHtmlPipe} from './safehtml.pipe';
 
@@ -166,6 +167,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     EditIconComponent,
     SaveIconComponent,
     PlusIconComponent,
+    BurgerIconComponent,
     SafeHtmlPipe
   ],
     imports: [

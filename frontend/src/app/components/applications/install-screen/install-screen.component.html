@@ -32,7 +32,7 @@
         <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id">
         <span class="field-description">Subdomain of your application instance URL, only lowercase letters and numbers. <strong>Cannot be changed after the installation.</strong></span>
       </div>
-      <div class="error-messages">
+      <div *ngIf="installForm.controls.instance_id.invalid" class="error-messages">
         <div *ngIf="installForm.controls.instance_id.hasError('nameAlreadyExists')">
           <mat-error>
             Instance ID already exists.

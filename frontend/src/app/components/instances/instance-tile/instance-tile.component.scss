@@ -282,3 +282,22 @@ app-instance-tile {
     }
   }
 }
+
+
+@media only screen and (max-width: $custom_responsive_size_xl) {
+  app-instance-tile {
+    width: calc(33.3333% - 13.3333px);
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_l) {
+  app-instance-tile {
+    width: calc(50% - 10px);
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+  app-instance-tile {
+    width: 100%;
+  }
+}

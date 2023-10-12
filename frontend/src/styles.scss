@@ -21,6 +21,10 @@ html, body {
   width: 100%;
   height: 100%;
   background: $custom_gray_lightaccent; //url("assets/furley_bg.png") repeat scroll;
+
+  &.mobile-menu-open {
+    overflow-y: hidden;
+  }
 }
 
 
@@ -148,6 +152,10 @@ ul {
     }
   }
 }
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
 table {
   width: 100%;
   border-collapse: collapse;
@@ -273,7 +281,7 @@ table {
 /* BUTTONS */
 
 button, .button {
-  display: inline-flex;
+  display: inline-flex !important;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
@@ -287,7 +295,7 @@ button, .button {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   outline: none;
-  text-decoration: none;
+  text-decoration: none !important;
   transition: background-color 0.2s ease-out, color 0.2s ease-out, opacity 0.2s ease-out;
   -webkit-appearance: none;
 
@@ -424,7 +432,7 @@ input[type=radio], input[type=checkbox] {
   transform: translate3d(-50%, -50%, 0) !important;
   width: calc(100% - 60px) !important;
   height: auto !important;
-  max-height: calc(100vh - 60px);
+  max-height: calc(100vh - 60px) !important;
   max-width: 900px;
   padding: 30px 50px 50px 50px !important;
   border-radius: 5px !important;
@@ -495,6 +503,7 @@ input[type=radio], input[type=checkbox] {
         font-weight: $custom_font_weight_medium;
         font-size: 13pt;
         margin-right: 0;
+        column-gap: 10px;
 
         .arrow {
           width: 16px;
@@ -544,13 +553,13 @@ input[type=radio], input[type=checkbox] {
         border: solid 1px $custom_gray_light;
         border-radius: 5px;
         padding: 10px 20px;
-        overflow-x: hidden;
+        overflow-x: auto;
         overflow-y: auto;
         max-height: 350px;
 
         .log-entry {
           width: 100%;
-          word-break: break-all;
+          white-space: nowrap;
         }
       }
     }
@@ -563,6 +572,7 @@ input[type=radio], input[type=checkbox] {
   position: fixed;
   bottom: 50px;
   left: 50%;
+  max-width: calc(100% - 30px) !important;
   margin: 0 !important;
   border-radius: 5px;
   background-color: white;
@@ -584,4 +594,54 @@ input[type=radio], input[type=checkbox] {
       background-color: $custom_gray_darkest;
     }
   }
+}
+
+
+/* RESPONSIVE */
+
+@media only screen and (max-width: $custom_responsive_size_ml) {
+
+  /* DIALOG */
+
+  .cdk-dialog-container {
+    width: calc(100% - 30px) !important;
+    max-height: calc(100vh - 30px) !important;
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_m) {
+
+  /* DIALOG */
+
+  .cdk-dialog-container {
+    padding: 25px !important;
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+
+  /* DIALOG */
+
+  .cdk-dialog-container {
+    padding: 15px !important;
+  }
+
+
+  /* ACCORDION */
+
+.mat-accordion {
+  .mat-expansion-panel {
+    .mat-expansion-panel-header {
+      padding: 15px;
+    }
+
+    .mat-expansion-panel-body {
+      padding: 10px 15px 15px 15px;
+
+      .logs {
+        padding: 5px 10px;
+      }
+    }
+  }
+}
 }

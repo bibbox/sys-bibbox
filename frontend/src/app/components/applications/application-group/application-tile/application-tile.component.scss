@@ -100,3 +100,22 @@
     }
   }
 }
+
+
+@media only screen and (max-width: $custom_responsive_size_xl) {
+  :host {
+    width: calc(33.3333% - 13.3333px);
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_l) {
+  :host {
+    width: calc(50% - 10px);
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+  :host {
+    width: 100%;
+  }
+}

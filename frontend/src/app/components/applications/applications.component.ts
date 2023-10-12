@@ -68,9 +68,12 @@ export class ApplicationsComponent implements OnInit {
       else if(this.sortFormControl.value === 'app') {
         if(this.filteredAppGroups.length === 0) {
           const tempGroup: ApplicationGroupItem = {group_name: appGroup.group_name, group_members: tempGroupItems, hideCategory: true};
-          this.filteredAppGroups.push(tempGroup);
+
+          if (tempGroup.group_members.length) {
+            this.filteredAppGroups.push(tempGroup);
+          }
         }
-        else {
+        else if (tempGroupItems.length) {
           this.filteredAppGroups[0].group_members.push(...tempGroupItems);
         }
       }
