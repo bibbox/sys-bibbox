@@ -13,7 +13,7 @@
     <ul *ngIf="loggedIn" class="app-scaffold-header__nav-buttons">
       <li *ngFor="let item of navigation">
         <a
-          *ngIf="item.link !== 'fdp'"
+          *ngIf="!item.external"
           id="{{item.label}}"
           [routerLink]="item.link"
           routerLinkActive="active">
@@ -21,7 +21,7 @@
         </a>
 
         <a
-          *ngIf="item.link === 'fdp'"
+          *ngIf="!!item.external"
           id="{{item.label}}"
           href="{{item.link}}"
           target="_blank">
