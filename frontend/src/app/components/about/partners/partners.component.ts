@@ -19,6 +19,7 @@ export class PartnersComponent implements OnInit {
 
   isLoggedin = false;
   editMode: boolean = false;
+  prevText: string;
   htmlStr = new FormControl('');
   editor: Editor;
   toolbar = toolbar;
@@ -50,11 +51,16 @@ export class PartnersComponent implements OnInit {
     });
   }
 
-  editText(edit: boolean): void {
+  editText(edit: boolean, restore = true): void {
     if(edit) {
+      this.prevText = this.htmlStr.value;
       this.editor = new Editor();
     }
     else if(!!this.editor) {
+      if(restore) {
+        this.htmlStr.setValue(this.prevText)
+      }
+
       this.editor.destroy();
     }
 
@@ -78,7 +84,7 @@ export class PartnersComponent implements OnInit {
       });
     }
     
-    this.editText(false);
+    this.editText(false, false);
 
     this.snackbar.open('Text saved', 'OK', {duration: 4000});
   }

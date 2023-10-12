@@ -87,7 +87,7 @@
         [mat-dialog-close]="true"
         (click)="openInstallScreen()"
         [disabled]="disableInstallButton"
-        [title]="disableInstallButton ? maxInstancesTooltip : null">
+        [title]="disableInstallButton ? maxInstancesTooltip : ''">
         <app-install-icon></app-install-icon>Install app
       </button>
   </div>

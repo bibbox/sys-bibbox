@@ -23,7 +23,9 @@
     </div>
   </div>
 
-  <div id="applications-results">
+  <p *ngIf="filteredAppGroups.length === 0" class="text-center">No apps found</p>
+
+  <div *ngIf="filteredAppGroups.length > 0" id="applications-results">
     <div *ngFor="let applicationGroup of filteredAppGroups">
       <app-application-group [applicationGroup]="applicationGroup" [searchByTag]="searchByTag"></app-application-group>
     </div>

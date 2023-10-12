@@ -21,6 +21,7 @@ export class InfoComponent implements OnInit {
   userFullname: string = '';
   editMode: boolean = false;
   htmlStr = new FormControl('');
+  prevText: string;
   editor: Editor;
   toolbar = toolbar;
   keyValueId: string;
@@ -74,11 +75,16 @@ export class InfoComponent implements OnInit {
     this.userService.switchAccount();
   }
 
-  editText(edit: boolean): void {
+  editText(edit: boolean, restore = true): void {
     if(edit) {
+      this.prevText = this.htmlStr.value;
       this.editor = new Editor();
     }
     else if(!!this.editor) {
+      if(restore) {
+        this.htmlStr.setValue(this.prevText)
+      }
+
       this.editor.destroy();
     }
 
@@ -102,7 +108,7 @@ export class InfoComponent implements OnInit {
       });
     }
     
-    this.editText(false);
+    this.editText(false, false);
 
     this.snackbar.open('Text saved', 'OK', {duration: 4000});
   }

@@ -140,7 +140,12 @@ strong, b, .bold {
   font-size: inherit;
   color: inherit;
 }
-ul {
+span {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+ul, ol {
   padding-left: 25px;
   margin-bottom: 20px;
 

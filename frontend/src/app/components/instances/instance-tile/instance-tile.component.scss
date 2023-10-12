@@ -142,14 +142,36 @@ app-instance-tile {
         padding: 10px;
         overflow-x: hidden;
         overflow-y: auto;
-
+        
+        p, ul, ol, h1, h2, h3, h4, h5 {
+          margin-bottom: 10px;
+        }
         &, * {
           font-size: 10pt !important;
           color: $custom_gray_dark;
           line-height: 120%;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
         }
-        p {
-          margin-bottom: 10px;
+        h1 {
+          font-size: 18pt !important;
+        }
+        h2 {
+          font-size: 16pt !important;
+        }
+        h3 {
+          font-size: 14pt !important;
+        }
+        h4 {
+          font-size: 12pt !important;
+        }
+        h5 {
+          font-size: 10pt !important;
+        }
+        strong, b, span {
+          font-size: inherit !important;
         }
       }
     }

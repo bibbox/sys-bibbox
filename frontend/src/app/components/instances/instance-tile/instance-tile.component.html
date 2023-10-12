@@ -22,7 +22,7 @@
         <a href="{{instance.app.repository_url || '#'}}" target="_blank" title="Repository"><app-github-icon class="link-icon" [width]="18" [height]="18"></app-github-icon></a>
       </div>
 
-      <div class="instance-tile__body-inner" [innerHTML]="instance.description_short"></div>
+      <div class="instance-tile__body-inner" [innerHTML]="instance.description_short|safeHtml"></div>
     </div>
 
     <div class="instance-tile__footer">

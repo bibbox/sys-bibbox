@@ -65,7 +65,7 @@ export class InstancesComponent implements OnInit {
     let items = structuredClone(this.instanceItems);
     this.filteredInstanceList = [];
 
-    for(let i = 0; i < this.filteredInstanceGroups.length; i++) {
+    for(let i = 0; i < items.length; i++) {
       items[i].group_members = items[i].group_members.filter(instance => this.instanceMatchesFilters(instance));
       this.filteredInstanceList.push(...items[i].group_members);
     }
@@ -76,6 +76,8 @@ export class InstancesComponent implements OnInit {
   instanceMatchesFilters(instance: InstanceItem): boolean {
     const searchterm = this.searchFormControl.value;
     const status = this.statusFormControl.value;
+
+    console.log(status, instance.displayname_short, instance.state);
 
     // Check if installer ID matches
     if(this.showOnlyOwnedInstances.value === 'true') {

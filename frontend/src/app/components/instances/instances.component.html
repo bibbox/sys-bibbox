@@ -29,11 +29,13 @@
     </div>
   </div>
 
-  <div *ngIf="showAsList.value === 'false'" class="instances-results">
+  <p *ngIf="filteredInstanceGroups.length === 0 && filteredInstanceList.length === 0" class="text-center">No instances found</p>
+
+  <div *ngIf="showAsList.value === 'false' && filteredInstanceGroups.length > 0" class="instances-results">
     <app-instance-group *ngFor="let group of filteredInstanceGroups" [group]="group"></app-instance-group>
   </div>
 
-  <div *ngIf="showAsList.value === 'true'" class="table-wrapper">
+  <div *ngIf="showAsList.value === 'true' && filteredInstanceList.length > 0" class="table-wrapper">
     <table class="instances_results">
       <thead>
         <tr>
