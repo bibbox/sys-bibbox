@@ -123,7 +123,7 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
         //Validators.required,
           this.envParamForm.addControl(
             envParam.id.valueOf(),
-            this.formBuilder.control('', [Validators.minLength(10), Validators.maxLength(Number(envParam.max_length))])
+            this.formBuilder.control('', [Validators.minLength(1), Validators.maxLength(Number(envParam.max_length))])
           );
       } else {
         increment++;
@@ -138,7 +138,7 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
 
   async install(): Promise<void> {
     if (this.installForm.valid && this.envParamForm.valid) {
-      
+
       // If nothing entered use default values
       for (const envParamName in this.envParamForm.controls){
         if (this.envParamForm.controls[envParamName].value == ""){
