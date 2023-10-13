@@ -39,6 +39,7 @@ export class InstanceDetailPageComponent implements OnInit, OnDestroy {
   timeInterval: any;
   refreshIntervals: { [container: string]: any} = {};
   refresh_period: number = 5000;
+  instanceUrl: string;
 
   @ViewChild('scrollContainer') container: ElementRef;
   scrollTop: number = null;
@@ -92,6 +93,8 @@ export class InstanceDetailPageComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     this.instanceNameFromUrl = this.route.snapshot.paramMap.get('instance_name');
     this.instance$ = this.store.pipe(select(InstanceSelector.selectCurrentInstance, this.instanceNameFromUrl));
+    this.instanceUrl = 'http://' + this.instanceNameFromUrl + '.' + environment.BASEURL;
+
     this.instance$.subscribe(
       (instanceItem) => {
         this.instanceItem = instanceItem;
