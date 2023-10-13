@@ -77,8 +77,6 @@ export class InstancesComponent implements OnInit {
     const searchterm = this.searchFormControl.value;
     const status = this.statusFormControl.value;
 
-    console.log(status, instance.displayname_short, instance.state);
-
     // Check if installer ID matches
     if(this.showOnlyOwnedInstances.value === 'true') {
       const userID = this.userService.getUserID();
