@@ -22,7 +22,7 @@ class ActivityService(SQLAlchemyService):
         # Creating a parent class ref to access parent class methods.
         self.parentClassRef = super(ActivityService, self)
 
-    def create(self, name, type_):
+    def create(self, name, type_,user_id= None):
         '''
         Inserts a new 'Activity' entry into the DB.
         Returns the ID of the newly created Activity.
@@ -34,7 +34,8 @@ class ActivityService(SQLAlchemyService):
             start_time = datetime.fromtimestamp(time.time()),
             finished_time = None,
             state = "RUNNING",
-            result = None
+            result = None,
+            user_id= user_id
         )
 
         db.session.add(ac)
@@ -75,7 +76,8 @@ class ActivityService(SQLAlchemyService):
                 'start_time'    : str(activity.start_time.strftime("%d.%m.%Y %H:%M:%S")),
                 'finished_time' : str(activity.finished_time.strftime("%d.%m.%Y %H:%M:%S")) if activity.finished_time else '',
                 'state'         : activity.state,
-                'result'        : activity.result
+                'result'        : activity.result,
+                'user_id'       : activity.user_id
             })
 
         return activity_lst

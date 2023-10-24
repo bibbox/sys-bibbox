@@ -88,14 +88,14 @@ def startInstance (self, instance_name):
     emitInstanceRefresh()
 
 @app_celerey.task(bind=True, name='instance.restartInstance')
-def restartInstance (self, instance_name):
+def restartInstance (self, instance_name,user_id=None):
     dh = DockerHandler()
     fh = FileHandler()
     # activity service for db-stuff with activity entries
     activity_service = ActivityService()
     
     # create activity entry in db -> returns ID of created entry 
-    activity_id = activity_service.create(f"Restart Instance: {instance_name}", "RESTART_INSTANCE")
+    activity_id = activity_service.create(f"Restart Instance: {instance_name}", "RESTART_INSTANCE",user_id=user_id)
     logger = DBLoggerService(activity_id, f"[RESTART] {instance_name}").getLogger()
 
     logger.info("restarting containers of {}.".format(instance_name))
@@ -147,7 +147,7 @@ def installInstance (self, instanceDescr):
     activity_service = ActivityService()
     
     # create activity entry in db -> returns ID of created entry 
-    activity_id = activity_service.create(f"Installing Instance: {instanceDescr['instancename']}", "INSTALL_INSTANCE")
+    activity_id = activity_service.create(f"Installing Instance: {instanceDescr['instancename']}", "INSTALL_INSTANCE", user_id=instanceDescr['installed_by_id'])
 
     # logger service for creating custom logger
     logger_serv = DBLoggerService(activity_id, f"[INSTALL] {instanceDescr['instancename']}")
@@ -442,7 +442,7 @@ def installInstance (self, instanceDescr):
         emitInstanceRefresh()
 
 @app_celerey.task(bind=True,  name='instance.deleteInstance')
-def deleteInstance (self, instance_name):
+def deleteInstance (self, instance_name,user_id=None):
 
     dh = DockerHandler()        
     fh = FileHandler()
@@ -452,8 +452,8 @@ def deleteInstance (self, instance_name):
     activity_service = ActivityService()
     
     # create activity entry in db -> returns ID of created entry 
-    activity_id = activity_service.create(f"Delete instance: {instance_name}", "DELETE_INSTANCE")
-
+    activity_id = activity_service.create(f"Delete instance: {instance_name}", "DELETE_INSTANCE",user_id=user_id)
+    print(f" User id: {user_id}")
     # logger service for creating custom logger
     logger_serv = DBLoggerService(activity_id, f"[DELETE] {instance_name}")
 

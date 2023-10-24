@@ -10,6 +10,7 @@ from backend.app.bibbox.instance_controler  import installInstance, startInstanc
 from backend.app.bibbox.file_handler import FileHandler
 from backend.app.bibbox.docker_handler import DockerHandler
 from backend.app.services.keycloak_service import auth_token_required
+from backend.app.services.keycloak_service import get_user_id_by_token
 
 
 api = Namespace('instances', description='Instance Ressources')
@@ -21,6 +22,10 @@ instancemodel = api.model('Model', {
     'version' :  fields.String,
     'state' : fields.String
 })
+
+
+
+
 
 # TODO
 # thats the path inside the container !
@@ -74,8 +79,12 @@ class Ping(Resource):
 class Ping(Resource):
     @auth_token_required()
     def get(self, id):
-        
-        restartInstance.delay(id)
+        user = None
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split()[1]
+            user = get_user_id_by_token(token)
+
+        restartInstance.delay(id,user)
 
         return {"restarting instance": id}, 200
 
@@ -149,8 +158,16 @@ class Instance(Resource):
     @auth_token_required()
     def delete(self, id):
 
+        user = None
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split()[1]
+            user = get_user_id_by_token(token)
+            print(user)
+
         # make this more dynamic and check the parameters
         instancename = str(id)
+
+
 
         jobID = 27
         jobURL = "api/v1/activities/27"
@@ -170,7 +187,7 @@ class Instance(Resource):
         }
 
 
-        deleteInstance.delay(instancename)
+        deleteInstance.delay(instancename,user)
 
 
 
@@ -180,7 +197,7 @@ class Instance(Resource):
     @api.doc("Patch instance.json values. Requires a dict of key-value pairs to update.")
     @auth_token_required()
     def patch(self, id):
-        
+
         instance_name = str(id)
         payload = request.json
 
