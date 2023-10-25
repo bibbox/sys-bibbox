@@ -55,6 +55,12 @@ export interface UserCreateDialogProps {
   userToEdit: UserRepresentation | null;
 }
 
+export interface IUserFilters {
+  searchterm: string;
+  role: string;
+}
+
+
 
 // export interface UserRepresentation {
 //   id?: string;

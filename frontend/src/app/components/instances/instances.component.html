@@ -1,9 +1,16 @@
 <div class="instances">
+  <h1 class="gapS text-center">Instances</h1>
+
+  <p class="gapL text-center">
+    Here you can find and manage <strong>already installed apps</strong> (instances).<br />
+    To install a new app instance, head over to the <a [routerLink]="'/applications'">store</a> page.
+  </p>
+
   <div class="instances-search">
     <div>
       <input
         [formControl]="searchFormControl"
-        placeholder="Search by name or tag"
+        placeholder="Search by instance or app name"
         (input)="filterInstances()"
         type="search"
       />
@@ -22,14 +29,14 @@
     </div>
 
     <div>
-      <select [formControl]="showAsList">
+      <select [formControl]="showAsList" (change)="updateFiltersInStore()">
         <option [value]="'false'">Show as tiles</option>
         <option [value]="'true'">Show as list</option>
       </select>
     </div>
   </div>
 
-  <p *ngIf="filteredInstanceGroups.length === 0 && filteredInstanceList.length === 0" class="text-center">No instances found</p>
+  <p *ngIf="filteredInstanceGroups.length === 0 && filteredInstanceList.length === 0" class="text-center">No instances found.</p>
 
   <div *ngIf="showAsList.value === 'false' && filteredInstanceGroups.length > 0" class="instances-results">
     <app-instance-group *ngFor="let group of filteredInstanceGroups" [group]="group"></app-instance-group>

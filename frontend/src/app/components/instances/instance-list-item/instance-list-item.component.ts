@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/models/app-state.model';
 import { MatDialog } from '@angular/material/dialog';
 import { InstanceDeleteDialogComponent } from '../instance-delete-dialog/instance-delete-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-instance-list-item',
@@ -15,7 +16,7 @@ import { InstanceDeleteDialogComponent } from '../instance-delete-dialog/instanc
 })
 export class InstanceListItemComponent implements OnInit {
 
-  constructor(private store: Store<AppState>, private instanceService: InstanceService, private userService: UserService, public dialog: MatDialog) { }
+  constructor(private store: Store<AppState>, private instanceService: InstanceService, private userService: UserService, public dialog: MatDialog, private snackbar: MatSnackBar) { }
 
   @Input() instance: InstanceItem;
   instanceUrl: string;
@@ -95,6 +96,18 @@ export class InstanceListItemComponent implements OnInit {
     }
     else {
       this.description = this.sanitizedDescription?.substring(0, 60);
+    }
+  }
+
+  isProcessing(): boolean {
+    return this.instance.state !== 'RUNNING' && this.instance.state !== 'ERROR' && this.instance.state !== 'STOPPED';
+  }
+
+  onLaunchClick(e): void {
+    if(this.instance.state !== 'RUNNING') {
+      e.preventDefault();
+
+      this.snackbar.open('Instance must be running to launch it.', 'OK', {duration: 4000});
     }
   }
 }

@@ -5,7 +5,7 @@ import {
   UserRoleMapping,
   UserRoles,
   CreateUserSuccessResponse,
-  UpdateRoleMappingSuccessResponse, DeleteUserSuccessResponse
+  UpdateRoleMappingSuccessResponse, DeleteUserSuccessResponse, IUserFilters
 } from '../models/user.model';
 
 export enum UserActionTypes {
@@ -21,6 +21,7 @@ export enum UserActionTypes {
   CREATE_USER = '[USER] Create User',
   CREATE_USER_SUCCESS = '[USER] Create User Success',
   CREATE_USER_FAILURE = '[USER] Create User Failure',
+  UPDATE_USER_FILTERS = '[USER] Update User filters',
 }
 
 export class LoadUsersAction implements Action {
@@ -82,6 +83,12 @@ export class CreateUserFailureAction implements Action {
   constructor(public payload: Error) {}
 }
 
+export class UpdateUserFiltersAction implements Action {
+  readonly type = UserActionTypes.UPDATE_USER_FILTERS;
+
+  constructor(public payload: IUserFilters) {}
+}
+
 
 export type UserAction =
   LoadUsersAction |
@@ -95,4 +102,5 @@ export type UserAction =
   DeleteUserFailureAction |
   CreateUserAction |
   CreateUserSuccessAction |
-  CreateUserFailureAction;
+  CreateUserFailureAction |
+  UpdateUserFiltersAction;

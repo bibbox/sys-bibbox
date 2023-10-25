@@ -35,6 +35,9 @@
     &.error span {
       background-color: $custom_color_error;
     }
+    &.processing span {
+      background-color: $custom_color_processing;
+    }
   }
 
   .instance-list-item_header {
@@ -66,7 +69,8 @@
         width: 100%;
         color: $custom_blue;
         font-weight: 500;
-        margin-bottom: 3px
+        margin-bottom: 3px;
+        text-decoration: none;
       }
       .instance-list-item__header-subtitle {
         font-weight: 300;
@@ -109,6 +113,9 @@
     }
     &.error {
       color: $custom_color_error !important;
+    }
+    &.processing {
+      color: $custom_color_processing !important;
     }
   }
   .instance-list-item__links {
@@ -165,6 +172,7 @@
       .button {
         box-shadow: none;
         font-size: 12pt;
+        text-transform: capitalize;
         
         &:not(:last-child) {
           border-top-right-radius: 0;

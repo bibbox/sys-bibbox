@@ -28,4 +28,7 @@
   &.error {
     color: $custom_color_error !important;
   }
+  &.processing {
+    color: $custom_color_processing !important;
+  }
 }

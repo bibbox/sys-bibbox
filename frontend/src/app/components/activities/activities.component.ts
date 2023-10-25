@@ -2,12 +2,14 @@ import {Component, ElementRef, OnDestroy, OnInit, Renderer2} from '@angular/core
 import {ACTIVITY_STATES, SVG_PATHS} from '../../commons';
 import {ActivityService} from '../../store/services/activity.service';
 import {ActivityItem, LogItem} from '../../store/models/activity.model';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {interval, Subscription} from 'rxjs';
 import {startWith, switchMap} from 'rxjs/operators';
 import {AppState} from '../../store/models/app-state.model';
 import {select, Store} from '@ngrx/store';
 import * as activitySelector from '../../store/selectors/activity.selector';
+import { FormControl } from '@angular/forms';
+import { UpdateActivityFiltersAction } from '../../store/actions/activity.actions';
 
 @Component({
   selector: 'app-activities',
@@ -15,7 +17,7 @@ import * as activitySelector from '../../store/selectors/activity.selector';
   styleUrls: ['./activities.component.scss']
 })
 export class ActivitiesComponent implements OnInit, OnDestroy {
-  focussedActivityID: number; // = this.router.getCurrentNavigation().extras.state?.index || undefined;
+  focussedActivityID: number;
 
   svgPaths = SVG_PATHS;
   activityStates = ACTIVITY_STATES;
@@ -27,35 +29,49 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   };
 
   activityList: ActivityItem[] = [];
+  filteredActivityList: ActivityItem[] = [];
   activityLogs: LogItem[] = [];
   timeInterval: Subscription = interval(1000).subscribe();
+  searchFormControl = new FormControl('');
+  stateFormControl = new FormControl('');
+  typeFormControl = new FormControl('');
+  initialized = false;
 
   // rm route, data$ ...
 
   constructor(
     private activityService: ActivityService,
-    private router: Router,
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private elementRef: ElementRef,
     private renderer: Renderer2
   ) {
+  }
+
+  ngOnInit(): void {
+    this.store.pipe(select(activitySelector.selectActivityFilters)).subscribe((res) => {
+      if(!this.initialized) {
+        this.searchFormControl.setValue(res.searchterm);
+        this.stateFormControl.setValue(res.state);
+        this.typeFormControl.setValue(res.type);
+
+        this.initialized = true;
+      }
+    });
 
     this.route.params.subscribe(params =>
       this.focussedActivityID = params.activity_id
     );
 
     this.store.pipe(select(activitySelector.selectAllActivities)).subscribe((res) => {
-      this.activityList = res;
+      this.activityList = res.slice(0, 50);
       this.sortActivityList();
+      this.filter();
     });
 
     if (this.focussedActivityID !== undefined) {
       this.getLogsOfActivity(this.focussedActivityID);
     }
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
@@ -91,5 +107,41 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   sortActivityList(): void {
     this.activityList.sort((a, b) => (a.start_time < b.start_time) ? 1 : 0);
+  }
+
+  filter(): void {
+    this.filteredActivityList = this.activityList.filter(this.checkIfMatchesFilterCriteria);
+
+    this.updateFiltersInStore();
+  }
+
+  checkIfMatchesFilterCriteria = (activity: ActivityItem): boolean => {
+    const searchterm = this.searchFormControl.value.toLowerCase().trim();
+    const type = this.typeFormControl.value;
+    const state = this.stateFormControl.value;
+
+    if(!!state && activity.state !== state)
+      return false;
+
+    if(!!type && activity.type !== type)
+      return false;
+      
+    if(!!searchterm && !activity.name.includes(searchterm) &&
+      (!activity?.user?.id || ![activity.user.username, activity.user.firstName, activity.user.lastName]
+        .filter(item => !!item)
+        .join(' ')
+        .toLowerCase()
+        .includes(searchterm)))
+      return false;
+
+    return true;
+  };
+
+  updateFiltersInStore(): void {
+    this.store.dispatch(new UpdateActivityFiltersAction({
+      searchterm: this.searchFormControl.value,
+      state: this.stateFormControl.value,
+      type: this.typeFormControl.value
+    }));
   }
 }

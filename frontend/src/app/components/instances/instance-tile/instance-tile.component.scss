@@ -85,6 +85,7 @@ app-instance-tile {
           font-weight: 500;
           margin-bottom: 3px;
           line-height: 120%;
+          text-decoration: none;
         }
         .instance-tile__header-subtitle {
           margin-top: 0;
@@ -226,6 +227,7 @@ app-instance-tile {
           cursor: pointer;
           border-right: none;
           flex-grow: 1;
+          text-transform: capitalize;
 
           &:last-child {
             border-bottom-right-radius: 10px;
