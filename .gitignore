@@ -48,3 +48,10 @@ frontend/dist
 # dev
 **/dummy_kc_file.py
 **/kc_snipplets.txt
+
+config-templates/000-default.conf
+config-templates/005-fdp.conf
+config-templates/100-error.conf
+frontend/src/environments/environment.prod.ts
+frontend/src/environments/environment.ts
+apacheproxy/httpd.conf

@@ -35,6 +35,7 @@ class Activity (BaseModel, db.Model):
     finished_time   = db.Column(db.DateTime, nullable=True)
     state           = db.Column(db.String, nullable=False)
     result          = db.Column(db.String, nullable=True)
+    user_id         = db.Column(db.String,nullable=True)
 
     logs            = db.relationship(
                         'Log', 
@@ -43,7 +44,8 @@ class Activity (BaseModel, db.Model):
                         cascade="all, delete",
                         passive_deletes=False)
 
-    def __init__(self, name, type_, start_time, finished_time, state, result):
+
+    def __init__(self, name, type_, start_time, finished_time, state, result,user_id):
         super().__init__()
         self.name           = name
         self.type_          = type_
@@ -51,6 +53,7 @@ class Activity (BaseModel, db.Model):
         self.finished_time  = finished_time
         self.state          = state
         self.result         = result
+        self.user_id        = user_id
 
 
 
