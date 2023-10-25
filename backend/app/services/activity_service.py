@@ -65,7 +65,7 @@ class ActivityService(SQLAlchemyService):
 
         emitActivityRefresh()
 
-    def selectAll(self,user_id=None, skip_others=True):
+    def selectAll(self,user_id=None, skip_others=True,limit=50):
         res = db.session.query(Activity).order_by(desc(Activity.id))
         activity_lst = list()
         kc_admin = KeycloakAdminService()
@@ -99,5 +99,7 @@ class ActivityService(SQLAlchemyService):
                 'user_id'       : activity.user_id,
                 'user'      : user
             })
+            if len(activity_lst) >= limit:
+                break
         return activity_lst
         
