@@ -150,7 +150,7 @@
         flex-flow: row wrap;
         column-gap: 15px;
 
-        .activity-start-date, .activity-end-date {
+        .activity-start-date, .activity-end-date, .activity-user {
           font-size: 10pt;
           color: $custom_gray_darkest;
         }

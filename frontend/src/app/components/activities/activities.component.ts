@@ -10,6 +10,8 @@ import {select, Store} from '@ngrx/store';
 import * as activitySelector from '../../store/selectors/activity.selector';
 import { FormControl } from '@angular/forms';
 import { UpdateActivityFiltersAction } from '../../store/actions/activity.actions';
+import { UserService } from '../../store/services/user.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-activities',
@@ -36,6 +38,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   stateFormControl = new FormControl('');
   typeFormControl = new FormControl('');
   initialized = false;
+  isAdmin = false;
 
   // rm route, data$ ...
 
@@ -44,11 +47,14 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private elementRef: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private userService: UserService
   ) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.isAdmin = await this.userService.isRole(environment.KEYCLOAK_CONFIG.roles.admin);
+
     this.store.pipe(select(activitySelector.selectActivityFilters)).subscribe((res) => {
       if(!this.initialized) {
         this.searchFormControl.setValue(res.searchterm);
@@ -143,5 +149,9 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       state: this.stateFormControl.value,
       type: this.typeFormControl.value
     }));
+  }
+
+  getNameOfUser(activity: ActivityItem): string {
+    return [activity.user?.firstName, activity.user?.lastName].filter(item => !!item).join(' ') || activity.user?.username;
   }
 }
