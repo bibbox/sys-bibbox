@@ -59,8 +59,11 @@ INSTANCEPATH = "/opt/bibbox/instances/"
 class Ping(Resource):
     @auth_token_required()
     def get(self, id):
-        
-        stopInstance.delay(id)
+        user = None
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split()[1]
+            user = get_user_id_by_token(token)
+        stopInstance.delay(id,user)
 
         return {"stopping instance": id}, 200
 
@@ -69,8 +72,12 @@ class Ping(Resource):
 class Ping(Resource):
     @auth_token_required()
     def get(self, id):
-        
-        startInstance.delay(id)
+        user = None
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split()[1]
+            user = get_user_id_by_token(token)
+
+        startInstance.delay(id,user)
 
         return {"starting instance": id}, 200
 
@@ -162,7 +169,6 @@ class Instance(Resource):
         if 'Authorization' in request.headers:
             token = request.headers['Authorization'].split()[1]
             user = get_user_id_by_token(token)
-            print(user)
 
         # make this more dynamic and check the parameters
         instancename = str(id)

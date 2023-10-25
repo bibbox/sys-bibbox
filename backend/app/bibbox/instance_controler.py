@@ -33,7 +33,7 @@ PROXYPATH    = "/opt/bibbox/proxy/sites/"
 
 
 @app_celerey.task(bind=True,  name='instance.stopInstance')
-def stopInstance (self, instance_name, called_from_deleteInstance=False):
+def stopInstance (self, instance_name, user_id=None, called_from_deleteInstance=False):
     dh = DockerHandler()
     fh = FileHandler()
 
@@ -42,7 +42,7 @@ def stopInstance (self, instance_name, called_from_deleteInstance=False):
         activity_service = ActivityService()
     
         # create activity entry in db -> returns ID of created entry 
-        activity_id = activity_service.create(f"Stop Instance: {instance_name}", "STOP_INSTANCE")
+        activity_id = activity_service.create(f"Stop Instance: {instance_name}", "STOP_INSTANCE",user_id= user_id)
         logger = DBLoggerService(activity_id, f"[STOP] {instance_name}").getLogger()
         logger.info("stopping containers of {}.".format(instance_name))
     fh.updateInstanceJsonState(instance_name, 'STOPPING')
@@ -60,14 +60,14 @@ def stopInstance (self, instance_name, called_from_deleteInstance=False):
     emitInstanceRefresh()
 
 @app_celerey.task(bind=True, name='instance.startInstance')
-def startInstance (self, instance_name):
+def startInstance (self, instance_name, user_id=None):
     dh = DockerHandler()
     fh = FileHandler()
     # activity service for db-stuff with activity entries
     activity_service = ActivityService()
     
     # create activity entry in db -> returns ID of created entry 
-    activity_id = activity_service.create(f"Start Instance: {instance_name}", "START_INSTANCE")
+    activity_id = activity_service.create(f"Start Instance: {instance_name}", "START_INSTANCE",user_id= user_id)
     logger = DBLoggerService(activity_id, f"[START] {instance_name}").getLogger()
 
     logger.info("starting containers of {}.".format(instance_name))
@@ -83,7 +83,6 @@ def startInstance (self, instance_name):
     
     logger.info("started containers of {}.".format(instance_name))
     activity_service.update(activity_id, "FINISHED", "SUCCESS")
-    
 
     emitInstanceRefresh()
 

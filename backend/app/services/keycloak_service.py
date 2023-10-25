@@ -96,23 +96,41 @@ def auth_token_required(*decorator_args, **decorator_kwargs):
         return wrapper
 
 def get_user_id_by_token(token):
+    return decode_token(token).get('sub',None)
+
+def hasRole(token,required_roles):
+    token_info = decode_token(token)
+    # Check if user has the required realm roles
+    if not token_info['realm_access']['roles']:
+        return False
+
+    else:
+        user_roles: list = token_info['realm_access']['roles']
+
+        for role in required_roles:
+            if role not in user_roles:
+                return False
+    return True
+
+
+def decode_token(token):
     try:
         KEYCLOAK_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\n" + keycloak_openid.public_key() + "\n-----END PUBLIC KEY-----"
         options = {"verify_signature": True, "verify_aud": False, "verify_exp": True}
 
         # decode token sent with request with the public key from keycloak
-        user_info= keycloak_openid.decode_token(token, key=KEYCLOAK_PUBLIC_KEY, algorithms=['RS256'], options=options).get('sub',None)
+        token_info= keycloak_openid.decode_token(token, key=KEYCLOAK_PUBLIC_KEY, algorithms=['RS256'], options=options)
 
     except Exception as ex:
         # TODO: modify this response, currently verbose to debug
         return {
             'error': str(ex),
             'token': token,
-            'user_info': user_info if 'user_info' in locals() else None
+            'token_info': token_info if 'token_info' in locals() else None
             #'kc_env' : {k: v for k, v in os.environ.items() if k.startswith('KEYCLOAK')},
         }
 
-    return user_info
+    return token_info
 
 # user management --------------------------------------------------------------------------------------------------------------------
 class KeycloakAdminService():
