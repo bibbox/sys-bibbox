@@ -23,14 +23,14 @@
           <app-guide-icon></app-guide-icon>Installation guide
         </a>
       </p>
-      <p class="gapZ">Please fill out the form below to install an instance of the application. Fields marked with * are required.</p>
+      <p class="gapZ">Please fill out the form below to install a <strong>new app instance</strong> of the selected application. Fields marked with * are required.</p>
     </div>
 
     <div class="install-form-item">
       <div class="install-item-body">
         <label for="instance_id">Instance ID *</label>
-        <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id">
-        <span class="field-description">Subdomain of your application instance URL, only lowercase letters and numbers. <strong>Cannot be changed after the installation.</strong></span>
+        <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id" autocomplete="off" aria-autocomplete="none">
+        <span class="field-description">Choose a subdomain, under which to access your app instance, only lowercase letters and numbers. <strong>Cannot be changed after the installation.</strong></span>
       </div>
       <div *ngIf="installForm.controls.instance_id.invalid" class="error-messages">
         <div *ngIf="installForm.controls.instance_id.hasError('nameAlreadyExists')">
@@ -65,7 +65,7 @@
           <div class="install-item-body">
             <label for="instance_title">Instance title *</label>
             <input type="text" value="" name="instance_title" required id="instance_title" formControlName="instance_title" > <!-- (ngModelChange)="test('a')" -->
-            <span class="field-description">Title of your application instance, can be changed later on.</span>
+            <span class="field-description">Choose a title for your app instance, can be changed in the instance details.</span>
           </div>
           <div *ngIf="installForm.controls.instance_title.invalid && installForm.controls.instance_title.touched" class="error-messages">
             <div *ngIf="installForm.controls.instance_title.hasError('maxlength')">
@@ -86,7 +86,7 @@
           <div class="install-item-body">
             <label for="instance_subtitle">Instance subtitle</label>
             <input type="text" value="" name="instance_subtitle" id="instance_subtitle" formControlName="instance_subtitle" > <!-- (ngModelChange)="test('a')" -->
-            <span class="field-description">Optional subtitle of your application instance, can be changed later on.</span>
+            <span class="field-description">Choose a subtitle for your app instance, can be changed in the instance details.</span>
           </div>
           <div *ngIf="installForm.controls.instance_subtitle.invalid && installForm.controls.instance_subtitle.touched" class="error-messages"></div>
         </div>
@@ -130,14 +130,14 @@
           <label for="instance_subtitle">Instance information</label>
           <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
           <ngx-editor [editor]="editor" formControlName="instance_information" [placeholder]="''"></ngx-editor>
-          <span class="field-description">Additional information regarding the application instance that will be visible in the instance list, can be changed later on.</span>
+          <span class="field-description">Write down any information that might be helpful for using the app instance. This will be visible in the instance list and can be changed in the instance details.</span>
         </div>
         <div *ngIf="installForm.controls.instance_information.invalid && installForm.controls.instance_information.touched" class="error-messages"></div>
       </div>
     </div>
 
     <div class="install-submit">
-      <button class="gradient" type="button" (click)="install()" [disabled]="installForm.invalid || envParamForm.invalid">
+      <button class="gradient" type="button" (click)="install()" [disabled]="installForm.invalid || envParamForm.invalid" [matTooltip]="(installForm.invalid || envParamForm.invalid) ? 'Not all fields are valid.' : ''">
         <app-install-icon></app-install-icon>Install
       </button>
     </div>

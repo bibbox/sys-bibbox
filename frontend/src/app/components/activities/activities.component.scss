@@ -1,6 +1,15 @@
 @import "src/styles-variables";
 
 .activities {
+  .activity-search {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 50px;
+  }
+
   .activity-list {
     .activity-item {
       .activity-item-header {
@@ -62,7 +71,7 @@
               flex-flow: row wrap;
               column-gap: 15px;
   
-              .activity-start-date, .activity-end-date {
+              .activity-start-date, .activity-end-date, .activity-user {
                 font-size: 10pt;
                 color: $custom_gray_darkest;
               }
@@ -82,4 +91,17 @@
 }
 .log__error {
   color: $custom_color_error;
+}
+
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+  .activities {
+    .activity-search {
+      flex-flow: column nowrap;
+
+      input, select {
+        width: 100%;
+      }
+    }
+  }
 }

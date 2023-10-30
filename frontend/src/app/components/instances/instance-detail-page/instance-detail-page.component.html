@@ -177,7 +177,7 @@
             type="button"
             (click)="saveInstanceChanges()"
             [disabled]="!canManageInstance() || instanceDetailForm.invalid"
-            [title]="!canManageInstance() ? 'Only Admins and instance owners can edit the instance' : null">
+            [matTooltip]="!canManageInstance() ? 'Only Admins and instance owners can edit the instance' : instanceDetailForm.invalid ? 'Not all fields are valid.' : ''">
             <app-save-icon></app-save-icon>Save
           </button>
         </div>

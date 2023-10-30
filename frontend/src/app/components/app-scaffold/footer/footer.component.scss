@@ -81,14 +81,15 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    padding: 10px 30px;
+    padding: 20px 30px;
     background-color: $custom_gray_medium;
 
     p {
       width: 100%;
-      max-width: 1800px;
+      max-width: 800px;
       margin-bottom: 0;
       text-align: center;
+      line-height: 150%;
 
       a {
         white-space: nowrap;

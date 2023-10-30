@@ -35,3 +35,8 @@ export const selectCurrentInstance = createSelector(
       return instanceEntities[instanceId];
     }
 );
+
+export const selectInstanceFilters = createSelector(
+  selectInstanceState,
+  fromInstance.getInstanceFilters
+);

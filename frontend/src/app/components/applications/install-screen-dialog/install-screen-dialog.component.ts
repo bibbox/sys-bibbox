@@ -53,8 +53,8 @@ export class InstallScreenDialogComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.loadAppInfo().then(() => {
-      this.appInfo.versionOptions[0].app_version = this.appInfo.version;
-      this.appInfo.versionOptions[0].selectLabel = `${this.appInfo.version} (latest)`;
+      // this.appInfo.versionOptions[0].app_version = this.appInfo.version;
+      this.appInfo.versionOptions[0].selectLabel += ' (latest)';
       this.versionFormControl.setValue(this.appInfo.versionOptions[0]);
     });
 
@@ -62,12 +62,14 @@ export class InstallScreenDialogComponent implements OnInit {
   }
 
   async loadAppInfo(): Promise<void> {
-    await this.appService.getAppInfo((this.versionFormControl.value || this.applicationItem.versions[0])?.appinfo)
+    const version = this.versionFormControl.value || this.applicationItem.versions[0];
+
+    await this.appService.getAppInfo(version?.appinfo)
       .toPromise()
       .then(res => this.appInfo = {
         ...this.appInfo,
         ...res,
-        install_guide_url: this.getInstallGuideUrl(this.applicationItem.app_name, res.version),
+        install_guide_url: this.getInstallGuideUrl(this.applicationItem.app_name, version?.app_version),
         instance_information: res.instance_information || ''
       });
   }

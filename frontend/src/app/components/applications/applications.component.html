@@ -1,9 +1,16 @@
 <div id="applications">
+  <h1 class="gapS text-center">Store</h1>
+
+  <p class="gapL text-center">
+    Here you can find all available apps you can install in BIBBOX.<br />
+    You can also install multiple instances of the same app.
+  </p>
+
   <div class="application-search">
     <div>
       <input
         [formControl]="searchFormControl"
-        placeholder="Search by name or tag"
+        placeholder="Search by name or tag/type"
         (input)="filter()"
         type="search"
       />

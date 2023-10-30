@@ -1,8 +1,36 @@
-<div class="admin-panel__button_bar">
-  <button (click)="openDialog()"><app-plus-icon></app-plus-icon>Add User</button>
+
+<h1 class="gapS text-center">Users</h1>
+
+<p class="gapL text-center">
+  Here you can find, create and manage BIBBOX users.<br />
+  Changes to names and roles will apply at the next login.
+</p>
+
+<div class="user-search">
+  <div>
+    <input
+      [formControl]="searchFormControl"
+      placeholder="Search by name or email"
+      (input)="filter()"
+      type="search"
+    />
+
+    <select [formControl]="roleFormControl" (change)="filter()">
+      <option [value]="''">All roles</option>
+      <option [value]="roles.admin">Admin</option>
+      <option [value]="roles.standard_user">Standard User</option>
+      <option [value]="roles.demo_user">Demo User</option>
+    </select>
+  </div>
+   
+  <div>
+    <button (click)="openDialog()"><app-plus-icon></app-plus-icon>Add User</button>
+  </div>
 </div>
 
-<div class="table-wrapper">
+<p *ngIf="filteredUsers.length === 0" class="text-center">No users found.</p>
+
+<div *ngIf="filteredUsers.length > 0" class="table-wrapper">
   <table class="admin-panel__user-table">
     <thead>
       <tr>
@@ -16,7 +44,7 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let user of users; let i = index">
+      <tr *ngFor="let user of filteredUsers; let i = index">
         <td class="admin-panel__user-table__cell">
           <div class="admin-panel__user-table__cell-content">{{ user.username }}</div>
         </td>

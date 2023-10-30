@@ -6,6 +6,8 @@ import {AppState} from '../../store/models/app-state.model';
 import * as instanceSelector from '../../store/selectors/instance.selector';
 import {UserService} from '../../store/services/user.service';
 import { DOCUMENT } from '@angular/common';
+import { environment } from '../../../environments/environment';
+import { UpdateInstanceFiltersAction } from '../../store/actions/instance.actions';
 
 @Component({
   selector: 'app-instances',
@@ -16,7 +18,8 @@ export class InstancesComponent implements OnInit {
   instanceItems: InstanceGroupItem[] = [
     { group_name: 'Running', group_members: [], hideCategory: false },
     { group_name: 'Error', group_members: [], hideCategory: false },
-    { group_name: 'Stopped', group_members: [], hideCategory: false }
+    { group_name: 'Stopped', group_members: [], hideCategory: false },
+    { group_name: 'Processing', group_members: [], hideCategory: false }
   ];
   filteredInstanceGroups: InstanceGroupItem[] = this.instanceItems;
   filteredInstanceList: InstanceItem[] = [];
@@ -24,12 +27,31 @@ export class InstancesComponent implements OnInit {
   statusFormControl = new FormControl('');
   showOnlyOwnedInstances = new FormControl('false');
   showAsList = new FormControl('false');
+  initialized = false;
 
   constructor(private store: Store<AppState>, private userService: UserService, @Inject(DOCUMENT) private document: Document) {
   }
 
   ngOnInit(): void {
     this.document.body.classList.add('layout-width-wide');
+
+    // By default show self owned instances for users with role standard
+    this.showOnlyOwnedInstances.setValue(String(this.userService.isRole(environment.KEYCLOAK_CONFIG.roles.standard_user)));
+
+    this.store.pipe(select(instanceSelector.selectInstanceFilters)).subscribe((res) => {
+      if(!this.initialized) {
+        // If a searchterm was set in history state, use it as default searchterm
+        const searchterm = history?.state[0];
+        const status = history?.state[1];
+
+        this.searchFormControl.setValue(searchterm || res.searchterm);
+        this.statusFormControl.setValue(status || res.status);
+        this.showOnlyOwnedInstances.setValue(String(res.isInitialState ? this.userService.isRole(environment.KEYCLOAK_CONFIG.roles.standard_user) : res.showOnlyOwnedInstances));
+        this.showAsList.setValue(String(res.showAsList));
+
+        this.initialized = true;
+      }
+    });
 
     this.store.pipe(select(instanceSelector.selectAllInstances)).subscribe((res) => {
       const list = res.sort((a, b) => {
@@ -51,6 +73,13 @@ export class InstancesComponent implements OnInit {
         if(index >= 0) {
           this.instanceItems[index].group_members.push(item);
         }
+        else {
+          const index = this.instanceItems.findIndex(group => group.group_name.toLowerCase() === 'processing');
+
+          if(index >= 0) {
+            this.instanceItems[index].group_members.push(item);
+          }
+        }
       }
 
       this.filterInstances();
@@ -71,6 +100,8 @@ export class InstancesComponent implements OnInit {
     }
 
     this.filteredInstanceGroups = items.filter(group => group.group_members.length > 0);
+
+    this.updateFiltersInStore();
   }
 
   instanceMatchesFilters(instance: InstanceItem): boolean {
@@ -100,5 +131,15 @@ export class InstancesComponent implements OnInit {
     }
 
     return true;
+  }
+
+  updateFiltersInStore(): void {
+    this.store.dispatch(new UpdateInstanceFiltersAction({
+      searchterm: this.searchFormControl.value,
+      status: this.statusFormControl.value,
+      showOnlyOwnedInstances: this.showOnlyOwnedInstances.value === 'true',
+      showAsList: this.showAsList.value === 'true',
+      isInitialState: false
+    }));
   }
 }

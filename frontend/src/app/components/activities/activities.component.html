@@ -1,12 +1,45 @@
 <div class="activities">
-  <p *ngIf="!activityList.length" class="text-center">No activities found</p>
+  
+  <h1 class="gapS text-center">Activities</h1>
 
-  <mat-accordion *ngIf="!!activityList.length" class="activity-list">
+  <p class="gapL text-center">
+    Here you can find all the latest activities regarding instances.<br />
+    You can also check the log of an activity by clicking it.
+  </p>
+
+  <div class="activity-search">
+    <input
+      [formControl]="searchFormControl"
+      placeholder="Search by activity or user name"
+      (input)="filter()"
+      type="search"
+    />
+
+    <select [formControl]="stateFormControl" (change)="filter()">
+      <option [value]="''">All states</option>
+      <option [value]="'FINISHED'">Success</option>
+      <option [value]="'ERROR'">Error</option>
+      <option [value]="'RUNNING'">Processing</option>
+    </select>
+
+    <select [formControl]="typeFormControl" (change)="filter()">
+      <option [value]="''">All types</option>
+      <option [value]="'INSTALL_INSTANCE'">Install instance</option>
+      <option [value]="'DELETE_INSTANCE'">Delete instance</option>
+      <option [value]="'START_INSTANCE'">Start instance</option>
+      <option [value]="'STOP_INSTANCE'">Stop instance</option>
+      <option [value]="'RESTART_INSTANCE'">Restart instance</option>
+    </select>
+  </div>
+
+  <p *ngIf="!filteredActivityList.length" class="text-center">No activities found</p>
+
+  <mat-accordion *ngIf="!!filteredActivityList.length" class="activity-list">
     <mat-expansion-panel (opened)="getLogsOfActivity(activity.id)"
                          (destroyed)="unsubscribeFromLogs(); clearLogs()"
                          #mep="matExpansionPanel"
                          class="activity-item"
-                         *ngFor="let activity of activityList | slice:0:50"
+                         *ngFor="let activity of filteredActivityList"
                          [expanded]="activity.id == focussedActivityID"
                          hideToggle
     >
@@ -32,6 +65,7 @@
             <div class="activity-timestamps">
               <span class="activity-start-date">Start: {{activity.start_time}}</span>
               <span class="activity-end-date" *ngIf="!!activity.finished_time && activity.finished_time !== 'None'">End: {{activity.finished_time}}</span>
+              <span *ngIf="isAdmin && !!activity.user.id" class="activity-user">User: {{getNameOfUser(activity)}}</span>
             </div>
           </div>
         </div>

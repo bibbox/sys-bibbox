@@ -75,6 +75,11 @@
     border-left: solid 7px transparent;
     border-right: solid 7px transparent;
   }
+  > p {
+    padding: 10px 20px;
+    margin-bottom: 0;
+    border-bottom: solid 1px $custom_gray_medium;
+  }
   .activity-overlay__menu-item {
     display: flex;
     flex-flow: row nowrap;
@@ -145,7 +150,7 @@
         flex-flow: row wrap;
         column-gap: 15px;
 
-        .activity-start-date, .activity-end-date {
+        .activity-start-date, .activity-end-date, .activity-user {
           font-size: 10pt;
           color: $custom_gray_darkest;
         }

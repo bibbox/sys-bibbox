@@ -36,7 +36,9 @@
         <div class="activity-timestamps">
           <span class="activity-start-date">Start: {{activity.start_time}}</span>
           <span class="activity-end-date" *ngIf="!!activity.finished_time && activity.finished_time !== 'None'">End: {{activity.finished_time}}</span>
+          <span *ngIf="isAdmin && !!activity.user.id" class="activity-user">User: {{getNameOfUser(activity)}}</span>
         </div>
+
       </div>
     </div>
 

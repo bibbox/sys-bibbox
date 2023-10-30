@@ -37,3 +37,11 @@ export interface IApp {
   repository_url?: string;
   install_guide_url?: string;
 }
+
+export interface IInstanceFilters {
+  searchterm: string;
+  status: string;
+  showOnlyOwnedInstances: boolean;
+  showAsList: boolean;
+  isInitialState: boolean;
+}

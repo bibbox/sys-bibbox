@@ -163,7 +163,7 @@ export class InstallScreenComponent implements OnInit, OnDestroy {
       };
 
       this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
-      this.router.navigateByUrl('/instances').then();
+      this.router.navigateByUrl('/instances', {state: [this.installForm.value.instance_title, '']}).then();
     }
     else {
       console.log('errors occurred');

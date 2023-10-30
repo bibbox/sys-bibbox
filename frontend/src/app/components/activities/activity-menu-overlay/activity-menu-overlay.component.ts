@@ -5,6 +5,8 @@ import {ActivityService} from '../../../store/services/activity.service';
 import {AppState} from '../../../store/models/app-state.model';
 import {select, Store} from '@ngrx/store';
 import * as activitySelector from '../../../store/selectors/activity.selector';
+import { UserService } from '../../../store/services/user.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-activity-menu-overlay',
@@ -20,9 +22,11 @@ export class ActivityMenuOverlayComponent implements OnInit {
   activeActivities: 0;
   lastActivityStatus: string;
   showOverlay: boolean = false;
+  isAdmin = false;
 
   constructor(
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private userService: UserService
   ) {
       this.store.pipe(select(activitySelector.selectAllActivities)).subscribe((res) => {
         this.activityList = res;
@@ -33,7 +37,8 @@ export class ActivityMenuOverlayComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.isAdmin = await this.userService.isRole(environment.KEYCLOAK_CONFIG.roles.admin);
   }
 
   countActiveActivities(): void {
@@ -58,5 +63,9 @@ export class ActivityMenuOverlayComponent implements OnInit {
 
   toggleOverlay(): void {
     this.showOverlay = !this.showOverlay;
+  }
+
+  getNameOfUser(activity: ActivityItem): string {
+    return [activity.user?.firstName, activity.user?.lastName].filter(item => !!item).join(' ') || activity.user?.username;
   }
 }

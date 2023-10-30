@@ -64,3 +64,9 @@ export interface EnvironmentParameters {
   min_length: string;
   max_length: string;
 }
+
+export interface IApplicationGroupsFilters {
+  searchterm: string;
+  filter: string;
+  sort: string;
+}

@@ -9,7 +9,8 @@ from backend.app.services.activity_service import ActivityService
 from backend.app.services.log_service import LogService
 from backend.app.bibbox.docker_handler import DockerHandler
 
-from backend.app.services.keycloak_service import auth_token_required, KeycloakRoles
+from backend.app.services.keycloak_service import auth_token_required, KeycloakRoles, get_user_id_by_token, hasRole
+
 
 api = Namespace('activities', description='Activity Resources')
 restapi.add_namespace (api, '/activities')
@@ -24,7 +25,13 @@ class ActivityListAll(Resource):
     @auth_token_required()
     def get(self):
         as_ = ActivityService()
-        reply = as_.selectAll()
+        user = None
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split()[1]
+            user = get_user_id_by_token(token)
+            is_admin = hasRole(token,required_roles=[KeycloakRoles.admin])
+
+        reply = as_.selectAll(user,skip_others=not is_admin)
         return reply, 202
 
 @api.route("/logs/<int:activityID>")

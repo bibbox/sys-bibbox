@@ -9,7 +9,8 @@ import {ConfirmationDialogComponent} from './confirmation-dialog/confirmation-di
 import {UserService} from '../../store/services/user.service';
 import {AppState} from '../../store/models/app-state.model';
 import {select, Store} from '@ngrx/store';
-import {DeleteUserAction} from '../../store/actions/user.actions';
+import {DeleteUserAction, UpdateUserFiltersAction} from '../../store/actions/user.actions';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-panel-users',
@@ -19,6 +20,11 @@ import {DeleteUserAction} from '../../store/actions/user.actions';
 export class AdminPanelUsersComponent implements OnInit {
 
   users: UserRepresentation[];
+  filteredUsers: UserRepresentation[];
+  searchFormControl = new FormControl('');
+  roleFormControl = new FormControl('');
+  initialized = false;
+  roles = environment.KEYCLOAK_CONFIG.roles;
 
   kcRoles = {
     [environment.KEYCLOAK_CONFIG.roles.admin]: 'Admin',
@@ -35,8 +41,18 @@ export class AdminPanelUsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.store.pipe(select(userSelector.selectActivityFilters)).subscribe((res) => {
+      if(!this.initialized) {
+        this.searchFormControl.setValue(res.searchterm);
+        this.roleFormControl.setValue(res.role);
+
+        this.initialized = true;
+      }
+    });
+
     this.store.pipe(select(userSelector.selectAllUsers)).subscribe((res) => {
       this.users = res;
+      this.filter();
     });
   }
 
@@ -101,5 +117,37 @@ export class AdminPanelUsersComponent implements OnInit {
 
   deleteUser(user: UserRepresentation): void {
     this.store.dispatch(new DeleteUserAction(user.id));
+  }
+
+  filter(): void {
+    this.filteredUsers = this.users.filter(this.checkIfFilterCriteriaMatch);
+
+    this.updateFiltersInStore();
+  }
+
+  checkIfFilterCriteriaMatch = (user: UserRepresentation): boolean => {
+    const searchterm = this.searchFormControl.value.toLowerCase().trim();
+    const role = this.roleFormControl.value;
+
+    if(!!role && !user.roles.includes(role))
+      return false;
+
+    if(!!searchterm && ![user.username, user.firstName, user.lastName, user.email]
+      .filter(item => !!item)
+      .join(' ')
+      .toLowerCase()
+      .includes(searchterm)) {
+
+      return false;
+    }
+
+    return true;
+  };
+
+  updateFiltersInStore(): void {
+    this.store.dispatch(new UpdateUserFiltersAction({
+      searchterm: this.searchFormControl.value,
+      role: this.roleFormControl.value
+    }));
   }
 }

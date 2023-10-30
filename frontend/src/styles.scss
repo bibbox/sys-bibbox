@@ -573,14 +573,16 @@ input[type=radio], input[type=checkbox] {
 
 /* MESSAGE */
 
-.mat-snack-bar-container {
+.mat-snack-bar-container, .mat-tooltip {
   position: fixed;
   bottom: 50px;
   left: 50%;
   max-width: calc(100% - 30px) !important;
   margin: 0 !important;
-  border-radius: 5px;
+  padding: 14px 16px !important;
+  border-radius: 5px !important;
   background-color: white;
+  color: $custom_gray_darkest !important;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
   transform: translateX(-50%) !important;
   z-index: 5;
@@ -599,6 +601,9 @@ input[type=radio], input[type=checkbox] {
       background-color: $custom_gray_darkest;
     }
   }
+}
+.cdk-visually-hidden {
+  display: none !important;
 }
 
 

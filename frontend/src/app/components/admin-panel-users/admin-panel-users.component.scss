@@ -1,10 +1,20 @@
 @import "src/styles-variables";
 
-.admin-panel__button_bar {
+.user-search {
   display: flex;
-  justify-content: flex-end;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
   margin-bottom: 50px;
+
+  > div {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 10px;
+  }
 }
+
 .admin-panel__user-table {
   .admin-panel__user-table__action-buttons {
     white-space: nowrap;
@@ -25,6 +35,21 @@
 
       &:last-child {
         margin-right: 0;
+      }
+    }
+  }
+}
+
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+  .user-search {
+    flex-flow: column nowrap;
+
+    > div {
+      width: 100%;
+
+      input, select, button {
+        width: 100%;
       }
     }
   }

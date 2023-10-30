@@ -4,7 +4,7 @@ import * as applicationGroupSelector from '../../store/selectors/application-gro
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../store/models/app-state.model';
 import {FormControl} from '@angular/forms';
-import {LoadApplicationGroupsAction} from '../../store/actions/applications.actions';
+import {LoadApplicationGroupsAction, UpdateApplicationGroupsFiltersAction} from '../../store/actions/applications.actions';
 import { DOCUMENT } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -20,12 +20,23 @@ export class ApplicationsComponent implements OnInit {
   searchFormControl = new FormControl('');
   filterFormControl = new FormControl('');
   sortFormControl = new FormControl('category');
+  initialized = false;
 
   constructor(private store: Store<AppState>, @Inject(DOCUMENT) private document: Document, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
     this.document.body.classList.add('layout-width-wide');
+
+    this.store.pipe(select(applicationGroupSelector.selectApplicationGroupsFilters)).subscribe((res) => {
+      if(!this.initialized) {
+        this.searchFormControl.setValue(res.searchterm);
+        this.filterFormControl.setValue(res.filter);
+        this.sortFormControl.setValue(res.sort);
+
+        this.initialized = true;
+      }
+    });
 
     this.store.dispatch(new LoadApplicationGroupsAction());
 
@@ -89,12 +100,22 @@ export class ApplicationsComponent implements OnInit {
         return 0;
       });
     }
+
+    this.updateFiltersInStore();
   }
 
   searchByTag = (tag: string) => {
     this.dialog?.closeAll();
     this.searchFormControl?.setValue(tag);
     this.filter();
+  }
+
+  updateFiltersInStore(): void {
+    this.store.dispatch(new UpdateApplicationGroupsFiltersAction({
+      searchterm: this.searchFormControl.value,
+      filter: this.filterFormControl.value,
+      sort: this.sortFormControl.value
+    }));
   }
 }
 
