@@ -82,8 +82,8 @@ def auth_token_required(*decorator_args, **decorator_kwargs):
                 return {
                     'error': str(ex), 
                     'token': token,
-                    'token_info': token_info if 'token_info' in locals() else None,
-                    'kc_env' : {k: v for k, v in os.environ.items() if k.startswith('KEYCLOAK')},
+                    'token_info': token_info if 'token_info' in locals() else None
+                    #'kc_env' : {k: v for k, v in os.environ.items() if k.startswith('KEYCLOAK')},
                     }, 401
 
             return f(*args, **kwargs)
@@ -95,6 +95,42 @@ def auth_token_required(*decorator_args, **decorator_kwargs):
     else:
         return wrapper
 
+def get_user_id_by_token(token):
+    return decode_token(token).get('sub',None)
+
+def hasRole(token,required_roles):
+    token_info = decode_token(token)
+    # Check if user has the required realm roles
+    if not token_info['realm_access']['roles']:
+        return False
+
+    else:
+        user_roles: list = token_info['realm_access']['roles']
+
+        for role in required_roles:
+            if role not in user_roles:
+                return False
+    return True
+
+
+def decode_token(token):
+    try:
+        KEYCLOAK_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\n" + keycloak_openid.public_key() + "\n-----END PUBLIC KEY-----"
+        options = {"verify_signature": True, "verify_aud": False, "verify_exp": True}
+
+        # decode token sent with request with the public key from keycloak
+        token_info= keycloak_openid.decode_token(token, key=KEYCLOAK_PUBLIC_KEY, algorithms=['RS256'], options=options)
+
+    except Exception as ex:
+        # TODO: modify this response, currently verbose to debug
+        return {
+            'error': str(ex),
+            'token': token,
+            'token_info': token_info if 'token_info' in locals() else None
+            #'kc_env' : {k: v for k, v in os.environ.items() if k.startswith('KEYCLOAK')},
+        }
+
+    return token_info
 
 # user management --------------------------------------------------------------------------------------------------------------------
 class KeycloakAdminService():
@@ -231,20 +267,28 @@ class KeycloakAdminService():
                   user_representation[key] = user_dict[key]
 
           # cannot change username to an already existing username
-          if user_representation['username'] in [user['username'] for user in self.get_users()]:
+          if user_representation['username'] in [user['username'] for user in self.get_users() if user['id'] != user_id ]:
               raise ValueError(f'User with username {user_representation["username"]} already exists.')
-          
+          if 'password' in user_dict and user_dict['password']:
+            # Update User Password
+            self.keycloak_api.set_user_password(user_id=user_id, password=user_dict['password'], temporary=True)
 
-          optional_credentials_dict = {
-              'password': user_dict.get('password', None),
-              'temporary': False,
-              'type': 'password'
-          }
 
-          if None not in optional_credentials_dict.values():
-              user_representation['credentials'] = [optional_credentials_dict]
-          
-          
+
+        # optional_credentials_dict = {
+          #     'password': user_dict.get('password', None),
+          #     'temporary': False,
+          #     'type': 'password'
+          # }
+
+          # if None not in optional_credentials_dict.values():
+          #     user_representation['credentials'] = [optional_credentials_dict]
+          #
+
+          # assign realm roles, if none are provided, assign bibbox-standard
+          self.assign_realm_roles(user_id, user_dict.get('roles', ['bibbox-standard']))
+
+
           self.keycloak_api.update_user(user_id, user_representation)
 
         except Exception as ex:
@@ -262,7 +306,18 @@ class KeycloakAdminService():
         :type user_id: str
         :return: user object
         """
+        #self.keycloak_api.get_user_id("username-keycloak")
         return self.keycloak_api.get_user(user_id)
+
+    def get_user_by_id(self, user_id: str):
+        """
+        Returns a user from the keycloak realm.
+
+        :param user_id: id of the user to be returned
+        :type user_id: str
+        :return: user object
+        """
+        return self.get_user(user_id),200
 
     def get_user_by_username(self, username: str):
         """

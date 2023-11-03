@@ -117,6 +117,7 @@ cd /opt/bibbox/sys-bibbox
 docker network create bibbox-default-network
 
 
+
 docker-compose -f docker-compose.dev.yml  up --build -d
 
 docker exec bibbox-sys-commander-apacheproxy ln -s ../sites-available/000-default.conf /etc/apache2/sites-enabled/

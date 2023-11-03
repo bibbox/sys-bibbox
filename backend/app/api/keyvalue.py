@@ -30,7 +30,7 @@ keyvaluemodel = api.model('Model', {
 class KeyValues(Resource):
 
     @api.doc("Get value for key")
-    @auth_token_required()
+    #@auth_token_required()
     def get (self, key):
         #print ("looking for value with key = ", key)
         keyvalue = keyvalue_service.get_value_by_key(key)
@@ -40,6 +40,7 @@ class KeyValues(Resource):
         return jsonify(keyvalue.as_dict())
 
     @api.doc("Create a key value pair")
+    @api.expect(keyvaluemodel, validate=True)
     @auth_token_required(roles=[KeycloakRoles.admin])
     def post (self, key):
         try:
@@ -75,6 +76,7 @@ class KeyValues(Resource):
             return {'error': str(e)}, 500
 
     @api.doc("Update a key value pair")
+    @api.expect(keyvaluemodel, validate=True)
     @auth_token_required(roles=[KeycloakRoles.admin])
     def put(self, key):
         try:

@@ -10,6 +10,7 @@ from backend.app.bibbox.instance_controler  import installInstance, startInstanc
 from backend.app.bibbox.file_handler import FileHandler
 from backend.app.bibbox.docker_handler import DockerHandler
 from backend.app.services.keycloak_service import auth_token_required
+from backend.app.services.keycloak_service import get_user_id_by_token
 
 
 api = Namespace('instances', description='Instance Ressources')
@@ -21,6 +22,10 @@ instancemodel = api.model('Model', {
     'version' :  fields.String,
     'state' : fields.String
 })
+
+
+
+
 
 # TODO
 # thats the path inside the container !
@@ -54,8 +59,11 @@ INSTANCEPATH = "/opt/bibbox/instances/"
 class Ping(Resource):
     @auth_token_required()
     def get(self, id):
-        
-        stopInstance.delay(id)
+        user = None
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split()[1]
+            user = get_user_id_by_token(token)
+        stopInstance.delay(id,user)
 
         return {"stopping instance": id}, 200
 
@@ -64,8 +72,12 @@ class Ping(Resource):
 class Ping(Resource):
     @auth_token_required()
     def get(self, id):
-        
-        startInstance.delay(id)
+        user = None
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split()[1]
+            user = get_user_id_by_token(token)
+
+        startInstance.delay(id,user)
 
         return {"starting instance": id}, 200
 
@@ -74,8 +86,12 @@ class Ping(Resource):
 class Ping(Resource):
     @auth_token_required()
     def get(self, id):
-        
-        restartInstance.delay(id)
+        user = None
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split()[1]
+            user = get_user_id_by_token(token)
+
+        restartInstance.delay(id,user)
 
         return {"restarting instance": id}, 200
 
@@ -119,9 +135,12 @@ class Instance(Resource):
         instanceDescr = request.json
         instanceDescr['instancename'] = str(id)
         instanceDescr['state'] = 'JUSTBORN'
-        instanceDescr['displayname_long'] = ''    
-        instanceDescr['description_short'] = ''   
-        instanceDescr['description_long'] = ''  
+        if 'displayname_long' not in instanceDescr:
+            instanceDescr['displayname_long'] = ''
+        if 'description_short' not in instanceDescr:
+            instanceDescr['description_short'] = ''
+        if 'description_long' not in instanceDescr:
+            instanceDescr['description_long'] = ''
         
         # test if version does anything
         if 'version' in instanceDescr:
@@ -146,8 +165,15 @@ class Instance(Resource):
     @auth_token_required()
     def delete(self, id):
 
+        user = None
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split()[1]
+            user = get_user_id_by_token(token)
+
         # make this more dynamic and check the parameters
         instancename = str(id)
+
+
 
         jobID = 27
         jobURL = "api/v1/activities/27"
@@ -167,7 +193,7 @@ class Instance(Resource):
         }
 
 
-        deleteInstance.delay(instancename)
+        deleteInstance.delay(instancename,user)
 
 
 
@@ -177,7 +203,7 @@ class Instance(Resource):
     @api.doc("Patch instance.json values. Requires a dict of key-value pairs to update.")
     @auth_token_required()
     def patch(self, id):
-        
+
         instance_name = str(id)
         payload = request.json
 
