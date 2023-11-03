@@ -1073,16 +1073,16 @@
       "id": "31694187-b7d5-4120-896d-bef0ff4d7a00",
       "clientId": "sys-bibbox-frontend",
       "name": "BIBBOX v4",
-      "rootUrl": "http://§§BASEURL",
-      "baseUrl": "http://§§BASEURL/info",
+      "rootUrl": "https://§§BASEURL",
+      "baseUrl": "https://§§BASEURL/info",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://§§BASEURL/*",
-        "http://api.§§BASEURL/*",
-        "http://keycloak.§§BASEURL/*"
+        "https://§§BASEURL/*",
+        "https://api.§§BASEURL/*",
+        "https://keycloak.§§BASEURL/*"
       ],
       "webOrigins": [
         "*",

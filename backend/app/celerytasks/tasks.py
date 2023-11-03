@@ -36,13 +36,17 @@ def rawgithubprefix (github_organization, appid, version):
         return "https://raw.githubusercontent.com/" + github_organization +  "/" + appid + "/" + version + "/"
 
 def loadAndCheckJsonFromGit (url):
-    print ("read info from - ", url)
+    #print ("read info from - ", url)
     try:
-        download = requests.get(url).content
+        response = requests.get(url)
         #print (download)
     except Exception as e:
         raise Exception('Something went wrong during connecting to the GitHub repository. Please Check your internet connection! Error: ' + str(e))
-    
+
+    download = response.content
+    if response.status_code != 200:
+        raise Exception('An error has occurred: '+download)
+
     try:
         json_as_dict = simplejson.loads(download)
     except Exception:

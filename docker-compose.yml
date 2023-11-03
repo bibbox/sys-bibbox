@@ -9,34 +9,43 @@ services:
     container_name: bibbox-sys-commander-apacheproxy
     restart: unless-stopped
     networks:
-      - bibbox-default-network
-    image: bibbox/bibbox-sys-commander-apacheproxy:latest
+    - bibbox-default-network
+    build:
+      context:    ./apacheproxy
+      dockerfile: Dockerfile
     volumes:
-      - /opt/bibbox/proxy/sites:/usr/local/apache2/conf/sites
+      #- /opt/bibbox/proxy/sites:/usr/local/apache2/conf/sites
+      - /opt/bibbox/proxy/sites:/etc/apache2/sites-available/
+      - /opt/bibbox/proxy/sites-enabled:/etc/apache2/sites-enabled/
+      - /opt/bibbox/proxy/letsencrypt:/etc/letsencrypt
       - /opt/bibbox/sys-bibbox/frontend/dist/sys-bibbox-client:/var/www/html/sys-bibbox-client
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - DOMAINNAME=${DOMAINNAME:-demo.bibbox.org}
+      - EMAIL=${EMAIL:-backoffice.bibbox@gmail.com}
+    hostname: ${DOMAINNAME:-demo.bibbox.org}
 
-  #  bibbox-sys-commander-nginx:
-  #    container_name: bibbox-sys-commander-nginx
-  #    restart: unless-stopped
-  #    networks:
-  #    - bibbox-default-network
-  #    image: nginx
-  #    links:
-  #        -  bibbox-sys-commander-backend:backend
-  #    build:
-  #      context:    ./nginx
-  #      dockerfile: Dockerfile
-  #    volumes:
-  #      - ./client/dist:/usr/share/nginx/html
-  #      - ./proxy-configs/nginx.conf:/etc/nginx/nginx.conf
-  #      - /opt/bibbox:/opt/bibbox
-  #    ports:
-  #      - "8080:80"
-  #    depends_on:
-  #      -  bibbox-sys-commander-backend
+#  bibbox-sys-commander-nginx:
+#    container_name: bibbox-sys-commander-nginx
+#    restart: unless-stopped
+#    networks:
+#    - bibbox-default-network
+#    image: nginx
+#    links:
+#        -  bibbox-sys-commander-backend:backend
+#    build:
+#      context:    ./nginx
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./client/dist:/usr/share/nginx/html
+#      - ./proxy-configs/nginx.conf:/etc/nginx/nginx.conf
+#      - /opt/bibbox:/opt/bibbox
+#    ports:
+#      - "8080:80"
+#    depends_on:
+#      -  bibbox-sys-commander-backend
 
   bibbox-sys-commander-backend:
     container_name: bibbox-sys-commander-backend
@@ -45,10 +54,12 @@ services:
     networks:
       - bibbox-default-network
     links:
-      -  bibbox-sys-commander-redis:redis
-      -  bibbox-sys-commander-celery:celery
-      -  bibbox-sys-commander-postgres:postgres
-    image: bibbox/bibbox-sys-commander-backend:latest
+        -  bibbox-sys-commander-redis:redis
+        -  bibbox-sys-commander-celery:celery
+        -  bibbox-sys-commander-postgres:postgres
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
     ports:
       - "5010:5000"
     volumes:
@@ -71,9 +82,11 @@ services:
     networks:
       - bibbox-default-network
     links:
-      -  bibbox-sys-commander-redis:redis
-      -  bibbox-sys-commander-postgres:postgres
-    image: bibbox/bibbox-sys-commander-backend:latest
+        -  bibbox-sys-commander-redis:redis
+        -  bibbox-sys-commander-postgres:postgres
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
     command: bash -c 'while ! curl --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/auth/realms/master; do sleep 2; done; celery -A celery_worker.app_celerey worker -l INFO'
     volumes:
       - ./data/celery:/queue
@@ -89,11 +102,13 @@ services:
        retries: 5
     depends_on:
       bibbox-sys-commander-keycloak:
-        condition: service_started  
+        condition: service_started
 
   bibbox-sys-commander-celery-monitor:
     container_name: bibbox-sys-commander-celery-monitor
-    image: bibbox/bibbox-sys-commander-backend:latest
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
     networks:
       - bibbox-default-network
     links:
@@ -113,22 +128,24 @@ services:
       - /opt/bibbox:/opt/bibbox
 
   bibbox-sys-commander-postgres:
-    container_name:  bibbox-sys-commander-postgres
-    restart: unless-stopped
-    networks:
-      - bibbox-default-network
-    image: bibbox/bibbox-sys-commander-postgres:latest
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./data/postgresql/data:/var/lib/postgresql/data
-    env_file:
-      - .env
-    healthcheck:
-       test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${DB_NAME}'"]
-       interval: 10s
-       timeout: 5s
-       retries: 5
+      container_name:  bibbox-sys-commander-postgres
+      restart: unless-stopped
+      networks:
+       - bibbox-default-network
+      build:
+        context:   ./postgresql
+        dockerfile: Dockerfile
+      ports:
+        - "5432:5432"
+      volumes:
+        - ./data/postgresql/data:/var/lib/postgresql/data
+      env_file:
+        - .env
+      healthcheck:
+        test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${DB_NAME}'"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
 
   bibbox-sys-commander-redis:
     container_name: bibbox-sys-commander-redis
@@ -196,9 +213,9 @@ services:
         DB_WAIT_TIMEOUT: 180 # wait for postgres to initialize
         DB_SCHEMA: public # use the public schema
         JBOSS_CLI: "/opt/jboss/keycloak/bin/jboss-cli.sh"
- #       PROXY_ADDRESS_FORWARDING: "true"
- #       REDIRECT_SOCKET: "proxy-https"
- #       KEYCLOAK_FRONTEND_URL: e.g. https://keycloak.demo.bibbox.org/auth
+        PROXY_ADDRESS_FORWARDING: "true"
+        REDIRECT_SOCKET: "proxy-https"
+        KEYCLOAK_FRONTEND_URL: https://keycloak.demo.bibbox.org/auth
 
       env_file: # we want to read some variables from the .env file as they are shared with the backend
         - .env
@@ -238,7 +255,6 @@ services:
   bibbox-sys-commander-master-fdp-client:
     image: fairdata/fairdatapoint-index-client:1.13
     container_name: bibbox-sys-commander-master-fdp-client
-    restart: unless-stopped
     ports:
       - "8088:80"
     environment:
@@ -251,7 +267,6 @@ services:
   bibbox-sys-commander-master-fdp-mongo:
     image: mongo:4.0.12
     container_name: bibbox-sys-commander-master-fdp-mongo
-    restart: unless-stopped
     volumes:
       - ./data/mongo/data:/data/db
     networks:
@@ -260,7 +275,6 @@ services:
   bibbox-sys-commander-master-fdp-blazegraph:
     image: metaphacts/blazegraph-basic:2.2.0-20160908.003514-6
     container_name: bibbox-sys-commander-master-fdp-blazegraph
-    restart: unless-stopped
     volumes:
       - ./data/blazegraph:/blazegraph-data
     networks:

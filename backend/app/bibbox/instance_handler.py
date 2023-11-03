@@ -6,7 +6,7 @@ from backend.app.bibbox.file_handler import FileHandler
 
 
 # TODO can we just initaite the class with the instance name and then read and write the stuff directly from the directory
-#      we could also renamoe the class to InstanceHandler, as we are doing template and proxies
+#      we could also rename the class to InstanceHandler, as we are doing template and proxies
 #      I would even do the update of the INSTANCE file with the proxy information and other things in this class
 
 class InstanceHandler ():
@@ -57,6 +57,8 @@ class InstanceHandler ():
                     'TEMPLATE'      : '',
                     'DISPLAYNAME'   : ''
                 }
+                # possible bugfix is to asuure type superscriptions yields desired Output
+                assert isinstance(services_dict[service_key]['ports'], list), "Check template ports to be of array type e.g.: '- 80:80'"
                 port_suffix = services_dict[service_key]['ports'][0].split(":")[-1]
                 proxy_entry['CONTAINER'] = "{}:{}".format(services_dict[service_key]['container_name'], port_suffix)
                 for key, value in services_dict[service_key]['proxy'].items():
@@ -91,9 +93,12 @@ class InstanceHandler ():
                 proxyfile_content += proxy + '\n\n'
             
             else:
-                # TODO
-                # other dynamic templates
-                pass
+                defaultTemplate = fh.getConfigFile ('proxy-{}.template'.format(pi['TEMPLATE']))
+                proxy = defaultTemplate.replace('§§BASEURL', config['baseurl'])
+                proxy = proxy.replace('§§INSTANCEID', pi['URLPREFIX'])
+                proxy = proxy.replace('§§CONTAINERNAME', pi['CONTAINER'])
+
+                proxyfile_content += proxy + '\n\n'
 
         filename = '005-' + self.instanceDescr['instancename'] + '.conf'
         fh.writeProxyFile (filename, proxyfile_content)

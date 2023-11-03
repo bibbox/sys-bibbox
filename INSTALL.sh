@@ -30,6 +30,7 @@ INFO: The first time loading the applications tab of the website shows no applic
 ---------------------------------------------------------------------------------------------------
 '
 read -p "Specify domainname + TLD (e.g. silicolabv4.bibbox.org): " DOMAINNAME
+read -p "Specify EMAIL for https-certificate (e.g. backoffice.bibbox@gmail.com): " EMAIL
 # TODO: read envparams from file
 
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
@@ -46,7 +47,11 @@ apt install docker-compose -y
 apt install npm -y
 apt install python3-pip -y
 
-printf 'n\n' | npm i -g @angular/cli
+#nvm install 14.16.0 -y
+#printf 'n\n' | npm i -g @angular/cl
+#npm audit fix
+#printf 'n\n' | npm i -g
+
 #printf 'n\n' | npm update -g @angular/cli
 
 
@@ -99,18 +104,57 @@ ng build --configuration production
 
 # copy config templates to the actual destination
 cp /opt/bibbox/sys-bibbox/config-templates/100-error.conf /opt/bibbox/proxy/sites/100-error.conf
-cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/sites/000-default.conf
+#cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/sites/000-default.conf
+cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf.apache2 /opt/bibbox/proxy/sites/000-default.conf
 cp /opt/bibbox/sys-bibbox/config-templates/bibbox.config /opt/bibbox/config/bibbox.config
 cp /opt/bibbox/sys-bibbox/config-templates/005-fdp.conf /opt/bibbox/proxy/sites/005-fdp.conf
 
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-default.template /opt/bibbox/config/proxy-default.template
 cp /opt/bibbox/sys-bibbox/config-templates/proxy-websocket.template /opt/bibbox/config/proxy-websocket.template
 
+cd /opt/bibbox/sys-bibbox
 
 docker network create bibbox-default-network
 
-cd /opt/bibbox/sys-bibbox
-docker-compose -f docker-compose.dev.yml up --build -d
+
+
+docker-compose -f docker-compose.dev.yml  up --build -d
+
+docker exec bibbox-sys-commander-apacheproxy ln -s ../sites-available/000-default.conf /etc/apache2/sites-enabled/
+
+docker exec -it bibbox-sys-commander-apacheproxy certbot --apache -d ${DOMAINNAME:-demo.bibbox.org} -n --email ${EMAIL:-backoffice.bibbox@gmail.com} --agree-tos
+docker exec -it bibbox-sys-commander-apacheproxy certbot --expand --apache -d api.${DOMAINNAME:-demo.bibbox.org} -n --email ${EMAIL:-backoffice.bibbox@gmail.com} --agree-tos
+docker exec -it bibbox-sys-commander-apacheproxy certbot --expand --apache -d keycloak.${DOMAINNAME:-demo.bibbox.org} -n --email ${EMAIL:-backoffice.bibbox@gmail.com} --agree-tos
+docker exec -it bibbox-sys-commander-apacheproxy certbot --expand --apache -d fdp.${DOMAINNAME:-demo.bibbox.org} -n --email ${EMAIL:-backoffice.bibbox@gmail.com} --agree-tos
+
+
+cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/sites/000-default-le-ssl.conf
+
+#docker exec -it bibbox-sys-commander-apacheproxy cp /usr/local/apache2/conf/sites/000-default.conf /etc/apache2/sites-available/000-default-le-ssl.conf
+
+docker exec -it bibbox-sys-commander-apacheproxy apache2ctl -k graceful
+
+
+# re init db
+# docker exec bibbox-sys-commander-backend python manage.py recreate_db
+# docker exec bibbox-sys-commander-backend python manage.py seed_db
+
+
+docker exec bibbox-sys-commander-apacheproxy ln -s ../sites-available/000-default.conf /etc/apache2/sites-enabled/
+
+docker exec -it bibbox-sys-commander-apacheproxy certbot --apache -d ${DOMAINNAME:-demo.bibbox.org} -n --email ${EMAIL:-backoffice.bibbox@gmail.com} --agree-tos
+
+cp /opt/bibbox/sys-bibbox/config-templates/000-default.conf /opt/bibbox/proxy/sites/000-default-le-ssl.conf
+
+#docker exec -it bibbox-sys-commander-apacheproxy cp /usr/local/apache2/conf/sites/000-default.conf /etc/apache2/sites-available/000-default-le-ssl.conf
+
+docker exec -it bibbox-sys-commander-apacheproxy apache2ctl -k graceful
+
+
+# re init db
+# docker exec bibbox-sys-commander-backend python manage.py recreate_db
+# docker exec bibbox-sys-commander-backend python manage.py seed_db
+
 
 echo 'INSTALLATION COMPLETE'
 
