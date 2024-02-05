@@ -7,13 +7,16 @@ import {environment} from '../environments/environment';
 export const APP_TITLE = 'FAIR-TOOLBOX';
 export const APP_SUB_TITLE = 'based on BIBBOX v4.2';
 
+// TODO set http:// or https:// via variable (set during installation)
 // paths of api endpoints, to which we send requests to
-export const API_INSTANCES_URL = 'http://' + environment.BASEURL + '/api/v1/instances/';
-export const API_APPLICATIONS_URL = 'http://' + environment.BASEURL + '/api/v1/apps/';
-export const API_ACTIVITY_URL = 'http://' + environment.BASEURL + '/api/v1/activities/';
-export const API_KEYVALUE_URL = 'http://' + environment.BASEURL + '/api/v1/keyvalue/';
-export const SOCKET_IO_URL = 'http://' + environment.BASEURL + '/socket.io';
-export const API_KEYCLOAK_URL = 'http://' + environment.BASEURL + '/api/v1/kc/';
+
+export const API_INSTANCES_URL = 'https://' + environment.BASEURL + '/api/v1/instances/';
+export const API_APPLICATIONS_URL = 'https://' + environment.BASEURL + '/api/v1/apps/';
+export const API_ACTIVITY_URL = 'https://' + environment.BASEURL + '/api/v1/activities/';
+export const API_AUTH_URL = 'https://' + environment.BASEURL + '/api/v1/users/';
+export const SOCKET_IO_URL = 'https://' + environment.BASEURL + '/socket.io';
+export const API_KEYCLOAK_URL = 'https://' + environment.BASEURL + '/api/v1/kc/';
+
 
 // use below only when using angular proxy
 // export const API_INSTANCES_URL = '/api/v1/instances/';
