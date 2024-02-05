@@ -10,7 +10,8 @@ export function initializeKeycloak(keycloak: KeycloakService) {
         clientId: environment.KEYCLOAK_CONFIG.clientId,
       },
       initOptions: {
-        checkLoginIframe: false,
+        onLoad: 'check-sso',
+        checkLoginIframe: false
       },
       enableBearerInterceptor: true,
       bearerPrefix: 'Bearer',

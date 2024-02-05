@@ -118,6 +118,7 @@ docker network create bibbox-default-network
 
 
 
+
 docker-compose -f docker-compose.dev.yml  up --build -d
 
 docker exec bibbox-sys-commander-apacheproxy ln -s ../sites-available/000-default.conf /etc/apache2/sites-enabled/
@@ -154,6 +155,7 @@ docker exec -it bibbox-sys-commander-apacheproxy apache2ctl -k graceful
 # re init db
 # docker exec bibbox-sys-commander-backend python manage.py recreate_db
 # docker exec bibbox-sys-commander-backend python manage.py seed_db
+
 
 
 echo 'INSTALLATION COMPLETE'

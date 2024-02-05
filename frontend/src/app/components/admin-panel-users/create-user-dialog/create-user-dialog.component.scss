@@ -1,4 +1,109 @@
 @import "src/styles-variables";
-button:disabled:hover {
-  background-color: $custom_gray_light;
+
+.user-dialog-overlay {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+
+  .user-dialog-overlay__header {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 50px;
+
+    h1 {
+      margin-bottom: 0;
+    }
+
+    .dialog-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      float: left;
+      width: 18px;
+      height: 18px;
+      fill: $custom_gray_dark;
+      cursor: pointer;
+      transition: fill 0.2s ease-out;
+      z-index: 1;
+
+      &:hover {
+        fill: $custom_blue;
+      }
+    }
+  }
+
+  .user-dialog-overlay__text {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .user-dialog-overlay__body {
+    display: flex;
+    width: 100%;
+    flex-flow: row wrap;
+    column-gap: 60px;
+    row-gap: 30px;
+
+    .user-dialog-overlay__body-column {
+      display: flex;
+      flex-flow: column nowrap;
+      width: calc(50% - 30px);
+      row-gap: 30px;
+    }
+
+    .user-dialog-item {
+      display: flex;
+      align-self: center;
+      flex-flow: column wrap;
+      width: 100%;
+
+      .error-messages {
+        flex-grow: 1;
+        margin-top: 10px;
+
+        ::ng-deep .mat-error {
+          color: $custom_color_error;
+        }
+      }
+      .user-dialog-item-body {
+        display: flex;
+        flex-flow: column nowrap;
+        width: 100%;
+
+        label {
+          width: 100%;
+          margin-bottom: 10px;
+          padding-right: 30px;
+          font-weight: $custom_font_weight_medium;
+          font-size: 13pt;
+          color: $custom_blue;
+        }
+      }
+    }
+  }
+
+  .user-dialog-overlay__footer {
+    margin-top: 50px;
+
+    .user-dialog-overlay__save-button {
+      display: flex;
+      justify-content: center;
+
+      button {
+        min-width: 200px;
+      }
+    }
+  }
+}
+
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+  .user-dialog-overlay {
+    .user-dialog-overlay__body {
+      .user-dialog-overlay__body-column {
+        width: 100%;
+      }
+    }
+  }
 }

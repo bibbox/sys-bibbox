@@ -1,5 +1,5 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {ApplicationGroupAdapter, ApplicationGroupState} from '../reducers/application-group.reducer';
+import {ApplicationGroupAdapter, ApplicationGroupState, getApplicationGroupsFilters} from '../reducers/application-group.reducer';
 
 const getApplicationGroupFeatureState = createFeatureSelector<ApplicationGroupState>('applicationGroups');
 
@@ -21,4 +21,9 @@ export const getApplicationGroupsLoading = createSelector(
 export const getApplicationGroupsError = createSelector(
   getApplicationGroupFeatureState,
   (state: ApplicationGroupState) => state.error
+);
+
+export const selectApplicationGroupsFilters = createSelector(
+  getApplicationGroupFeatureState,
+  getApplicationGroupsFilters
 );

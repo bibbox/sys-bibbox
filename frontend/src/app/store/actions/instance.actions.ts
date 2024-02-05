@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {InstanceItem} from '../models/instance-item.model';
+import {IInstanceFilters, InstanceItem} from '../models/instance-item.model';
 
 export enum InstanceActionTypes {
   LOAD_INSTANCES = '[INSTANCE] Load Instances',
@@ -11,7 +11,8 @@ export enum InstanceActionTypes {
   DELETE_INSTANCE = '[INSTANCE] Delete Instance',
   DELETE_INSTANCE_SUCCESS = '[INSTANCE] Delete Instance Success',
   DELETE_INSTANCE_FAILURE = '[INSTANCE] Delete Instance Failure',
-  DELETE_ALL_INSTANCES = '[INSTANCE] Delete all Instances'
+  DELETE_ALL_INSTANCES = '[INSTANCE] Delete all Instances',
+  UPDATE_INSTANCE_FILTERS = '[INSTANCE] Update filters'
 }
 
 export class LoadInstancesAction implements Action {
@@ -71,6 +72,12 @@ export class DeleteAllInstancesAction implements Action {
   constructor() {}
 }
 
+export class UpdateInstanceFiltersAction implements Action {
+  readonly type = InstanceActionTypes.UPDATE_INSTANCE_FILTERS;
+
+  constructor(public payload: IInstanceFilters) {}
+}
+
 
 export type InstanceAction =
   LoadInstancesAction
@@ -82,4 +89,5 @@ export type InstanceAction =
   | DeleteInstanceAction
   | DeleteInstanceSuccessAction
   | DeleteInstanceFailureAction
-  | DeleteAllInstancesAction;
+  | DeleteAllInstancesAction
+  | UpdateInstanceFiltersAction;

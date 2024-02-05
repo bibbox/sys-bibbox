@@ -1,98 +1,121 @@
 @import "src/styles-variables";
-.application-tile {
-  padding: 15px 10px 10px 10px;
-  text-align: center;
-  width: 150px;
-  height: 95%;
-  float: left;
-  background: rgba(255, 255, 255, 0.75);
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-  //color: rgb(85, 95, 125);
-  color: $custom_gray_dark;
-  border-radius: 0 10px;
-  margin: 10px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  -webkit-transition: all 0.2s ease-in-out;
-  position: relative;
 
-  .name {
-    float: left;
-    width: 100%;
-    height: 50px;
-    font-size: 16px;
-    margin-bottom: 10px;
-    margin-top: 20px;
-    border-bottom: solid 1px rgb(85, 95, 125);
-    transition: border 0.2s ease-in-out;
-    -webkit-transition: border 0.2s ease-in-out
+:host {
+  width: calc(25% - 15px);
+}
+.application-tile {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  padding: 15px;
+  background-color: white;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  border-radius: 0 10px;
+  cursor: pointer;
+  transform-origin: center center;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+
+  .icon {
+    width: 90px;
+    height: 90px;
+    margin-right: 20px;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    img {
+      object-fit: contain;
+      object-position: center;
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .description {
+    flex-grow: 1;
+    flex-shrink: 1;
     text-align: left;
-    font-size: 13px;
-    width: 100%;
-    display: inline-block;
-    color: $custom_gray_dark;
-    transition: color 0.2s ease-in-out;
-    -webkit-transition: color 0.2s ease-in-out;
-  }
 
-  .decoration {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    width: 80px;
-    height: auto;
+    .name {
+      color: $custom_blue;
+      font-weight: 500;
+    }
+    .text {
+      font-size: 10pt;
+      font-weight: 300;
+      line-height: 115%;
 
-    img {
+      .arrow-wrapper {
+        display: inline-flex;
+        align-items: center;
+
+        .arrow {
+          fill: $custom_gray_dark;
+          margin-left: 5px;
+          transition: fill 0.2s ease-out;
+
+          &:hover {
+            fill: $custom_blue;
+          }
+        }
+      }
+    }
+    .badges {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-start;
+      column-gap: 5;
       width: 100%;
-      height: auto
+      margin-top: 5px;
+
+      span {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
+        height: 20px;
+        padding: 1px 10px 0 10px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        background-color: $custom_gray_darkest;
+        border-radius: 5px;
+        color: white;
+        font-size: 8pt;
+        line-height: 19px;
+
+        &.new {
+          background-color: $custom_color_new;
+        }
+        &.fair {
+          background-color: $custom_color_fair;
+        }
+      }
     }
   }
+}
 
 
-  .icon {
-    font-size: 35px;
-    float: left;
+@media only screen and (max-width: $custom_responsive_size_xl) {
+  :host {
+    width: calc(33.3333% - 13.3333px);
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_l) {
+  :host {
+    width: calc(50% - 10px);
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+  :host {
     width: 100%;
-    margin-bottom: 10px;
-
-    img {
-      max-height: 90px;
-      max-width: 90px;
-      height: auto;
-      width: auto;
-      align-self: center;
-      justify-self: center;
-      justify-content: center;
-    }
   }
-
-}
-
-
-.application-tile:hover {
-  color: white;
-  background: $custom_blue; //#6496b4
-}
-
-.application-tile.highlight .name,
-.application-tile:hover .name {
-  border-bottom: solid 1px white
-}
-
-.application-tile.highlight .description,
-.application-tile:hover .description {
-  color: white
-}
-
-.application-tile.highlight .tag,
-.application-tile:hover .tag {
-  color: white;
-  background: rgba(255, 255, 255, 0.2)
-}
-
-.application-tile:hover .tag:hover{
-  background: rgba(0, 0, 0, 0.9)
 }

@@ -66,6 +66,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/bibbox:/opt/bibbox
       - ./backend:/usr/src/bibbox-sys-commander/backend
+      - ./data/db_init_done:/db_init_done
     env_file:
       - .env
     depends_on:

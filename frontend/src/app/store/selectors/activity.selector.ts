@@ -19,3 +19,8 @@ export const selectCurrentActivity = createSelector(
     return activityEntities[activityId];
   }
 );
+
+export const selectActivityFilters = createSelector(
+  selectActivityState,
+  fromActivity.getActivityFilters
+);

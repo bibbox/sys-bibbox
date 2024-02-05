@@ -1,19 +1,22 @@
 // strings
 
 
+import { Toolbar } from 'ngx-editor';
 import {environment} from '../environments/environment';
 
-export const APP_TITLE_LONG = 'FAIR-Toolbox based on BIBBOX v4.0';
-export const APP_TITLE_SHORT = 'FAIR-Toolbox';
+export const APP_TITLE = 'FAIR-TOOLBOX';
+export const APP_SUB_TITLE = 'based on BIBBOX v4.2';
 
 // TODO set http:// or https:// via variable (set during installation)
 // paths of api endpoints, to which we send requests to
+
 export const API_INSTANCES_URL = 'https://' + environment.BASEURL + '/api/v1/instances/';
 export const API_APPLICATIONS_URL = 'https://' + environment.BASEURL + '/api/v1/apps/';
 export const API_ACTIVITY_URL = 'https://' + environment.BASEURL + '/api/v1/activities/';
 export const API_AUTH_URL = 'https://' + environment.BASEURL + '/api/v1/users/';
 export const SOCKET_IO_URL = 'https://' + environment.BASEURL + '/socket.io';
 export const API_KEYCLOAK_URL = 'https://' + environment.BASEURL + '/api/v1/kc/';
+
 
 // use below only when using angular proxy
 // export const API_INSTANCES_URL = '/api/v1/instances/';
@@ -40,6 +43,16 @@ export const ACTIVITY_STATES = {
 };
 
 
+export const toolbar: Toolbar = [
+  ['bold', 'italic'],
+  ['underline', 'strike'],
+  ['code', 'blockquote'],
+  ['ordered_list', 'bullet_list'],
+  [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+  ['link', 'image'],
+  ['text_color', 'background_color'],
+  ['align_left', 'align_center', 'align_right', 'align_justify'],
+];
 
 // proxy.conf.json
 // "/api/*": {

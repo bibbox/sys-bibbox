@@ -1,49 +1,25 @@
-<!--<mat-accordion>-->
-<!--  <mat-expansion-panel hideToggle-->
-<!--    *ngFor="let container of containerNames"-->
-<!--    class="sys-container-panel"-->
-<!--                       (opened)="setScrollHeight(scrollContainer.scrollHeight)"-->
-<!--  >-->
-<!--    <mat-expansion-panel-header class="sys-container-panel__header">-->
-<!--      {{container}}-->
-<!--    </mat-expansion-panel-header>-->
-<!--    <div>-->
-<!--      <div class="sys-container-log-item">-->
-<!--        <span class="sys-container-log-item__containername">{{container}}</span><br>-->
-<!--        <span class="sys-container-log-item__command">$ docker logs {{container}} &#45;&#45;tail 200</span><br>-->
-<!--        <div class="sys-container-log-item__container" #scrollContainer [scrollTop]="scrollContainer.scrollHeight">  &lt;!&ndash;#scrollContainer [scrollTop]="scrollContainer.scrollHeight">&ndash;&gt;-->
-<!--          <div *ngFor="let log_entry of sysLogs[container]" class="sys-container-log-item__container-entry">{{log_entry}}</div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </mat-expansion-panel>-->
-<!--</mat-accordion>-->
+<h1 class="gapS text-center">Sys-Logs</h1>
 
-<mat-accordion>
-  <mat-expansion-panel hideToggle *ngFor="let container of containerNames" class="sys-container-panel"
+<p class="gapL text-center">
+  Here you can find BIBBOX core system logs.<br />
+  These can be useful for system administration.
+</p>
+
+<p *ngIf="!containerNames?.length" class="text-center">No logs found</p>
+
+<mat-accordion *ngIf="!!containerNames?.length">
+  <mat-expansion-panel hideToggle *ngFor="let container of containerNames"
                        (opened)="periodicallyRefresh(container); setScrollHeight(scrollContainer.scrollHeight)"
                        (closed)="stopPeriodicRefresh(container)">
-  >
-    <mat-expansion-panel-header class="sys-container-panel__header">
+    <mat-expansion-panel-header>
       {{ container }}
+      <app-arrow-down-icon class="arrow" [width]="16" [height]="16"></app-arrow-down-icon>
+      <app-arrow-up-icon class="arrow active" [width]="16" [height]="16"></app-arrow-up-icon>
     </mat-expansion-panel-header>
-    <div>
-      <div class="sys-container-log-item">
-        <span class="sys-container-log-item__containername">{{ container }}</span><br>
-        <span class="sys-container-log-item__command">$ docker logs {{ container }} --tail 200</span><br>
-        <div class="sys-container-log-item__container" #scrollContainer [scrollTop]="scrollContainer.scrollHeight">
-          <div *ngFor="let log_entry of sysLogs[container]" class="sys-container-log-item__container-entry">{{ log_entry }}</div>
-        </div>
-      </div>
+    
+    <span class="command">$ docker logs {{ container }} --tail 200</span>
+    <div class="logs" #scrollContainer [scrollTop]="scrollContainer.scrollHeight">
+      <div *ngFor="let log_entry of sysLogs[container]" class="log-entry">{{ log_entry }}</div>
     </div>
   </mat-expansion-panel>
 </mat-accordion>
-
-
-<!--<div class="sys-container-log-item" *ngFor="let container of containerNames">-->
-<!--  <span class="sys-container-log-item__containername">{{container}}</span><br>-->
-<!--  <span class="sys-container-log-item__command">$ docker logs {{container}} &#45;&#45;tail 200</span><br>-->
-<!--  <div class="sys-container-log-item__container" #scrollContainer [scrollTop]="scrollContainer.scrollHeight">  &lt;!&ndash;#scrollContainer [scrollTop]="scrollContainer.scrollHeight">&ndash;&gt;-->
-<!--    <div *ngFor="let log_entry of sysLogs[container]" class="sys-container-log-item__container-entry">{{log_entry}}</div>-->
-<!--  </div>-->
-<!--</div>-->

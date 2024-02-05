@@ -1,26 +1,40 @@
 <div id="applications">
+  <h1 class="gapS text-center">Store</h1>
+
+  <p class="gapL text-center">
+    Here you can find all available apps you can install in BIBBOX.<br />
+    You can also install multiple instances of the same app.
+  </p>
+
   <div class="application-search">
-    <div class="input-group">
+    <div>
       <input
-        [formControl]="filterFormControl"
-        placeholder="Search for apps"
-        (input)="filter(this.filterFormControl.value)"
-        class="form-control py-2 border-right-0 border"
+        [formControl]="searchFormControl"
+        placeholder="Search by name or tag/type"
+        (input)="filter()"
         type="search"
       />
-      <span class="input-group-append">
-        <span class="input-group-text bg-white">
-          <i class="fas fa-search"></i>
-        </span>
-      </span>
+
+      <select [formControl]="filterFormControl" (change)="filter()">
+        <option [value]="''">All apps</option>
+        <option [value]="'new'">New apps</option>
+        <option [value]="'FAIR'">FDP apps (FAIR)</option>
+      </select>
     </div>
-    <br>
-    <!--    <div class="application-search__selected-instances"> selected: {{filteredInstances.length}}/{{instanceItems.length}}</div>-->
+
+    <div>
+      <select [formControl]="sortFormControl" (change)="filter()">
+        <option [value]="'category'">Order by category</option>
+        <option [value]="'app'">Order by app name</option>
+      </select>
+    </div>
   </div>
 
-  <div id="applications-results">
+  <p *ngIf="filteredAppGroups.length === 0" class="text-center">No apps found</p>
+
+  <div *ngIf="filteredAppGroups.length > 0" id="applications-results">
     <div *ngFor="let applicationGroup of filteredAppGroups">
-      <app-application-group [applicationGroup]="applicationGroup"></app-application-group>
+      <app-application-group [applicationGroup]="applicationGroup" [searchByTag]="searchByTag"></app-application-group>
     </div>
   </div>
 </div>

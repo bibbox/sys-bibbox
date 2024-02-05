@@ -27,14 +27,10 @@ echo "PostgreSQL started!"
 
 # Run below commands from manage.py to initialize db and have some default data.
 # add a flag to preserve the DB at a build
-if [ ! -f  DBINIT.DONE ]; then
-    if [ "$SKIPPING_RECREATE_DB" = true ]; then
-      echo "Skipping recreate_db!!! SET SKIP_RECREATE_DB to false if you do not want to skip recreate_db"
-    else
-      python manage.py recreate_db
-    fi
+if [ ! -f  /db_init_done/DBINIT.DONE ]; then
+    python manage.py recreate_db
     python manage.py sync_app_catalogue
-    touch DBINIT.DONE
+    touch /db_init_done/DBINIT.DONE
 fi
 
 

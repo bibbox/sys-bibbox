@@ -1,12 +1,12 @@
-import {InstanceAction, InstanceActionTypes} from '../actions/instance.actions';
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
-import {ActivityItem} from '../models/activity.model';
+import {ActivityItem, IActivityFilters} from '../models/activity.model';
 import {ActivityAction, ActivityActionTypes} from '../actions/activity.actions';
 
 export interface ActivityState extends EntityState<ActivityItem>{
   selectedEntityID: number;
   loading: boolean;
   error: Error;
+  filters: IActivityFilters;
 }
 
 export const ActivityAdapter: EntityAdapter<ActivityItem> = createEntityAdapter<ActivityItem>();
@@ -16,10 +16,17 @@ const defaultState: ActivityState = {
   entities: {},
   selectedEntityID: null,
   loading: false,
-  error: undefined
+  error: undefined,
+  filters: {
+    searchterm: '',
+    state: '',
+    type: ''
+  }
 };
 
 export const initialState = ActivityAdapter.getInitialState(defaultState);
+
+export const getActivityFilters = (state: ActivityState): IActivityFilters => state.filters;
 
 export function ActivityReducer(
   state: ActivityState = defaultState,
@@ -42,6 +49,11 @@ export function ActivityReducer(
         ...state,
         error: action.payload,
         loading: false
+      };
+    case ActivityActionTypes.UPDATE_ACTIVITIES_FILTERS:
+      return {
+        ...state,
+        filters: action.payload
       };
     default:
       return {...state};

@@ -1,34 +1,61 @@
 <div class="instances">
+  <h1 class="gapS text-center">Instances</h1>
+
+  <p class="gapL text-center">
+    Here you can find and manage <strong>already installed apps</strong> (instances).<br />
+    To install a new app instance, head over to the <a [routerLink]="'/applications'">store</a> page.
+  </p>
+
   <div class="instances-search">
-    <div class="input-group">
+    <div>
       <input
-        [formControl]="filterFormControl"
-        placeholder="Search for instances"
-        (input)="filterInstances(this.filterFormControl.value)"
-        class="form-control py-2 border-right-0 border"
+        [formControl]="searchFormControl"
+        placeholder="Search by instance or app name"
+        (input)="filterInstances()"
         type="search"
       />
-      <span class="input-group-append">
-        <span class="input-group-text bg-white">
-          <i class="fas fa-search"></i>
-        </span>
-      </span>
 
+      <select [formControl]="statusFormControl" (change)="filterInstances()">
+        <option [value]="''">Any status</option>
+        <option [value]="'RUNNING'">Running</option>
+        <option [value]="'ERROR'">Error</option>
+        <option [value]="'STOPPED'">Stopped</option>
+      </select>
+
+      <select [formControl]="showOnlyOwnedInstances" (change)="filterInstances()">
+        <option [value]="'false'">Installed by anyone</option>
+        <option [value]="'true'">Installed by me</option>
+      </select>
     </div>
 
-    <mat-slide-toggle
-      class="instances-search__slide-toggle"
-      [checked]="false"
-      [disabled]="false"
-      [color]="slideThemePalette"
-      (change)="filterOnlyOwnInstances()"
-    >
-      Only show my instances <!-- https://stackoverflow.com/questions/41440998/how-can-i-use-custom-theme-palettes-in-angular -->
-    </mat-slide-toggle>
-
-    <br>
+    <div>
+      <select [formControl]="showAsList" (change)="updateFiltersInStore()">
+        <option [value]="'false'">Show as tiles</option>
+        <option [value]="'true'">Show as list</option>
+      </select>
+    </div>
   </div>
-  <div class="instances_results">
-    <app-instance-tile *ngFor="let instance of filteredInstances" [instance]="instance"></app-instance-tile>
+
+  <p *ngIf="filteredInstanceGroups.length === 0 && filteredInstanceList.length === 0" class="text-center">No instances found.</p>
+
+  <div *ngIf="showAsList.value === 'false' && filteredInstanceGroups.length > 0" class="instances-results">
+    <app-instance-group *ngFor="let group of filteredInstanceGroups" [group]="group"></app-instance-group>
+  </div>
+
+  <div *ngIf="showAsList.value === 'true' && filteredInstanceList.length > 0" class="table-wrapper">
+    <table class="instances_results">
+      <thead>
+        <tr>
+          <th>Instance title and subtitle</th>
+          <th>Instance information</th>
+          <th class="text-center">Instance status</th>
+          <th class="text-center">External links</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <app-instance-list-item *ngFor="let instance of filteredInstanceList" [instance]="instance"></app-instance-list-item>
+      </tbody>
+    </table>
   </div>
 </div>

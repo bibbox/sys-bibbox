@@ -33,6 +33,16 @@ user_dictionary = api.model('User', {
     # add roles?
 })
 
+user_dictionary_for_update = api.model('User', {
+    'username': fields.String(required=True),
+    'email': fields.String,
+    'password': fields.String(required=False),
+    'firstName': fields.String,
+    'lastName': fields.String,
+    'roles' : fields.List(fields.String, required = True)
+    # add roles?
+})
+
 user_role_mapping = api.model('User_Role_Mapping', {
     'user_role_mappings': fields.List(fields.Nested(api.model('User_Roles', {
         'user_id': fields.String(required=True),
@@ -108,7 +118,7 @@ class User(Resource):
 
 
     @api.doc("Update a User")
-    @api.expect(user_dictionary, validate=True)
+    @api.expect(user_dictionary_for_update, validate=True)
     @auth_token_required(roles=[KeycloakRoles.admin])
     def patch(self, user_id):
         try:

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {initializeKeycloak} from './keycloak-init.factory';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 // design design modules
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -30,6 +31,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTableModule} from '@angular/material/table';
+import { NgxEditorModule } from 'ngx-editor';
 
 // ngrx store
 import {MetaReducer, StoreModule} from '@ngrx/store';
@@ -58,16 +60,18 @@ import { AppComponent } from './components/app-scaffold/app.component';
 import { HeaderComponent } from './components/app-scaffold/header/header.component';
 import { FooterComponent } from './components/app-scaffold/footer/footer.component';
 import { InstancesComponent } from './components/instances/instances.component';
+import { InstanceGroupComponent } from './components/instances/instance-group/instance-group.component';
 import { ApplicationsComponent } from './components/applications/applications.component';
 import { ContactComponent } from './components/about/contact/contact.component';
 import { PartnersComponent } from './components/about/partners/partners.component';
 import { ImprintComponent } from './components/about/imprint/imprint.component';
-import { CitationComponent } from './components/about/citation/citation.component';
 import { ActivitiesComponent } from './components/activities/activities.component';
 import { InstanceDetailPageComponent } from './components/instances/instance-detail-page/instance-detail-page.component';
 import { ApplicationGroupComponent } from './components/applications/application-group/application-group.component';
 import { ApplicationTileComponent} from './components/applications/application-group/application-tile/application-tile.component';
 import { InstanceTileComponent } from './components/instances/instance-tile/instance-tile.component';
+import { InstanceListItemComponent } from './components/instances/instance-list-item/instance-list-item.component';
+import { InstanceDeleteDialogComponent } from './components/instances/instance-delete-dialog/instance-delete-dialog.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InstallScreenComponent } from './components/applications/install-screen/install-screen.component';
 import { InstallScreenDialogComponent } from './components/applications/install-screen-dialog/install-screen-dialog.component';
@@ -75,12 +79,37 @@ import { ActivityMenuOverlayComponent } from './components/activities/activity-m
 import { AdminPanelSysLogsComponent } from './components/admin-panel-sys-logs/admin-panel-sys-logs.component';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { InfoComponent } from './components/info/info.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { AdminPanelInstancesComponent } from './components/admin-panel-instances/admin-panel-instances.component';
 import { AdminPanelUsersComponent } from './components/admin-panel-users/admin-panel-users.component';
 import { CreateUserDialogComponent } from './components/admin-panel-users/create-user-dialog/create-user-dialog.component';
 import { ConfirmationDialogComponent } from './components/admin-panel-users/confirmation-dialog/confirmation-dialog.component';
+import { LoginIconComponent } from './components/icons/login-icon/login-icon.component';
+import { LogoutIconComponent } from './components/icons/logout-icon/logout-icon.component';
+import { UserIconComponent } from './components/icons/user-icon/user-icon.component';
+import { CheckIconComponent } from './components/icons/check-icon/check-icon.component';
+import { CrossIconComponent } from './components/icons/cross-icon/cross-icon.component';
+import { ArrowDownIconComponent } from './components/icons/arrow-down-icon/arrow-down-icon.component';
+import { ArrowUpIconComponent } from './components/icons/arrow-up-icon/arrow-up-icon.component';
+import { CrossClearIconComponent } from './components/icons/cross-clear-icon/cross-clear-icon.component';
+import { InstallIconComponent } from './components/icons/install-icon/install-icon.component';
+import { SearchIconComponent } from './components/icons/search-icon/search-icon.component';
+import { BackIconComponent } from './components/icons/back-icon/back-icon.component';
+import { GuideIconComponent } from './components/icons/guide-icon/guide-icon.component';
+import { DocsIconComponent } from './components/icons/docs-icon/docs-icon.component';
+import { RestartIconComponent } from './components/icons/restart-icon/restart-icon.component';
+import { StopIconComponent } from './components/icons/stop-icon/stop-icon.component';
+import { PulseIconComponent } from './components/icons/pulse-icon/pulse-icon.component';
+import { GithubIconComponent } from './components/icons/github-icon/github-icon.component';
+import { ListIconComponent } from './components/icons/list-icon/list-icon.component';
+import { CliIconComponent } from './components/icons/cli-icon/cli-icon.component';
+import { ErrorIconComponent } from './components/icons/error-icon/error-icon.component';
+import { LaunchIconComponent } from './components/icons/launch-icon/launch-icon.component';
+import { DeleteIconComponent } from './components/icons/delete-icon/delete-icon.component';
+import { SaveIconComponent } from './components/icons/save-icon/save-icon.component';
+import { EditIconComponent } from './components/icons/edit-icon/edit-icon.component';
+import { PlusIconComponent } from './components/icons/plus-icon/plus-icon.component';
+import { BurgerIconComponent } from './components/icons/burger-icon/burger-icon.component';
 import {UserEffects} from './store/effects/user.effects';
+import {SafeHtmlPipe} from './safehtml.pipe';
 
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  [storeFreeze] : [];
@@ -91,6 +120,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     HeaderComponent,
     FooterComponent,
     InstancesComponent,
+    InstanceGroupComponent,
     ApplicationsComponent,
     ContactComponent,
     PartnersComponent,
@@ -101,16 +131,44 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
     ApplicationGroupComponent,
     ApplicationTileComponent,
     InstanceTileComponent,
+    InstanceListItemComponent,
+    InstanceDeleteDialogComponent,
     NotFoundComponent,
     InstallScreenComponent,
     InstallScreenDialogComponent,
     ActivityMenuOverlayComponent,
     AdminPanelSysLogsComponent,
     InfoComponent,
-    AdminPanelInstancesComponent,
     AdminPanelUsersComponent,
     CreateUserDialogComponent,
     ConfirmationDialogComponent,
+    LoginIconComponent,
+    LogoutIconComponent,
+    UserIconComponent,
+    CheckIconComponent,
+    CrossIconComponent,
+    ArrowDownIconComponent,
+    ArrowUpIconComponent,
+    CrossClearIconComponent,
+    InstallIconComponent,
+    SearchIconComponent,
+    BackIconComponent,
+    GuideIconComponent,
+    DocsIconComponent,
+    RestartIconComponent,
+    StopIconComponent,
+    PulseIconComponent,
+    GithubIconComponent,
+    ListIconComponent,
+    CliIconComponent,
+    ErrorIconComponent,
+    LaunchIconComponent,
+    DeleteIconComponent,
+    EditIconComponent,
+    SaveIconComponent,
+    PlusIconComponent,
+    BurgerIconComponent,
+    SafeHtmlPipe
   ],
     imports: [
         // angular
@@ -165,6 +223,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ?  
         MatSlideToggleModule,
         MatTableModule,
         MatRadioModule,
+        NgxEditorModule
     ],
   bootstrap: [AppComponent],
   providers: [

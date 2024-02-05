@@ -1,43 +1,82 @@
 <div class="activities">
-  <mat-accordion class="activity-list">
-    <span *ngIf="!activityList.length" class="activities__empty"> nothing to show here </span>
+  
+  <h1 class="gapS text-center">Activities</h1>
+
+  <p class="gapL text-center">
+    Here you can find all the latest activities regarding instances.<br />
+    You can also check the log of an activity by clicking it.
+  </p>
+
+  <div class="activity-search">
+    <input
+      [formControl]="searchFormControl"
+      placeholder="Search by activity or user name"
+      (input)="filter()"
+      type="search"
+    />
+
+    <select [formControl]="stateFormControl" (change)="filter()">
+      <option [value]="''">All states</option>
+      <option [value]="'FINISHED'">Success</option>
+      <option [value]="'ERROR'">Error</option>
+      <option [value]="'RUNNING'">Processing</option>
+    </select>
+
+    <select [formControl]="typeFormControl" (change)="filter()">
+      <option [value]="''">All types</option>
+      <option [value]="'INSTALL_INSTANCE'">Install instance</option>
+      <option [value]="'DELETE_INSTANCE'">Delete instance</option>
+      <option [value]="'START_INSTANCE'">Start instance</option>
+      <option [value]="'STOP_INSTANCE'">Stop instance</option>
+      <option [value]="'RESTART_INSTANCE'">Restart instance</option>
+    </select>
+  </div>
+
+  <p *ngIf="!filteredActivityList.length" class="text-center">No activities found</p>
+
+  <mat-accordion *ngIf="!!filteredActivityList.length" class="activity-list">
     <mat-expansion-panel (opened)="getLogsOfActivity(activity.id)"
                          (destroyed)="unsubscribeFromLogs(); clearLogs()"
                          #mep="matExpansionPanel"
                          class="activity-item"
-                         *ngFor="let activity of activityList | slice:0:50"
+                         *ngFor="let activity of filteredActivityList"
                          [expanded]="activity.id == focussedActivityID"
+                         hideToggle
     >
       <mat-expansion-panel-header class="activity-item-header">
-      <span class="activity-state" [ngSwitch]="activity.state">
-        <img *ngSwitchCase="'FINISHED'" [src]="activityStates.finished" alt="state">
-        <img *ngSwitchCase="'ERROR'" [src]="activityStates.error" alt="state">
-        <img *ngSwitchDefault [src]="activityStates.ongoing" alt="state">
-      </span>
-        <span class="activity-icon">
-          <svg viewBox="0 0 1000 1000" [ngSwitch]="activity.type" width="100%">
-            <path *ngSwitchCase="'INSTALL_INSTANCE'" [attr.d]="svgPaths.install"></path>
-            <path *ngSwitchCase="'DELETE_INSTANCE'" [attr.d]="svgPaths.delete"></path>
-            <path *ngSwitchCase="'START_INSTANCE'" [attr.d]="svgPaths.start"></path>
-            <path *ngSwitchCase="'STOP_INSTANCE'" [attr.d]="svgPaths.stop"></path>
-            <path *ngSwitchCase="'RESTART_INSTANCE'" [attr.d]="svgPaths.restart"></path>
-          </svg>
-        </span>
-        <div>
-          <span class="activity-title">
-            {{activity.name}}
-          </span> <br>
-            <span class="activity-start-date">
-            started: {{activity.start_time}}
-          </span>
-            <span class="activity-end-date" *ngIf="activity.finished_time !== 'None'">
-            finished: {{activity.finished_time}}
-          </span>
+        <div class="activity-item-header-inner">
+          <div class="activity-state" [ngSwitch]="activity.state">
+            <app-check-icon class="state-icon green" *ngSwitchCase="'FINISHED'"></app-check-icon>
+            <app-cross-icon class="state-icon red" *ngSwitchCase="'ERROR'"></app-cross-icon>
+            <img class="state-icon" *ngSwitchDefault [src]="activityStates.ongoing" alt="state">
+          </div>
+
+          <div class="activity-icon" [ngSwitch]="activity.type">
+            <app-install-icon class="icon" *ngSwitchCase="'INSTALL_INSTANCE'"></app-install-icon>
+            <app-delete-icon class="icon" *ngSwitchCase="'DELETE_INSTANCE'"></app-delete-icon>
+            <app-pulse-icon class="icon" *ngSwitchCase="'START_INSTANCE'"></app-pulse-icon>
+            <app-stop-icon class="icon" *ngSwitchCase="'STOP_INSTANCE'"></app-stop-icon>
+            <app-restart-icon class="icon" *ngSwitchCase="'RESTART_INSTANCE'"></app-restart-icon>
+          </div>
+
+          <div class="activity-text">
+            <span class="activity-title">{{activity.name}}</span>
+
+            <div class="activity-timestamps">
+              <span class="activity-start-date">Start: {{activity.start_time}}</span>
+              <span class="activity-end-date" *ngIf="!!activity.finished_time && activity.finished_time !== 'None'">End: {{activity.finished_time}}</span>
+              <span *ngIf="isAdmin && !!activity.user.id" class="activity-user">User: {{getNameOfUser(activity)}}</span>
+            </div>
+          </div>
         </div>
+
+        <app-arrow-down-icon class="arrow" [width]="16" [height]="16"></app-arrow-down-icon>
+        <app-arrow-up-icon class="arrow active" [width]="16" [height]="16"></app-arrow-up-icon>
       </mat-expansion-panel-header>
+
       <ng-template matExpansionPanelContent>
-        <div class="activity-item-log-container">
-          <div class="container-log-entry" *ngFor="let item of activityLogs">
+        <div class="logs" #scrollContainer [scrollTop]="scrollContainer.scrollHeight">
+          <div class="log-entry" *ngFor="let item of activityLogs">
             <span> [{{item.timestamp}}] </span>
             <span *ngIf="item.type === LOG_TYPES.INFO" class="log__info">[{{item.type}}]</span>
             <span *ngIf="item.type === LOG_TYPES.WARNING" class="log__warn">[{{item.type}}]</span>

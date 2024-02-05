@@ -1,0 +1,22 @@
+.contact-text-wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+  
+    .contact-controls {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-end;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+    .contact-editor {
+      width: 100%;
+    }
+    .contact-text {
+      width: 100%;
+
+      a {
+        font-weight: initial;
+      }
+    }
+  }

@@ -1,12 +1,23 @@
 <div class="application-tile" (click)="openInstallScreenDialog()">
-  <span *ngIf="application.decoration" class="decoration">
-    <img *ngIf="application.decoration == 'new'" src="../../../../../assets/new.png" alt="new">
-    <img *ngIf="application.decoration == 'announced'" src="../../../../../assets/announced.png" alt="announced">
-    <img *ngIf="application.decoration == 'FAIR'" src="../../../../../assets/FAIR.png" alt="FAIR">
-  </span>
-  <span class="icon">
-    <img src="{{application.icon_url}}" alt="{{application.icon_url}}">
-    <span class="name"> {{application.app_display_name}} </span>
-  </span>
-  <span class="description"> {{application.short_description}} </span>
+  <div class="icon">
+    <img src="{{application.icon_url}}" alt="{{application.app_display_name}}" />
+  </div>
+  
+  <div class="description">
+    <p class="name gapXXS">{{application.app_display_name}}</p>
+    <p class="text gapZ">
+      {{description}}<span *ngIf="shortenDescription && !showFullDescription">...</span>
+      <span class="arrow-wrapper" *ngIf="shortenDescription && !showFullDescription" (click)="toggleShowFully($event)">
+        <app-arrow-down-icon class="arrow" [width]="12" [height]="12"></app-arrow-down-icon>
+      </span>
+      <span class="arrow-wrapper" *ngIf="shortenDescription && showFullDescription" (click)="toggleShowFully($event)">
+        <app-arrow-up-icon class="arrow" [width]="12" [height]="12"></app-arrow-up-icon>
+      </span>
+    </p>
+
+    <div *ngIf="application.isNew || application.isFair" class="badges">
+      <span *ngIf="application.isNew" class="new">NEW</span>
+      <span *ngIf="application.isFair" class="fair">FAIR</span>
+    </div>
+  </div>
 </div>

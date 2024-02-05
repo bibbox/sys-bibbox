@@ -1,149 +1,327 @@
 @import "src/styles-variables";
-.instance-tile {
-  background: #e9eaee;
-  height: 300px;
-  width: 300px;
-  display: flex;
-  margin: 20px;
-  flex-direction: column;
+
+app-instance-tile {
+  width: calc(25% - 15px);
+  background-color: white;
   border-radius: 10px;
-  box-shadow: 5px 5px 8px 3px $custom_gray_medium+AA, -5px -5px 8px 3px #FFFFFFCC;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+.instance-tile {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
 
-  .instance-tile__header {
-    height: 60px;
-    display: flex;
-    flex-direction: row;
-    border-bottom: solid #d7dadd 2px;
+  * {
+    box-sizing: border-box;
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  a {
+    color: $custom_gray_darkest;
+  }
 
+  .instance-tile__status {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 5px;
+    overflow-x: hidden;
 
-    .instance-tile__header-image {
-      border-right: solid #d7dadd 2px;
-      height: 55px;
-      width: 55px;
-      max-height: 55px;
-      max-width: 55px;
-      flex-grow: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      img {
-        height: 48px;
-        width: 48px;
-        display: block;
-        padding: 2px;
-      }
+    span {
+      display: block;
+      width: 20px;
+      height: 100%;
+      background-color: $custom_color_warn;
+      border-radius: 10px;
     }
 
-    .instance-tile__header-titles {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      max-width: 190px;
-
-      .instance-tile__header-title {
-        flex: 1 1;
-        width: 100%;
-        text-align: center;
-        color: $custom_gray_dark;
-        //color: #6496b4;
-        padding: 7px 10px;
-        margin-bottom: 0;
-        font-weight: bold;
-        overflow: hidden;
-      }
-      .instance-tile__header-subtitle {
-        flex: 1 1;
-        color: $custom_gray_medium;
-        padding: 0 10px 5px 10px;
-        margin-bottom: 0;
-        text-align: center;
-        font-size: 14px;
-        overflow: hidden;
-      }
+    &.running span {
+      background-color: $custom_color_info;
     }
-
-    .instance-tile__hyperlink {
-      width: 55px;
-      height: 55px;
-      flex-grow: 0;
-      border-left: solid #d7dadd 2px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-
-
-      .instance-tile__hyperlink-icon, .instance-tile__hyperlink-icon-disabled {
-        color: $custom_gray_medium;
-      }
-      .instance-tile__hyperlink-icon:hover{
-        color: $custom_blue;
-      }
-      .instance-tile__hyperlink-icon-disabled:hover {
-        color: $custom_gray_medium;
-      }
+    &.stopped span {
+      background-color: $custom_color_warn;
+    }
+    &.error span {
+      background-color: $custom_color_error;
     }
   }
-  .instance-tile__body {
-    height: 200px;
-    overflow: hidden;
-    padding: 20px 20px 20px 20px;
-    color: $custom_gray_dark;
-    white-space: pre-line;
 
-  }
-  .instance-tile__footer {
+  .instance-tile__inner {
     display: flex;
-    flex: 1 1;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    border-top: solid #d7dadd 2px;
-    width: 100%;
+    flex-flow: column nowrap;
+    flex-grow: 1;
 
-    a {
+    .instance-tile__header {
       display: flex;
-      flex: 1 1;
-      height: inherit;
-      border-right: solid #d7dadd 2px;
-      justify-content: center;
+      flex-flow: row nowrap;
       align-items: center;
+      padding: 10px;
 
-      .link-icons{
-        color: $custom_gray_medium;
-        size: inherit;
+      .instance-tile__header-image {
+        height: 52px;
+        width: 52px;
+        flex-grow: 0;
+        flex-shrink: 0;
+        margin-right: 10px;
+        
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+          object-position: center;
+        }
+      }
+
+      .instance-tile__header-titles {
+        display: flex;
+        flex-flow: column nowrap;
+        flex-grow: 1;
+
+        .instance-tile__header-title {
+          width: 100%;
+          color: $custom_blue;
+          font-weight: 500;
+          margin-bottom: 3px;
+          line-height: 120%;
+          text-decoration: none;
+        }
+        .instance-tile__header-subtitle {
+          margin-top: 0;
+          font-weight: 300;
+          font-size: 10pt;
+          line-height: 120%;
+        }
       }
     }
-    a:last-child {
-      border-right: none;
-    }
-
-    a:hover {
-      flex: 1 1;
-      height: inherit;
-      text-decoration: none;
-
-
-      .link-icons{
-        color: inherit;
-      }
-    }
-
-    .instance-tile__footer-state{
-      flex: 1 1;
-      justify-content: center;
+    .instance-tile__body {
       display: flex;
+      flex-flow: row nowrap;
+      height: 140px;
+      color: $custom_gray_darkest;
+      white-space: pre-line;
+      border-top: solid 2px $custom_gray_medium;
+      border-bottom: solid 2px $custom_gray_medium;
+      background-color: $custom_gray_extralight;
+
+      .instance-tile__body-links {
+        display: flex;
+        flex-flow: column nowrap;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: 40px;
+        row-gap: 2px;
+
+        a {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          flex-grow: 1;
+          background-color: $custom_gray_medium;
+          transition: background-color 0.2s ease-out;
+
+          .link-icon {
+            height: 18px;
+            fill: $custom_blue;
+            transition: fill 0.2s ease-out;
+          }
+
+          &:hover {
+            background-color: $custom_blue;
+
+            .link-icon {
+              fill: white;
+            }
+          }
+        }
+      }
+      .instance-tile__body-inner {
+        flex-grow: 1;
+        height: 100%;
+        padding: 10px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        
+        p, ul, ol, h1, h2, h3, h4, h5 {
+          margin-bottom: 10px;
+        }
+        &, * {
+          font-size: 10pt !important;
+          color: $custom_gray_dark;
+          line-height: 120%;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+        h1 {
+          font-size: 18pt !important;
+        }
+        h2 {
+          font-size: 16pt !important;
+        }
+        h3 {
+          font-size: 14pt !important;
+        }
+        h4 {
+          font-size: 12pt !important;
+        }
+        h5 {
+          font-size: 10pt !important;
+        }
+        strong, b, span {
+          font-size: inherit !important;
+        }
+      }
+    }
+    .instance-tile__footer {
+      display: flex;
+      flex-flow: row nowrap;
       width: 100%;
+      height: 40px;
 
-      .running {
-        color: $custom_color_info;
+      > * {
+        width: calc((100% - 40px) / 3);
+        height: 40px;
+
+        &:last-child {
+          width: calc(((100% - 40px) / 3) + 40px);
+        }
       }
-      .ongoing {
-        color: $custom_color_warn;
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 0;
+        flex-shrink: 0;
+        text-decoration: none;
+        border-right: solid 2px $custom_gray_medium;
+        transition: background-color 0.2s ease-out, color 0.2s ease-out;
+
+        .button-icon {
+          display: flex;
+          align-items: center;
+          height: 18px;
+          fill: $custom_blue;
+          margin-right: 5px;
+          transition: fill 0.2s ease-out;
+        }
+
+        &:hover {
+          background-color: $custom_blue;
+          color: white;
+
+          .button-icon {
+            fill: white;
+          }
+        }
       }
-      .stopped {
-        color: $custom_color_error;
+      > div {
+        position: relative;
+        display: flex;
+        flex-flow: row nowrap;
+
+        > a {
+          cursor: pointer;
+          border-right: none;
+          flex-grow: 1;
+          text-transform: capitalize;
+
+          &:last-child {
+            border-bottom-right-radius: 10px;
+          }
+        }
+
+        .toggle {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 40px;
+          cursor: pointer;
+          background-color: white;
+          border-bottom-right-radius: 10px;
+          border-left: solid 2px $custom_gray_medium;
+          transition: background-color 0.2s ease-out;
+
+          .arrow {
+            fill: $custom_blue;
+            transition: fill 0.2s ease-out;
+          }
+
+          &:hover {
+            background-color: $custom_blue;
+
+            .arrow {
+              fill: white;
+            }
+          }
+        }
+        .submenu {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          padding-top: 2px;
+
+          > ul {
+            display: flex;
+            flex-flow: column nowrap;
+            row-gap: 10px;
+            width: 100%;
+            list-style: none;
+            padding: 10px 20px;
+            margin: 0;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+
+            > li {
+              display: flex;
+              align-items: center;
+              font-size: 11pt;
+              transition: opacity 0.2s ease-out;
+              line-height: 100%;
+              padding-top: 1px;
+              cursor: pointer;
+
+              .action-icon {
+                display: block;
+                height: 16px;
+                flex-grow: 0;
+                flex-shrink: 0;
+                margin-right: 5px;
+                margin-top: -1px;
+                fill: $custom_blue;
+              }
+
+              &:hover {
+                opacity: 0.75;
+              }
+            }
+          }
+        }
       }
     }
+  }
+}
+
+
+@media only screen and (max-width: $custom_responsive_size_xl) {
+  app-instance-tile {
+    width: calc(33.3333% - 13.3333px);
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_l) {
+  app-instance-tile {
+    width: calc(50% - 10px);
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+  app-instance-tile {
+    width: 100%;
   }
 }

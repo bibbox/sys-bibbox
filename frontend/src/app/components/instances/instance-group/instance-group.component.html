@@ -1,0 +1,5 @@
+<h2 *ngIf="!group.hideCategory && group.group_members.length > 0" [ngClass]="['instance-group-name', group.group_name.toLowerCase()]">{{group.group_name}}</h2>
+
+<div *ngIf="group.group_members.length > 0" class="instance-group">
+  <app-instance-tile *ngFor="let instance of group.group_members" [instance]="instance"></app-instance-tile>
+</div>

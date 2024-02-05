@@ -1,0 +1,22 @@
+<div class="app-instance-delete-overlay">
+  <div class="app-instance-delete-overlay__header">
+    <app-cross-clear-icon class="dialog-close" [mat-dialog-close]="false" width="20" height="20"></app-cross-clear-icon>
+  </div>
+
+  <div class="app-instance-delete-overlay__body">
+    <h1 class="text-center">Delete instance</h1>
+
+    <p class="text-center gapZ">Do you really want to delete this instance?</p>
+  </div>
+
+  <div class="app-instance-delete-overlay__footer">
+    <div class="app-instance-delete-overlay__delete-button">
+      <button class="gradient" [mat-dialog-close]="true" (click)="confirmDelete()">
+        <app-delete-icon></app-delete-icon>Delete
+      </button>
+
+      <button [mat-dialog-close]="true">
+        <app-cross-clear-icon width="16" height="16"></app-cross-clear-icon>Cancel
+      </button>
+  </div>
+</div>

@@ -1,23 +1,21 @@
 @import "src/styles-variables";
 
 .activity-overlay {
-  box-shadow: $custom_gray_dark;
+  box-shadow: $custom_gray_darkest;
   background: inherit;
 
   .activity-overlay__button {
-    margin: 10px;
-    background: inherit;
-    width: 50px;
-    height: 50px;
     display: flex;
     align-self: center;
     justify-content: center;
-
+    cursor: pointer;
+    transition: opacity 0.2s ease-out;
 
     .activity-overlay__button-active-activities-label {
       position: absolute;
       align-self: center;
       margin-bottom: 0 !important;
+      pointer-events: none;
     }
 
     .activity-overlay__button-status-image {
@@ -25,112 +23,174 @@
       height: 30px;
       align-self: center;
       justify-items: center;
-      .loading{
+      pointer-events: none;
+
+      .loading {
         background: $custom_gray_medium;
       }
     }
-  }
-  .activity-overlay__button:hover {
-    color: white;
-    background: $custom_blue;
-    cursor: pointer;
+
+    .activitiy-indicator {
+      width: 30px;
+      height: 30px;
+
+      ::ng-deep svg {
+        width: 30px;
+        height: 30px;
+      }
+  
+      &.green {
+        fill: $custom_color_info;
+      }
+      &.red {
+        fill: $custom_color_error;
+      }
+    }
+
+    &:hover {
+      opacity: 0.75;
+    }
   }
 }
-//.cdk-overlay-container .mat-menu-panel {
-//  padding: 0 10px!important;
-//  width: fit-content !important;
-//  max-width: available !important;
-//}
 
-::ng-deep .activity-overlay__menu {
-  max-width: 500px !important;
-  box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.3);
-  width: 500px !important;
+.activity-overlay__menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: calc(100vw - 30px);
+  max-width: 500px;
+  max-height: calc(100vh - 100px);
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 15px;
+    transform: translateX(50%);
+    border-bottom: solid 7px white;
+    border-left: solid 7px transparent;
+    border-right: solid 7px transparent;
+  }
+  > p {
+    padding: 10px 20px;
+    margin-bottom: 0;
+    border-bottom: solid 1px $custom_gray_medium;
+  }
   .activity-overlay__menu-item {
-    height: 50px;
-    border-bottom: solid 1px $custom_gray_light;
-    padding: 5px 15px 5px 85px;
-    position: relative;
-    //width: 495px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: solid 1px $custom_gray_medium;
     cursor: pointer;
+    transition: background-color 0.2s ease-out;
 
-    .item-state {
-      position: absolute;
-      top: 50%;
-      margin-top: -10px;
-      float: left;
-      width: 20px;
-      height: 20px;
-      left: 15px;
-      img {
+    &:first-child {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+
+    &:hover {
+      background-color: $custom_gray_medium;
+    }
+    .activity-state {
+      flex-grow: 0;
+      flex-shrink: 0;
+
+      .state-icon {
         float: left;
-        width: 20px;
-        height: 20px
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        fill: $custom_gray_darkest;
+
+        ::ng-deep svg {
+          width: 24px;
+          height: 24px;
+        }
+
+        &.green {
+          fill: $custom_color_info;
+        }
+        &.red {
+          fill: $custom_color_error;
+        }
       }
     }
+    .activity-icon {
+      flex-grow: 0;
+      flex-shrink: 0;
+      margin-right: 15px;
 
-    .item-icon {
-      position: absolute;
-      top: 50%;
-      margin-top: -10px;
-      float: left;
-      width: 20px;
-      height: 20px;
-      left: 50px;
-
-      svg {
+      .icon {
         float: left;
-        width: 20px;
-        height: 20px
+        width: 24px;
+        height: 24px;
+
+        ::ng-deep svg {
+          width: 24px;
+          height: 24px;
+        }
       }
     }
+    .activity-text {
+      display: flex;
+      flex-flow: column nowrap;
 
-    .item-title {
-      width: 100%;
-      font-size: 16px;
-      color: $custom_blue;
+      .activity-title {
+        color: $custom_blue;
+      }
+      .activity-timestamps {
+        display: flex;
+        flex-flow: row wrap;
+        column-gap: 15px;
+
+        .activity-start-date, .activity-end-date, .activity-user {
+          font-size: 10pt;
+          color: $custom_gray_darkest;
+        }
+      }
     }
-
-    .item-start-date, .item-end-date {
-      margin-right: 20px;
-      color: #555;
-      font-size: 14px
-    }
-  }
-  .activity-overlay__menu-item:hover {
-    background-color: rgb(221, 221, 221, 0.3);
-  }
-  .activity-overlay__menu-item-last {
-    text-align: center;
-    width: inherit;
-    font-size: 14px;
-    line-height: 1.42857143;
-    padding-top: 3px;
-    padding-bottom: 3px;
   }
 
-  .activity-overlay__menu-item-last:hover {
-    color: white;
-    background: $custom_blue;
-    cursor: pointer;
-  }
-
-  .activity-overlay__menu-item-empty {
-    text-align: center;
-    width: inherit;
-    height: 50px;
-    background: $custom_gray_light;
+  .activity-overlay__menu-history {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
-    line-height: 1.42857143;
-    padding-top: 3px;
-    padding-bottom: 3px;
-  }
+    padding: 5px 20px;
+    cursor: pointer;
+    font-size: 11pt;
+    font-weight: $custom_font_weight_medium;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out;
 
+    &:hover {
+      color: white;
+      background-color: $custom_blue;
+    }
+  }
 }
 
-::ng-deep .mat-menu-content:not(:empty) {
-  padding: 0 0 0 0 !important;
+
+@media only screen and (max-width: $custom_responsive_size_s) {
+  .activity-overlay__menu {
+    width: calc(100vw - 30px);
+    max-height: calc(100vh - 70px);
+    max-width: none;
+    right: -45px;
+
+    &::before {
+      right: 60px;
+    }
+
+    .activity-overlay__menu-item {
+      padding: 5px 10px;
+    }
+  }
 }
