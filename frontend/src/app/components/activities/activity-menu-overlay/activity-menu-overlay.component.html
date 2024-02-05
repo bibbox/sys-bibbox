@@ -1,10 +1,11 @@
 <div class="activity-overlay">
-  <div class="activity-overlay__button" (click)="toggleOverlay()">
+  <div class="activity-overlay__button tooltip" (click)="toggleOverlay()">
+    <span class="tooltiptext">Recent Activities</span>
     <ng-container *ngIf="activeActivities">
       <img class="activitiy-indicator" src="assets/loading.gif" alt="activity status" class="activity-overlay__button-status-image loading">
       <label class="activity-overlay__button-active-activities-label">{{activeActivities}}</label>
     </ng-container>
-    
+
     <app-cross-icon class="activitiy-indicator red" *ngIf="!activeActivities && lastActivityStatus === 'FAILURE'"></app-cross-icon>
     <app-check-icon class="activitiy-indicator green" *ngIf="!activeActivities && lastActivityStatus !== 'FAILURE'"></app-check-icon>
   </div>
