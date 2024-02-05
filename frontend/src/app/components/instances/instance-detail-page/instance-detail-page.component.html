@@ -29,12 +29,12 @@
         <a *ngIf="instanceItem.state === 'STOPPED'" class="button" [routerLink]="" (click)="manageInstance('start')" title="Start">
           <app-pulse-icon class="button-icon" [width]="18" [height]="18"></app-pulse-icon>Start
         </a>
-  
+
         <div *ngIf="canManageInstance()" class="toggle" (click)="toggle()">
           <app-arrow-down-icon *ngIf="!isActionsOpen" class="arrow"></app-arrow-down-icon>
           <app-arrow-up-icon *ngIf="isActionsOpen" class="arrow"></app-arrow-up-icon>
         </div>
-  
+
         <div *ngIf="canManageInstance() && isActionsOpen" class="submenu">
           <ul>
             <li *ngIf="instanceItem.state !== 'STOPPED'" (click)="manageInstance('stop')">
@@ -49,7 +49,7 @@
           </ul>
         </div>
       </div>
-      
+
       <button class="app-install-cancel" type="button" (click)="backClicked()">
         <app-back-icon></app-back-icon>Go back
       </button>
@@ -72,7 +72,7 @@
               <p><strong>Application name</strong>{{instanceItem.app.name}}</p>
               <p><strong>Version</strong>{{instanceItem.app.version}}</p>
             </div>
-            
+
             <table class="instance-details-info-left-bottom">
               <tbody>
                 <tr>
@@ -135,7 +135,7 @@
                       {{URL.DISPLAYNAME}}:
                       <a href="http://{{URL.URLPREFIX}}.{{baseurl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">
                         {{URL.URLPREFIX}}.{{baseurl}}
-                      </a>
+                      </a><br>
                     </span>
                   </td>
                 </tr>
@@ -202,7 +202,7 @@
               <app-arrow-down-icon class="arrow" [width]="16" [height]="16"></app-arrow-down-icon>
               <app-arrow-up-icon class="arrow active" [width]="16" [height]="16"></app-arrow-up-icon>
             </mat-expansion-panel-header>
-            
+
             <span class="command">$ docker logs {{container}} --tail 200</span>
             <div class="logs" #scrollContainer [scrollTop]="scrollContainer.scrollHeight">
               <div *ngFor="let log_entry of instanceContainerLogs[container]" class="log-entry">{{log_entry}}</div>
