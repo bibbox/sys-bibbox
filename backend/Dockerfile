@@ -18,6 +18,7 @@ RUN apt-get install -y --force-yes \
 #
 
 RUN mkdir -p /usr/src/bibbox-sys-commander
+RUN mkdir /db_init_done
 # Update working directory
 WORKDIR  /usr/src/bibbox-sys-commander
 

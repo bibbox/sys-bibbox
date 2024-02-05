@@ -110,7 +110,7 @@ cp /opt/bibbox/sys-bibbox/config-templates/proxy-websocket.template /opt/bibbox/
 docker network create bibbox-default-network
 
 
-docker-compose up --build -d
+docker compose -f docker-compose.dev.yml up --build -d
 
 echo 'INSTALLATION COMPLETE'
 
