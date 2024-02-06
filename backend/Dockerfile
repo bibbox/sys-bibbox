@@ -28,11 +28,14 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Install the Docler CLI uswgi.ini
-ENV DOCKERVERSION=18.03.1-ce
-RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKERVERSION}.tgz \
-  && tar xzvf docker-${DOCKERVERSION}.tgz --strip 1 \
-                 -C /usr/local/bin docker/docker \
-  && rm docker-${DOCKERVERSION}.tgz
+#ENV DOCKERVERSION=18.03.1-ce
+#RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKERVERSION}.tgz \
+#  && tar xzvf docker-${DOCKERVERSION}.tgz --strip 1 \
+#                 -C /usr/local/bin docker/docker \
+#  && rm docker-${DOCKERVERSION}.tgz
+
+RUN curl -fsSL https://get.docker.com -o get-docker.sh
+RUN sh get-docker.sh
 
 COPY ./entrypoint.sh   /usr/src/bibbox-sys-commander
 # Give execute permission to below file, so that the script can be executed by docker.
