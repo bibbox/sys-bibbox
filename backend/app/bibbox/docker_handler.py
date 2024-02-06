@@ -9,15 +9,15 @@ class DockerHandler():
 
 
     def docker_stopInstance(self, instance_name):
-        command = "docker-compose stop".split()
+        command = "docker compose stop".split()
         subprocess.call(command, cwd=f"{self.INSTANCEPATH}{instance_name}", stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
 
     def docker_startInstance(self, instance_name):   
-        command = "docker-compose start".split()
+        command = "docker compose start".split()
         subprocess.call(command, cwd=f"{self.INSTANCEPATH}{instance_name}", stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
 
     def docker_restartInstance(self, instance_name):   
-        command = "docker-compose restart".split()
+        command = "docker compose restart".split()
         subprocess.call(command, cwd=f"{self.INSTANCEPATH}{instance_name}", stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
 
     def docker_exec(self,instance_name,command_array):
@@ -77,7 +77,7 @@ class DockerHandler():
         return [container.name for container in containers]
 
     def docker_deleteStoppedInstance(self, instance_name):
-        command = "docker-compose down".split()
+        command = "docker compose down".split()
         subprocess.call(command, cwd=f"{self.INSTANCEPATH}{instance_name}", stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
 
 
