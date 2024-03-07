@@ -10,6 +10,12 @@ RETRIES=15
 USER=postgres
 DATABASE=bibbox
 HOST=postgres
+if [ -z "${SKIP_RECREATE_DB}" ]; then
+  SKIPPING_RECREATE_DB=false
+else
+  SKIPPING_RECREATE_DB=${SKIP_RECREATE_DB}
+fi
+
 
 until psql -h $HOST -U $USER -d $DATABASE -c "select 1" > /dev/null 2>&1 || [ $RETRIES -eq 0 ]; do
   echo "Waiting for postgres server to start, $((RETRIES)) remaining attempts..."
@@ -21,8 +27,12 @@ echo "PostgreSQL started!"
 
 # Run below commands from manage.py to initialize db and have some default data.
 # add a flag to preserve the DB at a build
-if [ ! -f  /db_init_done/DBINIT.DONE ]; then
-    python manage.py recreate_db
+if [ ! -f  DBINIT.DONE ]; then
+    if [ "$SKIPPING_RECREATE_DB" = true ]; then
+      echo "Skipping recreate_db!!! SET SKIP_RECREATE_DB to false if you do not want to skip recreate_db"
+    else
+      python manage.py recreate_db
+    fi
     python manage.py sync_app_catalogue
     touch /db_init_done/DBINIT.DONE
 fi
