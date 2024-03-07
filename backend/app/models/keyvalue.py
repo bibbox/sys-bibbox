@@ -1,6 +1,6 @@
 from flask import Flask
 
-from sqlalchemy import inspect
+from sqlalchemy import inspect, event
 
 from backend.app import db, app
 from sqlalchemy.sql import func
@@ -25,7 +25,6 @@ class BaseModel(db.Model):
             for column, value in self.as_dict().items()
         })
 
-
     # Preferred way
     # https://stackoverflow.com/questions/1958219/convert-sqlalchemy-row-object-to-python-dict
     def as_dict(self):
@@ -34,15 +33,23 @@ class BaseModel(db.Model):
 
 
 class KeyValue(BaseModel, db.Model):
-
     """Model for KeyValue table"""
     __tablename__ = "keyvalue"
 
-    id        = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    keys      = db.Column(db.String(128), nullable=False,unique=True)
-    values   = db.Column(db.UnicodeText(), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    keys = db.Column(db.String(128), nullable=False, unique=True)
+    values = db.Column(db.UnicodeText(), nullable=False)
 
     def __init__(self, keys, values):
         super().__init__()
         self.keys = keys
         self.values = values
+
+
+# @event.listens_for(KeyValue.__table__, 'after_create')
+# def create_keyvalue(*args, **kwargs):
+#     db.session.add(KeyValue(keys='info', values='abc@domain.com'))
+#     db.session.add(KeyValue(keys='contact', values='def@domain.com'))
+#     db.session.add(KeyValue(keys='imprint', values='def@domain.com'))
+#     db.session.add(KeyValue(keys='partners', values='def@domain.com'))
+#     db.session.commit()
