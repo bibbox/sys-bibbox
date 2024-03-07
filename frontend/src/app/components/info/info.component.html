@@ -1,5 +1,43 @@
-<!--<p>TODO: Overview über BIBBOX geben.</p>-->
-
 <div class="bibbox-info">
-  <div [innerHTML]="htmlStr"></div>
+  <div class="info-left">
+    <div class="login-wrapper">
+      <h1 class="gapS">Welcome to BIBBOX</h1>
+
+      <p *ngIf="!isLoggedin" class="gapM">Please click the button below, to log in using an existing account.</p>
+      <p *ngIf="isLoggedin" class="gapS">You are already logged in and ready to go.</p>
+      <p *ngIf="isLoggedin" class="gapM">Logged in as: <strong class="gapLeftS">{{userFullname}}</strong></p>
+
+      <p *ngIf="!isLoggedin" class="gapL"><button class="gradient" (click)="initiateLogin()"><app-login-icon></app-login-icon>Log in</button></p>
+      <p *ngIf="isLoggedin"><button class="gradient" (click)="switchAccounts()"><app-login-icon></app-login-icon>Switch accounts</button></p>
+
+      <div *ngIf="!isLoggedin" class="login-help">
+        <h2 class="gapZ fontXS bold">Don't have an account yet?</h2>
+        
+        <p class="fontXS">Click <a routerLink="/contact">here</a> to contact your BIBBOX admin.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-right gradient">
+    <div *ngIf="isLoggedin && isAdmin" class="info-controls">
+      <button *ngIf="!editMode" (click)="editText(true)">
+        <app-edit-icon [width]="20" [height]="20"></app-edit-icon>Edit text
+      </button>
+
+      <button *ngIf="editMode" (click)="saveText()">
+        <app-save-icon [width]="20" [height]="20"></app-save-icon>Save text
+      </button>
+
+      <button *ngIf="editMode" (click)="editText(false)">
+        <app-cross-clear-icon [width]="16" [height]="16"></app-cross-clear-icon>Cancel
+      </button>
+    </div>
+
+    <div *ngIf="editMode" class="info-editor">
+      <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+      <ngx-editor [editor]="editor" [formControl]="htmlStr" [placeholder]="''"></ngx-editor>
+    </div>
+
+    <div *ngIf="!editMode"  class="info-text" [innerHTML]="htmlStr.value|safeHtml"></div>
+  </div>
 </div>

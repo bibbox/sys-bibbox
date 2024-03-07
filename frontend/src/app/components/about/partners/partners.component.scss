@@ -1,0 +1,22 @@
+.partners-text-wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+  
+    .partners-controls {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-end;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+    .partners-editor {
+      width: 100%;
+    }
+    .partners-text {
+      width: 100%;
+
+      a {
+        font-weight: initial;
+      }
+    }
+  }

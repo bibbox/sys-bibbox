@@ -15,7 +15,6 @@ import {AdminPanelSysLogsComponent} from './components/admin-panel-sys-logs/admi
 import {AuthGuard} from './guard/auth.guard';
 import {InfoComponent} from './components/info/info.component';
 import {environment} from '../environments/environment';
-import {AdminPanelInstancesComponent} from './components/admin-panel-instances/admin-panel-instances.component';
 import {AdminPanelUsersComponent} from './components/admin-panel-users/admin-panel-users.component';
 
 const routes: Routes = [
@@ -27,13 +26,12 @@ const routes: Routes = [
   // top nav
   { path: 'applications', component: ApplicationsComponent, pathMatch: 'full', canActivate: [AuthGuard]},
   { path: 'instances', component: InstancesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
-  { path: 'fdp', component: ApplicationsComponent, resolve: { url: 'externalUrlRedirectResolver'}, data: {externalUrl: 'http://fdp.' + environment.BASEURL}, canActivate: [AuthGuard]},
+  { path: 'fdp', component: ApplicationsComponent, resolve: { url: 'externalUrlRedirectResolver' }, data: { externalUrl: 'http://fdp.' + environment.BASEURL }, canActivate: [AuthGuard] },
   { path: 'activities/:activity_id', component: ActivitiesComponent, pathMatch: 'full', canActivate: [AuthGuard]}, // activities need two routes, in case we want to view activities without providing an activity id
   { path: 'activities', component: ActivitiesComponent, pathMatch: 'full', canActivate: [AuthGuard]},
 
   // top nav admin
   { path: 'sys-logs', component: AdminPanelSysLogsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_CONFIG.roles.admin]}},
-  { path: 'instance-mgmt', component: AdminPanelInstancesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_CONFIG.roles.admin]}},
   { path: 'user-mgmt', component: AdminPanelUsersComponent, pathMatch: 'full', canActivate: [AuthGuard], data: {roles: [environment.KEYCLOAK_CONFIG.roles.admin]}},
 
 
@@ -50,7 +48,7 @@ const routes: Routes = [
   { path: 'citation', component: CitationComponent, pathMatch: 'full'},
 
   // info page which is displayed if the user is not logged in
-  { path: 'info', component: InfoComponent, pathMatch: 'full'},
+  { path: 'info', component: InfoComponent, pathMatch: 'full', },
 
   // { path: 'login', component: LoginComponent, pathMatch: 'full'},
   { path: '**', component: NotFoundComponent, canActivate: [AuthGuard]}, // -> 404 page
@@ -60,13 +58,13 @@ const routes: Routes = [
   declarations: [],
   imports: [
     CommonModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' }),
   ],
   exports: [RouterModule],
   providers: [
     {
       provide: 'externalUrlRedirectResolver',
-      useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
+      useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot, ) =>
       {
         //window.location.href = (route.data as any).externalUrl;
         // Open in new tab instead of same window

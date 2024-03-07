@@ -1,3 +1,9 @@
+export interface InstanceGroupItem {
+  group_name: string;
+  group_members: InstanceItem[];
+  hideCategory?: boolean;
+}
+
 export interface InstanceItem {
   instancename: string;
   installed_by_id?: string; //currently optional to support old instances
@@ -27,4 +33,15 @@ export interface IApp {
   organization: string;
   name: string;
   version: string;
+  application_documentation_url?: string;
+  repository_url?: string;
+  install_guide_url?: string;
+}
+
+export interface IInstanceFilters {
+  searchterm: string;
+  status: string;
+  showOnlyOwnedInstances: boolean;
+  showAsList: boolean;
+  isInitialState: boolean;
 }

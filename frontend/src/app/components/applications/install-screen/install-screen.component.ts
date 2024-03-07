@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import { Editor } from 'ngx-editor';
 import {ApplicationItem, EnvironmentParameters, IVersions} from '../../../store/models/application-group-item.model';
 import {ApplicationService} from '../../../store/services/application.service';
 import {
@@ -18,17 +19,17 @@ import {map} from 'rxjs/operators';
 import {AddInstanceAction} from '../../../store/actions/instance.actions';
 import {ValidatorService} from '../../../store/services/validator.service';
 import {UserService} from '../../../store/services/user.service';
+import { toolbar } from '../../../commons';
 
 @Component({
   selector: 'app-install-screen',
   templateUrl: './install-screen.component.html',
   styleUrls: ['./install-screen.component.scss']
 })
-export class InstallScreenComponent implements OnInit {
+export class InstallScreenComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
     private appService: ApplicationService,
     private instanceService: InstanceService,
@@ -46,14 +47,20 @@ export class InstallScreenComponent implements OnInit {
 
   appItem: ApplicationItem;
   selectedVersion: IVersions;
+  installGuideUrl: string;
+  applicationDocumentationUrl: string;
   environmentParameters: EnvironmentParameters[] = [];
   installForm: FormGroup;
   envParamForm: FormGroup;
-  entered_values:Record<string, string> = {};
+  entered_values: Record<string, string> = {};
+  editor: Editor;
+  toolbar = toolbar;
 
   ngOnInit(): void {
     this.appItem = history.state[0];
     this.selectedVersion = history.state[1];
+    this.installGuideUrl = history.state[2];
+    this.applicationDocumentationUrl = history.state[3];
     this.loadEnvParams();
 
     this.installForm = this.formBuilder.group(
@@ -71,14 +78,31 @@ export class InstallScreenComponent implements OnInit {
             this.asyncInstanceNameValidator()
           ]
         ],
-        instance_name: ['',
+        instance_title: ['',
           [
             Validators.required,
             Validators.maxLength(48)
           ]
         ],
+        instance_subtitle: ['',
+          [
+            Validators.maxLength(100)
+          ]
+        ],
+        instance_information: [history.state[4] || '']
       });
     this.envParamForm = this.formBuilder.group({});
+
+    this.editor = new Editor();
+
+    setTimeout(() => {
+      console.log('now', window?.scrollTo);
+      window.scrollTo(0, 0);
+    }, 500);
+  }
+
+  ngOnDestroy(): void {
+    this.editor?.destroy();
   }
 
   loadEnvParams(): void {
@@ -92,21 +116,18 @@ export class InstallScreenComponent implements OnInit {
   initEnvParamFormFields(): void {
     let increment=0;
     for (const envParam of this.environmentParameters) {
-      envParam.name = envParam.id.valueOf()
-      if(!this.envParamForm.contains(envParam.name)){
+      envParam.name = envParam.id.valueOf();
 
-        this.entered_values[envParam.name]=envParam.default_value;
+      if(!this.envParamForm.contains(envParam.name)) {
+        this.entered_values[envParam.name] = envParam.default_value;
         //Validators.required,
           this.envParamForm.addControl(
             envParam.id.valueOf(),
-            this.formBuilder.control('', [ Validators.minLength(Number(envParam.min_length)),
-              Validators.maxLength(Number(envParam.max_length))]
-            )
+            this.formBuilder.control('', [Validators.minLength(1), Validators.maxLength(Number(envParam.max_length))])
           );
-      }else{
+      } else {
         increment++;
-        envParam.id = `${envParam.id.valueOf()}${increment}`
-
+        envParam.id = `${envParam.id.valueOf()}${increment}`;
       }
     }
   }
@@ -115,9 +136,9 @@ export class InstallScreenComponent implements OnInit {
     this.router.navigateByUrl('/applications').then();
   }
 
-  install(): void {
+  async install(): Promise<void> {
     if (this.installForm.valid && this.envParamForm.valid) {
-      // console.log('install');
+
       // If nothing entered use default values
       for (const envParamName in this.envParamForm.controls){
         if (this.envParamForm.controls[envParamName].value == ""){
@@ -125,26 +146,24 @@ export class InstallScreenComponent implements OnInit {
         }
       }
       const payload = {
-        displayname_short : this.installForm.value.instance_name,
-        app : {
-          organization : 'bibbox',
-          name         : this.installForm.value.app_name,
-          version      : this.installForm.value.version,
+        displayname_short: this.installForm.value.instance_title,
+        displayname_long: this.installForm.value.instance_subtitle,
+        description_short: this.installForm.value.instance_information,
+        app: {
+          organization: 'bibbox',
+          name: this.installForm.value.app_name,
+          version: this.installForm.value.version,
+          application_documentation_url: this.applicationDocumentationUrl,
+          repository_url: this.getRepositoryUrl(this.installForm.value.app_name, this.installForm.value.version),
+          install_guide_url: this.installGuideUrl
         },
-        parameters  : this.envParamForm.value,
-        installed_by_id : this.userService.getUserID(),
-        installed_by_name: this.userService.getUsername()
+        parameters: this.envParamForm.value,
+        installed_by_id: this.userService.getUserID(),
+        installed_by_name: await this.userService.getFullOrUsername()
       };
 
-      console.log(this.installForm.value.instance_id, JSON.stringify(payload));
-
       this.store.dispatch(new AddInstanceAction(this.installForm.value.instance_id, JSON.stringify(payload)));
-      // this.instanceService.postInstance(this.installForm.value.instance_id, JSON.stringify(payload))
-      //   .toPromise()
-      //   .then(
-      //     res => console.log(res)
-      //   );
-      this.router.navigateByUrl('/instances').then();
+      this.router.navigateByUrl('/instances', {state: [this.installForm.value.instance_title, '']}).then();
     }
     else {
       console.log('errors occurred');
@@ -156,6 +175,7 @@ export class InstallScreenComponent implements OnInit {
   onRadioChange(selectedValue: string, inputName:string) {
     this.entered_values[inputName] = selectedValue;
   }
+
   asyncInstanceNameValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return this.instanceService.checkIfInstanceExists(this.installForm.controls.instance_id.value)
@@ -175,6 +195,9 @@ export class InstallScreenComponent implements OnInit {
     };
   }
 
+  getRepositoryUrl(appName: string, version: string) {
+    return `https://github.com/bibbox/${appName}/tree/${version}`;
+  }
 }
 
 

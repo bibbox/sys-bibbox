@@ -269,7 +269,7 @@ class KeycloakAdminService():
           # cannot change username to an already existing username
           if user_representation['username'] in [user['username'] for user in self.get_users() if user['id'] != user_id ]:
               raise ValueError(f'User with username {user_representation["username"]} already exists.')
-          if 'password' in user_dict and user_dict['password']:
+          if 'password' in user_dict and user_dict['password'] != '':
             # Update User Password
             self.keycloak_api.set_user_password(user_id=user_id, password=user_dict['password'], temporary=True)
 

@@ -36,6 +36,14 @@ export class KeycloakAdminBackendService {
     return this.http.post<CreateUserSuccessResponse>(API_KEYCLOAK_URL + 'users', UserDict, {headers: header});
   }
 
+  updateUser(userID: string, UserDict: UserDictionary): Observable<Object> {
+    console.log('test');
+
+    const header = new HttpHeaders();
+    header.set('Content-Type', 'application/json'); // ; charset=utf-8
+    return this.http.patch(API_KEYCLOAK_URL + 'users/' + userID, UserDict, {headers: header});
+  }
+
   deleteUser(userID: string): Observable<DeleteUserSuccessResponse> {
     return this.http.delete<DeleteUserSuccessResponse>(API_KEYCLOAK_URL + 'users/' + userID);
   }

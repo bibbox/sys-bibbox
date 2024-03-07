@@ -1,51 +1,99 @@
-<div class="app-scaffold-header">
-
-  <span class="app-scaffold-header__left_aligned" >
-    <div class="app-scaffold-header__branding">
+<div [ngClass]="{'app-scaffold-header': true, 'scrolled': isScrolled}">
+  <div class="app-scaffold-header__left_aligned">
+    <a class="app-scaffold-header__branding" [routerLink]="'/info'">
       <img src="assets/silicolab_logo.png" alt="silicolab_logo.svg" class="app-scaffold-header__navbar-icon"/>
-      <span class="app-scaffold-header__branding-text"> {{title}}</span>
-    </div>
-  </span>
-  <span class="app-scaffold-header__center_aligned">
-    <div *ngIf="loggedIn" class="app-scaffold-header__nav-buttons">
-    <button
-      class="app-scaffold-header__nav-button"
-      id="{{item.label}}"
-      *ngFor="let item of navigation"
-      type="button"
-      [routerLink]="item.link"
-      routerLinkActive="active">
-      {{item.label}}
-    </button>
+      <span>
+        <span class="app-scaffold-header__branding-title fontL"> {{title}}</span>
+        <span class="app-scaffold-header__branding-subtitle fontS"> {{subtitle}}</span>
+      </span>
+    </a>
   </div>
-  </span>
-  <span class="app-scaffold-header__right_aligned">
-<!--    <div *ngIf="username" class="app-scaffold-header__login_info">-->
-<!--      User: {{username}}-->
-<!--    </div>-->
-    <app-activity-menu-overlay *ngIf="loggedIn" class="app-scaffold-header__activity-menu-overlay"></app-activity-menu-overlay>
-    <mat-icon *ngIf="username" class="app-scaffold-header__profile-icon" matTooltip="User: {{ username }}" matTooltipPosition="above">
-      account_circle
-    </mat-icon>
-    <button
-      *ngIf="loggedIn"
-      class="app-scaffold-header__login-logout-button"
-      type="button"
-      id="Logout-Button"
-      title="Logout"
-      (click)="initiateLogout()"
-    >
-      <i class="fa fa-sign-out" aria-hidden="true"></i>
-    </button>
-    <button
-      *ngIf="!loggedIn"
-      class="app-scaffold-header__login-logout-button"
-      type="button"
-      id="Login-Button"
-      title="Login"
-      (click)="initiateLogin()"
-    >
-      <i class="fa fa-sign-in" aria-hidden="true"></i>
-    </button>
-  </span>
+
+  <nav class="app-scaffold-header__center_aligned">
+    <ul *ngIf="loggedIn" class="app-scaffold-header__nav-buttons">
+      <li *ngFor="let item of navigation">
+        <a
+          *ngIf="!item.external"
+          id="{{item.label}}"
+          [routerLink]="item.link"
+          routerLinkActive="active">
+          {{item.label}}
+        </a>
+
+        <a
+          *ngIf="!!item.external"
+          id="{{item.label}}"
+          href="{{item.link}}"
+          target="_blank">
+          {{item.label}}
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <nav class="app-scaffold-header__right_aligned">
+    <ul>
+      <li *ngIf="loggedIn">
+        <app-activity-menu-overlay *ngIf="loggedIn" class="app-scaffold-header__activity-menu-overlay"></app-activity-menu-overlay>
+      </li>
+
+      <li *ngIf="!loggedIn" class="login-item">
+        <button class="blue" (click)="initiateLogin()" title="Login"><app-login-icon></app-login-icon>Log in</button>
+      </li>
+
+      <li *ngIf="loggedIn" class="user-item">
+        <div class="user"><app-user-icon class="user-icon"></app-user-icon><span class="condensed fontM">{{userFullname}}</span></div>
+
+        <ul>
+          <li>
+            <a [routerLink]="" (click)="initiateLogout()"><app-logout-icon class="logout-icon"></app-logout-icon>Log out</a>
+          </li>
+        </ul>
+      </li>
+
+      <li *ngIf="loggedIn" class="mobile-menu-button">
+        <app-burger-icon class="mobile-menu-button-icon" [width]="30" [height]="30" (click)="toggleMobileMenu()"></app-burger-icon>
+      </li>
+    </ul>
+  </nav>
+
+  <div *ngIf="loggedIn" [ngClass]="{'app-scaffold-header__mobile-menu': true, 'visible': isMobileMenuVisible}">
+    <div class="app-scaffold-header__mobile-menu-header">
+      <app-cross-clear-icon class="mobile-menu-button-icon" [width]="24" [height]="24" (click)="toggleMobileMenu()"></app-cross-clear-icon>
+    </div>
+
+    <div class="app-scaffold-header__mobile-menu-body">
+      <h1 *ngIf="loggedIn">{{userFullname}}</h1>
+
+      <nav class="app-scaffold-header__mobile-menu-items">
+        <ul *ngIf="loggedIn" class="app-scaffold-header__mobile-menu-nav-buttons">
+          <li *ngFor="let item of navigation">
+            <a
+              *ngIf="!item.external"
+              id="{{item.label}}"
+              [routerLink]="item.link"
+              routerLinkActive="active"
+              (click)="toggleMobileMenu()">
+              {{item.label}}
+            </a>
+
+            <a
+              *ngIf="!!item.external"
+              id="{{item.label}}"
+              href="{{item.link}}"
+              target="_blank"
+              (click)="toggleMobileMenu()">
+              {{item.label}}
+            </a>
+          </li>
+
+          <li *ngIf="loggedIn" class="logout">
+            <a class="button" [routerLink]="" (click)="initiateLogout()"><app-logout-icon class="logout-icon"></app-logout-icon>Log out</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div *ngIf="isMobileMenuVisible" class="app-scaffold-header__mobile-menu-clickaway" (click)="toggleMobileMenu()"></div>
 </div>

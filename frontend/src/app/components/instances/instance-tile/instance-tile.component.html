@@ -1,53 +1,72 @@
 <div class="instance-tile">
-  <div class="instance-tile__header">
-    <div class="instance-tile__header-image">
-      <img src="https://raw.githubusercontent.com/bibbox/{{instance.app.name}}/master/icon.png" alt="404">
-    </div>
-    <div class="instance-tile__header-titles">
-      <span class="instance-tile__header-title">{{instance.displayname_short}}</span>
-      <span class="instance-tile__header-subtitle">{{instance.displayname_long}}</span>
-    </div>
-    <div class="instance-tile__hyperlink">
-      <ng-container *ngIf="instance.state == 'RUNNING'; else elseBlock">
-        <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">
-          <span class="fas fa-window-restore fa-2x link-icons instance-tile__hyperlink-icon"></span>
-<!--          fa-external-link-square-alt fa-external-link-alt-->
-        </a>
-      </ng-container>
-      <ng-template #elseBlock>
-        <a matTooltip="Instance Stopped" class="disabled">
-          <span class="fas fa-power-off fa-2x link-icons instance-tile__hyperlink-icon-disabled"></span>
-        </a>
-      </ng-template>
-    </div>
+  <div [ngClass]="['instance-tile__status', instance.state.toLowerCase()]">
+    <span></span>
   </div>
-  <div class="instance-tile__body">
-    {{instance.description_short}}
-<!--    <div class="instance-tile__body-description">{{instance.description_short}}</div>-->
-  </div>
-  <div class="instance-tile__footer">
-<!--    <ng-container *ngIf="instance.state == 'RUNNING'; else elseBlock">-->
-<!--      <a href="{{instanceUrl}}" target="_blank" rel="noopener noreferrer" matTooltip="Open">-->
-<!--        <span class="fas fa-power-off fa-2x link-icons"></span>-->
-<!--      </a>-->
-<!--    </ng-container>-->
-<!--    <ng-template #elseBlock>-->
-<!--      <a matTooltip="Open" class="disabled">-->
-<!--        <span class="fas fa-power-off fa-2x link-icons"></span>-->
-<!--      </a>-->
-<!--    </ng-template>-->
-    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 0}" matTooltip="Dashboard">
-      <span class="fas fa-cog fa-2x link-icons"></span>
-    </a>
-    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 1}" matTooltip="Logs">
-      <span class="fas fa-book fa-2x link-icons"></span>
-    </a>
-    <a [routerLink]="['/instances/', instance.instancename]" [state]="{index: 0}">
-      <span [ngSwitch]="instance.state" class="instance-tile__footer-state" matTooltip="{{instance.state}}">
-        <i *ngSwitchCase="('STOPPED' || 'ERROR')" class="fas fa-circle stopped"></i>
-        <i *ngSwitchCase="'RUNNING'" class="fas fa-circle running"></i>
-        <i *ngSwitchDefault class="fas fa-circle ongoing"></i>
-      </span>
-    </a>
+
+  <div class="instance-tile__inner">
+    <div class="instance-tile__header">
+      <a class="instance-tile__header-image" href="{{instanceUrl}}" target="_blank" (click)="onLaunchClick($event)">
+        <img src="https://raw.githubusercontent.com/bibbox/{{instance.app.name}}/master/icon.png" alt="404">
+      </a>
+
+      <div class="instance-tile__header-titles">
+        <a class="instance-tile__header-title" href="{{instanceUrl}}" target="_blank" (click)="onLaunchClick($event)">{{instance.displayname_short}}</a>
+        <p class="instance-tile__header-subtitle">{{instance.displayname_long}}</p>
+      </div>
+    </div>
+
+    <div class="instance-tile__body">
+      <div class="instance-tile__body-links">
+        <a href="{{instance.app.install_guide_url || '#'}}" target="_blank" title="Install guide"><app-guide-icon class="link-icon" [width]="18" [height]="18"></app-guide-icon></a>
+        <a href="{{instance.app.application_documentation_url || '#'}}" target="_blank" title="Documentation"><app-docs-icon class="link-icon" [width]="18" [height]="18"></app-docs-icon></a>
+        <a href="{{instance.app.repository_url || '#'}}" target="_blank" title="Repository"><app-github-icon class="link-icon" [width]="18" [height]="18"></app-github-icon></a>
+      </div>
+
+      <div class="instance-tile__body-inner" [innerHTML]="instance.description_short|safeHtml"></div>
+    </div>
+
+    <div class="instance-tile__footer">
+      <a class="condensed" [routerLink]="['/instances/', instance.instancename]" [state]="{index: 0}" title="Details">
+        <app-list-icon class="button-icon" [width]="16" [height]="16"></app-list-icon>Details
+      </a>
+
+      <a class="condensed" [routerLink]="['/instances/', instance.instancename]" [state]="{index: 1}" title="Logs">
+        <app-cli-icon class="button-icon" [width]="16" [height]="16"></app-cli-icon>Logs
+      </a>
+
+      <div>
+        <a *ngIf="instance.state === 'RUNNING'" class="condensed" href="{{instanceUrl}}" target="_blank" title="Launch" (click)="toggle(false)">
+          <app-launch-icon class="button-icon" [width]="16" [height]="16"></app-launch-icon>Launch
+        </a>
+        <a *ngIf="instance.state === 'ERROR'" class="condensed" [routerLink]="['/instances/', instance.instancename]" [state]="{index: 1}" title="Error" (click)="toggle(false)">
+          <app-error-icon class="button-icon" [width]="18" [height]="18"></app-error-icon>Error
+        </a>
+        <a *ngIf="instance.state === 'STOPPED'" class="condensed" [routerLink]="" (click)="manageInstance('start')" title="Start">
+          <app-pulse-icon class="button-icon" [width]="18" [height]="18"></app-pulse-icon>Start
+        </a>
+        <a *ngIf="isProcessing()" class="condensed" [routerLink]="" title="Please wait...">
+          {{instance.state.toLowerCase()}}...
+        </a>
+
+        <div *ngIf="canManageInstance() && !isProcessing()" class="toggle" (click)="toggle()">
+          <app-arrow-down-icon *ngIf="!isOpen" class="arrow"></app-arrow-down-icon>
+          <app-arrow-up-icon *ngIf="isOpen" class="arrow"></app-arrow-up-icon>
+        </div>
+
+        <div *ngIf="canManageInstance() && isOpen && !isProcessing()" class="submenu">
+          <ul>
+            <li *ngIf="instance.state !== 'STOPPED'" (click)="manageInstance('stop')">
+              <app-stop-icon class="action-icon" [width]="16" [height]="16"></app-stop-icon>Stop
+            </li>
+            <li *ngIf="instance.state !== 'STOPPED'" (click)="manageInstance('restart')">
+              <app-restart-icon class="action-icon" [width]="16" [height]="16"></app-restart-icon>Restart
+            </li>
+            <li *ngIf="instance.state === 'STOPPED' || instance.state === 'ERROR'" (click)="deleteInstance()">
+              <app-delete-icon class="action-icon" [width]="16" [height]="16"></app-delete-icon>Uninstall
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

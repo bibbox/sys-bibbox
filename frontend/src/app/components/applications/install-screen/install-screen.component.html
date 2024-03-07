@@ -1,100 +1,145 @@
 <div id="app-install">
   <form [formGroup]="installForm" class="install-form">
-    <div class="app-install-text">
-      <h2>{{appItem.app_display_name}}</h2>
-      <span> Please fill out the form to install the application. </span>
+    <div class="install-header">
+      <div class="app-title">
+        <div class="icon-wrapper">
+          <img src="{{appItem.icon_url}}" alt="{{appItem.app_display_name}}" />
+        </div>
+  
+        <div class="title-wrapper">
+          <p class="fontL blue gapZ">{{appItem.app_display_name}}</p>
+          <p class="fontXS gapZ">Version: <strong>{{selectedVersion.app_version}}</strong></p>
+        </div>
+      </div>
+
+      <button class="app-install-cancel" type="button" (click)="cancel()">
+        <app-back-icon></app-back-icon>Go back
+      </button>
     </div>
-<!--    <input type="hidden" name="app_name" value="{{appItem.app_name}}" readonly="">-->
-<!--    <input type="hidden" name="version" value="{{selectedVersion.app_version}}" readonly=""><br/>-->
+
+    <div class="app-install-text">
+      <p class="gapS">
+        <a class="button" href="{{installGuideUrl}}" target="_blank">
+          <app-guide-icon></app-guide-icon>Installation guide
+        </a>
+      </p>
+      <p class="gapZ">Please fill out the form below to install a <strong>new app instance</strong> of the selected application. Fields marked with * are required.</p>
+    </div>
+
     <div class="install-form-item">
-      <div class="error-messages">
+      <div class="install-item-body">
+        <label for="instance_id">Instance ID *</label>
+        <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id" autocomplete="off" aria-autocomplete="none">
+        <span class="field-description">Choose a subdomain, under which to access your app instance, only lowercase letters and numbers. <strong>Cannot be changed after the installation.</strong></span>
+      </div>
+      <div *ngIf="installForm.controls.instance_id.invalid" class="error-messages">
         <div *ngIf="installForm.controls.instance_id.hasError('nameAlreadyExists')">
           <mat-error>
-            InstanceID already exists.
+            Instance ID already exists.
           </mat-error>
         </div>
-<!--        <div *ngIf="installForm.controls.instance_id.hasError('minlength')">-->
-<!--          <mat-error>-->
-<!--            ApplicationID too short!-->
-<!--          </mat-error>-->
-<!--        </div>-->
+
         <div *ngIf="installForm.controls.instance_id.hasError('maxlength')">
           <mat-error>
-            InstanceID too long! max 48 chars.
+            Instance ID too long! max 48 chars.
           </mat-error>
         </div>
+
         <div *ngIf="installForm.controls.instance_id.hasError('required') && installForm.controls.instance_id.dirty">
           <mat-error>
-            InstanceID cannot be empty!
+            Instance ID cannot be empty!
           </mat-error>
         </div>
+
         <div *ngIf="installForm.controls.instance_id.hasError('pattern')">
           <mat-error>
-            InstanceID does not match RegEx constraints! Can only contain lowercase alphanumeric chars.
+            Instance ID does not match RegEx constraints! Can only contain lowercase alphanumeric chars.
           </mat-error>
         </div>
       </div>
-      <div class="install-item-body">
-        <label for="instance_id"> Application ID</label>
-        <input type="text" value="" name="instance_id" required id="instance_id" formControlName="instance_id">
-        <span class="field-description"> Subdomain of your application URL. <b>The application ID can not be changed after the installation.</b></span>
-      </div>
     </div>
-    <div class="install-form-item">
-      <div class="error-messages">
 
-        <div *ngIf="installForm.controls.instance_name.hasError('maxlength')">
-          <mat-error>
-            Application Name too long! max 48 chars.
-          </mat-error>
+    <div class="install-form-item">
+      <div class="columns">
+        <div class="install-form-item">
+          <div class="install-item-body">
+            <label for="instance_title">Instance title *</label>
+            <input type="text" value="" name="instance_title" required id="instance_title" formControlName="instance_title" > <!-- (ngModelChange)="test('a')" -->
+            <span class="field-description">Choose a title for your app instance, can be changed in the instance details.</span>
+          </div>
+          <div *ngIf="installForm.controls.instance_title.invalid && installForm.controls.instance_title.touched" class="error-messages">
+            <div *ngIf="installForm.controls.instance_title.hasError('maxlength')">
+              <mat-error>
+                Instance title too long! Max 48 chars.
+              </mat-error>
+            </div>
+            
+            <div *ngIf="installForm.controls.instance_title.hasError('required') && installForm.controls.instance_title.dirty">
+              <mat-error>
+                Instance title cannot be empty!
+              </mat-error>
+            </div>
+          </div>
+        </div>
+        
+        <div class="install-form-item">
+          <div class="install-item-body">
+            <label for="instance_subtitle">Instance subtitle</label>
+            <input type="text" value="" name="instance_subtitle" id="instance_subtitle" formControlName="instance_subtitle" > <!-- (ngModelChange)="test('a')" -->
+            <span class="field-description">Choose a subtitle for your app instance, can be changed in the instance details.</span>
+          </div>
+          <div *ngIf="installForm.controls.instance_subtitle.invalid && installForm.controls.instance_subtitle.touched" class="error-messages"></div>
         </div>
 
+        <div [formGroup]="envParamForm" *ngFor="let envparam of environmentParameters; let i = index" [ngClass]="{ 'install-form-item': true, 'radio': envparam.type === 'radio', 'stick-to-top': envparam.display_name.length === 0 }">
+          <div class="install-item-body">
+            <label>{{envparam.display_name}}<span *ngIf="envparam.display_name.length > 0"> *</span></label>
+            <ng-container [ngSwitch]="envparam.type">
+              <!--*ngSwitchCase="'text'"-->
+              <input *ngSwitchDefault
+                    [type]="envparam.type"
+                    name="{{envparam.name}}"
+                    formControlName="{{envparam.name}}"
+                    id="{{envparam.id}}"
+                    placeholder="{{envparam.default_value}}">
+
+              <input *ngSwitchCase="'radio'"
+                    type="radio"
+                    [id]="envparam.id"
+                    [name]="envparam.name"
+                    [formControl]="envParamForm.get(envparam.name)"
+                    [value]="envparam.default_value"
+                    [checked]="entered_values[envparam.name] === envparam.id"
+                    (click)="onRadioChange(envparam.id,envparam.name)" >
+            </ng-container>
+            <span class="field-description">{{envparam.description}}</span>
+          </div>
+          <div *ngIf="envParamForm.controls[envparam.name].invalid && envParamForm.controls[envparam.name].touched" class="error-messages">
+            <mat-error *ngIf="envParamForm.controls[envparam.name].hasError('minlength')">
+              Input too short! min {{envparam.min_length}} chars.
+            </mat-error>
+            <mat-error *ngIf="envParamForm.controls[envparam.name].hasError('maxlength')">
+              Input too long! max {{envparam.max_length}} chars.
+            </mat-error>
+          </div>
+        </div>
       </div>
-    <div class="install-form-item">
-      <div class="error-messages"></div>
-      <div class="install-item-body">
-        <label for="instance_name"> Application Name</label>
-        <input type="text" value="" name="instance_name" required id="instance_name" formControlName="instance_name" > <!-- (ngModelChange)="test('a')" -->
-        <span class="field-description">Full name of your application, can be changed later on.</span>
-      </div>
-    </div>
-    </div>
-    <div class="install-form-item" [formGroup]="envParamForm" *ngFor="let envparam of environmentParameters; let i = index">
-      <div class="error-messages"> </div>
-      <div class="install-item-body">
-        <label> {{envparam.display_name}} </label>
-        <ng-container [ngSwitch]="envparam.type">
-          <!--*ngSwitchCase="'text'"-->
-          <input *ngSwitchDefault
-                 [type]="envparam.type"
-                 name="{{envparam.name}}"
-                 formControlName="{{envparam.name}}"
-                 id="{{envparam.id}}"
-                 placeholder="{{envparam.default_value}}">
-          <input *ngSwitchCase="'radio'"
-                 type="radio"
-                 [id]="envparam.id"
-                 [name]="envparam.name"
-                 [formControl]="envParamForm.get(envparam.name)"
-                 [value]="envparam.default_value"
-                 [checked]="entered_values[envparam.name] === envparam.id"
-                 (click)="onRadioChange(envparam.id,envparam.name)" >
-        </ng-container>
-        <span class="field-description">{{envparam.description}}</span>
-<!--        <input type="{{envparam.type}}" name="{{envparam.name}}" formControlName="{{envparam.name}}" id="{{envparam.id}}"  placeholder="{{envparam.default_value}}"[value]="envparam.default_value"  [(ngModel)]="envparam.default_value"  > <!-- [checked]="envparam.id === envparam.name"  [checked]="true" [value]="envparam.default_value"  [(ngModel)]="envparam.default_value" (ngModelChange)="entered_values.set(envparam.name, envparam.default_value)"  [(ngModel)]="entered_values[envparam.name]"-->
-<!--        <span class="field-description">{{envparam.description}}</span> -->
+
+      <div class="install-form-item">
+        <div class="install-item-body">
+          <label for="instance_subtitle">Instance information</label>
+          <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+          <ngx-editor [editor]="editor" formControlName="instance_information" [placeholder]="''"></ngx-editor>
+          <span class="field-description">Write down any information that might be helpful for using the app instance. This will be visible in the instance list and can be changed in the instance details.</span>
+        </div>
+        <div *ngIf="installForm.controls.instance_information.invalid && installForm.controls.instance_information.touched" class="error-messages"></div>
       </div>
     </div>
 
     <div class="install-submit">
-      <button class="app-install-cancel" type="button" (click)="cancel()">Cancel</button>
-
-      <ng-container *ngIf="installForm.valid && envParamForm.valid">
-        <button class="app-install-submit" type="button" (click)="install()">Install</button>
-      </ng-container>
-      <ng-container *ngIf="installForm.invalid || envParamForm.invalid">
-        <button class="app-install-submit-invalid" type="button" disabled> Install </button>
-      </ng-container>
-      </div>
+      <button class="gradient" type="button" (click)="install()" [disabled]="installForm.invalid || envParamForm.invalid" [matTooltip]="(installForm.invalid || envParamForm.invalid) ? 'Not all fields are valid.' : ''">
+        <app-install-icon></app-install-icon>Install
+      </button>
+    </div>
   </form>
 </div>

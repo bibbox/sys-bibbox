@@ -1,8 +1,22 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
-<mat-dialog-content>
-  <p>{{ data.message }}</p>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button (click)="onNoClick()" *ngIf="data.showCancel">Cancel</button>
-  <button (click)="confirm()">Confirm</button>
-</mat-dialog-actions>
+<div class="user-delete-overlay">
+  <div class="user-delete-overlay__header">
+    <app-cross-clear-icon class="dialog-close" [mat-dialog-close]="false" width="20" height="20"></app-cross-clear-icon>
+  </div>
+
+  <div class="user-delete-overlay__body">
+    <h1 class="text-center">Delete user</h1>
+
+    <p class="text-center gapZ">Do you really want to delete this user?</p>
+  </div>
+
+  <div class="user-delete-overlay__footer">
+    <div class="user-delete-overlay__delete-button">
+      <button class="gradient" (click)="confirm()">
+        <app-delete-icon></app-delete-icon>Delete
+      </button>
+
+      <button (click)="onNoClick()">
+        <app-cross-clear-icon width="16" height="16"></app-cross-clear-icon>Cancel
+      </button>
+  </div>
+</div>

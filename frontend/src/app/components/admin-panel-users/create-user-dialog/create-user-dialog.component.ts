@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {FormGroup, FormBuilder, Validators, ValidationErrors, AbstractControl} from '@angular/forms';
 import {environment} from '../../../../environments/environment';
 import {ValidatorService} from '../../../store/services/validator.service';
+import { UserCreateDialogProps } from '../../../store/models/user.model';
 
 @Component({
   selector: 'app-create-user-dialog',
@@ -12,6 +13,7 @@ import {ValidatorService} from '../../../store/services/validator.service';
 export class CreateUserDialogComponent {
   userForm: FormGroup;
   hidePassword = true;
+  isEditMode = false;
 
   kcRoles = [
     {
@@ -26,8 +28,7 @@ export class CreateUserDialogComponent {
       value: environment.KEYCLOAK_CONFIG.roles.standard_user,
       name: 'Standard User'
     }
-  ]
-
+  ];
 
   usernameMaxLength = 20;
   usernameMinLength = 3;
@@ -35,13 +36,19 @@ export class CreateUserDialogComponent {
   passwordMinLength = 8;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public props: UserCreateDialogProps,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<CreateUserDialogComponent>,
-    private validatorService: ValidatorService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    private validatorService: ValidatorService
   ) {
+  }
+
+  ngOnInit(): void {
+    this.isEditMode = !!this.props.userToEdit;
+
     this.userForm = this.fb.group({
-      username: ['', [
+      id: [this.props.userToEdit?.id || ''],
+      username: [this.props.userToEdit?.username || '', [
         Validators.required,
         this.validatorService.noWhitespaceValidator,
         this.validatorService.isAlphanumericValidator,
@@ -50,22 +57,28 @@ export class CreateUserDialogComponent {
         Validators.minLength(this.usernameMinLength)
       ]], // add validator s.t. username is unique
       password: ['', [
-        Validators.required,
-        Validators.maxLength(this.passwordMaxLength)
-        // Validators.minLength(this.passwordMinLength) # Only while Testing, in production this should be enabled
+        Validators.maxLength(this.passwordMaxLength),
+        Validators.minLength(this.passwordMinLength)
       ]],
-      role: ['', [
+      role: [this.props.userToEdit?.roles[0] || environment.KEYCLOAK_CONFIG.roles.standard_user, [
         Validators.required,
         this.isRoleInKcRolesValidator
       ]],
-      email: ['', [Validators.email]],
-      firstName: ['', []],
-      lastName: ['', []],
+      email: [this.props.userToEdit?.email || '',
+        [Validators.email]
+      ],
+      firstName: [this.props.userToEdit?.firstName || '', []],
+      lastName: [this.props.userToEdit?.lastName || '', []],
     });
+
+    if(!this.isEditMode) {
+      console.log('add constraint');
+      this.userForm.controls.password.addValidators(Validators.required);
+    }
   }
 
   usernameExistsValidator = (control: AbstractControl): ValidationErrors | null => {
-    if (this.data.usernames.includes(control.value.toLowerCase())) {
+    if (this.props.usernames.includes(control.value.toLowerCase()) && control.value.toLowerCase() !== this.props.userToEdit.username.toLowerCase()) {
       return {usernameExists: true};
     }
     return null;
@@ -82,7 +95,6 @@ export class CreateUserDialogComponent {
     return this.kcRoles.find(kcRole => kcRole.value === role);
   }
 
-
   onSave() {
     this.dialogRef.close(this.userForm.value);
   }
@@ -90,6 +102,4 @@ export class CreateUserDialogComponent {
   onCancel() {
     this.dialogRef.close();
   }
-
-
 }

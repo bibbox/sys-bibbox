@@ -1,88 +1,389 @@
 @import "src/styles-variables";
+
 .app-scaffold-header {
-  display: flex;
-  flex-direction: row;
-  padding: 10px 20px 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  flex-grow: 0;
+  display: block;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: 100%;
+  min-height: 80px;
+  padding: 5px 30px 5px 30px;
   justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  transition: background-color 0.2s ease-out, min-height 0.2s ease-out;
+
+  &.scrolled {
+    background-color: white;
+    min-height: 60px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
 
   .app-scaffold-header__left_aligned {
-    width: 25vw;
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+
     .app-scaffold-header__branding {
-      flex-grow: 0;
-      justify-content: flex-start;
-      align-self: center;
-      align-items: center;
-      justify-items: center;
       display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      text-decoration: none;
 
       .app-scaffold-header__navbar-icon {
         max-height: 50px;
-        height: 50px;
+        height: 60px;
         width: auto;
       }
 
-      .app-scaffold-header__branding-text {
-        margin-left: 15px;
-        font-weight: $custom_font_weight_light;
-        font-size: x-large;
-        color: $custom_blue;
+      > span {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: flex-start;
+        justify-content: center;
+        margin-left: 10px;
+
+        .app-scaffold-header__branding-title {
+          font-weight: $custom_font_weight_normal;
+          color: $custom_blue;
+          line-height: 110%;
+        }
+
+        .app-scaffold-header__branding-subtitle {
+          font-weight: $custom_font_weight_normal;
+          color: $custom_blue;
+          line-height: 110%;
+        }
       }
     }
   }
 
   .app-scaffold-header__center_aligned {
-    // width: 50vw;
-    .app-scaffold-header__nav-buttons{
-      flex-grow: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 70px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-      .app-scaffold-header__nav-button {
-        border: none;
-        //width: 110px;
-        font-size: large;
-        font-weight: $custom_font_weight_light;
+    .app-scaffold-header__nav-buttons {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      column-gap: 30px;
+      list-style: none;
+      margin-bottom: 0;
+      padding-left: 0;
+
+      > li {
+        > a {
+          display: inline-block;
+          border-top: solid 2px transparent;
+          border-bottom: solid 2px transparent;
+          font-family: "Roboto Condensed", "Helvetica Neue", sans-serif;
+          font-size: 14pt;
+          text-decoration: none;
+          line-height: 100%;
+          transition: border-color 0.2s ease-out;
+
+          &:hover {
+            border-bottom-color: $custom_gray_darkest;
+          }
+
+          &.active {
+            font-weight: 600;
+            color: $custom_blue;
+            border-bottom-color: $custom_blue;
+          }
+        }
       }
     }
-  }
-  .app-scaffold-header__nav-buttons .active {
-    color: white;
-    background: $custom_blue;
   }
 
   .app-scaffold-header__right_aligned {
     flex-grow: 0;
+    flex-shrink: 0;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    width: 25vw;
-
-    .app-scaffold-header__login_info {
-      font-size: large;
-      font-weight: $custom_font_weight_light;
-      align-self: center;
-      justify-self: flex-start;
-    }
-
-    .app-scaffold-header__profile-icon {
-      font-size: x-large;
-      font-weight: $custom_font_weight_light;
-      align-self: center;
-      justify-self: flex-start;
-    }
 
     .app-scaffold-header__activity-menu-overlay {
       flex-grow: 0;
     }
 
+    > ul {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      column-gap: 15px;
+      list-style: none;
+      margin-bottom: 0;
+
+      > li {
+        position: relative;
+        padding: 10px 0;
+
+        &.login-item {
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+
+        &.mobile-menu-button {
+          display: none;
+          justify-content: center;
+          align-items: center;
+
+          .mobile-menu-button-icon {
+            fill: $custom_blue;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            transition: opacity 0.23s ease-out;
+
+            &:hover {
+              opacity: 0.75;
+            }
+          }
+        }
+
+        > .user {
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+          
+          .user-icon {
+            width: 30px;
+            height: 30px;
+            fill: $custom_blue;
+            flex-grow: 0;
+            flex-shrink: 0;
+            margin-right: 7px;
+          }
+        }
+
+        > ul {
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          opacity: 0;
+          pointer-events: none;
+          background-color: white;
+          border-radius: 5px;
+          padding: 10px 20px;
+          list-style: none;
+          box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+          transition: opacity 0.2s ease-out;
+
+          &::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-bottom: solid 10px white;
+            border-left: solid 10px transparent;
+            border-right: solid 10px transparent;
+          }
+
+          > li {
+            display: block;
+
+            > a {
+              display: flex;
+              flex-flow: row nowrap;
+              align-items: center;
+              white-space: nowrap;
+              cursor: pointer;
+              transition: opacity 0.2s ease-out;
+
+              .logout-icon {
+                width: 22px;
+                height: 22px;
+                fill: $custom_blue;
+                margin-right: 5px;
+              }
+
+              &:hover {
+                opacity: 0.75;
+              }
+            }
+          }
+        }
+
+        &:hover > ul {
+          opacity: 1;
+          pointer-events: all;
+        }
+      }
+    }
+  }
+
+  .app-scaffold-header__mobile-menu {
+    position: fixed;
+    left: calc(100% + 15px);
+    top: 0;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    width: 400px;
+    max-width: calc(100% - 30px);
+    background-color: white;
+    transform: translateX(0);
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0);
+    z-index: 4;
+    transition: transform 0.35s ease-out, box-shadow 0.35s ease-out;
+    
+    &.visible {
+      transform: translateX(calc(-100% - 15px));
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.8);
+    }
+
+    .app-scaffold-header__mobile-menu-header {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 15px;
+      z-index: 1;
+
+      .mobile-menu-button-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        fill: $custom_blue;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        transition: opacity 0.23s ease-out;
+
+        &:hover {
+          opacity: 0.75;
+        }
+      }
+    }
+    .app-scaffold-header__mobile-menu-body {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      padding: 80px 50px;
+      flex-grow: 1;
+      flex-shrink: 0;
+      overflow-y: auto;
+
+      h1 {
+        text-align: center;
+      }
+
+      .app-scaffold-header__mobile-menu-items {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+
+        .app-scaffold-header__mobile-menu-nav-buttons {
+          display: flex;
+          flex-flow: column nowrap;
+          align-items: center;
+          row-gap: 15px;
+          list-style: none;
+          margin-bottom: 0;
+          padding-left: 0;
+    
+          > li {
+            > a {
+              display: inline-block;
+              border-top: solid 2px transparent;
+              border-bottom: solid 2px transparent;
+              font-family: "Roboto Condensed", "Helvetica Neue", sans-serif;
+              font-size: 16pt;
+              text-decoration: none;
+              line-height: 100%;
+              transition: border-color 0.2s ease-out;
+    
+              &:not(.button):hover {
+                border-bottom-color: $custom_gray_darkest;
+              }
+    
+              &.active {
+                font-weight: 600;
+                color: $custom_blue;
+                border-bottom-color: $custom_blue;
+              }
+            }
+
+            &.logout {
+              margin-top: 30px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .app-scaffold-header__mobile-menu-clickaway {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+  }
+}
+
+:host-context(.white-header) {
+  .app-scaffold-header {
+    background-color: white !important;
+  }
+}
 
 
-    .app-scaffold-header__login-logout-button{
-      font-size: large;
-      font-weight: $custom_font_weight_light;
-      height: 50px;
+@media only screen and (max-width: $custom_responsive_size_ml) {
+  .app-scaffold-header {
+    grid-template-columns: auto 1fr;
+    padding-left: 15px;
+    padding-right: 15px;
+    min-height: 60px;
+    background-color: white !important;
+
+    .app-scaffold-header__center_aligned {
+      display: none;
+    }
+    .app-scaffold-header__right_aligned {
+      > ul {
+        > .user-item {
+          display: none;
+        }
+        > .mobile-menu-button {
+          display: flex !important;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_xs) {
+  .app-scaffold-header {
+    .app-scaffold-header__left_aligned {
+      .app-scaffold-header__branding {
+        > span {
+          display: none;
+        }
+      }
+    }
+  }
+  .app-scaffold-header__mobile-menu {
+    .app-scaffold-header__mobile-menu-body {
+      padding: 60px 30px !important;
     }
   }
 }

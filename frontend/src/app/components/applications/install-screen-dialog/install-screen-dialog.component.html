@@ -1,84 +1,94 @@
 <div class="app-install-overlay">
   <div class="app-install-overlay__header">
-    <img [mat-dialog-close]="false" src="assets/close.png" alt="X">
+    <div class="app-title">
+      <div class="icon-wrapper">
+        <img src="{{appInfo.icon_url}}" alt="{{appInfo.short_name}}" />
+      </div>
+
+      <p class="fontL gapZ">{{appInfo.short_name}}</p>
+    </div>
+
+    <app-cross-clear-icon class="dialog-close" [mat-dialog-close]="false" width="20" height="20"></app-cross-clear-icon>
   </div>
+
   <div class="app-install-overlay__body">
-    <div class="app-install-overlay__body-install-button">
+    <div class="app-install-overlay__body-column">
+      <div class="app-install-overlay__body-entry">
+        <span class="app-install-overlay__body-entry-label">Application name</span>
+        <span class="app-install-overlay__body-entry-description">{{appInfo.name}}</span>
+      </div>
+  
+      <div class="app-install-overlay__body-entry">
+        <span class="app-install-overlay__body-entry-label">Versions</span>
+        <span class="app-install-overlay__body-entry-description">
+          <select [formControl]="versionFormControl" (change)="loadAppInfo()">
+            <option *ngFor="let version of appInfo.versionOptions" [ngValue]="version">{{version.selectLabel}}</option>
+          </select>
+        </span>
+      </div>
+
+      <div class="app-install-overlay__body-entry">
+        <span class="app-install-overlay__body-entry-label">Tags</span>
+        <span class="app-install-overlay__body-entry-description">
+          <span class="app-install-overlay__body-entry-tag" *ngFor="let tag of applicationItem.tags">
+            {{tag}}
+
+            <span class="submenu">
+              <ul>
+                <li>
+                  <a [routerLink]="" (click)="searchByTag(tag)"><app-search-icon class="search-icon"></app-search-icon>Search by tag</a>
+                </li>
+              </ul>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="app-install-overlay__body-column">
+      <div class="app-install-overlay__body-entry">
+        <span class="app-install-overlay__body-entry-label">Application</span>
+        <span class="app-install-overlay__body-entry-description">
+          <a href="{{appInfo.application_url}}" target="_blank" rel="noopener noreferrer">
+            {{appInfo.application_url}}
+          </a>
+        </span>
+      </div>
+  
+      <div class="app-install-overlay__body-entry">
+        <span class="app-install-overlay__body-entry-label">Documentation</span>
+        <span class="app-install-overlay__body-entry-description">
+          <a href="{{appInfo.application_documentation_url}}" target="_blank" rel="noopener noreferrer">
+            {{appInfo.application_documentation_url}}
+          </a>
+        </span>
+      </div>
+  
+      <div class="app-install-overlay__body-entry">
+        <span class="app-install-overlay__body-entry-label">Installation guide</span>
+        <span class="app-install-overlay__body-entry-description">
+          <a href="{{appInfo.install_guide_url}}" target="_blank" rel="noopener noreferrer">
+            {{appInfo.install_guide_url}}
+          </a>
+        </span>
+      </div>
+    </div>
+
+    <div class="app-install-overlay__body-entry">
+      <span class="app-install-overlay__body-entry-label"> Description </span>
+      <span class="app-install-overlay__body-entry-description"> {{applicationItem.short_description}} </span>
+    </div>
+  </div>
+
+  <div class="app-install-overlay__footer">
+    <div class="app-install-overlay__install-button">
       <button
+        class="gradient"
         [mat-dialog-close]="true"
         (click)="openInstallScreen()"
         [disabled]="disableInstallButton"
-        [matTooltip]="disableInstallButton ? maxInstancesTooltip : null">
-        Install
+        [title]="disableInstallButton ? maxInstancesTooltip : ''">
+        <app-install-icon></app-install-icon>Install app
       </button>
-    </div>
-
-    <div class="app-install-overlay__body-entry">
-      <span class="app-install-overlay__body-entry-label"> Name </span><br/>
-      <span class="app-install-overlay__body-entry-description"> {{appInfo.name}} </span><br/><br/>
-    </div>
-
-    <div class="app-install-overlay__body-entry">
-      <span class="app-install-overlay__body-entry-label"> Shortname </span><br/>
-      <span class="app-install-overlay__body-entry-description"> {{appInfo.short_name}} </span><br/><br/>
-    </div>
-
-    <div class="app-install-overlay__body-entry">
-      <span class="app-install-overlay__body-entry-label"> App Versions </span><br/>
-      <span class="app-install-overlay__body-entry-description">
-        <mat-form-field appearance="fill" class="app-install-overlay__body-entry-dropdown" [floatLabel]="'never'">
-          <mat-label></mat-label>
-          <mat-select [(value)]="selectedVersion" (selectionChange)="loadAppInfo()">
-            <mat-option *ngFor="let version of applicationItem.versions" [value]="version">
-              {{version.app_version}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </span><br/><br/>
-    </div>
-
-    <div class="app-install-overlay__body-entry">
-      <span class="app-install-overlay__body-entry-label"> Version </span><br/>
-      <span class="app-install-overlay__body-entry-description"> {{selectedVersion.version}} </span><br/><br/>
-    </div>
-
-    <div class="app-install-overlay__body-entry">
-      <span class="app-install-overlay__body-entry-label"> Application URL </span><br/>
-      <span class="app-install-overlay__body-entry-description">
-        <a href="{{appInfo.application_url}}" target="_blank" rel="noopener noreferrer">
-          {{appInfo.application_url}}
-        </a>
-      </span><br/><br/>
-    </div>
-
-<!--    <div class="app-install-overlay__body-entry">-->
-<!--      <span class="app-install-overlay__body-entry-label"> Catalogue URL </span><br/>-->
-<!--      <span class="app-install-overlay__body-entry-description">-->
-<!--        <a href="{{appInfo.catalog_url}}" target="_blank" rel="noopener noreferrer">-->
-<!--          {{appInfo.catalog_url}}-->
-<!--        </a>-->
-<!--      </span><br/><br/>-->
-<!--    </div>-->
-
-    <div class="app-install-overlay__body-entry">
-      <span class="app-install-overlay__body-entry-label"> Documentation URL </span><br/>
-      <span class="app-install-overlay__body-entry-description">
-        <a href="{{appInfo.application_documentation_url}}" target="_blank" rel="noopener noreferrer">
-          {{appInfo.application_documentation_url}}
-        </a>
-      </span><br/><br/>
-    </div>
-
-    <div class="app-install-overlay__body-entry">
-      <span class="app-install-overlay__body-entry-label"> Tags </span><br/>
-      <span class="app-install-overlay__body-entry-description">
-        <span class="app-install-overlay__body-entry-tag" *ngFor="let tag of applicationItem.tags"> {{tag}} </span>
-      </span><br/><br/>
-    </div>
-
-    <div class="app-install-overlay__body-entry">
-      <span class="app-install-overlay__body-entry-label"> Description </span><br/>
-      <span class="app-install-overlay__body-entry-description"> {{applicationItem.short_description}} </span><br/><br/>
-    </div>
   </div>
 </div>

@@ -30,7 +30,6 @@ export class InstanceService {
     return this.http.get<InstanceItem[]>(API_INSTANCES_URL + 'installed_by/' + installerID);
   }
 
-
   postInstance(instanceName: string, payload: string): Observable<InstanceItem> {
     const header = new HttpHeaders();
     header.set('Content-Type', 'application/json'); // ; charset=utf-8

@@ -3,6 +3,17 @@ import {EntityState} from '@ngrx/entity';
 export interface ApplicationGroupItem {
   group_name: string;
   group_members: ApplicationItem[];
+  hideCategory?: boolean;
+}
+
+export interface AppInstallDialogProps {
+  application: ApplicationItem;
+  searchByTag: (tag: string) => void;
+}
+
+export interface AppInstallDialogProps {
+  application: ApplicationItem;
+  searchByTag: (tag: string) => void;
 }
 
 export interface ApplicationItem {
@@ -10,10 +21,12 @@ export interface ApplicationItem {
   app_display_name: string;
   short_description: string;
   installable: boolean;
-  decoration: string;
+  decoration: string | string[];
   tags: string[];
   versions: IVersions[];
   icon_url: string;
+  isNew?: boolean;
+  isFair?: boolean;
 }
 
 export interface IVersions {
@@ -22,6 +35,7 @@ export interface IVersions {
   tooltip: string;
   appinfo: string;
   environment_parameters: string;
+  selectLabel?: string;
 }
 
 export interface AppInfo {
@@ -34,6 +48,10 @@ export interface AppInfo {
   application_url: string;
   tags: string[];
   application_documentation_url: string;
+  icon_url?: string;
+  versionOptions?: IVersions[];
+  install_guide_url?: string;
+  instance_information?: string;
 }
 
 export interface EnvironmentParameters {
@@ -45,4 +63,10 @@ export interface EnvironmentParameters {
   description: string;
   min_length: string;
   max_length: string;
+}
+
+export interface IApplicationGroupsFilters {
+  searchterm: string;
+  filter: string;
+  sort: string;
 }

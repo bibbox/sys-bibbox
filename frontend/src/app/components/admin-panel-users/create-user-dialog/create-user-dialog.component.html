@@ -1,9 +1,23 @@
-<div class="userDialog">
-  <mat-dialog-content>
-    <form [formGroup]="userForm">
-      <div>
-        <mat-form-field>
-          <input matInput placeholder="Username" formControlName="username" required>
+<div class="user-dialog-overlay">
+  <div class="user-dialog-overlay__header">
+    <h1 *ngIf="!isEditMode" class="text-center">Add user</h1>
+    <h1 *ngIf="isEditMode" class="text-center">Edit user</h1>
+    <app-cross-clear-icon class="dialog-close" [mat-dialog-close]="false" width="20" height="20"></app-cross-clear-icon>
+  </div>
+
+  <div class="user-dialog-overlay__text">
+    <p *ngIf="!isEditMode" class="gapZ">Please fill out the form below to add a new user. Fields marked with * are required.</p>
+    <p *ngIf="isEditMode" class="gapZ">Please fill out the form below to edit the user. Fields marked with * are required.</p>
+  </div>
+
+  <form [formGroup]="userForm"  class="user-dialog-overlay__body">
+    <div class="user-dialog-overlay__body-column">
+      <div class="user-dialog-item">
+        <div class="user-dialog-item-body">
+          <label for="username">Username *</label>
+          <input type="text" id="username" required formControlName="username">
+        </div>
+        <div *ngIf="userForm.controls.username.invalid && userForm.controls.username.touched" class="error-messages">
           <mat-error *ngIf="userForm.controls.username.errors?.usernameExists; else usernameError1">
             This username already exists.
           </mat-error>
@@ -35,66 +49,89 @@
               </mat-error>
             </ng-template>
           </ng-container>
-        </mat-form-field>
+        </div>
       </div>
-      <div>
-        <mat-form-field>
-          <input matInput placeholder="Password" formControlName="password" [type]="hidePassword ? 'password' : 'text'" required>
-          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-          <mat-error *ngIf="userForm.controls.password.errors?.maxlength; else pwError1">
+      
+      <div class="user-dialog-item">
+        <div class="user-dialog-item-body">
+          <label for="password">Password<span *ngIf="!isEditMode"> *</span></label>
+          <input type="password" id="password" required="{{!isEditMode}}" formControlName="password">
+        </div>
+        <div *ngIf="userForm.controls.password.invalid && userForm.controls.password.touched" class="error-messages">
+          <mat-error *ngIf="userForm.controls.password.errors?.minlength">
+            Min. password length is {{passwordMinLength}} chars.
+          </mat-error>
+          <mat-error *ngIf="userForm.controls.password.errors?.maxlength">
             Max. password length is {{passwordMaxLength}} chars.
           </mat-error>
-          <ng-container>
-            <ng-template #pwError1>
-              <mat-error *ngIf="userForm.get('password').invalid && userForm.get('password').touched">
-                Please enter a valid password.
-              </mat-error>
-            </ng-template>
-          </ng-container>
-
-
-        </mat-form-field>
+          <mat-error *ngIf="userForm.controls.password.errors?.required">
+            Please enter a valid password.
+          </mat-error>
+        </div>
       </div>
-      <div>
-        <mat-form-field>
-          <mat-select placeholder="Role" formControlName="role" required>
-            <mat-option *ngFor="let role of kcRoles" [value]="role.value">{{role.name}}</mat-option>
-          </mat-select>
+      
+      <div class="user-dialog-item">
+        <div class="user-dialog-item-body">
+          <label for="role">Role *</label>
+          <select formControlName="role">
+            <option *ngFor="let role of kcRoles" id="role" [value]="role.value">{{role.name}}</option>
+          </select>
+        </div>
+        <div *ngIf="userForm.controls.role.invalid && userForm.controls.role.touched" class="error-messages">
           <mat-error *ngIf="userForm.get('role').invalid && userForm.get('role').touched">
             Please select a role.
           </mat-error>
-        </mat-form-field>
+        </div>
       </div>
-      <div>
-        <mat-form-field>
-          <input matInput placeholder="E-Mail" formControlName="email">
-          <mat-error *ngIf="userForm.get('email').invalid && userForm.get('email').touched">
-            Please enter a valid email address.
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field>
-          <input matInput placeholder="First Name" formControlName="firstName">
+    </div>
+
+    <div class="user-dialog-overlay__body-column">
+      <div class="user-dialog-item">
+        <div class="user-dialog-item-body">
+          <label for="firstname">Firstname</label>
+          <input type="text" id="firstname" formControlName="firstName">
+        </div>
+        <div *ngIf="userForm.controls.firstName.invalid && userForm.controls.firstName.touched" class="error-messages">
           <mat-error *ngIf="userForm.get('firstName').invalid && userForm.get('firstName').touched">
             Please enter a valid First Name.
           </mat-error>
-        </mat-form-field>
+        </div>
       </div>
-      <div>
-        <mat-form-field>
-          <input matInput placeholder="Last Name" formControlName="lastName">
+      
+      <div class="user-dialog-item">
+        <div class="user-dialog-item-body">
+          <label for="lastname">Lastname</label>
+          <input type="text" id="lastname" formControlName="lastName">
+        </div>
+        <div *ngIf="userForm.controls.lastName.invalid && userForm.controls.lastName.touched" class="error-messages">
           <mat-error *ngIf="userForm.get('lastName').invalid && userForm.get('lastName').touched">
             Please enter a valid Last Name.
           </mat-error>
-        </mat-form-field>
+        </div>
       </div>
-    </form>
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button [disabled]="userForm.invalid" (click)="onSave()">Save</button>
-  </mat-dialog-actions>
+      
+      <div class="user-dialog-item">
+        <div class="user-dialog-item-body">
+          <label for="email">E-Mail</label>
+          <input type="email" id="email" formControlName="email">
+        </div>
+        <div *ngIf="userForm.controls.email.invalid && userForm.controls.email.touched" class="error-messages">
+          <mat-error *ngIf="userForm.get('email').invalid && userForm.get('email').touched">
+            Please enter a valid email address.
+          </mat-error>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="user-dialog-overlay__footer">
+    <div class="user-dialog-overlay__save-button">
+      <button
+        class="gradient"
+        [mat-dialog-close]="true"
+        (click)="onSave()"
+        [disabled]="userForm.invalid">
+        <app-save-icon></app-save-icon>Save
+      </button>
+  </div>
 </div>

@@ -1,10 +1,11 @@
-import {ApplicationGroupItem} from '../models/application-group-item.model';
+import {ApplicationGroupItem, IApplicationGroupsFilters} from '../models/application-group-item.model';
 import {ApplicationGroupsAction, ApplicationGroupsActionTypes} from '../actions/applications.actions';
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
 
-export interface ApplicationGroupState extends EntityState<ApplicationGroupItem>{
+export interface ApplicationGroupState extends EntityState<ApplicationGroupItem> {
   loading: boolean;
   error: Error;
+  filters: IApplicationGroupsFilters;
 }
 
 export const ApplicationGroupAdapter: EntityAdapter<ApplicationGroupItem> = createEntityAdapter<ApplicationGroupItem>({
@@ -15,10 +16,17 @@ const defaultState: ApplicationGroupState = {
   ids: [],
   entities: {},
   loading: false,
-  error: undefined
+  error: undefined,
+  filters: {
+    searchterm: '',
+    filter: '',
+    sort: 'category'
+  }
 };
 
 export const initialState = ApplicationGroupAdapter.getInitialState(defaultState);
+
+export const getApplicationGroupsFilters = (state: ApplicationGroupState): IApplicationGroupsFilters => state.filters;
 
 export function ApplicationGroupReducer(
   state: ApplicationGroupState = initialState,
@@ -46,6 +54,11 @@ export function ApplicationGroupReducer(
       return {
         ...state
       };
+    case ApplicationGroupsActionTypes.UPDATE_APPLICATION_GROUPS_FILTERS:
+      return {
+        ...state,
+        filters: action.payload
+      };
     default:
       return {...state};
   }
@@ -55,6 +68,3 @@ export function ApplicationGroupReducer(
 //   initialState,
 //   on(LoadApplicationGroupsAction, state => ({...state, loading: true})),
 // );
-
-
-

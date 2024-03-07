@@ -19,7 +19,7 @@ export interface RoleRepresentation {
 
 export interface UserDictionary {
   username: string;
-  password: string;
+  password?: string;
   roles: string[];
   email?: string;
   firstName?: string;
@@ -35,7 +35,6 @@ export interface UserRoles {
   roles: string[];
 }
 
-
 export interface CreateUserSuccessResponse {
   message: string;
   userRepresentation: UserRepresentation;
@@ -50,6 +49,17 @@ export interface DeleteUserSuccessResponse {
   message: string;
   userID: string;
 }
+
+export interface UserCreateDialogProps {
+  usernames: string[];
+  userToEdit: UserRepresentation | null;
+}
+
+export interface IUserFilters {
+  searchterm: string;
+  role: string;
+}
+
 
 
 // export interface UserRepresentation {

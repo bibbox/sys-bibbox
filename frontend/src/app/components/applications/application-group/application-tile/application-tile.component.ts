@@ -9,17 +9,28 @@ import {InstallScreenDialogComponent} from '../../install-screen-dialog/install-
   styleUrls: ['./application-tile.component.scss']
 })
 export class ApplicationTileComponent implements OnInit {
+  shortenDescription = false;
+  showFullDescription = false;
+  description = '';
 
   constructor(public dialog: MatDialog) { }
 
   @Input() application: ApplicationItem;
+  @Input() searchByTag: (tag: string) => void;
 
   ngOnInit(): void {
+    if(this.application.short_description.length > 60) {
+      this.description = this.application.short_description.substring(0, 60);
+      this.shortenDescription = true;
+    }
+    else {
+      this.description = this.application.short_description;
+    }
   }
 
   openInstallScreenDialog(): void {
     const dialogRef = this.dialog.open(InstallScreenDialogComponent, {
-      data: this.application,
+      data: { application: this.application, searchByTag: this.searchByTag }
     });
 
     // dialogRef.afterClosed().subscribe(value => {
@@ -27,4 +38,15 @@ export class ApplicationTileComponent implements OnInit {
     // });
   }
 
+  toggleShowFully(e): void {
+    e.stopPropagation();
+    this.showFullDescription = !this.showFullDescription;
+
+    if(this.showFullDescription) {
+      this.description = this.application.short_description;
+    }
+    else {
+      this.description = this.application.short_description.substring(0, 60);
+    }
+  }
 }

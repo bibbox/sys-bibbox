@@ -1,73 +1,195 @@
 @import "src/styles-variables";
+
 .app-install-overlay {
   display: flex;
   flex-flow: column nowrap;
-  width: 50vw;
-  max-width: 1000px;
+  width: 100%;
 
   .app-install-overlay__header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 50px;
 
-    img {
+    .app-title {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+
+      .icon-wrapper {
+        width: 60px;
+        height: 60px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          object-position: center;
+        }
+      }
+
+      p {
+        color: $custom_blue;
+        font-weight: $custom_font_weight_medium;
+        margin-left: 10px;
+      }
+    }
+
+    .dialog-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
       float: left;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
+      fill: $custom_gray_dark;
+      cursor: pointer;
+      transition: fill 0.2s ease-out;
+      z-index: 1;
+
+      &:hover {
+        fill: $custom_blue;
+      }
     }
   }
 
   .app-install-overlay__body {
     display: flex;
-    width: 90%;
-    align-self: center;
-    flex-flow: column nowrap;
+    width: 100%;
+    flex-flow: row wrap;
+    column-gap: 60px;
+    row-gap: 30px;
 
-    .app-install-overlay__body-install-button {
+    .app-install-overlay__body-column {
       display: flex;
-      align-self: center;
-
-      button {
-        border: 1px $custom_gray_lightaccent solid;
-      }
-
-      button:disabled {
-        background: $custom_gray_lightaccent;
-        border: 1px $custom_gray_lightaccent solid;
-        color: $custom_gray_dark;
-      }
+      flex-flow: column nowrap;
+      width: calc(50% - 30px);
+      row-gap: 30px;
     }
 
     .app-install-overlay__body-entry {
-      margin-bottom: 10px;
+      display: flex;
+      flex-flow: column nowrap;
+      width: 100%;
 
       .app-install-overlay__body-entry-label {
         margin-bottom: 5px;
-        font-weight: bold;
-        color: $custom_blue
+        font-weight: $custom_font_weight_medium;
+        color: $custom_blue;
+        width: 100%;
       }
 
       .app-install-overlay__body-entry-description {
-        .app-install-overlay__body-entry-dropdown {
-          font-size: small;
-        }
-        .app-install-overlay__body-entry-tag {
+        width: 100%;
 
+        a {
+          word-break: break-all;
         }
       }
 
       .app-install-overlay__body-entry-tag {
+        position: relative;
         padding: 2px 5px;
-        margin: 0 5px 5px 0;
+        margin-right: 10px;
         font-size: small;
         background: rgba(0, 0, 0, 0.07);
         box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
         border-radius: 3px;
-        color: $custom_gray_dark;
-        cursor: pointer
+        color: $custom_gray_darkest;
+        cursor: pointer;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &:hover {
+          background: $custom_gray_darkest;
+          color: white
+        }
+
+        > .submenu {
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          padding-top: 10px;
+          opacity: 0;
+          pointer-events: none;
+          z-index: 1;
+
+          > ul {
+            position: relative;
+            background-color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            list-style: none;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.2s ease-out;
+
+            &::before {
+              content: '';
+              position: absolute;
+              bottom: 100%;
+              left: 50%;
+              transform: translateX(-50%);
+              border-bottom: solid 10px white;
+              border-left: solid 10px transparent;
+              border-right: solid 10px transparent;
+            }
+
+            > li {
+              display: block;
+
+              > a {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                white-space: nowrap;
+                cursor: pointer;
+                transition: opacity 0.2s ease-out;
+
+                .search-icon {
+                  width: 18px;
+                  height: 18px;
+                  fill: $custom_blue;
+                  margin-right: 5px;
+                }
+
+                &:hover {
+                  opacity: 0.75;
+                }
+              }
+            }
+          }
+        }
+
+        &:hover .submenu {
+          opacity: 1;
+          pointer-events: all;
+        }
       }
-      .app-install-overlay__body-entry-tag:hover {
-        background: $custom_gray_dark+DD;
-        color: white
+    }
+  }
+
+  .app-install-overlay__footer {
+    margin-top: 50px;
+
+    .app-install-overlay__install-button {
+      display: flex;
+      justify-content: center;
+
+      button {
+        min-width: 200px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+  .app-install-overlay {
+    .app-install-overlay__body {
+      .app-install-overlay__body-column {
+        width: 100%;
       }
     }
   }

@@ -1,40 +1,115 @@
-import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Editor } from 'ngx-editor';
 import {UserService} from '../../store/services/user.service';
-import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { DOCUMENT } from '@angular/common';
+import { KeyValueService } from '../../store/services/keyvalue.service';
+import { KeyValueItem } from '../../store/models/keyvalue.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { toolbar } from '../../commons';
+import { FormControl } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-info',
   templateUrl: './info.component.html',
-  styleUrls: ['./info.component.scss']
+  styleUrls: ['./info.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class InfoComponent implements OnInit {
 
   isLoggedin = false;
-  public htmlStr: any;
+  userFullname: string = '';
+  editMode: boolean = false;
+  htmlStr = new FormControl('');
+  prevText: string;
+  editor: Editor;
+  toolbar = toolbar;
+  keyValueId: string;
+  keyExistsYet: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(
-    private router: Router,
     private userService: UserService,
-    private _sanitizer: DomSanitizer
+    private snackbar: MatSnackBar,
+    @Inject(DOCUMENT) private document: Document,
+    private keyvalueService: KeyValueService
   ) {
   }
 
-  ngOnInit(): void {
-    this.checkLogin().then(r => this.redirectIfLoggedIn())
-    this.htmlStr = this._sanitizer.bypassSecurityTrustHtml(
-      '<iframe width="100%" height="800" src="assets/landing.html"></iframe>',
-    );
+  async ngOnInit(): Promise<void> {
+    await this.checkLogin();
+    this.document.body.classList.add('layout-width-full');
+
+    if(this.isLoggedin) {
+      this.document.body.classList.add('white-header');
+    }
+
+    (await this.keyvalueService.getValueByKey('info')).subscribe((keyValueItem: KeyValueItem) => {
+      if(!!keyValueItem?.values) {
+        this.keyExistsYet = true;
+      }
+
+      this.htmlStr.setValue(keyValueItem?.values || '');
+      this.keyValueId = String(keyValueItem?.id);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.document.body.classList.remove('layout-width-full', 'white-header');
   }
 
   async checkLogin(): Promise<void> {
     this.isLoggedin = await this.userService.isLoggedIn();
-  }
 
-  redirectIfLoggedIn(): void {
-    if (this.isLoggedin) {
-      this.router.navigate(['/instances']);
+    if(this.isLoggedin) {
+      this.userFullname = await this.userService.getFullOrUsername();
+      this.isAdmin = await this.userService.isRole(environment.KEYCLOAK_CONFIG.roles.admin);
     }
   }
 
+  initiateLogin(): void {
+    this.userService.login();
+  }
+
+  switchAccounts(): void {
+    this.userService.switchAccount();
+  }
+
+  editText(edit: boolean, restore = true): void {
+    if(edit) {
+      this.prevText = this.htmlStr.value;
+      this.editor = new Editor();
+    }
+    else if(!!this.editor) {
+      if(restore) {
+        this.htmlStr.setValue(this.prevText)
+      }
+
+      this.editor.destroy();
+    }
+
+    this.editMode = edit;
+  }
+
+  saveText(): void {
+    const payload = {
+      id: this.keyValueId,
+      keys: 'info',
+      values: this.htmlStr.value,
+      value: this.htmlStr.value
+    };
+
+    if(this.keyExistsYet) {
+      this.keyvalueService.updateValueByKey('info', payload).subscribe();
+    }
+    else {
+      this.keyvalueService.createValueByKey('info', payload).subscribe(() => {
+        this.keyExistsYet = true;
+      });
+    }
+    
+    this.editText(false, false);
+
+    this.snackbar.open('Text saved', 'OK', {duration: 4000});
+  }
 }

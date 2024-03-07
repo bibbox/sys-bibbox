@@ -316,7 +316,7 @@ def installInstance (self, instanceDescr):
         print (compose_file_name)
         # process = subprocess.Popen(['ls', '-la', '/opt/bibbox/instances'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
         logger.info("Running docker-compose up.")
-        process = subprocess.Popen(['docker-compose', '-f', compose_file_name, 'up', '-d'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
+        process = subprocess.Popen(['docker','compose', '-f', compose_file_name, 'up', '-d'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
 
         # TOOO
         # put this in a helper function for calling system commands

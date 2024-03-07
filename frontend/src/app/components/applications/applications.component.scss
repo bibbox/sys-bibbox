@@ -1,24 +1,49 @@
+@import "src/styles-variables";
+
 #applications {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
 
-
   .application-search {
     display: flex;
-    flex-direction: column;
-    min-width: 300px;
-    align-self: center;
-    padding-bottom: 20px;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 50px;
 
-    .input-group-append {
+    > div {
       display: flex;
+      flex-flow: row wrap;
+      gap: 10px;
     }
   }
-
 
   #applications-results {
     display: flex;
     flex-flow: column wrap;
+
+    ::ng-deep > div:last-child .application-group {
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+
+@media only screen and (max-width: $custom_responsive_size_ms) {
+  #applications {
+    .application-search {
+      flex-flow: column nowrap;
+
+      > div {
+        width: 100%;
+
+        input, select {
+          width: 100%;
+        }
+      }
+    }
   }
 }

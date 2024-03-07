@@ -23,6 +23,12 @@ export const selectUserTotal = createSelector(
   selectUserState,
   fromUser.selectUserTotal
 );
+
+export const selectActivityFilters = createSelector(
+  selectUserState,
+  fromUser.getUserFilters
+);
+
 //
 // export const selectCurrentUserId = createSelector(
 //   selectUserState,

@@ -34,7 +34,7 @@ if [ ! -f  DBINIT.DONE ]; then
       python manage.py recreate_db
     fi
     python manage.py sync_app_catalogue
-    touch DBINIT.DONE
+    touch /db_init_done/DBINIT.DONE
 fi
 
 

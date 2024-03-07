@@ -1,17 +1,13 @@
-import {InstanceAction, InstanceActionTypes} from '../actions/instance.actions';
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
-import {ActivityItem} from '../models/activity.model';
-import {ActivityAction, ActivityActionTypes} from '../actions/activity.actions';
-import {UserRepresentation, UserRoleMapping, UserDictionary} from '../models/user.model';
+import {UserRepresentation, IUserFilters} from '../models/user.model';
 import {UserAction, UserActionTypes} from '../actions/user.actions';
-import {InstanceItem} from '../models/instance-item.model';
-import {InstanceState} from './instance.reducer';
 
 
 export interface UserState extends EntityState<UserRepresentation>{
   selectedEntityID: number;
   loading: boolean;
   error: Error;
+  filters: IUserFilters;
 }
 
 export const UserAdapter: EntityAdapter<UserRepresentation> = createEntityAdapter<UserRepresentation>({
@@ -27,7 +23,11 @@ const defaultState: UserState = {
   entities: {},
   selectedEntityID: null,
   loading: false,
-  error: undefined
+  error: undefined,
+  filters: {
+    searchterm: '',
+    role: ''
+  }
 };
 
 export function sortByName(a: UserRepresentation, b: UserRepresentation): number {
@@ -35,6 +35,8 @@ export function sortByName(a: UserRepresentation, b: UserRepresentation): number
 }
 
 export const initialState = UserAdapter.getInitialState(defaultState);
+
+export const getUserFilters = (state: UserState): IUserFilters => state.filters;
 
 export function UserReducer(
   state: UserState = defaultState,
@@ -108,6 +110,11 @@ export function UserReducer(
         loading: false,
         error: action.payload
       }
+    case UserActionTypes.UPDATE_USER_FILTERS:
+      return {
+        ...state,
+        filters: action.payload
+      };
     default:
       return {...state};
   }

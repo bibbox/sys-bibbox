@@ -1,4 +1,4 @@
-import {InstanceItem} from '../models/instance-item.model';
+import {IInstanceFilters, InstanceItem} from '../models/instance-item.model';
 import {InstanceAction, InstanceActionTypes} from '../actions/instance.actions';
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
 
@@ -6,7 +6,7 @@ export interface InstanceState extends EntityState<InstanceItem>{
   selectedEntityID: number;
   loading: boolean;
   error: Error;
-
+  filters: IInstanceFilters;
 }
 
 export function selectInstanceId(a: InstanceItem): string {
@@ -24,13 +24,22 @@ export const InstanceAdapter: EntityAdapter<InstanceItem> = createEntityAdapter<
 
 export const getSelectedInstanceId = (state: InstanceState) => state.selectedEntityID;
 
+export const getInstanceFilters = (state: InstanceState): IInstanceFilters => state.filters;
+
 
 const defaultState: InstanceState = {
   ids: [],
   entities: {},
   selectedEntityID: null,
   loading: false,
-  error: undefined
+  error: undefined,
+  filters: {
+    searchterm: '',
+    status: '',
+    showOnlyOwnedInstances: false,
+    showAsList: false,
+    isInitialState: true
+  }
 };
 
 export const initialState = InstanceAdapter.getInitialState(defaultState);
@@ -90,6 +99,11 @@ export function InstanceReducer(
         ...state,
         error: action.payload,
         loading: false
+      };
+    case InstanceActionTypes.UPDATE_INSTANCE_FILTERS:
+      return {
+        ...state,
+        filters: action.payload
       };
     default:
       return {...state};
