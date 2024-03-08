@@ -77,8 +77,8 @@ services:
     networks:
       - bibbox-default-network
     links:
-      -  bibbox-sys-commander-redis:redis
-      -  bibbox-sys-commander-postgres:postgres
+      -  "bibbox-sys-commander-redis:redis"
+      -  "bibbox-sys-commander-postgres:postgres"
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -127,7 +127,7 @@ services:
     networks:
       - bibbox-default-network
     links:
-      -  bibbox-sys-commander-redis:redis
+      -  "bibbox-sys-commander-redis:redis"
     restart: unless-stopped
     ports:
       - "5011:5555"
@@ -183,7 +183,7 @@ services:
     image: adminer
     restart: unless-stopped
     links:
-      - bibbox-sys-commander-postgres:postgres
+      - "bibbox-sys-commander-postgres:postgres"
       # - bibbox-sys-commander-keycloak-postgres:postgres
     ports:
       - "5012:8080"
@@ -261,8 +261,8 @@ services:
     volumes:
       - ./fdp-configs/application.yml:/fdp/application.yml:ro
     links:
-      - bibbox-sys-commander-master-fdp-blazegraph:blazegraph
-      - bibbox-sys-commander-master-fdp-mongo:mongo
+      - "bibbox-sys-commander-master-fdp-blazegraph:blazegraph"
+      - "bibbox-sys-commander-master-fdp-mongo:mongo"
     env_file:
       - fdp-configs/fdp.env.template
 
@@ -275,7 +275,7 @@ services:
     environment:
       - FDP_HOST=fdp
     links:
-      - bibbox-sys-commander-master-fdp:fdp
+      - "bibbox-sys-commander-master-fdp:fdp"
     networks:
       - bibbox-default-network
 
