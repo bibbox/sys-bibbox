@@ -140,8 +140,8 @@ class KeycloakAdminService():
         self.keycloak_api = KeycloakAdmin(
                                             server_url=os.getenv('KEYCLOAK_SERVER_URL'),
                                             realm_name=os.getenv('KEYCLOAK_REALM'),
-                                            username=os.getenv('KEYCLOAK_USER'),
-                                            password=os.getenv('KEYCLOAK_PASSWORD'),
+                                            #username=os.getenv('KEYCLOAK_USER'), if provided username and password are used instead of KEYCLOAK_ADMIN_CLIENT_ID and KEYCLOAK_ADMIN_CLIENT_SECRET
+                                            #password=os.getenv('KEYCLOAK_PASSWORD'),
                                             client_id=os.getenv('KEYCLOAK_ADMIN_CLIENT_ID'),
                                             client_secret_key=os.getenv('KEYCLOAK_ADMIN_CLIENT_SECRET'),
                                             auto_refresh_token=['get', 'put', 'post', 'delete']
