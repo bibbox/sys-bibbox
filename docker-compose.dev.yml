@@ -82,7 +82,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: "celery -A celery_worker.app_celerey worker -l INFO"
+    command: bash -c 'while ! curl --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/auth/realms/master; do sleep 2; done; celery -A celery_worker.app_celerey worker -l INFO'
     volumes:
       - ./data/celery:/queue
       - /var/run/docker.sock:/var/run/docker.sock
@@ -90,9 +90,14 @@ services:
       - ./backend:/usr/src/bibbox-sys-commander/backend
     env_file:
       - .env
+    healthcheck:
+       test: ["CMD-SHELL", "sh -c 'curl --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/auth/realms/master'"]
+       interval: 10s
+       timeout: 5s
+       retries: 5
     depends_on:
       bibbox-sys-commander-keycloak:
-        condition: service_started 
+        condition: service_started  
 
   # bibbox-sys-commander-celery-beat:
   #   container_name:  bibbox-sys-commander-celery
