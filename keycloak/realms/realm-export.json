@@ -1073,14 +1073,16 @@
       "id": "31694187-b7d5-4120-896d-bef0ff4d7a00",
       "clientId": "sys-bibbox-frontend",
       "name": "BIBBOX v4",
-      "rootUrl": "http://localhost",
-      "baseUrl": "http://localhost/info",
+      "rootUrl": "http://alexbibbox.mupa.local",
+      "baseUrl": "http://alexbibbox.mupa.local/info",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/*"
+        "http://alexbibbox.mupa.local/*",
+        "http://api.alexbibbox.mupa.local/*",
+        "http://keycloak.alexbibbox.mupa.local/*"
       ],
       "webOrigins": [
         "*",
@@ -1113,7 +1115,7 @@
         "id.token.as.detached.signature": "false",
         "saml.assertion.signature": "false",
         "saml.encrypt": "false",
-        "login_theme": "keycloak",
+        "login_theme": "custom",
         "logoUri": "http://localhost:4200/assets/silicolab_logo.png",
         "saml.server.signature": "false",
         "exclude.session.state.from.auth.response": "false",
