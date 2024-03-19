@@ -1,13 +1,11 @@
-let BASEURL: string = 'localhost';
+let BASEURL: string = "alexbibbox.mupa.local";
 
 export const environment = {
   production: true,
   BASEURL: BASEURL,
 
-
   KEYCLOAK_CONFIG: {
     url: 'http://keycloak.'+ BASEURL +'/auth',
-    // url: 'http://keycloak.'+ BASEURL +'/auth',
     realm: 'sys-bibbox',
     clientId: 'sys-bibbox-frontend',
 
