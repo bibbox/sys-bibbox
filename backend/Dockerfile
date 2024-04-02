@@ -1,6 +1,6 @@
-FROM python:3.9.16
+FROM python:bullseye
 
-MAINTAINER Heimo Müller "heimo.mueller@mac.com"
+#MAINTAINER Heimo Müller "heimo.mueller@mac.com"
 
 ENV PYTHONUNBUFFERED 1
 ENV CELERY_BROKER_URL       redis://redis:6379/0
@@ -25,6 +25,7 @@ WORKDIR  /usr/src/bibbox-sys-commander
 # install all packages ...
 COPY ./requirements.txt /usr/src/bibbox-sys-commander
 RUN pip install --upgrade pip
+#RUN apt install gcc curl -y   only with slim images
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Install the Docler CLI uswgi.ini
