@@ -104,7 +104,6 @@ services:
        bibbox-default-network:
          aliases:
            - postgres
-    #image: postgres:alpine
     build:
       context: ./postgresql
       dockerfile: Dockerfile
