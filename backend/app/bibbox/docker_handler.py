@@ -57,7 +57,7 @@ class DockerHandler():
         return [container.name for container in containers]
 
     def docker_deleteStoppedInstance(self, instance_name):
-        command = "docker-compose down".split()
+        command = "docker compose down".split()
         subprocess.call(command, cwd=f"{self.INSTANCEPATH}{instance_name}", stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf8")
 
 
