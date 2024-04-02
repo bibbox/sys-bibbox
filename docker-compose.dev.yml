@@ -142,9 +142,6 @@ services:
       - bibbox-default-network
     image: adminer
     restart: unless-stopped
-    links:
-      - "bibbox-sys-commander-postgres:postgres"
-      # - bibbox-sys-commander-keycloak-postgres:postgres
     ports:
       - "5012:8080"
     environment:
@@ -169,11 +166,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /dev/disk/:/dev/disk:ro
 
-  bibbox-sys-commander-keycloak:      # KEYCLOAK     # sudo chown 1001:1000 -R dir
+# sudo chown 1001:1000 -R dir newer containers don't run as root:root, they run as keycloak:keycloak, so we need to change the owner
+  bibbox-sys-commander-keycloak:         # KEYCLOAK     
     container_name: bibbox-sys-commander-keycloak
     image: bitnami/keycloak
     restart: unless-stopped
-    #command: kc.sh start --optimized
     ports:
       - "5014:8080"
     networks:
@@ -185,7 +182,9 @@ services:
       - DB_USER=keycloak
       - DB_PASSWORD=keycloak
       - DB_SCHEMA=public
-      - KEYCLOAK_EXTRA_ARGS=--import-realm --health-enabled=true #--spi-theme-static-max-age=-1 --spi-theme-cache-themes=false --spi-theme-cache-templates=false
+
+      # for changing the themes add --spi-theme-static-max-age=-1 --spi-theme-cache-themes=false --spi-theme-cache-templates=false to the extra args command below.
+      - KEYCLOAK_EXTRA_ARGS=--import-realm --health-enabled=true
     volumes:
      - ./keycloak/realms/realm-export.json:/opt/bitnami/keycloak/data/import/realm-export.json
      - ./keycloak/themes:/opt/bitnami/keycloak/themes
