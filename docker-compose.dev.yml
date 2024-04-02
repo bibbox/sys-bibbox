@@ -57,7 +57,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: bash -c 'while ! curl --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/realms/master; do sleep 2; done; celery -A celery_worker.app_celerey worker -l INFO'
+    command: bash -c 'celery -A celery_worker.app_celerey worker -l INFO'
     volumes:
       - ./data/celery:/queue
       - /var/run/docker.sock:/var/run/docker.sock
@@ -65,14 +65,14 @@ services:
       - ./backend:/usr/src/bibbox-sys-commander/backend
     env_file:
       - .env
-    healthcheck:
-       test: ["CMD-SHELL", "sh -c 'curl --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/realms/master'"]
-       interval: 10s
-       timeout: 5s
-       retries: 5
     depends_on:
       bibbox-sys-commander-keycloak:
-        condition: service_started  
+        condition: service_healthy
+    healthcheck:
+       test: ["CMD-SHELL", "celery inspect ping"]
+       interval: 1s
+       timeout: 3s
+       retries: 60
 
   bibbox-sys-commander-celery-monitor:    # CELERY MONITOR
     container_name: bibbox-sys-commander-celery-monitor
@@ -84,12 +84,14 @@ services:
     restart: unless-stopped
     ports:
       - "5011:5555"
-    entrypoint: celery flower
-    #command:  -celery A celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0
-    command:  --app celery_worker.app_celerey --port=5555 --broker=redis://redis:6379/0
+    command:  celery -A celery_worker.app_celerey flower --port=5555
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
     depends_on:
       bibbox-sys-commander-redis:
         condition: service_started
+      bibbox-sys-commander-celery:
+        condition: service_healthy
     volumes:
       - ./data/celery:/queue
       - ./backend:/usr/src/bibbox-sys-commander/backend
@@ -114,9 +116,9 @@ services:
       - .env
     healthcheck:
        test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${DB_NAME}'"]
-       interval: 10s
-       timeout: 5s
-       retries: 5
+       interval: 1s
+       timeout: 3s
+       retries: 60
 
   bibbox-sys-commander-redis:          # REDIS     -alias redis
     container_name: bibbox-sys-commander-redis
@@ -167,31 +169,33 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /dev/disk/:/dev/disk:ro
 
-  bibbox-sys-commander-keycloak:      # KEYCLOAK
+  bibbox-sys-commander-keycloak:      # KEYCLOAK     # sudo chown 1001:1000 -R dir
     container_name: bibbox-sys-commander-keycloak
     image: bitnami/keycloak
     restart: unless-stopped
+    #command: kc.sh start --optimized
     ports:
       - "5014:8080"
     networks:
       - bibbox-default-network
     environment:
-      KC_DB: postgres
-      KC_DB_PASSWORD: keycloak
-      kC_DB_USERNAME: keycloak
-      KC_DB_URL: jdbc:postgresql://bibbox-sys-commander-postgres/keycloak
-      KEYCLOAK_DATABASE_HOST: bibbox-sys-commander-postgres
-      KEYCLOAK_DATABASE_USER: keycloak
-      KEYCLOAK_DATABASE_NAME: keycloak
-      KC_DB_URL_PORT: 5432
-      KEYCLOAK_DATABASE_SCHEMA: public
-      KEYCLOAK_EXTRA_ARGS: --import-realm
-
+      - KEYCLOAK_CREATE_ADMIN_USER=true
+      - DB_ADDR=bibbox-sys-commander-postgres
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=keycloak
+      - DB_SCHEMA=public
+      - KEYCLOAK_EXTRA_ARGS=--import-realm --health-enabled=true #--spi-theme-static-max-age=-1 --spi-theme-cache-themes=false --spi-theme-cache-templates=false
     volumes:
      - ./keycloak/realms/realm-export.json:/opt/bitnami/keycloak/data/import/realm-export.json
-     - ./keycloak/themes/custom:/opt/bitnami/keycloak/themes/custom
+     - ./keycloak/themes:/opt/bitnami/keycloak/themes
     env_file: 
         - .env
+    healthcheck:
+       test: ["CMD-SHELL", "curl --head -fsS http://localhost:8080/health/ready"]
+       interval: 1s
+       timeout: 3s
+       retries: 60
     depends_on:
       bibbox-sys-commander-postgres:
           condition: service_healthy
@@ -213,6 +217,7 @@ services:
   bibbox-sys-commander-master-fdp-client:     # FDP CLIENT  - alias fdp
     image: fairdata/fairdatapoint-index-client:1.13
     container_name: bibbox-sys-commander-master-fdp-client
+    restart: unless-stopped
     ports:
       - "8088:80"
     environment:
@@ -225,6 +230,7 @@ services:
   bibbox-sys-commander-master-fdp-mongo:     # MONGO DB      -alias mongo
     image: mongo:4.0.12
     container_name: bibbox-sys-commander-master-fdp-mongo
+    restart: unless-stopped
     volumes:
       - ./data/mongo/data:/data/db
     networks:
