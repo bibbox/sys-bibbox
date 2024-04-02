@@ -6,7 +6,6 @@
 
 # TODO - for production take the password from the .env
 
-RETRIES=15
 USER=postgres
 DATABASE=bibbox
 HOST=postgres
@@ -15,13 +14,6 @@ if [ -z "${SKIP_RECREATE_DB}" ]; then
 else
   SKIPPING_RECREATE_DB=${SKIP_RECREATE_DB}
 fi
-
-
-until psql -h $HOST -U $USER -d $DATABASE -c "select 1" > /dev/null 2>&1 || [ $RETRIES -eq 0 ]; do
-  echo "Waiting for postgres server to start, $((RETRIES)) remaining attempts..."
-  RETRIES=$((RETRIES-=1))
-  sleep 1
-done
 
 echo "PostgreSQL started!"
 
