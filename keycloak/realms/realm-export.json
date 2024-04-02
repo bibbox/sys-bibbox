@@ -1,8 +1,8 @@
 {
   "id" : "sys-bibbox",
   "realm" : "sys-bibbox",
-  "displayName" : "BIBBOX A FAIR-TOOLBOX",
-  "displayNameHtml" : "",
+  "displayName" : "",
+  "displayNameHtml" : "<font color=\"black\">BIBBOX A FAIR-TOOLBOX</font>",
   "notBefore" : 1680459751,
   "defaultSignatureAlgorithm" : "RS256",
   "revokeRefreshToken" : false,
