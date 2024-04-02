@@ -1,6 +1,6 @@
 FROM httpd:latest
 
-MAINTAINER Heimo Müller "heimo.mueller@mac.com"
+#MAINTAINER Heimo Müller "heimo.mueller@mac.com"
 
 COPY httpd.conf /usr/local/apache2/conf/httpd.conf
 
