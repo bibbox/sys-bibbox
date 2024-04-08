@@ -1,4 +1,4 @@
-FROM python:bullseye
+FROM python:3.9.16
 
 #MAINTAINER Heimo Müller "heimo.mueller@mac.com"
 
