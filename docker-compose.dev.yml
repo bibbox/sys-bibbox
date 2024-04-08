@@ -29,7 +29,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-
     ports:
       - "5010:5000"
     volumes:
@@ -43,7 +42,7 @@ services:
       bibbox-sys-commander-redis:
         condition: service_started
       bibbox-sys-commander-celery:
-        condition: service_started
+        condition: service_healthy
       bibbox-sys-commander-postgres:
         condition: service_healthy
 
@@ -165,7 +164,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /dev/disk/:/dev/disk:ro
 
-# sudo chown 1001:1000 -R dir newer containers don't run as root:root, they run as keycloak:keycloak, so we need to change the owner
+# sudo chown 1001:1000 -R dir in case we have any permission issues with keycloak.
   bibbox-sys-commander-keycloak:         # KEYCLOAK     
     container_name: bibbox-sys-commander-keycloak
     image: bitnami/keycloak
@@ -181,7 +180,6 @@ services:
       - DB_USER=keycloak
       - DB_PASSWORD=keycloak
       - DB_SCHEMA=public
-
       # for changing the themes add --spi-theme-static-max-age=-1 --spi-theme-cache-themes=false --spi-theme-cache-templates=false to the extra args command below.
       - KEYCLOAK_EXTRA_ARGS=--import-realm --health-enabled=true
     volumes:
@@ -239,6 +237,7 @@ services:
   bibbox-sys-commander-master-fdp-blazegraph:    # BLAZEGRAPH     - alias blazegraph
     image: metaphacts/blazegraph-basic:2.2.0-20160908.003514-6
     container_name: bibbox-sys-commander-master-fdp-blazegraph
+    restart: unless-stopped
     volumes:
       - ./data/blazegraph:/blazegraph-data
     networks:
