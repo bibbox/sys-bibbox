@@ -5,7 +5,23 @@ networks:
     external: true
 services:
 
-  bibbox-sys-commander-apacheproxy:
+  bibbox-sys-commander-angularenv:   # Angular for Frontend building
+    container_name: bibbox-sys-commander-angularenv
+    networks:
+      - bibbox-default-network
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/:/opt/bibbox_frontend/frontend/
+    healthcheck:                      # IF the server you are installing to is too slow and it shows as unhealth, adjust the duration of the parameters below. It takes a bit to build the front end again
+      test: ["CMD-SHELL", "./health_check.sh"] 
+      interval: 5s
+      timeout: 3s
+      retries: 20      
+    
+
+  bibbox-sys-commander-apacheproxy:  #  Apache proxy
     container_name: bibbox-sys-commander-apacheproxy
     restart: unless-stopped
     networks:
@@ -13,13 +29,15 @@ services:
     build:
       context: ./apacheproxy
       dockerfile: Dockerfile
-
     volumes:
       - /opt/bibbox/proxy/sites:/usr/local/apache2/conf/sites
       - /opt/bibbox/sys-bibbox/frontend/dist/sys-bibbox-client:/var/www/html/sys-bibbox-client
     ports:
       - "80:80"
       - "443:443"
+    depends_on:
+      bibbox-sys-commander-angularenv:
+        condition: service_healthy
 
   bibbox-sys-commander-backend:   # BACKEND
     container_name: bibbox-sys-commander-backend
