@@ -1,9 +1,23 @@
 #version: '3.4'
-
 networks:
   bibbox-default-network:
     external: true
 services:
+  
+  bibbox-sys-commander-angularenv:   # Angular for Frontend building
+    container_name: bibbox-sys-commander-angularenv
+    networks:
+      - bibbox-default-network
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/:/opt/bibbox_frontend/frontend/
+    healthcheck:                      # IF the server you are installing to is too slow and it shows as unhealth, adjust the duration of the parameters below. It takes a bit to build the front end again
+      test: ["CMD-SHELL", "./health_check.sh"] 
+      interval: 5s
+      timeout: 3s
+      retries: 20  
 
   bibbox-sys-commander-apacheproxy:
     container_name: bibbox-sys-commander-apacheproxy
@@ -17,6 +31,9 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    depends_on:
+      bibbox-sys-commander-angularenv:
+        condition: service_healthy
 
   bibbox-sys-commander-backend:   # BACKEND
     container_name: bibbox-sys-commander-backend
@@ -122,7 +139,6 @@ services:
     env_file:
       - .env
 
-
   bibbox-sys-commander-adminer:      #ADMINER
     container_name:  bibbox-sys-commander-adminer
     networks:
@@ -138,7 +154,6 @@ services:
       ADMINER_DEFAULT_DB_DRIVER: pgsql
       ADMINER_DEFAULT_DB_HOST: postgres
       ADMINER_DEFAULT_DB_NAME: bibbox
-
 
   bibbox-sys-commander-cadvisor:     # CADVISOR      
       container_name: bibbox-sys-commander-cadvisor
@@ -200,7 +215,6 @@ services:
       - ./fdp-configs/application.yml:/fdp/application.yml:ro
     env_file:
       - fdp-configs/fdp.env.template
-
 
   bibbox-sys-commander-master-fdp-client:     # FDP CLIENT  - alias fdp
     image: fairdata/fairdatapoint-index-client:1.13
