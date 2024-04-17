@@ -68,4 +68,7 @@
 
         ProxyRequests           Off
         ProxyPreserveHost       On
+
+        ProxyPassReverseCookiePath / /
+        ProxyPassReverseCookieDomain bibbox-sys-commander-keycloak keycloak.§§BASEURL
 </VirtualHost>
