@@ -16,9 +16,9 @@ services:
       - ./frontend/:/opt/bibbox_frontend/frontend/
     healthcheck:                      # IF the server you are installing to is too slow and it shows as unhealth, adjust the duration of the parameters below. It takes a bit to build the front end again
       test: ["CMD-SHELL", "./health_check.sh"] 
-      interval: 5s
-      timeout: 3s
-      retries: 20      
+      interval: 15s
+      timeout: 10s
+      retries: 8      
     
 
   bibbox-sys-commander-apacheproxy:  #  Apache proxy
@@ -87,9 +87,9 @@ services:
         condition: service_healthy
     healthcheck:
        test: ["CMD-SHELL", "celery inspect ping"]
-       interval: 1s
-       timeout: 3s
-       retries: 60
+       interval: 15s
+       timeout: 10s
+       retries: 8
 
   bibbox-sys-commander-celery-monitor:    # CELERY MONITOR
     container_name: bibbox-sys-commander-celery-monitor
@@ -132,9 +132,9 @@ services:
       - .env
     healthcheck:
        test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${DB_NAME}'"]
-       interval: 1s
-       timeout: 3s
-       retries: 60
+       interval: 15s
+       timeout: 10s
+       retries: 8
 
   bibbox-sys-commander-redis:          # REDIS     -alias redis
     container_name: bibbox-sys-commander-redis
@@ -207,9 +207,9 @@ services:
         - .env
     healthcheck:
        test: ["CMD-SHELL", "curl --head -fsS http://localhost:8080/health/ready"]
-       interval: 1s
-       timeout: 3s
-       retries: 60
+       interval: 15s
+       timeout: 10s
+       retries: 8
     depends_on:
       bibbox-sys-commander-postgres:
           condition: service_healthy
@@ -253,7 +253,7 @@ services:
            - mongo
 
   bibbox-sys-commander-master-fdp-blazegraph:    # BLAZEGRAPH     - alias blazegraph
-    image: metaphacts/blazegraph-basic:2.2.0-20160908.003514-6
+    image: metaphacts/blazegraph-basic:2.2.0-20160908.003514-6-jetty9.4.44-jre8-45dbfff
     container_name: bibbox-sys-commander-master-fdp-blazegraph
     restart: unless-stopped
     volumes:
