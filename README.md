@@ -67,6 +67,11 @@ sudo bash INSTALL.sh
      - Set up a DNS Service (e.g.:dnsmasque) to create a local domain
 </details>
 
+<b>Initial Login</b>
+- **username:** tempadmin
+- **password:** tempadmin
+
+After the first installation please login in as tempadmin --> switch to the Users tab and create a propper admin user. Logout and login as the newly created admin user so that you can delete the tempadmin, this ensures no one else can access your bibbox using the default tempadmin login. Please note that the tempadmin user is not a fully functional user. 
 
 ## Debug Tools
 
