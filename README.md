@@ -67,7 +67,7 @@ sudo bash INSTALL.sh
      - Set up a DNS Service (e.g.:dnsmasque) to create a local domain
 </details>
 
-<b>Initial Login</b>
+### Initial Login 
 - **username:** tempadmin
 - **password:** tempadmin
 
