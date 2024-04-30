@@ -20,6 +20,11 @@ In the current state we are building apps to support pathologists, bioinformatic
 
 Please refer to the online documentation at [bibbox.readthedocs.io](https://bibbox.readthedocs.io/), which includes installation instructions, a user guide and a developer guide for the BIBBOX system.
 
+The frontend is built automatically. If you want to make some changes you can rebuild it with the following command:
+
+```sh
+docker compose -f docker-compose_frontend_builder.yml up --build -d
+```
 
 ## How It Works
  - Apps provided in the BIBBOX-**Store** can be easily installed with a few clicks and without any IT-knowledge.
@@ -66,7 +71,6 @@ sudo bash INSTALL.sh
      - Add the URL you want to use locally to your /etc/hosts file (or use localhost)
      - Set up a DNS Service (e.g.:dnsmasque) to create a local domain
 </details>
-
 
 ## Debug Tools
 
