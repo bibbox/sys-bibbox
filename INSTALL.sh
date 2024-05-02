@@ -77,7 +77,21 @@ docker network create bibbox-default-network
 
 cd /opt/bibbox/sys-bibbox
 
-docker compose -f docker-compose.dev.yml up --build -d
+echo -e "\nRunning the frontend builder docker-compose...\n"
+docker compose -f docker-compose_frontend_builder.yml up --build -d
+
+printf "\nWaiting for the container to be ready, this might take a while..."
+
+container_name=$(docker ps -a --format "{{.Names}}" | grep "angularenv") 
+
+exitcode=$(docker wait $container_name)
+
+if [ $exitcode = 0 ]; then
+    printf "done.\n" 
+    docker compose -f docker-compose.dev.yml up --build --remove-orphans -d
+else
+    printf "Building the frontend failed !\n"
+fi
 
 echo 'INSTALLATION COMPLETE'
 
