@@ -5,8 +5,3 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./frontend/:/opt/bibbox_frontend/frontend/
-    healthcheck:
-      test: ["CMD-SHELL", "./health_check.sh"] 
-      interval: 3s
-      timeout: 3s
-      retries: 10
