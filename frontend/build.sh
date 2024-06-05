@@ -6,4 +6,4 @@ cd frontend
 # Build the frontend application
 ng build --configuration=production
 
-tail -f /dev/null
+#tail -f /dev/null
