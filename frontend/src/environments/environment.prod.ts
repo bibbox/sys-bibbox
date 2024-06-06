@@ -1,4 +1,4 @@
-let BASEURL: string = "alexbibbox.mupa.local";
+let BASEURL: string = "localhost";
 
 export const environment = {
   production: true,
