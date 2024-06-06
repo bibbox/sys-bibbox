@@ -6,9 +6,6 @@
 
 # TODO - for production take the password from the .env
 
-USER=postgres
-DATABASE=bibbox
-HOST=postgres
 if [ -z "${SKIP_RECREATE_DB}" ]; then
   SKIPPING_RECREATE_DB=false
 else
