@@ -1,4 +1,3 @@
-#version: '3.4'
 networks:
   bibbox-default-network:
     external: true
@@ -152,8 +151,7 @@ services:
         - /var/lib/docker/:/var/lib/docker:ro 
         - /var/run/docker.sock:/var/run/docker.sock:ro 
         - /dev/disk/:/dev/disk:ro 
-
-# sudo chown 1001:1000 -R dir in case we have any permission issues with keycloak.
+        
   bibbox-sys-commander-keycloak:         # KEYCLOAK     
     container_name: bibbox-sys-commander-keycloak
     image: bitnami/keycloak
@@ -185,7 +183,7 @@ services:
       bibbox-sys-commander-postgres:
           condition: service_healthy
 
-  bibbox-sys-commander-master-fdp:       # FDP     - no alias
+  bibbox-sys-commander-master-fdp:       # FDP
     image: fairdata/fairdatapoint:1.13.2
     container_name: bibbox-sys-commander-master-fdp
     restart: unless-stopped
