@@ -2,15 +2,14 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-let BASEURL: string = 'localhost';
+let BASEURL: string = "localhost";
 
 export const environment = {
   production: false,
   BASEURL: BASEURL,
 
-
   KEYCLOAK_CONFIG: {
-    url: 'http://keycloak.'+ BASEURL +'/auth',
+    url: 'http://keycloak.'+ BASEURL,
     realm: 'sys-bibbox',
     clientId: 'sys-bibbox-frontend',
 

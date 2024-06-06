@@ -1,13 +1,11 @@
-let BASEURL: string = 'localhost';
+let BASEURL: string = "localhost";
 
 export const environment = {
   production: true,
   BASEURL: BASEURL,
 
-
   KEYCLOAK_CONFIG: {
-    url: 'http://keycloak.'+ BASEURL +'/auth',
-    // url: 'http://keycloak.'+ BASEURL +'/auth',
+    url: 'http://keycloak.'+ BASEURL,
     realm: 'sys-bibbox',
     clientId: 'sys-bibbox-frontend',
 

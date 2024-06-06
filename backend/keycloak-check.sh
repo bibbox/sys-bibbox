@@ -2,7 +2,7 @@
 
 # Function to check if the URL gives a 200 status
 check_url() {
-    status_code=$(curl --head --write-out '%{http_code}' --silent --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/auth/realms/master)
+    status_code=$(curl --head --write-out '%{http_code}' --silent --output /dev/null -fsS http://bibbox-sys-commander-keycloak:8080/realms/master)
     if [ "$status_code" -eq 200 ]; then
         return 1
     else

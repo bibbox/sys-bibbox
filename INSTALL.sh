@@ -32,36 +32,9 @@ INFO: The first time loading the applications tab of the website shows no applic
 read -p "Specify domainname + TLD (e.g. silicolabv4.bibbox.org): " DOMAINNAME
 # TODO: read envparams from file
 
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" bash_completion
-
-nvm install v18.13.0
-nvm use v18.13.0
-
-apt-get update
-#apt-get install docker.io -y
-apt install docker-compose -y
-apt install npm -y
-apt install python3-pip -y
-
-printf 'n\n' | npm i -g @angular/cli
-#printf 'n\n' | npm update -g @angular/cli
-
-
 #sudo chmod -R 777 /opt/bibbox/
 cd /opt/bibbox
 mkdir -p {instances,proxy/sites,config}
-
-#sudo apt-get install python3-venv -y
-#python3 -m venv bibbox-venv
-#source bibbox-venv/bin/activate
-
-cd /opt/bibbox/sys-bibbox/backend
-pip3 install -r requirements.txt
-
-
 
 # change domainname
 chmod -R 775 /opt/bibbox/sys-bibbox/config-templates
@@ -88,14 +61,6 @@ sed -e "s/§§BASEURL/$DOMAINNAME/g" fdp.env.template > fdp.env
 # replace the realm export template
 sed -e "s/§§BASEURL/$DOMAINNAME/g;" /opt/bibbox/sys-bibbox/keycloak/realms/realm-export.json.template > /opt/bibbox/sys-bibbox/keycloak/realms/realm-export.json
 
-# compile frontend code
-cd /opt/bibbox/sys-bibbox/frontend
-
-printf 'n\n' | npm ci -N
-#printf 'n\n' | npm update
-
-ng build --configuration production
-
 
 # copy config templates to the actual destination
 cp /opt/bibbox/sys-bibbox/config-templates/100-error.conf /opt/bibbox/proxy/sites/100-error.conf
@@ -109,11 +74,28 @@ cp /opt/bibbox/sys-bibbox/config-templates/proxy-websocket.template /opt/bibbox/
 
 docker network create bibbox-default-network
 
+
 cd /opt/bibbox/sys-bibbox
-docker-compose -f docker-compose.dev.yml up --build -d
+
+echo -e "\nRunning the frontend builder docker-compose...\n"
+docker compose -f docker-compose_frontend_builder.yml up --build -d
+
+printf "\nWaiting for the container to be ready, this might take a while..."
+
+container_name=$(docker ps -a --format "{{.Names}}" | grep "angularenv") 
+
+exitcode=$(docker wait $container_name)
+
+if [ $exitcode = 0 ]; then
+    printf "done.\n" 
+    docker compose -f docker-compose.dev.yml up --build --remove-orphans -d
+else
+    printf "Building the frontend failed !\n"
+    exit 1
+fi
 
 echo 'INSTALLATION COMPLETE'
-
+exit 0
 : '
 If an error occurs after installing, run the following commands:
 
