@@ -91,6 +91,7 @@ if [ $exitcode = 0 ]; then
     docker compose -f docker-compose.dev.yml up --build --remove-orphans -d
 else
     printf "Building the frontend failed !\n"
+    exit 1
 fi
 
 echo 'INSTALLATION COMPLETE'
