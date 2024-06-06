@@ -195,7 +195,7 @@ services:
       bibbox-sys-commander-postgres:
           condition: service_healthy
 
-  bibbox-sys-commander-master-fdp:       # FDP     - no alias
+  bibbox-sys-commander-master-fdp:       # FDP
     image: fairdata/fairdatapoint:1.13.2
     container_name: bibbox-sys-commander-master-fdp
     restart: unless-stopped
