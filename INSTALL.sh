@@ -95,7 +95,7 @@ else
 fi
 
 echo 'INSTALLATION COMPLETE'
-
+exit 0
 : '
 If an error occurs after installing, run the following commands:
 
