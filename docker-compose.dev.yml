@@ -184,7 +184,7 @@ services:
     env_file: 
         - .env
     healthcheck:
-       test: ["CMD-SHELL", "curl --head -fsS http://localhost:8080/health/ready"]
+       test: ["CMD-SHELL", "curl --head -fsS http://localhost:9000/health/ready"]
        interval: 15s
        timeout: 10s
        retries: 8
