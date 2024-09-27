@@ -1,4 +1,4 @@
-let BASEURL: string = "localhost";
+let BASEURL: string = "testground.bibbox.org";
 
 export const environment = {
   production: true,
