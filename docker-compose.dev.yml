@@ -163,7 +163,7 @@ services:
 
   bibbox-sys-commander-keycloak:         # KEYCLOAK     
     container_name: bibbox-sys-commander-keycloak
-    image: bitnami/keycloak
+    image: bitnami/keycloak:25.0.6
     restart: unless-stopped
     ports:
       - "5014:8080"
@@ -184,7 +184,7 @@ services:
     env_file: 
         - .env
     healthcheck:
-       test: ["CMD-SHELL", "curl --head -fsS http://localhost:8080/health/ready"]
+       test: ["CMD-SHELL", "curl --head -fsS http://localhost:9000/health/ready"]
        interval: 15s
        timeout: 10s
        retries: 8
